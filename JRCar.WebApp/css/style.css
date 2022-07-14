@@ -8162,7 +8162,7 @@ h1, h2, h3, h4, h5,
   background: #e3b04b !important; }
 
 .ftco-section {
-  padding: 7em 0; }
+  padding: 3em 0; }
 
 .ftco-no-pt {
   padding-top: 0; }
@@ -8200,8 +8200,9 @@ h1, h2, h3, h4, h5,
 
 .login-wrap {
   position: relative;
-  background: #fff h3;
-    background-font-weight: 300; }
+  background: #fff ;
+  background-font-weight: 300; 
+}
 
 .form-group {
   position: relative; }

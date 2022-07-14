@@ -43,7 +43,7 @@ namespace JRCar.WebApp.Controllers
 
                 if (extension.ToLower() == ".jpg" || extension.ToLower() == ".jpeg" || extension.ToLower() == ".png")
                 {
-                    if (file.ContentLength <= 1000000)
+                    if (file.ContentLength <= 10000000)
                     {
                         RepoObj.InsertModel(user);
                         file.SaveAs(path);
