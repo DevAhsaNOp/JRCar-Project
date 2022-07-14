@@ -28,12 +28,32 @@ namespace JRCar.BLL.Repositories
 
         public tblUser GetModelByID(int modelId)
         {
-            return dbObj.GetModelByID(modelId);
+            try
+            {
+                var reas = dbObj.GetModelByID(modelId);
+                if (reas != null)
+                {
+                    reas.Password = EncDec.Decrypt(reas.Password);
+                    return reas;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public void InsertModel(tblUser model)
         {
-            dbObj.InsertModel(model);
+            if (model.Password != null)
+            {
+                model.Password = EncDec.Encrypt(model.Password);
+                dbObj.InsertModel(model);
+            }
         }
 
         public void UpdateModel(tblUser model)
