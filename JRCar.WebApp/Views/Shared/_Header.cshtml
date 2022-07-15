@@ -113,20 +113,21 @@
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link" href="#pablo" id="navbarDropdownProfile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="material-icons">person</i>
-                            <p class="d-lg-none d-md-block">
-                                Account
+                            @*<i class="material-icons">person</i>*@
+                            <img src="@Url.Content((string)@Session["Image"])" alt="User" width="35" height="35" style="border-radius:20px !important; margin-right: 15px;" />
+                            <p class="d-lg-none d-md-block" style="display:inline !important;font-weight:700 !important">
+                                @Session["Name"]
                             </p>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownProfile">
                             <a class="dropdown-item" href="#">Profile</a>
                             <a class="dropdown-item" href="#">Settings</a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">Log out</a>
+                            @Html.ActionLink("Logout", "Logout", "Account", new { @class = "nav-link text-center text-uppercase" })
+                            @*<a class="dropdown-item" href="#">Log out</a>*@
                         </div>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
-

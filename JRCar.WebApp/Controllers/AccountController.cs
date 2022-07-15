@@ -1,5 +1,6 @@
 ﻿using JRCar.BLL.Repositories;
 using JRCar.BOL;
+using JRCar.BOL.Validation_Classes;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -7,6 +8,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 
 namespace JRCar.WebApp.Controllers
 {
@@ -19,19 +21,20 @@ namespace JRCar.WebApp.Controllers
             RepoObj = new UserRepo();
         }
 
+        [Authorize]
         public ActionResult Index()
         {
             return View();
         }
 
         [AcceptVerbs(HttpVerbs.Get)]
-        public ActionResult Register()
+        public ActionResult SignUp()
         {
             return View();
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult Register(HttpPostedFileBase file, tblUser user)
+        public ActionResult SignUp(HttpPostedFileBase file, ValidateUser user)
         {
             try
             {
@@ -52,7 +55,8 @@ namespace JRCar.WebApp.Controllers
                     }
                     else
                     {
-                        ViewBag.msg = "Image size is very large";
+                        TempData["ErrorMsg"] = "Image size is very large";
+                        return RedirectToAction("SignUp");
                     }
                 }
                 return View();
@@ -60,7 +64,43 @@ namespace JRCar.WebApp.Controllers
             catch (Exception ex)
             {
                 TempData["ErrorMsg"] = "Error occured on creating Account!" + ex.Message;
-                return RedirectToAction("Register");
+                return RedirectToAction("SignUp");
+            }
+        }
+
+        [AcceptVerbs(HttpVerbs.Get)]
+        public ActionResult SignIn()
+        {
+            return View();
+        }
+
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult SignIn(ValidateUser user)
+        {
+            try
+            {
+                var IsSuccess = RepoObj.GetModelByID(user.Email,user.Password);
+                if (IsSuccess != null)
+                {
+                    FormsAuthentication.SetAuthCookie(user.Name, false);
+                    TempData["SuccessMsg"] = "Account Login Successfully!";
+                    Session["Id"] = IsSuccess.ID;
+                    Session["Name"] = IsSuccess.Name;
+                    Session["Email"] = IsSuccess.Email;
+                    Session["Image"] = IsSuccess.Image;
+                    var str = (string)@Session["Image"];
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    TempData["ErrorMsg"] = "No Account Found!";
+                    return RedirectToAction("SignIn");
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMsg"] = "Error occured on login Account!" + ex.Message;
+                return RedirectToAction("SignIn");
             }
         }
 
@@ -77,6 +117,12 @@ namespace JRCar.WebApp.Controllers
                 return HttpNotFound();
             }
             return View(tbl_img);
+        }
+
+        public ActionResult Logout()
+        {
+            FormsAuthentication.SignOut();
+            return RedirectToAction("SignIn");
         }
     }
 }

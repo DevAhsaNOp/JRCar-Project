@@ -1,4 +1,5 @@
 ﻿using JRCar.BOL;
+using JRCar.BOL.Validation_Classes;
 using JRCar.DAL.DBLayer;
 using System;
 using System.Collections.Generic;
@@ -47,12 +48,46 @@ namespace JRCar.BLL.Repositories
             }
         }
 
-        public void InsertModel(tblUser model)
+        public DAL.UserDefine.UserViewDetail GetModelByID(string emailtext, string password)
+        {
+            try
+            {
+                var reas = dbObj.GetModelByID(emailtext);
+                if (reas != null)
+                {
+                    if (EncDec.Decrypt(reas.Password).Equals(password))
+                    {
+                        var entity = dbObj.GetUserDetail(emailtext);
+                        return entity;
+                    }
+                    else
+                        return null;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public void InsertModel(ValidateUser model)
         {
             if (model.Password != null)
             {
-                model.Password = EncDec.Encrypt(model.Password);
-                dbObj.InsertModel(model);
+                tblUser obj = new tblUser()
+                {
+                    Name = model.Name,
+                    Email = model.Email,
+                    Number = model.Number,
+                    Address = model.Address,
+                    Password = EncDec.Encrypt(model.Password),
+                    Image = model.Image
+                };
+                dbObj.InsertModel(obj);
             }
         }
 

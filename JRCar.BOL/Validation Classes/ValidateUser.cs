@@ -7,20 +7,22 @@ using System.Threading.Tasks;
 
 namespace JRCar.BOL.Validation_Classes
 {
-    class ValidateUser
+    public class ValidateUser
     {
         public int ID { get; set; }
 
-        [Required(ErrorMessage ="*")]
+        [Required(ErrorMessage = "*")]
         [Display(Name = "Name")]
         public string Name { get; set; }
 
         [Required(ErrorMessage = "*")]
         [Display(Name = "Email")]
+        [EmailAddress(ErrorMessage = "Invalid Email Address")]
         public string Email { get; set; }
 
         [Required(ErrorMessage = "*")]
         [Display(Name = "Phone Number")]
+        [RegularExpression(@"^\d{4}[-]?\d{7}$", ErrorMessage = "Invalid Phone Number")]
         public string Number { get; set; }
 
         [Required(ErrorMessage = "*")]
@@ -29,8 +31,12 @@ namespace JRCar.BOL.Validation_Classes
 
         [Required(ErrorMessage = "*")]
         [Display(Name = "Password")]
+        [RegularExpression("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$", ErrorMessage = "<ul style=\"font-size:11px !important;\"><li>Password contain minimum 8 " +
+            "characters in length.</li><li> At least one uppercase and lowercase English letter.</li>"+
+            "<li> At least one digit and special character. </li></ul>")]
         public string Password { get; set; }
 
+        [Required(ErrorMessage = "*")]
         [Display(Name = "Image")]
         public string Image { get; set; }
 

@@ -28,6 +28,29 @@ namespace JRCar.DAL.DBLayer
             return dbEntity.Find(modelId);
         }
 
+        public tblUser GetModelByID(string emailtext)
+        {
+            var entity = dbEntity.Where(x => x.Email == emailtext).FirstOrDefault();
+            if (entity != null)
+            {
+                return entity;
+            }
+            else
+                return null;
+        }
+
+        public UserDefine.UserViewDetail GetUserDetail(string emailtext)
+        {
+            var entity = dbEntity.Where(x => x.Email == emailtext).Select(s => new UserDefine.UserViewDetail() { ID = s.ID, Name = s.Name,
+                Email = s.Email, Image = s.Image }).FirstOrDefault();
+            if (entity != null)
+            {
+                return entity;
+            }
+            else
+                return null;
+        }
+
         public void InsertModel(tblUser model)
         {
             try
