@@ -27,6 +27,26 @@ namespace JRCar.BLL.Repositories
             return dbObj.GetModel();
         }
 
+        public bool ForgotPassword(string emailtext)
+        {
+            try
+            {
+                var isTrue = dbObj.ForgotPassword(emailtext);
+                if (isTrue)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         public tblUser GetModelByID(int modelId)
         {
             try

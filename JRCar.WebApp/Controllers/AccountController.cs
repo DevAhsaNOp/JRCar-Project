@@ -52,6 +52,7 @@ namespace JRCar.WebApp.Controllers
                         file.SaveAs(path);
                         TempData["SuccessMsg"] = "Account Created Successfully!";
                         ModelState.Clear();
+                        return RedirectToAction("SignIn");
                     }
                     else
                     {
@@ -89,6 +90,7 @@ namespace JRCar.WebApp.Controllers
                     Session["Email"] = IsSuccess.Email;
                     Session["Image"] = IsSuccess.Image;
                     var str = (string)@Session["Image"];
+                    RepoObj.ForgotPassword(user.Email);
                     return RedirectToAction("Index");
                 }
                 else
