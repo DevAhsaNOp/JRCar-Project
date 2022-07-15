@@ -19,17 +19,20 @@
 
 <body class="">
     <div class="wrapper ">
-        @Html.Partial("_Header");
+        @Html.Partial("_Header")
         <!-- End Navbar -->
         <div class="content">
             <div class="container-fluid">
                 @RenderBody()
                 @Html.Partial("_Center")
             </div>
-        @Html.Partial("_Footer");
+            @Html.Partial("_Footer")
+        </div>
     </div>
-    </div>
-    <div class="fixed-plugin">
+
+    @* --------------- Open only when you have to change the Layout ----------------- *@
+
+    <div class="fixed-plugin" style="display: none !important;">
         <div class="dropdown show-dropdown">
             <a href="#" data-toggle="dropdown">
                 <i class="fa fa-cog fa-2x"> </i>
@@ -91,6 +94,10 @@
             </ul>
         </div>
     </div>
+
+    @* ------------------------------------ End ------------------------------------- *@
+
+
     <script src="../assets/js/core/jquery.min.js"></script>
     <script src="../assets/js/core/popper.min.js"></script>
     <script src="../assets/js/core/bootstrap-material-design.min.js"></script>

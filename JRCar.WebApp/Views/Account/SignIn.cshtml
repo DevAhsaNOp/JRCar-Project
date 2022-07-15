@@ -77,7 +77,10 @@
                                         <a href="#">Forgot Password</a>
                                     </div>
                                 </div>
-                                <p class="text-center">Not a member? <a data-toggle="tab" href="#signup">Sign Up</a></p>
+                                <p class="text-center">
+                                    Not a member? @*<a data-toggle="tab" href="@Url.Action("SignIn", "Account")">Sign In</a>*@
+                                    @Html.ActionLink("Sign Up", "SignUp", "Account")
+                                </p>
                             </div>
                         </div>
                     </div>
