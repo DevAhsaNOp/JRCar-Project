@@ -80,7 +80,7 @@ namespace JRCar.WebApp.Controllers
         {
             try
             {
-                var IsSuccess = RepoObj.GetModelByID(user.Email,user.Password);
+                var IsSuccess = RepoObj.GetModelByID(user.Email, user.Password);
                 if (IsSuccess != null)
                 {
                     FormsAuthentication.SetAuthCookie(user.Name, false);
@@ -90,19 +90,101 @@ namespace JRCar.WebApp.Controllers
                     Session["Email"] = IsSuccess.Email;
                     Session["Image"] = IsSuccess.Image;
                     var str = (string)@Session["Image"];
-                    RepoObj.ForgotPassword(user.Email);
                     return RedirectToAction("Index");
                 }
                 else
                 {
-                    TempData["ErrorMsg"] = "No Account Found!";
-                    return RedirectToAction("SignIn");
+                    TempData["ErrorMsg"] = "<b>Invalid Email or Passowrd!</b>";
+                    return View("SignIn");
                 }
             }
             catch (Exception ex)
             {
                 TempData["ErrorMsg"] = "Error occured on login Account!" + ex.Message;
                 return RedirectToAction("SignIn");
+            }
+        }
+
+        public ActionResult ForgotPassword()
+        {
+            return View();
+        }
+
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult ForgotPassword(ValidateUser user)
+        {
+            try
+            {
+                var IsSuccess = RepoObj.ForgotPassword(user.Email);
+                if (IsSuccess)
+                {
+                    TempData["SuccessMsg"] = "Please check your <b>email</b> for a message with your code. Your code is 6 numbers long!";
+                    Session["Email"] = user.Email;
+                    return View("_PasswordRecover");
+                }
+                else
+                {
+                    TempData["ErrorMsg"] = "No Account found with this Email Address!";
+                    return View();
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMsg"] = "Error occured on Account!" + ex.Message;
+                return RedirectToAction("ForgotPassword");
+            }
+        }
+        
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult CheckOTP(ValidateUser user)
+        {
+            try
+            {
+                var Email = @Session["Email"].ToString();
+                TempData["Email"] = Email;
+                var IsSuccess = RepoObj.CheckOTP(Email,user.OTP);
+                if (IsSuccess)
+                {
+                    TempData["SuccessMsg"] = "OTP Confirmed!";
+                    Session["Email"] = user.Email;
+                    return View("_ResetPassword");
+                }
+                else
+                {
+                    TempData["ErrorMsg"] = "Incorrect OTP please recheck your email!";
+                    return View("_PasswordRecover");
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMsg"] = "Error occured on Account!" + ex.Message;
+                return RedirectToAction("SignIn");
+            }
+        }
+        
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult ResetPass(ValidateUser user)
+        {
+            try
+            {
+                var Email = @TempData["Email"].ToString();
+                user.Email = Email;
+                var IsSuccess = RepoObj.UpdateModel(user);
+                if (IsSuccess)
+                {
+                    TempData["SuccessMsg"] = "<b>Hurry!</b> your Password is Reset...";
+                    return View("SignIn");
+                }
+                else
+                {
+                    TempData["ErrorMsg"] = "No Account found with this Email Address!";
+                    return RedirectToAction("SignUp");
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMsg"] = "Error occured on Account!" + ex.Message;
+                return RedirectToAction("ResetPass");
             }
         }
 

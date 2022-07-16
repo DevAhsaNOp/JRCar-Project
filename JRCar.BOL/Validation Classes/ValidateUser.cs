@@ -46,6 +46,10 @@ namespace JRCar.BOL.Validation_Classes
         public Nullable<System.DateTime> UpdatedOn { get; set; }
         public Nullable<int> UpdatedBy { get; set; }
         public int tblRoleID { get; set; }
+
+        [Required(ErrorMessage = "*")]
+        [Display(Name = "OTP")]
+        [RegularExpression(@"^\d{6}$", ErrorMessage = "Invalid OTP")]
         public string OTP { get; set; }
     }
 }

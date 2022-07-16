@@ -47,6 +47,15 @@ namespace JRCar.BLL.Repositories
             }
         }
 
+        public bool CheckOTP(string emailtext, string OTP)
+        {
+            var IsTrue = dbObj.CheckOTP(emailtext, OTP);
+            if (IsTrue)
+                return true;
+            else
+                return false;
+        }
+
         public tblUser GetModelByID(int modelId)
         {
             try
@@ -96,7 +105,7 @@ namespace JRCar.BLL.Repositories
 
         public void InsertModel(ValidateUser model)
         {
-            if (model.Password != null)
+            if (model != null)
             {
                 tblUser obj = new tblUser()
                 {
@@ -111,9 +120,17 @@ namespace JRCar.BLL.Repositories
             }
         }
 
-        public void UpdateModel(tblUser model)
+        public bool UpdateModel(ValidateUser model)
         {
-            dbObj.UpdateModel(model);
+            if (model != null)
+            {
+                var reas = dbObj.GetModelByID(model.Email);
+                reas.Password = EncDec.Encrypt(model.Password);
+                dbObj.UpdateModel(reas);
+                return true;
+            }
+            else
+                return false;
         }
     }
 }

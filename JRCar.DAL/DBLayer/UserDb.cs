@@ -75,6 +75,15 @@ namespace JRCar.DAL.DBLayer
                 return false;
         }
 
+        public bool CheckOTP(string emailtext, string OTP)
+        {
+            var entity = dbEntity.Where(x => x.Email == emailtext && x.OTP == OTP).FirstOrDefault();
+            if (entity != null)
+                return true;
+            else
+                return false;
+        }
+
         public UserDefine.UserViewDetail GetUserDetail(string emailtext)
         {
             var entity = dbEntity.Where(x => x.Email == emailtext).Select(s => new UserDefine.UserViewDetail()
