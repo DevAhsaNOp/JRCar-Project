@@ -37,12 +37,12 @@ namespace JRCar.BLL
             throw new NotImplementedException();
         }
 
-        public override string[] GetRolesForUser(string username)
+        public override string[] GetRolesForUser(string Email)
         {
-            if (username != null)
+            if (Email != null)
             {
                 UserRepo user = new UserRepo();
-                var reas = user.GetUserRole(username).tblRole.Role;
+                var reas = user.GetUserRole(Email).tblRole.Role;
                 return new[] {reas };
             }
             return null;

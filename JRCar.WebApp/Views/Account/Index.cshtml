@@ -3,20 +3,23 @@
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Template.cshtml";
 }
-
-@if (TempData["SuccessMsg"] != null)
+@if (User.Identity.IsAuthenticated)
 {
-    <br />
-    <div class="alert alert-dismissable alert-success" id="sucessAlert">
-        @TempData["SuccessMsg"].ToString() <p class="pull-right btn" style="margin: 0;padding: 0;font-size: 18px;
-        background-color:transparent;" onclick="myFunction()">&times;</p>
-    </div>
-}
-<script type="text/javascript">
-    function myFunction() {
-        var x = document.getElementById("sucessAlert");
-        x.style.display = "none";
-        var y = document.getElementById("errorAlert");
-        y.style.display = "none";
+    if (TempData["SuccessMsg"] != null)
+    {
+        <br />
+        <div class="alert alert-dismissable alert-success" id="sucessAlert">
+            @TempData["SuccessMsg"].ToString() <p class="pull-right btn" style="margin: 0;padding: 0;font-size: 18px;
+            background-color:transparent;" onclick="myFunction()">&times;</p>
+        </div>
     }
-</script>
+    <script type="text/javascript">
+        function myFunction() {
+            var x = document.getElementById("sucessAlert");
+            x.style.display = "none";
+            var y = document.getElementById("errorAlert");
+            y.style.display = "none";
+        }
+    </script>
+
+}

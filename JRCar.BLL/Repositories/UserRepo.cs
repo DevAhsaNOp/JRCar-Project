@@ -120,7 +120,7 @@ namespace JRCar.BLL.Repositories
                 tblUser obj = new tblUser()
                 {
                     Name = model.Name,
-                    Email = model.Username,
+                    Email = model.Email,
                     Number = model.Number,
                     Address = model.Address,
                     Password = EncDec.Encrypt(model.Password),
@@ -134,7 +134,7 @@ namespace JRCar.BLL.Repositories
         {
             if (model != null)
             {
-                var reas = dbObj.GetModelByID(model.Username);
+                var reas = dbObj.GetModelByID(model.Email);
                 reas.Password = EncDec.Encrypt(model.Password);
                 dbObj.UpdateModel(reas);
                 return true;

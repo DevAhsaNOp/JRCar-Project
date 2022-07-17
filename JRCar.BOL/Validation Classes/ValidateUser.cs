@@ -18,7 +18,7 @@ namespace JRCar.BOL.Validation_Classes
         [Required(ErrorMessage = "*")]
         [Display(Name = "Email")]
         [EmailAddress(ErrorMessage = "Invalid Email Address")]
-        public string Username { get; set; }
+        public string Email { get; set; }
 
         [Required(ErrorMessage = "*")]
         [Display(Name = "Phone Number")]

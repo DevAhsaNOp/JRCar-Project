@@ -34,6 +34,7 @@ namespace JRCar.WebApp.Controllers
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
+
         public ActionResult SignUp(HttpPostedFileBase file, ValidateUser user)
         {
             try
@@ -76,14 +77,15 @@ namespace JRCar.WebApp.Controllers
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
+
         public ActionResult SignIn(ValidateUser user)
         {
             try
             {
-                var IsSuccess = RepoObj.GetModelByID(user.Username, user.Password);
+                var IsSuccess = RepoObj.GetModelByID(user.Email, user.Password);
                 if (IsSuccess != null)
                 {
-                    FormsAuthentication.SetAuthCookie(user.Username, false);
+                    FormsAuthentication.SetAuthCookie(user.Email, false);
                     TempData["SuccessMsg"] = "Account Login Successfully!";
                     Session["Id"] = IsSuccess.ID;
                     Session["Name"] = IsSuccess.Name;
@@ -111,15 +113,16 @@ namespace JRCar.WebApp.Controllers
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
+
         public ActionResult ForgotPassword(ValidateUser user)
         {
             try
             {
-                var IsSuccess = RepoObj.ForgotPassword(user.Username);
+                var IsSuccess = RepoObj.ForgotPassword(user.Email);
                 if (IsSuccess)
                 {
                     TempData["SuccessMsg"] = "Please check your <b>email</b> for a message with your code. Your code is 6 numbers long!";
-                    Session["Email"] = user.Username;
+                    Session["Email"] = user.Email;
                     return View("_PasswordRecover");
                 }
                 else
@@ -136,6 +139,7 @@ namespace JRCar.WebApp.Controllers
         }
         
         [AcceptVerbs(HttpVerbs.Post)]
+
         public ActionResult CheckOTP(ValidateUser user)
         {
             try
@@ -146,7 +150,7 @@ namespace JRCar.WebApp.Controllers
                 if (IsSuccess)
                 {
                     TempData["SuccessMsg"] = "OTP Confirmed!";
-                    Session["Email"] = user.Username;
+                    Session["Email"] = user.Email;
                     return View("_ResetPassword");
                 }
                 else
@@ -168,7 +172,7 @@ namespace JRCar.WebApp.Controllers
             try
             {
                 var Email = @TempData["Email"].ToString();
-                user.Username = Email;
+                user.Email = Email;
                 var IsSuccess = RepoObj.UpdateModel(user);
                 if (IsSuccess)
                 {
@@ -191,6 +195,7 @@ namespace JRCar.WebApp.Controllers
         [Authorize(Roles = "Admin")]
         public ActionResult Details(int? id)
         {
+            id = 2042;
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
