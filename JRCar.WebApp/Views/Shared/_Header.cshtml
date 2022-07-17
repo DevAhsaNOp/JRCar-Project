@@ -12,7 +12,7 @@
                     <p>Dashboard</p>
                 </a>
             </li>
-            @if (User.IsInRole("Admin"))
+            @if (User.IsInRole("Admin")||User.IsInRole("Union"))
             {
                 <li class="nav-item ">
                     <a class="nav-link" href="@Url.Action("Details", "Account")">

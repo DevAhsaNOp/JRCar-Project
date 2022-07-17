@@ -14,61 +14,162 @@ namespace JRCar.DAL.DBLayer
     public class UserDb
     {
         private jrcarEntities _context;
-        private IDbSet<tblUser> dbEntity;
 
         public UserDb()
         {
             _context = new jrcarEntities();
-            dbEntity = _context.Set<tblUser>();
         }
 
-        public IEnumerable<tblUser> GetModel()
+        public IEnumerable<tblUser> GetAllUsers()
         {
-            return dbEntity.ToList();
+            return _context.tblUsers.ToList();
         }
 
-        public tblUser GetModelByID(int modelId)
+        public IEnumerable<tblAdmin> GetAllAdmin()
         {
-            return dbEntity.Find(modelId);
+            return _context.tblAdmins.ToList();
         }
 
-        public tblUser GetModelByID(string emailtext)
+        public IEnumerable<tblUnion> GetAllUnion()
         {
-            var entity = dbEntity.Where(x => x.Email == emailtext).FirstOrDefault();
-            if (entity != null)
+            return _context.tblUnions.ToList();
+        }
+
+        public IEnumerable<tblShowroom> GetAllShowRoom()
+        {
+            return _context.tblShowrooms.ToList();
+        }
+
+        public tblUser GetUserByID(int modelId)
+        {
+            return _context.tblUsers.Find(modelId);
+        }
+
+        public tblAdmin GetAdminByID(int modelId)
+        {
+            return _context.tblAdmins.Find(modelId);
+        }
+
+        public tblUnion GetUnionByID(int modelId)
+        {
+            return _context.tblUnions.Find(modelId);
+        }
+
+        public tblShowroom GetShowRoomByID(int modelId)
+        {
+            return _context.tblShowrooms.Find(modelId);
+        }
+
+        //public UserViewDetail GetUserByEmail(string emailtext)
+        //{
+        //    var user = _context.tblUsers.Where(x => x.Email == emailtext).FirstOrDefault();
+        //    var admin = _context.tblAdmins.Where(x => x.Email == emailtext).FirstOrDefault();
+        //    var showroom = _context.tblUnions.Where(x => x.Email == emailtext).FirstOrDefault();
+        //    var union = _context.tblShowrooms.Where(x => x.Email == emailtext).FirstOrDefault();
+
+        //    if (user != null)
+        //    {
+        //        return user;
+        //    }
+        //    else if (admin != null)
+        //    {
+        //        return admin;
+        //    }
+        //    else if (showroom != null)
+        //    {
+        //        return showroom;
+        //    }
+        //    else if (union != null)
+        //    {
+        //        return union;
+        //    }
+        //    else
+        //        return null;
+        //}
+
+        //public tblAdmin GetAdminByEmail(string emailtext)
+        //{
+        //    if (entity != null)
+        //    {
+        //        return entity;
+        //    }
+        //    else
+        //        return null;
+        //}
+
+        //public tblUnion GetUnionByEmail(string emailtext)
+        //{
+        //    if (entity != null)
+        //    {
+        //        return entity;
+        //    }
+        //    else
+        //        return null;
+        //}
+
+        //public tblShowroom GetShownroomByEmail(string emailtext)
+        //{
+        //    if (entity != null)
+        //    {
+        //        return entity;
+        //    }
+        //    else
+        //        return null;
+        //}
+
+        public void SendEmail(string otp, string emailtext)
+        {
+            var email = "ahnkhan804@gmail.com";
+            using (MailMessage mm = new MailMessage(email, emailtext))
             {
-                return entity;
+                mm.Subject = "Password Reset OTP";
+                mm.Body = "<p>Your <b>OTP:" + otp + "</b><br/>Don't share it with anyone!</p>";
+                mm.IsBodyHtml = true;
+                using (SmtpClient smtp = new SmtpClient())
+                {
+                    mm.IsBodyHtml = true;
+                    smtp.Host = "smtp.gmail.com";
+                    smtp.EnableSsl = true;
+                    NetworkCredential NetworkCred = new NetworkCredential(email, "zbmkdbvsqhvnhmmw");
+                    smtp.UseDefaultCredentials = true;
+                    smtp.Credentials = NetworkCred;
+                    smtp.Port = 587;
+                    smtp.Send(mm);
+                }
             }
-            else
-                return null;
         }
 
         public bool ForgotPassword(string emailtext)
         {
-            var entity = dbEntity.Where(x => x.Email == emailtext).FirstOrDefault();
-            if (entity != null)
+            var user = GetUserDetail(emailtext);
+            if (user != null)
             {
+                var userData = GetUserByID(user.ID);
+                var adminData = GetAdminByID(user.ID);
+                var unionData = GetUnionByID(user.ID);
+                var showroomData = GetShowRoomByID(user.ID);
                 var otp = OTPGenerator.GenerateRandomOTP();
-                entity.OTP = otp;
-                UpdateModel(entity);
-                var email = "ahnkhan804@gmail.com";
-                using (MailMessage mm = new MailMessage(email, emailtext))
+                if (userData != null)
                 {
-                    mm.Subject = "Password Reset OTP";
-                    mm.Body = "<p>Your <b>OTP:" + otp + "</b><br/>Don't share it with anyone!</p>";
-                    mm.IsBodyHtml = true;
-                    using (SmtpClient smtp = new SmtpClient())
-                    {
-                        mm.IsBodyHtml = true;
-                        smtp.Host = "smtp.gmail.com";
-                        smtp.EnableSsl = true;
-                        NetworkCredential NetworkCred = new NetworkCredential(email, "zbmkdbvsqhvnhmmw");
-                        smtp.UseDefaultCredentials = true;
-                        smtp.Credentials = NetworkCred;
-                        smtp.Port = 587;
-                        smtp.Send(mm);
-                    }
+                    userData.OTP = otp;
+                    UpdateUser(userData);
                 }
+                else if (adminData != null)
+                {
+                    adminData.OTP = otp;
+                    UpdateAdmin(adminData);
+                }
+                else if (unionData != null)
+                {
+                    unionData.OTP = otp;
+                    UpdateUnion(unionData);
+                }
+                else if (showroomData != null)
+                {
+                    showroomData.OTP = otp;
+                    UpdateShowroom(showroomData);
+                }
+                SendEmail(otp, emailtext);
                 return true;
             }
             else
@@ -77,8 +178,11 @@ namespace JRCar.DAL.DBLayer
 
         public bool CheckOTP(string emailtext, string OTP)
         {
-            var entity = dbEntity.Where(x => x.Email == emailtext && x.OTP == OTP).FirstOrDefault();
-            if (entity != null)
+            var user = _context.tblUsers.Where(x => x.Email == emailtext && x.OTP == OTP).FirstOrDefault();
+            var admin = _context.tblAdmins.Where(x => x.Email == emailtext && x.OTP == OTP).FirstOrDefault();
+            var showroom = _context.tblShowrooms.Where(x => x.Email == emailtext && x.OTP == OTP).FirstOrDefault();
+            var union = _context.tblUnions.Where(x => x.Email == emailtext && x.OTP == OTP).FirstOrDefault();
+            if ((admin != null) || (union != null) || (showroom != null) || (user != null))
                 return true;
             else
                 return false;
@@ -86,22 +190,71 @@ namespace JRCar.DAL.DBLayer
 
         public UserDefine.UserViewDetail GetUserDetail(string emailtext)
         {
-            var entity = dbEntity.Where(x => x.Email == emailtext).Select(s => new UserDefine.UserViewDetail()
+            var user = _context.tblUsers.Where(x => x.Email == emailtext).Select(s => new UserDefine.UserViewDetail()
             {
                 ID = s.ID,
                 Name = s.Name,
                 Email = s.Email,
-                Image = s.Image
+                Image = s.Image,
+                Password = s.Password,
+                OTP = s.OTP,
+                Role = s.tblRole.Role
             }).FirstOrDefault();
-            if (entity != null)
+
+            var admin = _context.tblAdmins.Where(x => x.Email == emailtext).Select(s => new UserDefine.UserViewDetail()
             {
-                return entity;
+                ID = s.ID,
+                Name = s.Name,
+                Email = s.Email,
+                Image = s.Image,
+                Password = s.Password,
+                OTP = s.OTP,
+                Role= s.tblRole.Role
+            }).FirstOrDefault();
+
+            var union = _context.tblUnions.Where(x => x.Email == emailtext).Select(s => new UserDefine.UserViewDetail()
+            {
+                ID = s.ID,
+                Name = s.Name,
+                Email = s.Email,
+                Image = s.Image,
+                Password = s.Password,
+                OTP = s.OTP,
+                Role = s.tblRole.Role
+            }).FirstOrDefault();
+
+            var showroom = _context.tblShowrooms.Where(x => x.Email == emailtext).Select(s => new UserDefine.UserViewDetail()
+            {
+                ID = s.ID,
+                Name = s.FullName,
+                Email = s.Email,
+                Image = s.Image,
+                Password = s.Password,
+                OTP = s.OTP,
+                Role = s.tblUser.tblRole.Role
+            }).FirstOrDefault();
+
+            if (user != null)
+            {
+                return user;
+            }
+            else if (admin != null)
+            {
+                return admin;
+            }
+            else if (showroom != null)
+            {
+                return showroom;
+            }
+            else if (union != null)
+            {
+                return union;
             }
             else
                 return null;
         }
 
-        public void InsertModel(tblUser model)
+        public void InsertUser(tblUser model)
         {
             try
             {
@@ -111,7 +264,64 @@ namespace JRCar.DAL.DBLayer
                 model.UpdatedOn = null;
                 model.UpdatedBy = null;
                 model.tblRoleID = 2;
-                dbEntity.Add(model);
+                _context.tblUsers.Add(model);
+                Save();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        
+        public void InsertAdmin(tblAdmin model)
+        {
+            try
+            {
+                model.Active = true;
+                model.CreatedOn = DateTime.Now;
+                model.CreatedBy = 1;
+                model.UpdatedOn = null;
+                model.UpdatedBy = null;
+                model.tblRoleID = 1;
+                _context.tblAdmins.Add(model);
+                Save();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        
+        public void InsertUnion(tblUnion model)
+        {
+            try
+            {
+                model.Active = true;
+                model.CreatedOn = DateTime.Now;
+                model.CreatedBy = 4;
+                model.UpdatedOn = null;
+                model.UpdatedBy = null;
+                model.tblRoleID = 4;
+                _context.tblUnions.Add(model);
+                Save();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }   
+        
+        public void InsertShowroom(tblShowroom model)
+        {
+            try
+            {
+                model.Isactive = true;
+                model.Isarchive = false;
+                model.CreatedOn = DateTime.Now;
+                model.CreatedBy = 2;
+                model.UpdatedOn = DateTime.Now;
+                model.UpdatedBy = 4;
+                _context.tblShowrooms.Add(model);
                 Save();
             }
             catch (Exception)
@@ -125,13 +335,13 @@ namespace JRCar.DAL.DBLayer
             _context.SaveChanges();
         }
 
-        public void UpdateModel(tblUser model)
+        public void UpdateUser(tblUser model)
         {
             try
             {
                 model.Active = true;
-                model.CreatedOn = GetModelByID(model.ID).CreatedOn;
-                model.CreatedBy = GetModelByID(model.ID).CreatedBy;
+                model.CreatedOn = GetUserByID(model.ID).CreatedOn;
+                model.CreatedBy = GetUserByID(model.ID).CreatedBy;
                 model.UpdatedOn = DateTime.Now;
                 model.tblRoleID = 2;
                 _context.Entry(model).State = System.Data.Entity.EntityState.Modified;
@@ -144,15 +354,123 @@ namespace JRCar.DAL.DBLayer
 
         }
 
-        public void InActiveModel(tblUser model)
+        public void UpdateAdmin(tblAdmin model)
+        {
+            try
+            {
+                model.Active = true;
+                model.CreatedOn = GetUserByID(model.ID).CreatedOn;
+                model.CreatedBy = GetUserByID(model.ID).CreatedBy;
+                model.UpdatedOn = DateTime.Now;
+                model.tblRoleID = 1;
+                _context.Entry(model).State = System.Data.Entity.EntityState.Modified;
+                Save();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public void UpdateUnion(tblUnion model)
+        {
+            try
+            {
+                model.Active = true;
+                model.CreatedOn = GetUserByID(model.ID).CreatedOn;
+                model.CreatedBy = GetUserByID(model.ID).CreatedBy;
+                model.UpdatedOn = DateTime.Now;
+                model.tblRoleID = 4;
+                _context.Entry(model).State = System.Data.Entity.EntityState.Modified;
+                Save();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public void UpdateShowroom(tblShowroom model)
+        {
+            try
+            {
+                model.Isactive = true;
+                model.Isarchive = false;
+                model.CreatedOn = GetUserByID(model.ID).CreatedOn;
+                model.CreatedBy = GetUserByID(model.ID).CreatedBy;
+                model.UpdatedOn = DateTime.Now;
+                _context.Entry(model).State = System.Data.Entity.EntityState.Modified;
+                Save();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public void InActiveUser(tblUser model)
         {
             try
             {
                 model.Active = false;
-                model.CreatedOn = GetModelByID(model.ID).CreatedOn;
-                model.CreatedBy = GetModelByID(model.ID).CreatedBy;
+                model.CreatedOn = GetUserByID(model.ID).CreatedOn;
+                model.CreatedBy = GetUserByID(model.ID).CreatedBy;
                 model.UpdatedOn = DateTime.Now;
                 model.tblRoleID = 2;
+                _context.Entry(model).State = System.Data.Entity.EntityState.Modified;
+                Save();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        
+        public void InActiveAdmin(tblAdmin model)
+        {
+            try
+            {
+                model.Active = false;
+                model.CreatedOn = GetUserByID(model.ID).CreatedOn;
+                model.CreatedBy = GetUserByID(model.ID).CreatedBy;
+                model.UpdatedOn = DateTime.Now;
+                model.tblRoleID = 1;
+                _context.Entry(model).State = System.Data.Entity.EntityState.Modified;
+                Save();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        } 
+        
+        public void InActiveUnion(tblUnion model)
+        {
+            try
+            {
+                model.Active = false;
+                model.CreatedOn = GetUserByID(model.ID).CreatedOn;
+                model.CreatedBy = GetUserByID(model.ID).CreatedBy;
+                model.UpdatedOn = DateTime.Now;
+                model.tblRoleID = 4;
+                _context.Entry(model).State = System.Data.Entity.EntityState.Modified;
+                Save();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }  
+        
+        public void InActiveShowroom(tblShowroom model)
+        {
+            try
+            {
+                model.Isactive = true;
+                model.Isarchive = false;
+                model.CreatedOn = GetUserByID(model.ID).CreatedOn;
+                model.CreatedBy = GetUserByID(model.ID).CreatedBy;
+                model.UpdatedOn = DateTime.Now;
                 _context.Entry(model).State = System.Data.Entity.EntityState.Modified;
                 Save();
             }

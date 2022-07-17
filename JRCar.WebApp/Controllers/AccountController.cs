@@ -21,7 +21,7 @@ namespace JRCar.WebApp.Controllers
             RepoObj = new UserRepo();
         }
 
-        [Authorize(Roles = "User,Admin")]
+        [Authorize(Roles = "User,Admin,Showroom,Union")]
         public ActionResult Index()
         {
             return View();
@@ -49,7 +49,7 @@ namespace JRCar.WebApp.Controllers
                 {
                     if (file.ContentLength <= 10000000)
                     {
-                        RepoObj.InsertModel(user);
+                        RepoObj.InsertUser(user);
                         file.SaveAs(path);
                         TempData["SuccessMsg"] = "Account Created Successfully!";
                         ModelState.Clear();
@@ -82,7 +82,7 @@ namespace JRCar.WebApp.Controllers
         {
             try
             {
-                var IsSuccess = RepoObj.GetModelByID(user.Email, user.Password);
+                var IsSuccess = RepoObj.CheckLoginDetails(user.Email, user.Password);
                 if (IsSuccess != null)
                 {
                     FormsAuthentication.SetAuthCookie(user.Email, false);
@@ -173,7 +173,7 @@ namespace JRCar.WebApp.Controllers
             {
                 var Email = @TempData["Email"].ToString();
                 user.Email = Email;
-                var IsSuccess = RepoObj.UpdateModel(user);
+                var IsSuccess = RepoObj.UpdateUser(user);
                 if (IsSuccess)
                 {
                     TempData["SuccessMsg"] = "<b>Hurry!</b> your Password is Reset...";
@@ -192,7 +192,7 @@ namespace JRCar.WebApp.Controllers
             }
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Union")]
         public ActionResult Details(int? id)
         {
             id = 2042;

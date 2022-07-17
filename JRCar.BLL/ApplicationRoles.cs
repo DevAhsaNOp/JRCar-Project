@@ -42,7 +42,7 @@ namespace JRCar.BLL
             if (Email != null)
             {
                 UserRepo user = new UserRepo();
-                var reas = user.GetUserRole(Email).tblRole.Role;
+                var reas = user.GetUserRole(Email).Role;
                 return new[] {reas };
             }
             return null;
