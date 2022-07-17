@@ -21,7 +21,7 @@ namespace JRCar.WebApp.Controllers
             RepoObj = new UserRepo();
         }
 
-        [Authorize]
+        [Authorize(Roles = "User,Admin")]
         public ActionResult Index()
         {
             return View();
@@ -80,10 +80,10 @@ namespace JRCar.WebApp.Controllers
         {
             try
             {
-                var IsSuccess = RepoObj.GetModelByID(user.Email, user.Password);
+                var IsSuccess = RepoObj.GetModelByID(user.Username, user.Password);
                 if (IsSuccess != null)
                 {
-                    FormsAuthentication.SetAuthCookie(user.Name, false);
+                    FormsAuthentication.SetAuthCookie(user.Username, false);
                     TempData["SuccessMsg"] = "Account Login Successfully!";
                     Session["Id"] = IsSuccess.ID;
                     Session["Name"] = IsSuccess.Name;
@@ -115,11 +115,11 @@ namespace JRCar.WebApp.Controllers
         {
             try
             {
-                var IsSuccess = RepoObj.ForgotPassword(user.Email);
+                var IsSuccess = RepoObj.ForgotPassword(user.Username);
                 if (IsSuccess)
                 {
                     TempData["SuccessMsg"] = "Please check your <b>email</b> for a message with your code. Your code is 6 numbers long!";
-                    Session["Email"] = user.Email;
+                    Session["Email"] = user.Username;
                     return View("_PasswordRecover");
                 }
                 else
@@ -146,7 +146,7 @@ namespace JRCar.WebApp.Controllers
                 if (IsSuccess)
                 {
                     TempData["SuccessMsg"] = "OTP Confirmed!";
-                    Session["Email"] = user.Email;
+                    Session["Email"] = user.Username;
                     return View("_ResetPassword");
                 }
                 else
@@ -168,7 +168,7 @@ namespace JRCar.WebApp.Controllers
             try
             {
                 var Email = @TempData["Email"].ToString();
-                user.Email = Email;
+                user.Username = Email;
                 var IsSuccess = RepoObj.UpdateModel(user);
                 if (IsSuccess)
                 {
@@ -188,6 +188,7 @@ namespace JRCar.WebApp.Controllers
             }
         }
 
+        [Authorize(Roles = "Admin")]
         public ActionResult Details(int? id)
         {
             if (id == null)

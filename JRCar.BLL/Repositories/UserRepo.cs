@@ -47,6 +47,16 @@ namespace JRCar.BLL.Repositories
             }
         }
 
+        public tblUser GetUserRole(string email)
+        {
+            if (email != null)
+            {
+                var reas = dbObj.GetModelByID(email);
+                return reas;
+            }
+            else return null;
+        }
+
         public bool CheckOTP(string emailtext, string OTP)
         {
             var IsTrue = dbObj.CheckOTP(emailtext, OTP);
@@ -110,7 +120,7 @@ namespace JRCar.BLL.Repositories
                 tblUser obj = new tblUser()
                 {
                     Name = model.Name,
-                    Email = model.Email,
+                    Email = model.Username,
                     Number = model.Number,
                     Address = model.Address,
                     Password = EncDec.Encrypt(model.Password),
@@ -124,7 +134,7 @@ namespace JRCar.BLL.Repositories
         {
             if (model != null)
             {
-                var reas = dbObj.GetModelByID(model.Email);
+                var reas = dbObj.GetModelByID(model.Username);
                 reas.Password = EncDec.Encrypt(model.Password);
                 dbObj.UpdateModel(reas);
                 return true;

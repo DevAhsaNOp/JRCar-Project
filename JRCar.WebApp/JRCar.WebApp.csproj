@@ -524,6 +524,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
+    <Folder Include="Roles\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\JRCar.BLL\JRCar.BLL.csproj">
