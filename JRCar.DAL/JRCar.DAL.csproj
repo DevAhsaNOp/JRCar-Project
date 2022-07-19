@@ -81,6 +81,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DBLayer\UserAds.cs" />
     <Compile Include="DBLayer\UserDb.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UserDefine\OTPGenerator.cs" />

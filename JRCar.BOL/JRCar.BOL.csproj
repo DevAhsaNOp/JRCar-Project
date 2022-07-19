@@ -135,6 +135,7 @@
       <DependentUpon>JRCarModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Validation Classes\ValidateUser.cs" />
+    <Compile Include="Validation Classes\ValidationUserAds.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

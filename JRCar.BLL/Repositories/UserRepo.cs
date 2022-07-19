@@ -131,6 +131,40 @@ namespace JRCar.BLL.Repositories
             }
         }
 
+        public void InsertAdmin(ValidateUser model)
+        {
+            if (model != null)
+            {
+                tblAdmin obj = new tblAdmin()
+                {
+                    Name = model.Name,
+                    Email = model.Email,
+                    Number = model.Number,
+                    Address = model.Address,
+                    Password = EncDec.Encrypt(model.Password),
+                    Image = model.Image
+                };
+                dbObj.InsertAdmin(obj);
+            }
+        }
+
+        public void InsertUnion(ValidateUser model)
+        {
+            if (model != null)
+            {
+                tblUnion obj = new tblUnion()
+                {
+                    Name = model.Name,
+                    Email = model.Email,
+                    Number = model.Number,
+                    Address = model.Address,
+                    Password = EncDec.Encrypt(model.Password),
+                    Image = model.Image
+                };
+                dbObj.InsertUnion(obj);
+            }
+        }
+
         public bool UpdateUser(ValidateUser model)
         {
             if (model != null)

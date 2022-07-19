@@ -283,12 +283,13 @@ namespace JRCar.DAL.DBLayer
                 model.UpdatedOn = null;
                 model.UpdatedBy = null;
                 model.tblRoleID = 1;
+                model.Verified = false;
                 _context.tblAdmins.Add(model);
                 Save();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
         }
         
@@ -305,9 +306,9 @@ namespace JRCar.DAL.DBLayer
                 _context.tblUnions.Add(model);
                 Save();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
         }   
         
@@ -324,9 +325,9 @@ namespace JRCar.DAL.DBLayer
                 _context.tblShowrooms.Add(model);
                 Save();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
         }
 
@@ -347,9 +348,9 @@ namespace JRCar.DAL.DBLayer
                 _context.Entry(model).State = System.Data.Entity.EntityState.Modified;
                 Save();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
 
         }
@@ -359,6 +360,7 @@ namespace JRCar.DAL.DBLayer
             try
             {
                 model.Active = true;
+                model.Verified = false;
                 model.CreatedOn = GetUserByID(model.ID).CreatedOn;
                 model.CreatedBy = GetUserByID(model.ID).CreatedBy;
                 model.UpdatedOn = DateTime.Now;
@@ -366,9 +368,9 @@ namespace JRCar.DAL.DBLayer
                 _context.Entry(model).State = System.Data.Entity.EntityState.Modified;
                 Save();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
         }
 
@@ -384,9 +386,9 @@ namespace JRCar.DAL.DBLayer
                 _context.Entry(model).State = System.Data.Entity.EntityState.Modified;
                 Save();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
         }
 
@@ -402,9 +404,9 @@ namespace JRCar.DAL.DBLayer
                 _context.Entry(model).State = System.Data.Entity.EntityState.Modified;
                 Save();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
         }
 
@@ -420,9 +422,9 @@ namespace JRCar.DAL.DBLayer
                 _context.Entry(model).State = System.Data.Entity.EntityState.Modified;
                 Save();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
         }
         
@@ -438,9 +440,9 @@ namespace JRCar.DAL.DBLayer
                 _context.Entry(model).State = System.Data.Entity.EntityState.Modified;
                 Save();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
         } 
         
@@ -456,9 +458,9 @@ namespace JRCar.DAL.DBLayer
                 _context.Entry(model).State = System.Data.Entity.EntityState.Modified;
                 Save();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
         }  
         
@@ -474,9 +476,9 @@ namespace JRCar.DAL.DBLayer
                 _context.Entry(model).State = System.Data.Entity.EntityState.Modified;
                 Save();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
         }
 

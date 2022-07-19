@@ -1,5 +1,5 @@
-﻿using JRCar.BLL.Repositories;
-using JRCar.BOL;
+﻿using JRCar.BOL;
+using JRCar.BLL.Repositories;
 using JRCar.BOL.Validation_Classes;
 using System;
 using System.Collections.Generic;
@@ -195,7 +195,7 @@ namespace JRCar.WebApp.Controllers
         [Authorize(Roles = "Admin,Union")]
         public ActionResult Details(int? id)
         {
-            id = 2042;
+            id = 64;
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -212,7 +212,13 @@ namespace JRCar.WebApp.Controllers
         public ActionResult Logout()
         {
             FormsAuthentication.SignOut();
-            return RedirectToAction("SignIn");
+            Session.Abandon();
+            Session.Clear();
+            Session.RemoveAll();
+            this.Response.Cache.SetExpires(DateTime.UtcNow.AddMinutes(-1));
+            this.Response.Cache.SetCacheability(HttpCacheability.NoCache);
+            this.Response.Cache.SetNoStore();
+            return View("SignIn");
         }
     }
 }
