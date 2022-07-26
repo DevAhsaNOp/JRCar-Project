@@ -8,6 +8,7 @@ using System.Data.Entity;
 using JRCar.DAL.UserDefine;
 using System.Net;
 using System.Net.Mail;
+using JRCar.BOL.Validation_Classes;
 
 namespace JRCar.DAL.DBLayer
 {
@@ -253,6 +254,60 @@ namespace JRCar.DAL.DBLayer
             else
                 return null;
         }
+        
+        public ValidateUser GetUserDetailById(int Id)
+        {
+            var user = _context.tblUsers.Where(x => x.ID == Id).Select(s => new ValidateUser()
+            {
+                ID = s.ID,
+                Name = s.Name,
+                Email = s.Email,
+                Address = s.Address,
+                Number = s.Number,
+                Image = s.Image,
+                Password = s.Password,
+                tblRoleID = s.tblRoleID
+            }).FirstOrDefault();
+
+            var admin = _context.tblAdmins.Where(x => x.ID == Id).Select(s => new ValidateUser()
+            {
+                ID = s.ID,
+                Name = s.Name,
+                Email = s.Email,
+                Address = s.Address,
+                Number = s.Number,
+                Image = s.Image,
+                Password = s.Password,
+                tblRoleID = s.tblRoleID
+            }).FirstOrDefault();
+
+            var union = _context.tblUnions.Where(x => x.ID == Id).Select(s => new ValidateUser()
+            {
+                ID = s.ID,
+                Name = s.Name,
+                Email = s.Email,
+                Address = s.Address,
+                Number = s.Number,
+                Image = s.Image,
+                Password = s.Password,
+                tblRoleID = s.tblRoleID
+            }).FirstOrDefault();
+
+            if (user != null)
+            {
+                return user;
+            }
+            else if (admin != null)
+            {
+                return admin;
+            }
+            else if (union != null)
+            {
+                return union;
+            }
+            else
+                return null;
+        }
 
         public void InsertUser(tblUser model)
         {
@@ -361,8 +416,8 @@ namespace JRCar.DAL.DBLayer
             {
                 model.Active = true;
                 model.Verified = false;
-                model.CreatedOn = GetUserByID(model.ID).CreatedOn;
-                model.CreatedBy = GetUserByID(model.ID).CreatedBy;
+                model.CreatedOn = GetAdminByID(model.ID).CreatedOn;
+                model.CreatedBy = GetAdminByID(model.ID).CreatedBy;
                 model.UpdatedOn = DateTime.Now;
                 model.tblRoleID = 1;
                 _context.Entry(model).State = System.Data.Entity.EntityState.Modified;
@@ -379,8 +434,8 @@ namespace JRCar.DAL.DBLayer
             try
             {
                 model.Active = true;
-                model.CreatedOn = GetUserByID(model.ID).CreatedOn;
-                model.CreatedBy = GetUserByID(model.ID).CreatedBy;
+                model.CreatedOn = GetUnionByID(model.ID).CreatedOn;
+                model.CreatedBy = GetUnionByID(model.ID).CreatedBy;
                 model.UpdatedOn = DateTime.Now;
                 model.tblRoleID = 4;
                 _context.Entry(model).State = System.Data.Entity.EntityState.Modified;
@@ -398,8 +453,8 @@ namespace JRCar.DAL.DBLayer
             {
                 model.Isactive = true;
                 model.Isarchive = false;
-                model.CreatedOn = GetUserByID(model.ID).CreatedOn;
-                model.CreatedBy = GetUserByID(model.ID).CreatedBy;
+                model.CreatedOn = GetShowRoomByID(model.ID).CreatedOn;
+                model.CreatedBy = GetShowRoomByID(model.ID).CreatedBy;
                 model.UpdatedOn = DateTime.Now;
                 _context.Entry(model).State = System.Data.Entity.EntityState.Modified;
                 Save();
@@ -433,8 +488,8 @@ namespace JRCar.DAL.DBLayer
             try
             {
                 model.Active = false;
-                model.CreatedOn = GetUserByID(model.ID).CreatedOn;
-                model.CreatedBy = GetUserByID(model.ID).CreatedBy;
+                model.CreatedOn = GetAdminByID(model.ID).CreatedOn;
+                model.CreatedBy = GetAdminByID(model.ID).CreatedBy;
                 model.UpdatedOn = DateTime.Now;
                 model.tblRoleID = 1;
                 _context.Entry(model).State = System.Data.Entity.EntityState.Modified;
@@ -451,8 +506,8 @@ namespace JRCar.DAL.DBLayer
             try
             {
                 model.Active = false;
-                model.CreatedOn = GetUserByID(model.ID).CreatedOn;
-                model.CreatedBy = GetUserByID(model.ID).CreatedBy;
+                model.CreatedOn = GetUnionByID(model.ID).CreatedOn;
+                model.CreatedBy = GetUnionByID(model.ID).CreatedBy;
                 model.UpdatedOn = DateTime.Now;
                 model.tblRoleID = 4;
                 _context.Entry(model).State = System.Data.Entity.EntityState.Modified;
@@ -470,8 +525,8 @@ namespace JRCar.DAL.DBLayer
             {
                 model.Isactive = true;
                 model.Isarchive = false;
-                model.CreatedOn = GetUserByID(model.ID).CreatedOn;
-                model.CreatedBy = GetUserByID(model.ID).CreatedBy;
+                model.CreatedOn = GetShowRoomByID(model.ID).CreatedOn;
+                model.CreatedBy = GetShowRoomByID(model.ID).CreatedBy;
                 model.UpdatedOn = DateTime.Now;
                 _context.Entry(model).State = System.Data.Entity.EntityState.Modified;
                 Save();

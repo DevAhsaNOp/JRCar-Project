@@ -1,0 +1,227 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>@ViewBag.Title</title>
+    <link href="~/Files/css/bootstrap.css" rel="stylesheet">
+    <link href="~/Files/css/bootstrap-theme.css" rel="stylesheet">
+    <link href="~/Files/css/iconmoon.css" rel="stylesheet">
+    <link href="~/Files/css/chosen.css" rel="stylesheet">
+    <link href="~/style.css" rel="stylesheet">
+    <link href="~/cs-automobile-plugin.css" rel="stylesheet">
+    <link href="~/Files/css/color.css" rel="stylesheet">
+    <link href="~/Files/css/widget.css" rel="stylesheet">
+    <link href="~/Files/css/responsive.css" rel="stylesheet">
+    <!-- <link href="~/Files/css/bootstrap-rtl.css" rel="stylesheet"> Uncomment it if needed! -->
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+          <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+          <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <![endif]-->
+    <script src="~/Files/scripts/jquery.js"></script>
+    <script src="~/Files/scripts/modernizr.js"></script>
+    <script src="~/Files/scripts/bootstrap.min.js"></script>
+    <link type="text/css" rel="stylesheet" href="~/dist/image-uploader.min.css">
+    <style>
+        #pass-validate {
+            LINE-HEIGHT: 12px !important;
+            margin-top: 8px !important;
+            padding: 0 !important;
+        }
+
+            #pass-validate:hover {
+                background: none !important;
+            }
+
+        .text-danger {
+            color: #dc3545 !important;
+            font-size: 14px !important;
+        }
+
+        .separator-hr {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            color: #818181;
+            font-weight: 700;
+            margin: 0 8rem;
+        }
+
+            .separator-hr::before,
+            .separator-hr::after {
+                content: '';
+                flex: 1;
+                border-bottom: 1px solid #dfdfdf;
+            }
+
+            .separator-hr:not(:empty)::before {
+                margin-right: .25em;
+            }
+
+            .separator-hr:not(:empty)::after {
+                margin-left: .25em;
+            }
+
+        .loaderStyle {
+            position: absolute;
+            z-index: 1;
+            width: 100%;
+            height: 50%;
+            display: flex;
+            justify-content: center;
+            padding-right: 48px;
+            cursor: not-allowed;
+        }
+
+        .dynamicImage {
+            height: 150px !important;
+            width: 150px !important;
+            margin: 10px !important;
+            border: 2px solid #ededed !important;
+        }
+
+        #dynamicImage {
+            background: #f8f8f8;
+            border: 1px solid #ededed;
+            border-radius: 2px;
+        }
+
+        #map_canvas {
+            height: 100%;
+        }
+    </style>
+</head>
+<body class="wp-automobile">
+    <div class="wrapper">
+        <!-- Header Start -->
+        @Html.Partial("_WebHeader")
+        <!-- Header End -->
+        <!-- Main Start -->
+        <div class="main-section">
+            @RenderBody()
+        </div>
+        <!-- Main End -->
+        <!-- Footer Start -->
+        @Html.Partial("_WebFooter")
+        <!-- Footer End -->
+    </div>
+    <script src="~/Files/scripts/responsive.menu.js"></script>
+    <script src="~/Files/scripts/chosen.select.js"></script>
+    <script src="~/Files/scripts/slick.js"></script>
+    <script src="~/Files/scripts/echo.js"></script>
+    <!-- Put all Functions in functions.js -->
+    <script src="~/Files/scripts/functions.js"></script>
+    <script src="~/scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/scripts/jquery.unobtrusive-ajax.min.js"></script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC6v5-2uaq_wusHDktM9ILcqIrlPtnZgEk&sensor=false"></script>
+    <script type="text/javascript" src="~/dist/image-uploader.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            console.log("ready!");
+            $('.input-images-1').imageUploader();
+            $('#postvehicle').bind("click", function () {
+                var imgVal = $('#files').val();
+                if (imgVal == '') {
+                    var element = document.getElementsByClassName("upload-text");        
+                    for (item of element) {
+                        item.style.border = "1px solid #f16060";
+                    }
+                    $('html, body').animate({
+                        scrollTop: $("#images-not").offset().top
+                    }, 100);
+                    return false;
+                }
+            });
+        });
+
+        function fnSuccess() {
+            window.location.href = "@Url.Action("SignIn", "Account")";
+            SetTempData();
+        }
+
+        var loadProfile = function (event) {
+            var files = event.target.files;
+            for (var i = 0; i < files.length; i++) {
+                $("#dynamicImage").attr("src", URL.createObjectURL(event.target.files[i]));
+            }
+        }
+
+        var loadFile = function (event) {
+            var files = event.target.files;
+            for (var i = 0; i < files.length; i++) {
+                $("#dynamicImage").append("<img src='" + URL.createObjectURL(event.target.files[i]) + "' class='dynamicImage' />")
+            }
+        }
+
+        function SetTempData() {
+            $.ajax({
+                type: "POST",
+                url: '/Account/SetTempData',
+                data: '{ value: "Hurry! your Password is Reset..."}',
+                contentType: "application/json; charset=utf-8",
+                dataType: "text",
+                success: function (r) {
+                    console.log(r);
+                }
+            });
+        }
+
+        $(".select-add-placeholder").prepend("<option value='' disabled selected>Select an option...</option>");
+
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(success);
+        } else {
+            alert("Geo Location is not supported on your current browser!");
+        }
+        function success(position) {
+            var lat = position.coords.latitude;
+            var long = position.coords.longitude;
+            var city = position.coords.locality;
+            var myLatlng = new google.maps.LatLng(lat, long);
+            var myOptions = {
+                center: myLatlng,
+                zoom: 18,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            };
+            var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+            var marker = new google.maps.Marker({
+                position: myLatlng,
+                title: "lat: " + lat + " long: " + long
+            });
+
+
+            marker.setMap(map);
+            var infowindow = new google.maps.InfoWindow({ content: "<b>User Address</b><br/> Latitude:" + lat + "<br /> Longitude:" + long + "" });
+            infowindow.open(map, marker);
+            var locateed = lat + ',' + long;
+            document.getElementById('Latitude').value = lat;
+            document.getElementById('Longitude').value = long;
+            console.log(locateed);
+            $.ajax({
+                url: 'http://api.positionstack.com/v1/reverse',
+                data: {
+                    access_key: '999ca5b65057c71dce4658b5ce195980',
+                    query: locateed,
+                    limit: 2
+                }
+            }).done(function (data) {
+                console.log(data.data);
+                data.data.forEach(function (arrayItem) {
+                    var x = arrayItem.number;
+                    var label = arrayItem.label;
+                    if (x != null) {
+                        console.log("Address: " + label);
+                        document.getElementById('Address').value = label;
+                    }
+                });
+            });
+        }
+    </script>
+</body>
+
+</html>

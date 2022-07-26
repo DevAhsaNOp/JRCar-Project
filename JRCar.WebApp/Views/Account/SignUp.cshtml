@@ -1,118 +1,139 @@
 ﻿@model JRCar.BOL.Validation_Classes.ValidateUser
-
 @{
-    Layout = null;
+    ViewBag.Title = "SignUp";
+    Layout = "~/Views/Shared/_WebLayout.cshtml";
 }
 
-<!DOCTYPE html>
-
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Register</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap" rel="stylesheet">
-
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-
-    <link rel="stylesheet" href="~/css/style.css">
-</head>
-<body>
-    @using (Html.BeginForm("SignUp", "Account", FormMethod.Post, new { enctype = "multipart/form-data" }))
-    {
-        <section class="ftco-section">
-            <div class="container">
-                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                <div class="row justify-content-center">
-                    <div class="col-md-12 col-lg-10">
-                        @if (TempData["ErrorMsg"] != null)
+<div class="main-section">
+    <div class="page-section" style="background: #fafafa none repeat scroll 0 0;margin-top: -30px;padding: 39px 0 44px;">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="cs-socials-media">
+                        <em style="font-size: 2.2em; line-height: 1.2em;margin:0 !important;">
+                            JRCar Find Used Cars in Pakistan
+                        </em>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="page-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-top:15px !important;">
+                    <div class="cs-massege-box">
+                        @if (@TempData["SuccessMsg"] != null)
                         {
-                            <br />
-                            <div class="alert alert-dismissable alert-danger" id="errorAlert">
-                                @TempData["ErrorMsg"].ToString() <p class="pull-right btn" style="padding: 5px;" onclick="hidealert">&times;</p>
+                            <div class="alert alert-info alert-dismissable">
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                <i class="icon-info-with-circle"></i><span>@Html.Raw(TempData["SuccessMsg"])</span>
                             </div>
                         }
-                        <div class="wrap d-md-flex">
-                            <div class="img" style="background-image: url(../../Images/bg-1.jpg);">
+                        @if (TempData["ErrorMsg"] != null)
+                        {
+                            <div class="alert alert-danger alert-dismissable">
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                <i class="icon-blocked"></i><span>@Html.Raw(TempData["ErrorMsg"])</span>
                             </div>
-                            <div class="login-wrap p-4">
-                                <div class="d-flex">
-                                    <div class="w-100">
-                                        <h3 class="mb-4">Sign Up</h3>
+                        }
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <div class="cs-signin" style="background: url(../../Images/bg-1.jpg); box-shadow: 0px 0px 7px 3px #a5a5a5; min-height: 65rem !important; background-position: unset; background-repeat: no-repeat; background-size: cover;">
+                        <div class="row">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <div class="cs-register">
+                        <h4>SIGN UP</h4>
+                        <div class="row">
+                            @using (Html.BeginForm("SignUp", "Account", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                            {
+                                <div class="cs-field-holder">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <label>Username</label>
+                                        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
                                     </div>
-                                    <div class="w-100">
-                                        <p class="social-media d-flex justify-content-end">
-                                            <a href="#" class="social-icon d-flex align-items-center justify-content-center"><span class="fa fa-facebook"></span></a>
-                                            <a href="#" class="social-icon d-flex align-items-center justify-content-center"><span class="fa fa-twitter"></span></a>
-                                        </p>
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { placeholder = "Type your Username" } })
                                     </div>
                                 </div>
-                                <div class="form-group mb-3">
-                                    @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "label" })
-                                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
-                                    @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", placeholder = "Username" } })
-
-                                    @*<label class="label" for="name">Username</label>
-                                        <input type="text" class="form-control" placeholder="Username" required>*@
+                                <div class="cs-field-holder">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <label>Email address </label>
+                                        @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        @Html.EditorFor(model => model.Email, new { htmlAttributes = new { placeholder = "Enter your email" } })
+                                    </div>
                                 </div>
-                                <div class="form-group mb-3">
-                                    @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "label" })
-                                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
-                                    @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", placeholder = "Email" } })
-
-                                    @*<label class="label" for="password">Password</label>
-                                        <input type="password" class="form-control" placeholder="Password" required>*@
+                                <div class="cs-field-holder">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <label>Phone Number </label>
+                                        @Html.ValidationMessageFor(model => model.Number, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        @Html.EditorFor(model => model.Number, new { htmlAttributes = new { placeholder = "Enter your Phone number" } })
+                                    </div>
                                 </div>
-                                <div class="form-group mb-3">
-                                    @Html.LabelFor(model => model.Number, htmlAttributes: new { @class = "label" })
-                                    @Html.ValidationMessageFor(model => model.Number, "", new { @class = "text-danger" })
-                                    @Html.EditorFor(model => model.Number, new { htmlAttributes = new { @class = "form-control", placeholder = "Number" } })
+                                <div class="cs-field-holder">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <label>Address </label>
+                                        @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        @Html.EditorFor(model => model.Address, new { htmlAttributes = new { placeholder = "Enter your Address" } })
+                                    </div>
                                 </div>
-                                <div class="form-group mb-3">
-                                    @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "label" })
-                                    @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
-                                    @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control", placeholder = "Address" } })
+                                <div class="cs-field-holder">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <label>Password</label>
+                                        @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        @Html.PasswordFor(model => model.Password, new { placeholder = "Enter your password" })
+                                    </div>
                                 </div>
-                                <div class="form-group mb-3">
-                                    @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "label" })
-                                    @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
-                                    @Html.PasswordFor(model => model.Password, new { @class = "form-control", placeholder = "Password" })
+                                <div class="cs-field-holder">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <label>Select Image</label>
+                                        @Html.ValidationMessageFor(model => model.Image, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <input type="file" name="file" required="required" accept="image/png,image/jpg,image/jpeg" id="formFile" class="form-control" />
+                                    </div>
                                 </div>
-                                <div class="form-group mb-3">
-                                    @Html.LabelFor(model => model.Image, htmlAttributes: new { @class = "label" })
-                                    @Html.ValidationMessageFor(model => model.Image, "", new { @class = "text-danger" })
-                                    <input type="file" name="file" required="required" accept="image/png, image/jpg, image/jpeg" id="formFile" class="form-control" />
+                                <div class="cs-field-holder">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <div class="cs-btn-submit">
+                                            <input type="submit" value="Register">
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <button type="submit" class="form-control btn btn-primary rounded submit px-3">Sign Up</button>
-                                </div>
-                                <p class="text-center">
-                                    Already a member? @*<a data-toggle="tab" href="@Url.Action("SignIn", "Account")">Sign In</a>*@
-                                    @Html.ActionLink("Sign In", "SignIn", "Account")
-                                </p>
-                            </div>
+                            }
+                            <div class="separator-hr">or</div>
+                            <div style="color: #979696; display: flex; align-items: center; justify-content: center; font-weight: 700; "> <i class="icon-user-plus2" style="margin-right: 5px;"></i> <strong style="margin-right: 5px;">Already a Member ? </strong> <a class="cs-color" href="@Url.Action("SignIn", "Account")" style="margin-right: 5px;">SignIn Now</a> </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </section>
-    }
-    <script src="~/scripts/jquery-3.6.0.min.js"></script>
-    <script src="~/scripts/jquery.validate.min.js"></script>
-    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
-    <script src="~/js/jquery.min.js"></script>
-    <script src="~/js/popper.js"></script>
-    <script src="~/js/bootstrap.min.js"></script>
-    <script src="~/js/main.js"></script>
-    <script type="text/javascript">
-        function myFunction() {
-            var x = document.getElementById("sucessAlert");
-            x.style.display = "none";
-            var y = document.getElementById("errorAlert");
-            y.style.display = "none";
-        }
-    </script>
-</body>
-</html>
+        </div>
+    </div>
+    <div class="page-section" style="background:#19171a;">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="cs-ad" style="text-align:center; padding:55px 0 32px;">
+                        <div class="cs-media">
+                            <figure>
+                                <img src="~/Files/extra-images/cs-ad-img.jpg" alt="" />
+                            </figure>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,255 @@
+﻿@model JRCar.BOL.Validation_Classes.ValidationUserAds
+
+@{
+    ViewBag.Title = "PostNewVehicles";
+    Layout = "~/Views/Shared/_WebLayout.cshtml";
+}
+<style>
+    .wp-automobile .user-post-vehicles .cs-field-holder label {
+        text-align: left !important;
+    }
+
+    .field-validation-error {
+        display: none !important;
+    }
+    /*    let children = document.querySelectorAll(".field-validation-error > *");
+    children.forEach(child => {
+        child.style.display = "none";
+    })*/
+    .input-validation-error {
+        border: 1px solid #f16060 !important;
+    }
+</style>
+
+@if (User.Identity.IsAuthenticated)
+{
+    <div class="page-section" style="background: url(../../Files/extra-images/user-bg-img.jpg) no-repeat; background-size: cover; min-height: 175px; margin-top: -30px; margin-bottom: -129px;"></div>
+    <div class="page-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="cs-user-account-holder">
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <ul class="cs-user-accounts-list">
+                                    <li><a href="user-car-listing.html">My vehicles</a></li>
+                                    <li><a href="user-car-shortlist.html">Shortlisted</a></li>
+                                    <li><a href="@Url.Action("ProfileSettings", "Website")">Profile Settings</a></li>
+                                    <li class="active"><a href="@Url.Action("PostNewVehicles", "Website")">Post a vehicles</a></li>
+                                    <li><a href="@Url.Action("Logout", "Account")">Sign Out</a></li>
+                                </ul>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <div class="cs-user-section-title">
+                                    @if (TempData["SuccessMsg"] != null)
+                                    {
+                                        <div class="alert alert-info alert-dismissable">
+                                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                            <i class="icon-info-with-circle"></i><span>@Html.Raw(TempData["SuccessMsg"])</span>
+                                        </div>
+                                    }
+                                    @if (TempData["ErrorMsg"] != null)
+                                    {
+                                        <div class="alert alert-danger alert-dismissable">
+                                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                            <i class="icon-blocked"></i><span>@Html.Raw(TempData["ErrorMsg"])</span>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <div class="cs-user-section-title">
+                                    <h4>Post New Vehicles</h4>
+                                </div>
+                            </div>
+                            @using (Html.BeginForm("PostNewVehicles", "Website", FormMethod.Post, new { enctype = "multipart/form-data", @class = "user-post-vehicles", @name = "form-example-1", @id = "form-example-1" }))
+                            {
+                                <div class="cs-field-holder">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <h6>vehicles Information</h6>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="cs-seprator"></div>
+                                </div>
+                                <div class="cs-field-holder">
+                                    <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                                        <label>Vehicles Title</label>
+                                        @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
+                                        <div class="cs-field">
+                                            @Html.EditorFor(model => model.Title, new { htmlAttributes = new { placeholder = "Enter your Name" } })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="cs-field-holder">
+                                    <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                                        <label>Model Year</label>
+                                        @Html.ValidationMessageFor(model => model.Year, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
+                                        <div class="cs-field">
+                                            @Html.DropDownList("Year", new SelectList(ViewBag.Years as System.Collections.IEnumerable), htmlAttributes: new { @class = "chosen-select select-add-placeholder" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="cs-field-holder">
+                                    <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                                        @Html.ValidationMessageFor(model => model.Model, "", new { @class = "text-danger" })
+                                        <label>Make Model</label>
+                                    </div>
+                                    <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
+                                        <div class="cs-field">
+                                            @Html.EditorFor(model => model.Model, new { htmlAttributes = new { placeholder = "Enter Make Model" } })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="cs-field-holder">
+                                    <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                                        <label>Condition</label>
+                                        @Html.ValidationMessageFor(model => model.Condition, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
+                                        <div class="cs-field">
+                                            @Html.DropDownListFor(model => model.Condition, new SelectList(ViewBag.Conditions as System.Collections.IEnumerable), htmlAttributes: new { @class = "chosen-select select-add-placeholder" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="cs-field-holder">
+                                    <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                                        @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
+                                        <label>Selling Price</label>
+                                    </div>
+                                    <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
+                                        <div class="cs-field">
+                                            @Html.EditorFor(model => model.Price, new { htmlAttributes = new { placeholder = "Enter the Price" } })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="cs-field-holder">
+                                    <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                                        <label>Description</label>
+                                        @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
+                                        <div class="cs-field">
+                                            @Html.TextAreaFor(model => model.Description, new { htmlAttributes = new { placeholder = "Enter the Description" } })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="cs-field-holder" id="images-not">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <h6>Upload Images</h6>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="cs-seprator"></div>
+                                </div>
+                                <div class="cs-field-holder">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <div class="input-field">
+                                            <div class="input-images-1" style="padding-top: .5rem;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                @*<div class="cs-field-holder">
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                            <div class="cs-upload-img">
+                                                <div id="dynamicImage">
+                                                </div>
+                                                <p>Pictures should be in "jpeg, jpg, png, gif" format only.</p>
+                                                <p>You can select and upload multiple pictures at the same time.</p>
+                                                <div class="cs-browse-holder">
+                                                    <span class="file-input btn-file">
+                                                        Upload Photos
+                                                        <input type="file" name="files" id="files" onchange="loadFile(event)" multiple accept="image/png,image/jpg,image/jpeg" draggable="true" required="required" />
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>*@
+                                <div class="cs-field-holder">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <h6>Location Information</h6>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="cs-seprator"></div>
+                                </div>
+                                <div class="cs-field-holder">
+                                    <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                                        <label>Complete Address</label>
+                                        @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
+                                        <div class="cs-field">
+                                            @Html.TextAreaFor(model => model.Address, new { htmlAttributes = new { placeholder = "Enter the Complte Address" } })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="cs-field-holder">
+                                    <div class="row" style="margin:0px !important">
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                            <label>Latitude</label>
+                                            @Html.ValidationMessageFor(model => model.Latitude, "", new { @class = "text-danger" })
+                                            <div class="cs-field">
+                                                @Html.EditorFor(model => model.Latitude, new { htmlAttributes = new { @readonly = "readonly" } })
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                            <label>Longitude</label>
+                                            @Html.ValidationMessageFor(model => model.Longitude, "", new { @class = "text-danger" })
+                                            <div class="cs-field">
+                                                @Html.EditorFor(model => model.Longitude, new { htmlAttributes = new { @readonly = "readonly" } })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="cs-field-holder">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <h6>Map Location</h6>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="cs-seprator"></div>
+                                </div>
+                                <div class="cs-field-holder">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <div class="cs-field">
+                                            <div id="map_canvas" style="height: 400px"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="cs-field-holder">
+                                    <div class="col-lg-4 col-md-4 col-sm-12 col-md-12">
+                                        <div class="cs-field">
+                                            <div class="cs-btn-submit">
+                                                <input type="submit" value="SUBMIT & CONTINUE" id="postvehicle">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="page-section" style="background:#19171a;">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="cs-ad" style="text-align:center; padding:55px 0 32px;">
+                        <div class="cs-media">
+                            <figure>
+                                <img src="~/Files/extra-images/cs-ad-img.jpg" alt="" />
+                            </figure>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}

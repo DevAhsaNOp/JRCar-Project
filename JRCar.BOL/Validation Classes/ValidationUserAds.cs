@@ -4,11 +4,14 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace JRCar.BOL.Validation_Classes
 {
     public class ValidationUserAds
     {
+        public int UserID { get; set; }
+
         [Required(ErrorMessage = "*")]
         [Display(Name = "Model")]
         public string Model { get; set; }
@@ -25,6 +28,7 @@ namespace JRCar.BOL.Validation_Classes
         [Display(Name = "Title")]
         public string Title { get; set; }
 
+        [Required(ErrorMessage = "*")]
         [Display(Name = "Description")]
         public string Description { get; set; }
 
@@ -50,7 +54,7 @@ namespace JRCar.BOL.Validation_Classes
         public string UserRole { get; set; }
 
         [Display(Name = "Image")]
-        public string Image { get; set; }
+        public string UserImage { get; set; }
 
         [Display(Name = "Name")]
         public string UserName { get; set; }
@@ -60,6 +64,11 @@ namespace JRCar.BOL.Validation_Classes
 
         [Display(Name = "Phone Number")]
         public string Number { get; set; }
+
+        public List<HttpPostedFileBase> Imagefiles { get; set; }
+
+        [Display(Name = "Car Images")]
+        public string CarImage { get; set; }
 
         public virtual ICollection<tblUserAddImage> tblUserAddImages { get; set; }
         public virtual tblUser tblUser { get; set; }

@@ -31,21 +31,22 @@ namespace JRCar.BOL.Validation_Classes
 
         [Required(ErrorMessage = "*")]
         [Display(Name = "Password")]
-        [RegularExpression("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$", ErrorMessage = "<ul style=\"font-size:11px !important;\"><li>Password contain minimum 8 " +
-            "characters in length.</li><li> At least one uppercase and lowercase English letter.</li>"+
-            "<li> At least one digit and special character. </li></ul>")]
+        [RegularExpression("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$", ErrorMessage = "<ul><li style=\"list-style:none !important;font-size:12px !important;line-height: 14px !important;margin-bottom:8px !important\">Password contain minimum 8 " +
+            "characters in length and At least one uppercase, lowercase English letter and one digit and special character.</li></ul>")]
         public string Password { get; set; }
 
         [Required(ErrorMessage = "*")]
         [Display(Name = "Image")]
         public string Image { get; set; }
-
         public bool Active { get; set; }
         public int CreatedBy { get; set; }
         public System.DateTime CreatedOn { get; set; }
         public Nullable<System.DateTime> UpdatedOn { get; set; }
         public Nullable<int> UpdatedBy { get; set; }
         public int tblRoleID { get; set; }
+        
+        public virtual tblRole tblRole { get; set; }
+        public string tblRoleName { get; set; }
 
         [Required(ErrorMessage = "*")]
         [Display(Name = "OTP")]

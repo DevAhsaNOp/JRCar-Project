@@ -9,6 +9,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
+using System.Text.RegularExpressions;
 
 namespace JRCar.WebApp.Controllers
 {
@@ -21,7 +22,8 @@ namespace JRCar.WebApp.Controllers
             RepoObj = new UserRepo();
         }
 
-        [Authorize(Roles = "User,Admin,Showroom,Union")]
+        [AcceptVerbs(HttpVerbs.Get)]
+        [Authorize(Roles = "Admin,Showroom,Union")]
         public ActionResult Index()
         {
             return View();
@@ -34,7 +36,6 @@ namespace JRCar.WebApp.Controllers
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
-
         public ActionResult SignUp(HttpPostedFileBase file, ValidateUser user)
         {
             try
@@ -70,6 +71,13 @@ namespace JRCar.WebApp.Controllers
             }
         }
 
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult SetTempData(string value)
+        {
+            TempData["SuccessMsg"] = value;
+            return new EmptyResult();
+        }
+
         [AcceptVerbs(HttpVerbs.Get)]
         public ActionResult SignIn()
         {
@@ -77,7 +85,6 @@ namespace JRCar.WebApp.Controllers
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
-
         public ActionResult SignIn(ValidateUser user)
         {
             try
@@ -86,13 +93,26 @@ namespace JRCar.WebApp.Controllers
                 if (IsSuccess != null)
                 {
                     FormsAuthentication.SetAuthCookie(user.Email, false);
-                    TempData["SuccessMsg"] = "Account Login Successfully!";
+                    //TempData["SuccessMsg"] = "Account Login Successfully!";
                     Session["Id"] = IsSuccess.ID;
-                    Session["Name"] = IsSuccess.Name;
+                    Session["Name"] = Regex.Replace(IsSuccess.Name.ToUpper().Split()[0], @"[^0-9a-zA-Z\ ]+", "");
                     Session["Email"] = IsSuccess.Email;
                     Session["Image"] = IsSuccess.Image;
-                    var str = (string)@Session["Image"];
-                    return RedirectToAction("Index");
+                    Session["Role"] = IsSuccess.Role;
+                    var role = Session["Role"].ToString();
+                    if (role == "Admin" || role == "Union" || role == "Showroom")
+                    {
+                        return RedirectToAction("Index");
+                    }
+                    else if (role == "User")
+                    {
+                        return RedirectToAction("Index", "Website");
+                    }
+                    else
+                    {
+                        TempData["ErrorMsg"] = "Error occured on login Account!";
+                        return RedirectToAction("SignIn");
+                    }
                 }
                 else
                 {
@@ -113,7 +133,6 @@ namespace JRCar.WebApp.Controllers
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
-
         public ActionResult ForgotPassword(ValidateUser user)
         {
             try
@@ -137,16 +156,15 @@ namespace JRCar.WebApp.Controllers
                 return RedirectToAction("ForgotPassword");
             }
         }
-        
-        [AcceptVerbs(HttpVerbs.Post)]
 
+        [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult CheckOTP(ValidateUser user)
         {
             try
             {
                 var Email = @Session["Email"].ToString();
                 TempData["Email"] = Email;
-                var IsSuccess = RepoObj.CheckOTP(Email,user.OTP);
+                var IsSuccess = RepoObj.CheckOTP(Email, user.OTP);
                 if (IsSuccess)
                 {
                     TempData["SuccessMsg"] = "OTP Confirmed!";
@@ -165,7 +183,7 @@ namespace JRCar.WebApp.Controllers
                 return RedirectToAction("SignIn");
             }
         }
-        
+
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult ResetPass(ValidateUser user)
         {
@@ -195,7 +213,7 @@ namespace JRCar.WebApp.Controllers
         [Authorize(Roles = "Admin,Union")]
         public ActionResult Details(int? id)
         {
-            id = 64;
+            id = 2042;
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);

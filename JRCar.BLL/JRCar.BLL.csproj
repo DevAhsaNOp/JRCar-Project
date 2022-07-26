@@ -45,6 +45,7 @@
     <Compile Include="ApplicationRoles.cs" />
     <Compile Include="EncDec.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\UserAdsRepo.cs" />
     <Compile Include="Repositories\UserRepo.cs" />
   </ItemGroup>
   <ItemGroup>

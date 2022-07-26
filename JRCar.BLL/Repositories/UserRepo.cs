@@ -169,30 +169,76 @@ namespace JRCar.BLL.Repositories
         {
             if (model != null)
             {
-                var reas = dbObj.GetUserDetail(model.Email);
-                if (reas != null)
+                var admin = dbObj.GetAdminByID(model.ID);
+                var ShowroomData = dbObj.GetShowRoomByID(model.ID);
+                var UnionData = dbObj.GetUnionByID(model.ID);
+                var UserData = dbObj.GetUserByID(model.ID);
+                var reas1 = dbObj.GetUserDetail(model.Email);
+                if (admin != null)
                 {
-                    if (reas.Role == "Admin")
+                    admin.Name = model.Name;
+                    admin.Email = model.Email;
+                    admin.Number = model.Number;
+                    admin.Address = model.Address;
+                    admin.Password = EncDec.Encrypt(model.Password);
+                    admin.Image = model.Image;
+                    admin.UpdatedBy = model.UpdatedBy;
+                    dbObj.UpdateAdmin(admin);
+                    return true;
+                }
+                else if (UserData != null)
+                {
+                    UserData.Name = model.Name;
+                    UserData.Email = model.Email;
+                    UserData.Number = model.Number;
+                    UserData.Address = model.Address;
+                    UserData.Password = EncDec.Encrypt(model.Password);
+                    UserData.Image = model.Image;
+                    UserData.UpdatedBy = model.UpdatedBy;
+                    dbObj.UpdateUser(UserData);
+                    return true;
+                }
+                else if (UnionData != null)
+                {
+                    UnionData.Name = model.Name;
+                    UnionData.Email = model.Email;
+                    UnionData.Number = model.Number;
+                    UnionData.Address = model.Address;
+                    UnionData.Password = EncDec.Encrypt(model.Password);
+                    UnionData.Image = model.Image;
+                    UnionData.UpdatedBy = model.UpdatedBy;
+                    dbObj.UpdateUnion(UnionData);
+                    return true;
+                }
+                else if (ShowroomData != null)
+                {
+                    ShowroomData.Password = EncDec.Encrypt(model.Password);
+                    dbObj.UpdateShowroom(ShowroomData);
+                    return true;
+                }
+                else if (reas1 != null)
+                {
+                    if (reas1.Role == "Admin")
                     {
-                        var adminData=dbObj.GetAdminByID(reas.ID);
+                        var adminData = dbObj.GetAdminByID(reas1.ID);
                         adminData.Password = EncDec.Encrypt(model.Password);
                         dbObj.UpdateAdmin(adminData);
                     }
-                    else if (reas.Role == "User")
+                    else if (reas1.Role == "User")
                     {
-                       var userData = dbObj.GetUserByID(reas.ID);
-                       userData.Password = EncDec.Encrypt(model.Password);
-                       dbObj.UpdateUser(userData);
+                        var userData = dbObj.GetUserByID(reas1.ID);
+                        userData.Password = EncDec.Encrypt(model.Password);
+                        dbObj.UpdateUser(userData);
                     }
-                    else if (reas.Role == "Showroom")
+                    else if (reas1.Role == "Showroom")
                     {
-                        var showroomData = dbObj.GetShowRoomByID(reas.ID);
+                        var showroomData = dbObj.GetShowRoomByID(reas1.ID);
                         showroomData.Password = EncDec.Encrypt(model.Password);
                         dbObj.UpdateShowroom(showroomData);
                     }
                     else
                     {
-                        var unionData = dbObj.GetUnionByID(reas.ID);
+                        var unionData = dbObj.GetUnionByID(reas1.ID);
                         unionData.Password = EncDec.Encrypt(model.Password);
                         dbObj.UpdateUnion(unionData);
                     }
@@ -206,5 +252,27 @@ namespace JRCar.BLL.Repositories
             else
                 return false;
         }
+
+        public ValidateUser GetUserDetailById(int Id)
+        {
+            try
+            {
+                var reas = dbObj.GetUserDetailById(Id);
+                if (reas != null)
+                {
+                    reas.Password = EncDec.Decrypt(reas.Password);
+                    return reas;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
     }
 }

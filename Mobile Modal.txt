@@ -1,0 +1,147 @@
+                            <div class="modal fade" id="user-sign-up-sm" tabindex="-1" role="dialog">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <h4>Create Account</h4>
+                                            <div class="cs-login-form">
+                                                @using (Ajax.BeginForm("SignUp", "Account", null, new AjaxOptions()
+                                                {
+                                                    HttpMethod = "POST",
+                                                    InsertionMode = InsertionMode.Replace,
+                                                }, new { enctype = "multipart/form-data" }))
+                                                {
+                                                    <div class="input-holder">
+                                                        <label for="cs-username">
+                                                            <strong>USERNAME</strong> <i class="icon-user-plus2"></i>
+                                                            @*<input type="text" class="" id="cs-username" placeholder="Type desired username">*@
+                                                            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                                                            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @id = "cs-username", placeholder = "Type desired Username" } })
+                                                        </label>
+                                                    </div>
+                                                    <div class="input-holder">
+                                                        <label for="cs-email">
+                                                            <strong>Email</strong> <i class="icon-envelope"></i>
+                                                            @*<input type="email" class="" id="cs-email" placeholder="Type desired username">*@
+                                                            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                                                            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @id = "cs-email", placeholder = "Type your Email" } })
+                                                        </label>
+                                                    </div>
+                                                    <div class="input-holder">
+                                                        <label for="cs-username">
+                                                            <strong>Phone Number</strong> <i class="icon-mobile-phone"></i>
+                                                            @*<input type="password" id="cs-login-password" placeholder="******">*@
+                                                            @Html.ValidationMessageFor(model => model.Number, "", new { @class = "text-danger" })
+                                                            @Html.EditorFor(model => model.Number, new { htmlAttributes = new { @id = "cs-username", placeholder = "Type your Phone number" } })
+                                                        </label>
+                                                    </div>
+                                                    <div class="input-holder">
+                                                        <label for="cs-username">
+                                                            <strong>Address</strong> <i class="icon-map-marker"></i>
+                                                            @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+                                                            @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @id = "cs-username", placeholder = "Type your Address" } })
+                                                        </label>
+                                                    </div>
+                                                    <div class="input-holder">
+                                                        <label for="cs-login-password">
+                                                            <strong>Password</strong> <i class="icon-unlock40"></i>
+                                                            @*<input type="password" id="cs-login-password" placeholder="******">*@
+                                                            @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                                                            @Html.PasswordFor(model => model.Password, new { @id = "cs-login-password", placeholder = "Tyepe your Password" })
+                                                        </label>
+                                                    </div>
+                                                    <div class="input-holder">
+                                                        <label for="cs-username">
+                                                            <strong>Image</strong> <i class="icon-image"></i>
+                                                            @*<input type="password" id="cs-login-password" placeholder="******">*@
+                                                            @Html.ValidationMessageFor(model => model.Image, "", new { @class = "text-danger" })
+                                                            <input type="file" name="file" required="required" accept="image/jpg,image/jpeg,image/png" id="formFile" />
+                                                        </label>
+                                                    </div>
+                                                    <div class="input-holder">
+                                                        <input class="cs-color csborder-color" type="submit" value="Create Account">
+                                                    </div>
+                                                }
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <a data-dismiss="modal" data-target="#user-sign-in-sm" data-toggle="modal" href="javascript:;" aria-hidden="true">Already have account</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal fade" id="user-sign-in-sm" tabindex="-1" role="dialog">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <h4>User Sign in</h4>
+                                            <div class="cs-login-form">
+                                                <form>
+                                                    @using (Ajax.BeginForm("SignIn", "Account", new AjaxOptions()
+                                                    {
+                                                        HttpMethod = "POST",
+                                                        InsertionMode = InsertionMode.Replace,
+                                                    }))
+                                                    {
+                                                        <div class="input-holder">
+                                                            <label for="cs-email">
+                                                                <strong>Email</strong> <i class="icon-envelope"></i>
+                                                                @*<input type="email" class="" id="cs-email" placeholder="Type desired username">*@
+                                                                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                                                                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @id = "cs-email", placeholder = "Type your Email" } })
+                                                            </label>
+                                                        </div>
+                                                        <div class="input-holder">
+                                                            <label for="cs-login-password">
+                                                                <strong>Password</strong> <i class="icon-unlock40"></i>
+                                                                @*<input type="password" id="cs-login-password" placeholder="******">*@
+                                                                @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                                                                @Html.PasswordFor(model => model.Password, new { @id = "cs-login-password", placeholder = "Tyepe your Password" })
+                                                            </label>
+                                                        </div>
+                                                        <div class="input-holder">
+                                                            <input class="cs-color csborder-color" type="submit" value="Login">
+                                                        </div>
+                                                    }
+                                                </form>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <div class="cs-user-signup"> <i class="icon-user-plus2"></i> <strong>Not a Member yet? </strong> <a class="cs-color" data-dismiss="modal" data-target="#user-sign-up-sm" data-toggle="modal" href="javascript:;" aria-hidden="true">Signup Now</a> </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal fade" id="user-forgot-pass-sm" tabindex="-1" role="dialog">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <h4>Password Recovery</h4>
+                                            <div class="cs-login-form">
+                                                <form>
+                                                    <div class="input-holder">
+                                                        <label for="cs-email-111">
+                                                            <strong>Email</strong> <i class="icon-envelope"></i>
+                                                            <input type="email" class="" id="cs-email-111" placeholder="Type desired username">
+                                                        </label>
+                                                    </div>
+                                                    <div class="input-holder">
+                                                        <input class="cs-color csborder-color" type="submit" value="Send">
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <div class="cs-user-signup"> <i class="icon-user-plus2"></i> <strong>Not a Member yet? </strong> <a href="javascript:;" data-toggle="modal" data-target="#user-sign-up-sm" data-dismiss="modal" class="cs-color" aria-hidden="true">Signup Now</a> </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>

@@ -1,0 +1,142 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>AdminLTE 3 | Dashboard 2</title>
+
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="~/plugins/fontawesome-free/css/all.min.css">
+    <!-- overlayScrollbars -->
+    <link rel="stylesheet" href="~/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="~/dist/css/adminlte.min.css">
+    <style>
+        input:-webkit-autofill,
+        input:-webkit-autofill:hover,
+        input:-webkit-autofill:focus,
+        textarea:-webkit-autofill,
+        textarea:-webkit-autofill:hover,
+        textarea:-webkit-autofill:focus,
+        select:-webkit-autofill,
+        select:-webkit-autofill:hover,
+        select:-webkit-autofill:focus {
+            -webkit-text-fill-color: #fff !important;
+            -webkit-box-shadow: 0 0 0 1000px #4183bba3 inset !important;
+        }
+
+        .custom-file-upload {
+            background-color: #577a9f;
+            padding: 6px;
+            border: 1px solid #e3e3e3;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            display: inline-block;
+            padding: 6px 12px;
+            cursor: pointer;
+            width: 8rem;
+            margin-top: 3px;
+        }
+        
+        .dark-mode .close, .dark-mode .mailbox-attachment-close {
+            color: #ffffff;
+            text-shadow: 0 1px 0 #ffffff;
+        }
+
+        .alert .close, .alert .mailbox-attachment-close {
+            color: #fff;
+            opacity: 1;
+        }
+
+        .dynamicImage {
+            height: 150px !important;
+            width: 150px !important;
+            margin: 10px !important;
+            border: 2px solid #ededed !important;
+        }
+
+        #dynamicImage {
+            background: #f8f8f8;
+            border: 1px solid #ededed;
+            border-radius: 2px;
+        }
+    </style>
+</head>
+@if (User.Identity.IsAuthenticated)
+{
+    <body class="hold-transition dark-mode sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
+        <div class="wrapper">
+
+            <!-- Preloader -->
+            <div class="preloader flex-column justify-content-center align-items-center">
+                <img class="animation__wobble" src="~/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
+            </div>
+
+            <!-- Navbar -->
+            @Html.Partial("_HeaderPortal")
+            <!-- /.navbar -->
+            <!-- Main Sidebar Container -->
+            @Html.Partial("_SidebarPortal")
+            <!-- /. main-sidebar-container -->
+            <!-- Content Wrapper. Contains page content -->
+            <div class="content-wrapper">
+                @RenderBody()
+            </div>
+            <!-- /.content-wrapper -->
+            <!-- Control Sidebar -->
+            <aside class="control-sidebar control-sidebar-dark">
+                <!-- Control sidebar content goes here -->
+            </aside>
+            <!-- /.control-sidebar -->
+            <!-- Main Footer -->
+            @Html.Partial("_FooterPortal")
+            <!-- /. main-footer -->
+
+        </div>
+        <!-- ./wrapper -->
+        <!-- REQUIRED SCRIPTS -->
+        <!-- jQuery -->
+        <script src="~/plugins/jquery/jquery.min.js"></script>
+        <!-- Bootstrap -->
+        <script src="~/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <!-- overlayScrollbars -->
+        <script src="~/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+        <!-- AdminLTE App -->
+        <script src="~/dist/js/adminlte.js"></script>
+        <!-- PAGE PLUGINS -->
+        <!-- jQuery Mapael -->
+        <script src="~/plugins/jquery-mousewheel/jquery.mousewheel.js"></script>
+        <script src="~/plugins/raphael/raphael.min.js"></script>
+        <script src="~/plugins/jquery-mapael/jquery.mapael.min.js"></script>
+        <script src="~/plugins/jquery-mapael/maps/usa_states.min.js"></script>
+        <!-- ChartJS -->
+        <script src="~/plugins/chart.js/Chart.min.js"></script>
+        <!-- AdminLTE for demo purposes -->
+        <script src="~/dist/js/demo.js"></script>
+        <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+        <script src="~/dist/js/pages/dashboard2.js"></script>
+        <script src="~/scripts/jquery.validate.min.js"></script>
+        <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+        <script src="~/scripts/jquery.unobtrusive-ajax.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script>
+            var loadProfile = function (event) {
+                var files = event.target.files;
+                for (var i = 0; i < files.length; i++) {
+                    $("#dynamicImage").attr("src", URL.createObjectURL(event.target.files[i]));
+                }
+            }
+
+            $(document).ready(function () {
+                $('#choose-file').change(function () {
+                    var i = $(this).prev('label').clone();
+                    var file = $('#choose-file')[0].files[0].name;
+                    $(this).prev('label').text(file);
+                });
+            });
+        </script>
+    </body>
+}
+</html>

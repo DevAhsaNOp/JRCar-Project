@@ -37,7 +37,9 @@ namespace JRCar.DAL.DBLayer
                 Longitude = ((s.Longitude == null) ? "" : s.Longitude),
                 CreatedOn = s.CreatedOn,
                 ExpiryDate = s.ExpiryDate,
-                Image = s.tblUser.Image,
+                CarImage = s.tblUserAddImages.Select(a => a.Image).ToString(),
+                /*---User Details---*/
+                UserImage = s.tblUser.Image,
                 UserName = s.tblUser.Name,
                 Email = s.tblUser.Email,
                 UserRole = s.tblUser.tblRole.Role,
@@ -52,14 +54,20 @@ namespace JRCar.DAL.DBLayer
                 return null;
         }
 
-        public void InsertUserAds(tblUserAdd model)
+        public int InsertUserAds(tblUserAdd model)
         {
             try
             {
-                model.CreatedOn = DateTime.Now;
-                model.ExpiryDate = DateTime.Now.AddMonths(2);
-                _context.tblUserAdds.Add(model);
-                Save();
+                if (model != null)
+                {
+                    model.CreatedOn = DateTime.Now;
+                    model.ExpiryDate = DateTime.Now.AddMonths(2);
+                    _context.tblUserAdds.Add(model);
+                    Save();
+                    return model.ID;
+                }
+                else
+                    return 0;
             }
             catch (Exception ex)
             {
@@ -72,14 +80,58 @@ namespace JRCar.DAL.DBLayer
             _context.SaveChanges();
         }
 
-        public void UpdateUserAds(tblUserAdd model)
+        public bool UpdateUserAds(tblUserAdd model)
         {
             try
             {
-                model.CreatedOn = GetUserAdsDetail(model.ID).CreatedOn;
-                model.ExpiryDate = GetUserAdsDetail(model.ID).ExpiryDate;
-                _context.Entry(model).State = System.Data.Entity.EntityState.Modified;
-                Save();
+                if (model != null)
+                {
+                    model.CreatedOn = GetUserAdsDetail(model.ID).CreatedOn;
+                    model.ExpiryDate = GetUserAdsDetail(model.ID).ExpiryDate;
+                    _context.Entry(model).State = System.Data.Entity.EntityState.Modified;
+                    Save();
+                    return true;
+                }
+                else
+                    return false;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public bool InsertUserAdsImages(tblUserAddImage model)
+        {
+            try
+            {
+                if (model != null)
+                {
+                    _context.tblUserAddImages.Add(model);
+                    Save();
+                    return true;
+                }
+                else
+                    return false;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public bool UpdateUserAdsImages(tblUserAddImage model)
+        {
+            try
+            {
+                if (model != null)
+                {
+                    _context.Entry(model).State = System.Data.Entity.EntityState.Modified;
+                    Save();
+                    return true;
+                }
+                else
+                    return false;
             }
             catch (Exception ex)
             {
