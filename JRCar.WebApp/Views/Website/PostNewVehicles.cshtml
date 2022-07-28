@@ -179,6 +179,17 @@
                                 </div>
                                 <div class="cs-field-holder">
                                     <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                                        <label>Model Year</label>
+                                        @Html.ValidationMessageFor(model => model.Year, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
+                                        <div class="cs-field">
+                                            @Html.DropDownList("Year", new SelectList(ViewBag.State as System.Collections.IEnumerable,"StateId","StateName"), htmlAttributes: new { @class = "chosen-select select-add-placeholder" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="cs-field-holder">
+                                    <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                                         <label>Complete Address</label>
                                         @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
                                     </div>

@@ -12,15 +12,13 @@ namespace JRCar.BOL
     using System;
     using System.Collections.Generic;
     
-    public partial class tblAnnouncement
+    public partial class tblAddress
     {
         public int ID { get; set; }
-        public int ClientID { get; set; }
-        public string Title { get; set; }
-        public string Description { get; set; }
-        public System.DateTime CreatedOn { get; set; }
-        public Nullable<bool> IsRead { get; set; }
-    
-        public virtual tblClient tblClient { get; set; }
+        public string State { get; set; }
+        public string City { get; set; }
+        public string Area { get; set; }
+        public string SubArea { get; set; }
+        public string CompleteAddress { get; set; }
     }
 }

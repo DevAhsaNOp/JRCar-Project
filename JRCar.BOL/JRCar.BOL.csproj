@@ -74,6 +74,9 @@
     <Compile Include="sysdiagram.cs">
       <DependentUpon>JRCarModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="tblAddress.cs">
+      <DependentUpon>JRCarModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="tblAdmin.cs">
       <DependentUpon>JRCarModel.tt</DependentUpon>
     </Compile>
@@ -98,10 +101,16 @@
     <Compile Include="tblCarModel.cs">
       <DependentUpon>JRCarModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="tblCity.cs">
+      <DependentUpon>JRCarModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="tblClient.cs">
       <DependentUpon>JRCarModel.tt</DependentUpon>
     </Compile>
     <Compile Include="tblContactU.cs">
+      <DependentUpon>JRCarModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblCountry.cs">
       <DependentUpon>JRCarModel.tt</DependentUpon>
     </Compile>
     <Compile Include="tblFavAdd.cs">
@@ -119,6 +128,9 @@
     <Compile Include="tblShowroom.cs">
       <DependentUpon>JRCarModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="tblState.cs">
+      <DependentUpon>JRCarModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="tblToken.cs">
       <DependentUpon>JRCarModel.tt</DependentUpon>
     </Compile>
@@ -132,6 +144,9 @@
       <DependentUpon>JRCarModel.tt</DependentUpon>
     </Compile>
     <Compile Include="tblUserAddImage.cs">
+      <DependentUpon>JRCarModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblZone.cs">
       <DependentUpon>JRCarModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Validation Classes\ValidateUser.cs" />

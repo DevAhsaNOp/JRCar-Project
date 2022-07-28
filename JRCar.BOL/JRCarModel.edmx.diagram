@@ -46,6 +46,14 @@
         <AssociationConnector Association="jrcarModel.FK_dbo_tblTokens_dbo_tblUsers_UserID" ManuallyRouted="false" />
         <AssociationConnector Association="jrcarModel.FK_dbo_tblUserAddImages_dbo_tblUserAdds_tblUserAddID" ManuallyRouted="false" />
         <AssociationConnector Association="jrcarModel.FK_dbo_tblUserAdds_dbo_tblUsers_UserID" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="jrcarModel.tblAddress" Width="1.5" PointX="5.375" PointY="6.75" />
+        <EntityTypeShape EntityType="jrcarModel.tblCity" Width="1.5" PointX="9.875" PointY="3.875" />
+        <EntityTypeShape EntityType="jrcarModel.tblCountry" Width="1.5" PointX="5.375" PointY="4.125" />
+        <EntityTypeShape EntityType="jrcarModel.tblState" Width="1.5" PointX="7.625" PointY="3.875" />
+        <EntityTypeShape EntityType="jrcarModel.tblZone" Width="1.5" PointX="12.125" PointY="4" />
+        <AssociationConnector Association="jrcarModel.FK_tblCity_tblState" />
+        <AssociationConnector Association="jrcarModel.FK_tblZone_tblCity" />
+        <AssociationConnector Association="jrcarModel.FK_tblState_tblCountry" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

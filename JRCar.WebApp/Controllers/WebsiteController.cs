@@ -16,11 +16,13 @@ namespace JRCar.WebApp.Controllers
     {
         private UserRepo RepoObj;
         private UserAdsRepo RepoObj1;
+        private AddressAutofillRepo AddressRepoObj;
 
         public WebsiteController()
         {
             RepoObj = new UserRepo();
             RepoObj1 = new UserAdsRepo();
+            AddressRepoObj = new AddressAutofillRepo();
         }
 
         public ActionResult Index()
@@ -32,6 +34,7 @@ namespace JRCar.WebApp.Controllers
         [Authorize(Roles = "User")]
         public ActionResult PostNewVehicles()
         {
+            ViewBag.State = AddressRepoObj.GetAllState();
             List<string> years = new List<string>();
             for (int i = -50; i <= 0; ++i)
             {

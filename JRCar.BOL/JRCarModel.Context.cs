@@ -47,7 +47,10 @@ namespace JRCar.BOL
         public virtual DbSet<tblUserAddImage> tblUserAddImages { get; set; }
         public virtual DbSet<tblUserAdd> tblUserAdds { get; set; }
         public virtual DbSet<tblUser> tblUsers { get; set; }
-
-        public System.Data.Entity.DbSet<JRCar.BOL.Validation_Classes.ValidateUser> ValidateUsers { get; set; }
+        public virtual DbSet<tblAddress> tblAddresses { get; set; }
+        public virtual DbSet<tblCity> tblCities { get; set; }
+        public virtual DbSet<tblCountry> tblCountries { get; set; }
+        public virtual DbSet<tblState> tblStates { get; set; }
+        public virtual DbSet<tblZone> tblZones { get; set; }
     }
 }

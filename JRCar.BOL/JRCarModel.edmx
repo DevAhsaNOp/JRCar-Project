@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="jrcarModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="jrcarModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="__MigrationHistory">
           <Key>
             <PropertyRef Name="MigrationId" />
@@ -24,6 +24,17 @@
           <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="version" Type="int" />
           <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="tblAddress">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="State" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="City" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Area" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="SubArea" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="CompleteAddress" Type="nvarchar" MaxLength="200" />
         </EntityType>
         <EntityType Name="tblAdmins">
           <Key>
@@ -54,6 +65,7 @@
           <Property Name="Title" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="Description" Type="varchar(max)" Nullable="false" />
           <Property Name="CreatedOn" Type="datetime" Nullable="false" />
+          <Property Name="IsRead" Type="bit" />
         </EntityType>
         <EntityType Name="tblAppointments">
           <Key>
@@ -188,6 +200,14 @@
           <Property Name="Address" Type="nvarchar(max)" />
           <Property Name="Transmission" Type="nvarchar(max)" />
         </EntityType>
+        <EntityType Name="tblCity">
+          <Key>
+            <PropertyRef Name="CityId" />
+          </Key>
+          <Property Name="CityId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CityName" Type="nvarchar" MaxLength="300" Nullable="false" />
+          <Property Name="StateId" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="tblClients">
           <Key>
             <PropertyRef Name="ID" />
@@ -210,6 +230,13 @@
           <Property Name="Subject" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="Description" Type="varchar(max)" Nullable="false" />
         </EntityType>
+        <EntityType Name="tblCountry">
+          <Key>
+            <PropertyRef Name="CountryId" />
+          </Key>
+          <Property Name="CountryId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CountryName" Type="nvarchar" MaxLength="200" Nullable="false" />
+        </EntityType>
         <EntityType Name="tblFavAdds">
           <Key>
             <PropertyRef Name="ID" />
@@ -227,6 +254,7 @@
           <Property Name="Description" Type="varchar(max)" Nullable="false" />
           <Property Name="ClientID" Type="int" Nullable="false" />
           <Property Name="CreatedOn" Type="datetime" Nullable="false" />
+          <Property Name="IsRead" Type="bit" />
         </EntityType>
         <EntityType Name="tblRoles">
           <Key>
@@ -267,6 +295,14 @@
           <Property Name="Contact" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="Token" Type="nvarchar(max)" />
           <Property Name="OTP" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="tblState">
+          <Key>
+            <PropertyRef Name="StateId" />
+          </Key>
+          <Property Name="StateId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="StateName" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="CountryID" Type="int" />
         </EntityType>
         <EntityType Name="tblTokens">
           <Key>
@@ -341,6 +377,14 @@
           <Property Name="UpdatedBy" Type="int" />
           <Property Name="tblRoleID" Type="int" Nullable="false" />
           <Property Name="OTP" Type="varchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="tblZone">
+          <Key>
+            <PropertyRef Name="ZoneId" />
+          </Key>
+          <Property Name="ZoneId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ZoneName" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="CityId" Type="int" Nullable="false" />
         </EntityType>
         <Association Name="FK_dbo_tblAdmins_dbo_tblRoles_tblRoleID">
           <End Role="tblRoles" Type="Self.tblRoles" Multiplicity="1">
@@ -604,9 +648,46 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_tblCity_tblState">
+          <End Role="tblState" Type="Self.tblState" Multiplicity="1" />
+          <End Role="tblCity" Type="Self.tblCity" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblState">
+              <PropertyRef Name="StateId" />
+            </Principal>
+            <Dependent Role="tblCity">
+              <PropertyRef Name="StateId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblState_tblCountry">
+          <End Role="tblCountry" Type="Self.tblCountry" Multiplicity="0..1" />
+          <End Role="tblState" Type="Self.tblState" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblCountry">
+              <PropertyRef Name="CountryId" />
+            </Principal>
+            <Dependent Role="tblState">
+              <PropertyRef Name="CountryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblZone_tblCity">
+          <End Role="tblCity" Type="Self.tblCity" Multiplicity="1" />
+          <End Role="tblZone" Type="Self.tblZone" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblCity">
+              <PropertyRef Name="CityId" />
+            </Principal>
+            <Dependent Role="tblZone">
+              <PropertyRef Name="CityId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="jrcarModelStoreContainer">
           <EntitySet Name="__MigrationHistory" EntityType="Self.__MigrationHistory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblAddress" EntityType="Self.tblAddress" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblAdmins" EntityType="Self.tblAdmins" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblAnnouncements" EntityType="Self.tblAnnouncements" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblAppointments" EntityType="Self.tblAppointments" Schema="dbo" store:Type="Tables" />
@@ -615,18 +696,22 @@
           <EntitySet Name="tblCarImages" EntityType="Self.tblCarImages" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblCarModels" EntityType="Self.tblCarModels" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblCars" EntityType="Self.tblCars" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblCity" EntityType="Self.tblCity" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblClients" EntityType="Self.tblClients" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblContactUs" EntityType="Self.tblContactUs" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblCountry" EntityType="Self.tblCountry" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblFavAdds" EntityType="Self.tblFavAdds" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblNotifications" EntityType="Self.tblNotifications" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblRoles" EntityType="Self.tblRoles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblSearchHists" EntityType="Self.tblSearchHists" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblShowrooms" EntityType="Self.tblShowrooms" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblState" EntityType="Self.tblState" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblTokens" EntityType="Self.tblTokens" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblUnions" EntityType="Self.tblUnions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblUserAddImages" EntityType="Self.tblUserAddImages" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblUserAdds" EntityType="Self.tblUserAdds" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblUsers" EntityType="Self.tblUsers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblZone" EntityType="Self.tblZone" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_dbo_tblAdmins_dbo_tblRoles_tblRoleID" Association="Self.FK_dbo_tblAdmins_dbo_tblRoles_tblRoleID">
             <End Role="tblRoles" EntitySet="tblRoles" />
             <End Role="tblAdmins" EntitySet="tblAdmins" />
@@ -703,9 +788,20 @@
             <End Role="tblRoles" EntitySet="tblRoles" />
             <End Role="tblUsers" EntitySet="tblUsers" />
           </AssociationSet>
+          <AssociationSet Name="FK_tblCity_tblState" Association="Self.FK_tblCity_tblState">
+            <End Role="tblState" EntitySet="tblState" />
+            <End Role="tblCity" EntitySet="tblCity" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblState_tblCountry" Association="Self.FK_tblState_tblCountry">
+            <End Role="tblCountry" EntitySet="tblCountry" />
+            <End Role="tblState" EntitySet="tblState" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblZone_tblCity" Association="Self.FK_tblZone_tblCity">
+            <End Role="tblCity" EntitySet="tblCity" />
+            <End Role="tblZone" EntitySet="tblZone" />
+          </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="jrcarModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -760,6 +856,7 @@
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="tblClient" Relationship="Self.FK_dbo_tblAnnouncements_dbo_tblClients_ClientID" FromRole="tblAnnouncements" ToRole="tblClients" />
+          <Property Name="IsRead" Type="Boolean" />
         </EntityType>
         <EntityType Name="tblAppointment">
           <Key>
@@ -950,6 +1047,7 @@
           <Property Name="ClientID" Type="Int32" Nullable="false" />
           <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="tblClient" Relationship="Self.FK_dbo_tblNotifications_dbo_tblClients_ClientID" FromRole="tblNotifications" ToRole="tblClients" />
+          <Property Name="IsRead" Type="Boolean" />
         </EntityType>
         <EntityType Name="tblRole">
           <Key>
@@ -1445,7 +1543,108 @@
             <End Role="tblUsers" EntitySet="tblUsers" />
             <End Role="tblUserAdds" EntitySet="tblUserAdds" />
           </AssociationSet>
+          <EntitySet Name="tblAddresses" EntityType="jrcarModel.tblAddress" />
+          <EntitySet Name="tblCities" EntityType="jrcarModel.tblCity" />
+          <EntitySet Name="tblCountries" EntityType="jrcarModel.tblCountry" />
+          <EntitySet Name="tblStates" EntityType="jrcarModel.tblState" />
+          <EntitySet Name="tblZones" EntityType="jrcarModel.tblZone" />
+          <AssociationSet Name="FK_tblCity_tblState" Association="jrcarModel.FK_tblCity_tblState">
+            <End Role="tblState" EntitySet="tblStates" />
+            <End Role="tblCity" EntitySet="tblCities" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblZone_tblCity" Association="jrcarModel.FK_tblZone_tblCity">
+            <End Role="tblCity" EntitySet="tblCities" />
+            <End Role="tblZone" EntitySet="tblZones" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblState_tblCountry" Association="jrcarModel.FK_tblState_tblCountry">
+            <End Role="tblCountry" EntitySet="tblCountries" />
+            <End Role="tblState" EntitySet="tblStates" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="tblAddress">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="State" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="City" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Area" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="SubArea" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CompleteAddress" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="tblCity">
+          <Key>
+            <PropertyRef Name="CityId" />
+          </Key>
+          <Property Name="CityId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CityName" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="StateId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="tblState" Relationship="jrcarModel.FK_tblCity_tblState" FromRole="tblCity" ToRole="tblState" />
+          <NavigationProperty Name="tblZones" Relationship="jrcarModel.FK_tblZone_tblCity" FromRole="tblCity" ToRole="tblZone" />
+        </EntityType>
+        <EntityType Name="tblCountry">
+          <Key>
+            <PropertyRef Name="CountryId" />
+          </Key>
+          <Property Name="CountryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CountryName" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="tblStates" Relationship="jrcarModel.FK_tblState_tblCountry" FromRole="tblCountry" ToRole="tblState" />
+        </EntityType>
+        <EntityType Name="tblState">
+          <Key>
+            <PropertyRef Name="StateId" />
+          </Key>
+          <Property Name="StateId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StateName" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="CountryID" Type="Int32" />
+          <NavigationProperty Name="tblCities" Relationship="jrcarModel.FK_tblCity_tblState" FromRole="tblState" ToRole="tblCity" />
+          <NavigationProperty Name="tblCountry" Relationship="jrcarModel.FK_tblState_tblCountry" FromRole="tblState" ToRole="tblCountry" />
+        </EntityType>
+        <EntityType Name="tblZone">
+          <Key>
+            <PropertyRef Name="ZoneId" />
+          </Key>
+          <Property Name="ZoneId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ZoneName" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CityId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="tblCity" Relationship="jrcarModel.FK_tblZone_tblCity" FromRole="tblZone" ToRole="tblCity" />
+        </EntityType>
+        <Association Name="FK_tblCity_tblState">
+          <End Type="jrcarModel.tblState" Role="tblState" Multiplicity="1" />
+          <End Type="jrcarModel.tblCity" Role="tblCity" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblState">
+              <PropertyRef Name="StateId" />
+            </Principal>
+            <Dependent Role="tblCity">
+              <PropertyRef Name="StateId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblZone_tblCity">
+          <End Type="jrcarModel.tblCity" Role="tblCity" Multiplicity="1" />
+          <End Type="jrcarModel.tblZone" Role="tblZone" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblCity">
+              <PropertyRef Name="CityId" />
+            </Principal>
+            <Dependent Role="tblZone">
+              <PropertyRef Name="CityId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblState_tblCountry">
+          <End Type="jrcarModel.tblCountry" Role="tblCountry" Multiplicity="0..1" />
+          <End Type="jrcarModel.tblState" Role="tblState" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblCountry">
+              <PropertyRef Name="CountryId" />
+            </Principal>
+            <Dependent Role="tblState">
+              <PropertyRef Name="CountryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1497,6 +1696,7 @@
           <EntitySetMapping Name="tblAnnouncements">
             <EntityTypeMapping TypeName="jrcarModel.tblAnnouncement">
               <MappingFragment StoreEntitySet="tblAnnouncements">
+                <ScalarProperty Name="IsRead" ColumnName="IsRead" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="ClientID" ColumnName="ClientID" />
                 <ScalarProperty Name="Title" ColumnName="Title" />
@@ -1680,6 +1880,7 @@
           <EntitySetMapping Name="tblNotifications">
             <EntityTypeMapping TypeName="jrcarModel.tblNotification">
               <MappingFragment StoreEntitySet="tblNotifications">
+                <ScalarProperty Name="IsRead" ColumnName="IsRead" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="Title" ColumnName="Title" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
@@ -1807,6 +2008,53 @@
                 <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
                 <ScalarProperty Name="tblRoleID" ColumnName="tblRoleID" />
                 <ScalarProperty Name="OTP" ColumnName="OTP" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblAddresses">
+            <EntityTypeMapping TypeName="jrcarModel.tblAddress">
+              <MappingFragment StoreEntitySet="tblAddress">
+                <ScalarProperty Name="CompleteAddress" ColumnName="CompleteAddress" />
+                <ScalarProperty Name="SubArea" ColumnName="SubArea" />
+                <ScalarProperty Name="Area" ColumnName="Area" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblCities">
+            <EntityTypeMapping TypeName="jrcarModel.tblCity">
+              <MappingFragment StoreEntitySet="tblCity">
+                <ScalarProperty Name="StateId" ColumnName="StateId" />
+                <ScalarProperty Name="CityName" ColumnName="CityName" />
+                <ScalarProperty Name="CityId" ColumnName="CityId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblCountries">
+            <EntityTypeMapping TypeName="jrcarModel.tblCountry">
+              <MappingFragment StoreEntitySet="tblCountry">
+                <ScalarProperty Name="CountryName" ColumnName="CountryName" />
+                <ScalarProperty Name="CountryId" ColumnName="CountryId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblStates">
+            <EntityTypeMapping TypeName="jrcarModel.tblState">
+              <MappingFragment StoreEntitySet="tblState">
+                <ScalarProperty Name="CountryID" ColumnName="CountryID" />
+                <ScalarProperty Name="StateName" ColumnName="StateName" />
+                <ScalarProperty Name="StateId" ColumnName="StateId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblZones">
+            <EntityTypeMapping TypeName="jrcarModel.tblZone">
+              <MappingFragment StoreEntitySet="tblZone">
+                <ScalarProperty Name="CityId" ColumnName="CityId" />
+                <ScalarProperty Name="ZoneName" ColumnName="ZoneName" />
+                <ScalarProperty Name="ZoneId" ColumnName="ZoneId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

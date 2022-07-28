@@ -56,7 +56,7 @@ namespace JRCar.BLL
             {
                 UserRepo user = new UserRepo();
                 var reas = user.GetUserRole(Email).Role;
-                return new[] {reas };
+                return new[] { reas };
             }
             return null;
         }

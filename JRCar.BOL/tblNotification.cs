@@ -19,6 +19,7 @@ namespace JRCar.BOL
         public string Description { get; set; }
         public int ClientID { get; set; }
         public System.DateTime CreatedOn { get; set; }
+        public Nullable<bool> IsRead { get; set; }
     
         public virtual tblClient tblClient { get; set; }
     }
