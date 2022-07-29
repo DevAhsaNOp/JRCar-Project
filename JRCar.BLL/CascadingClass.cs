@@ -1,0 +1,15 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace JRCar.BLL
+{
+    public class CascadingClass
+    {
+        public string ZoneName { get; set; }
+        public string CityName { get; set; }
+        public string StateName { get; set; }
+    }
+}

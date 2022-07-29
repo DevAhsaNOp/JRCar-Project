@@ -137,6 +137,33 @@
                     return false;
                 }
             });
+
+            $("#State").change(function () {
+                var StateId = $(this).val();
+                $.ajax({
+                    type: "post",
+                    url: "/Website/GetCityList?StateId=" + StateId,
+                    contentType: "html",
+                    success: function (response) {
+                        $("#City").empty();
+                        $("#Area").empty();
+                        $("#City").append(response);
+                    }
+                })
+            })
+
+            $("#City").change(function () {
+                var CityId = $(this).val();
+                $.ajax({
+                    type: "post",
+                    url: "/Website/GetZoneList?CityId=" + CityId,
+                    contentType: "html",
+                    success: function (response) {
+                        $("#Area").empty();
+                        $("#Area").append(response);
+                    }
+                })
+            })
         });
 
         function fnSuccess() {

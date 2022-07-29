@@ -1,0 +1,9 @@
+﻿@model JRCar.BOL.tblCity
+<option value="">--- Select City ---</option>
+@if (ViewBag.City != null)
+{
+    foreach (var item in ViewBag.City)
+    {
+        <option value="@item.Value">@item.Text</option>
+    }
+}

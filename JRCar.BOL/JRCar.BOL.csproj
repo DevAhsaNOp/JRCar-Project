@@ -55,6 +55,7 @@
     <Compile Include="C__MigrationHistory.cs">
       <DependentUpon>JRCarModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="JRCarModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -149,6 +150,7 @@
     <Compile Include="tblZone.cs">
       <DependentUpon>JRCarModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Validation Classes\ValidateAddress.cs" />
     <Compile Include="Validation Classes\ValidateUser.cs" />
     <Compile Include="Validation Classes\ValidateUserAds.cs" />
     <Compile Include="Validation Classes\ValidationUserAds.cs" />

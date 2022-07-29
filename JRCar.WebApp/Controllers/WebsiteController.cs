@@ -34,7 +34,7 @@ namespace JRCar.WebApp.Controllers
         [Authorize(Roles = "User")]
         public ActionResult PostNewVehicles()
         {
-            ViewBag.State = AddressRepoObj.GetAllState();
+            ViewBag.State = new SelectList(AddressRepoObj.GetAllState(), "StateId", "StateName");
             List<string> years = new List<string>();
             for (int i = -50; i <= 0; ++i)
             {
@@ -44,6 +44,20 @@ namespace JRCar.WebApp.Controllers
             List<string> consition = new List<string>() { "Used", "New" };
             ViewBag.Conditions = consition;
             return View();
+        }
+
+        public ActionResult GetCityList(int StateId)
+        {
+            var city = AddressRepoObj.GetCitiesByState(StateId);
+            ViewBag.City = new SelectList(city, "CityId", "CityName");
+            return PartialView("DisplayCity");
+        }
+        
+        public ActionResult GetZoneList(int CityId)
+        {
+            var zone = AddressRepoObj.GetZoneByCity(CityId);
+            ViewBag.Zone = new SelectList(zone, "ZoneId", "ZoneName");
+            return PartialView("DisplayZone");
         }
 
         [AcceptVerbs(HttpVerbs.Post)]

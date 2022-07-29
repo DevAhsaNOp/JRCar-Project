@@ -28,14 +28,15 @@ namespace JRCar.BOL
         public string Title { get; set; }
         public string Description { get; set; }
         public string Price { get; set; }
-        public string Address { get; set; }
         public string Latitude { get; set; }
         public string Longitude { get; set; }
         public System.DateTime CreatedOn { get; set; }
         public System.DateTime ExpiryDate { get; set; }
+        public Nullable<int> AddressId { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tblUserAddImage> tblUserAddImages { get; set; }
         public virtual tblUser tblUser { get; set; }
+        public virtual tblAddress tblAddress { get; set; }
     }
 }

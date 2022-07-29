@@ -32,7 +32,7 @@ namespace JRCar.DAL.DBLayer
                 Title = s.Title,
                 Description = ((s.Description == null) ? "" : s.Description),
                 Price = s.Price,
-                Address = ((s.Address == null) ? "" : s.Address),
+                AddressId =  s.AddressId,
                 Latitude = ((s.Latitude == null) ? "" : s.Latitude),
                 Longitude = ((s.Longitude == null) ? "" : s.Longitude),
                 CreatedOn = s.CreatedOn,

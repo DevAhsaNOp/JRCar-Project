@@ -3201,6 +3201,8 @@
     <Content Include="Views\Portal\UpdateProfile.cshtml" />
     <Content Include="Views\Website\PostNewVehicles.cshtml" />
     <Content Include="Views\Website\ProfileSettings.cshtml" />
+    <Content Include="Views\Shared\DisplayCity.cshtml" />
+    <Content Include="Views\Shared\DisplayZone.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

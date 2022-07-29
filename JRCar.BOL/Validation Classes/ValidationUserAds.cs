@@ -51,6 +51,8 @@ namespace JRCar.BOL.Validation_Classes
         [Display(Name = "ExpiryDate")]
         public System.DateTime ExpiryDate { get; set; }
 
+        public int? AddressId { get; set; }
+
         public string UserRole { get; set; }
 
         [Display(Name = "Image")]
@@ -70,7 +72,23 @@ namespace JRCar.BOL.Validation_Classes
         [Display(Name = "Car Images")]
         public string CarImage { get; set; }
 
+        [Required(ErrorMessage = "*")]
+        [Display(Name = "State")]
+        public string State { get; set; }
+
+        [Required(ErrorMessage = "*")]
+        [Display(Name = "City")]
+        public string City { get; set; }
+
+        [Display(Name = "Area")]
+        public string Area { get; set; }
+
+        [Display(Name = "Address")]
+        public string CompleteAddress { get; set; }
+
         public virtual ICollection<tblUserAddImage> tblUserAddImages { get; set; }
         public virtual tblUser tblUser { get; set; }
+
+        public virtual tblAddress tblAddress { get; set; }
     }
 }

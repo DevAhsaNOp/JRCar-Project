@@ -1,0 +1,9 @@
+﻿@model JRCar.BOL.tblZone
+<option value="">--- Select Zone ---</option>
+@if (ViewBag.Zone != null)
+{
+    foreach (var item in ViewBag.Zone)
+    {
+        <option value="@item.Value">@item.Text</option>
+    }
+}

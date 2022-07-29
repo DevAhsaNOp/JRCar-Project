@@ -14,11 +14,25 @@ namespace JRCar.BOL
     
     public partial class tblAddress
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public tblAddress()
+        {
+            this.tblCars = new HashSet<tblCar>();
+            this.tblShowrooms = new HashSet<tblShowroom>();
+            this.tblUserAdds = new HashSet<tblUserAdd>();
+        }
+    
         public int ID { get; set; }
         public string State { get; set; }
         public string City { get; set; }
         public string Area { get; set; }
-        public string SubArea { get; set; }
         public string CompleteAddress { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tblCar> tblCars { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tblShowroom> tblShowrooms { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tblUserAdd> tblUserAdds { get; set; }
     }
 }

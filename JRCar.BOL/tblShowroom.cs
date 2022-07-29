@@ -22,7 +22,6 @@ namespace JRCar.BOL
         }
     
         public int ID { get; set; }
-        public string Address { get; set; }
         public string Image { get; set; }
         public string Latitude { get; set; }
         public string Longitude { get; set; }
@@ -41,11 +40,13 @@ namespace JRCar.BOL
         public string Contact { get; set; }
         public string Token { get; set; }
         public string OTP { get; set; }
+        public Nullable<int> AddressId { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tblBlog> tblBlogs { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tblCar> tblCars { get; set; }
         public virtual tblUser tblUser { get; set; }
+        public virtual tblAddress tblAddress { get; set; }
     }
 }

@@ -42,8 +42,8 @@ namespace JRCar.BOL
         public string Mileage { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
-        public string Address { get; set; }
         public string Transmission { get; set; }
+        public Nullable<int> AddressId { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tblAppointment> tblAppointments { get; set; }
@@ -53,5 +53,6 @@ namespace JRCar.BOL
         public virtual tblShowroom tblShowroom { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tblFavAdd> tblFavAdds { get; set; }
+        public virtual tblAddress tblAddress { get; set; }
     }
 }

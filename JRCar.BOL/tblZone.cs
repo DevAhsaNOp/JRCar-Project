@@ -16,7 +16,7 @@ namespace JRCar.BOL
     {
         public int ZoneId { get; set; }
         public string ZoneName { get; set; }
-        public int CityId { get; set; }
+        public Nullable<int> CityId { get; set; }
     
         public virtual tblCity tblCity { get; set; }
     }

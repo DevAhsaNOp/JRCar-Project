@@ -22,7 +22,7 @@ namespace JRCar.BOL
     
         public int CityId { get; set; }
         public string CityName { get; set; }
-        public int StateId { get; set; }
+        public Nullable<int> StateId { get; set; }
     
         public virtual tblState tblState { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

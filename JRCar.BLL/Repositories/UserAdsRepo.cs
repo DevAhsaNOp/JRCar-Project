@@ -49,7 +49,7 @@ namespace JRCar.BLL.Repositories
                         Title = model.Title,
                         Description = model.Description,
                         Price = model.Price,
-                        Address = model.Address,
+                        AddressId = model.AddressId,
                         Latitude = model.Latitude,
                         Longitude = model.Longitude
                     };
