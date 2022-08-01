@@ -34,15 +34,29 @@ namespace JRCar.WebApp.Controllers
         [Authorize(Roles = "User")]
         public ActionResult PostNewVehicles()
         {
-            ViewBag.State = new SelectList(AddressRepoObj.GetAllState(), "StateId", "StateName");
-            List<string> years = new List<string>();
+            var AllStates = AddressRepoObj.GetAllState();
+            var states = new List<SelectListItem>();
+            //states.Add(new SelectListItem() { Text = "---Select State---", Value = "0", Disabled = true, Selected = true });
+            foreach (var item in AllStates)
+            {
+                states.Add(new SelectListItem() { Text = item.StateName, Value = item.StateId.ToString() });
+            }
+            ViewBag.State = states;
+
+            var year = new List<SelectListItem>();
+            year.Add(new SelectListItem() { Text = "---Select Model Year---", Value = "0", Disabled = true, Selected = true });
             for (int i = -50; i <= 0; ++i)
             {
-                years.Add(DateTime.Now.AddYears(i).ToString("yyyy"));
+                year.Add(new SelectListItem() { Text = DateTime.Now.AddYears(i).ToString("yyyy"), Value = DateTime.Now.AddYears(i).ToString("yyyy") });
             }
-            ViewBag.Years = years;
-            List<string> consition = new List<string>() { "Used", "New" };
-            ViewBag.Conditions = consition;
+            ViewBag.Years = year;
+            
+            var condition = new List<SelectListItem>();
+            condition.Add(new SelectListItem() { Text = "---Select Condition---", Value = "0", Disabled = true, Selected = true });
+            condition.Add(new SelectListItem() { Text = "Used", Value = "1" });
+            condition.Add(new SelectListItem() { Text = "New", Value = "2" });
+            ViewBag.Conditions = condition;
+            
             return View();
         }
 
@@ -52,7 +66,7 @@ namespace JRCar.WebApp.Controllers
             ViewBag.City = new SelectList(city, "CityId", "CityName");
             return PartialView("DisplayCity");
         }
-        
+
         public ActionResult GetZoneList(int CityId)
         {
             var zone = AddressRepoObj.GetZoneByCity(CityId);
@@ -77,26 +91,44 @@ namespace JRCar.WebApp.Controllers
                             file.SaveAs(Path.Combine(Server.MapPath(name), Guid.NewGuid() + Path.GetExtension(file.FileName)));
                         }
                     }
-                    userAds.UserID = Convert.ToInt32(Session["Id"]);
-                    userAds.CarImage = name;
                     if (userAds != null)
                     {
-                        var AdsPublish = RepoObj1.InsertUserAds(userAds);
-                        if (AdsPublish)
+                        if (userAds.State != null && userAds.City != null && userAds.Area != null)
                         {
-                            TempData["SuccessMsg"] = "Ad Publish Successfully!";
-                            return RedirectToAction("PostNewVehicles");
+                            userAds.Condition = (userAds.Condition == "1") ? "Used" : "New";
+                            var reas = AddressRepoObj.GetStateandCity(Convert.ToInt32(userAds.City));
+                            var area = AddressRepoObj.GetZoneLatLong(Convert.ToInt32(userAds.Area));
+                            userAds.UserID = Convert.ToInt32(Session["Id"]);
+                            userAds.CarImage = name;
+                            userAds.State = reas.Item1;
+                            userAds.City = reas.Item2;
+                            userAds.Area = area.Item3;
+                            userAds.CompleteAddress = userAds.Address;
+                            userAds.Latitude = area.Item1.ToString();
+                            userAds.Longitude = area.Item2.ToString();
+                            var AdsPublish = RepoObj1.InsertUserAds(userAds);
+                            if (AdsPublish)
+                            {
+                                TempData["SuccessMsg"] = "Ad Publish Successfully!";
+                                return RedirectToAction("PostNewVehicles");
+                            }
+                            else
+                            {
+                                TempData["ErrorMsg"] = "Error on Ads Publishing please try again!";
+                                return RedirectToAction("PostNewVehicles");
+                            }
                         }
-                        else
-                        {
-                            TempData["ErrorMsg"] = "Error on Ads Publishing please try again!";
-                            return RedirectToAction("PostNewVehicles");
-                        }
+                    }
+                    else
+                    {
+                        ViewBag.Error = "Error please try again!";
+                        return View("PostNewVehicles");
                     }
                 }
                 else
                 {
                     ViewBag.Error = "Error on uploading file!";
+                    return View("PostNewVehicles");
                 }
             }
             catch (Exception ex)
@@ -129,7 +161,7 @@ namespace JRCar.WebApp.Controllers
         {
             return View();
         }
-        
+
         [AcceptVerbs(HttpVerbs.Get)]
         [Authorize(Roles = "User")]
         public ActionResult ProfileSettings()

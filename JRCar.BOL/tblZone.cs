@@ -17,6 +17,8 @@ namespace JRCar.BOL
         public int ZoneId { get; set; }
         public string ZoneName { get; set; }
         public Nullable<int> CityId { get; set; }
+        public Nullable<decimal> Latitude { get; set; }
+        public Nullable<decimal> Longitude { get; set; }
     
         public virtual tblCity tblCity { get; set; }
     }

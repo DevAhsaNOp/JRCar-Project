@@ -18,10 +18,12 @@ namespace JRCar.BOL.Validation_Classes
 
         [Required(ErrorMessage = "*")]
         [Display(Name = "Year")]
+        [Range(1, Int32.MaxValue, ErrorMessage = "Must select a Model Year")]
         public string Year { get; set; }
 
         [Required(ErrorMessage = "*")]
         [Display(Name = "Condition")]
+        [Range(1, Int32.MaxValue, ErrorMessage = "Must select a Condition")]
         public string Condition { get; set; }
 
         [Required(ErrorMessage = "*")]
@@ -74,13 +76,18 @@ namespace JRCar.BOL.Validation_Classes
 
         [Required(ErrorMessage = "*")]
         [Display(Name = "State")]
+        [Range(1, Int32.MaxValue, ErrorMessage = "Must select a State")]
         public string State { get; set; }
+
 
         [Required(ErrorMessage = "*")]
         [Display(Name = "City")]
+        [Range(1, Int32.MaxValue, ErrorMessage = "Must select a City")]
         public string City { get; set; }
 
+        [Required(ErrorMessage = "*")]
         [Display(Name = "Area")]
+        [Range(1, Int32.MaxValue, ErrorMessage = "Must select a Area")]
         public string Area { get; set; }
 
         [Display(Name = "Address")]

@@ -102,6 +102,18 @@ namespace JRCar.DAL.DBLayer
             return _context.tblZones.ToList();
         }
 
+        public Tuple<decimal?, decimal?, string> GetZoneLatLong(int ZoneId)
+        {
+            var ZoneLatLong = _context.tblZones.Where(x => x.ZoneId == ZoneId).Select(s => new { s.Latitude, s.Longitude, s.ZoneName }).FirstOrDefault();
+            return Tuple.Create(ZoneLatLong.Latitude, ZoneLatLong.Longitude, ZoneLatLong.ZoneName);
+        }
+
+        public Tuple<string, string> GetStateandCity(int CityId)
+        {
+            var StateandCity = _context.tblCities.Where(x => x.CityId == CityId).Select(s => new { s.CityName, s.tblState.StateName }).FirstOrDefault();
+            return Tuple.Create(StateandCity.StateName, StateandCity.CityName);
+        }
+
         public IEnumerable<tblCity> GetCitiesByState(int StateId)
         {
             return _context.tblCities.Where(x => x.StateId == StateId).ToList();

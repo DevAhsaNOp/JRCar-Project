@@ -58,10 +58,10 @@
           <ConnectorPoint PointX="5.2511528461538459" PointY="27.375" />
         </AssociationConnector>
         <AssociationConnector Association="jrcarModel.FK_tblUserAdds_tblAddress" />
-        <EntityTypeShape EntityType="jrcarModel.tblCity" Width="1.5" PointX="11.875" PointY="0.875" />
-        <EntityTypeShape EntityType="jrcarModel.tblCountry" Width="1.5" PointX="7.375" PointY="1.125" />
-        <EntityTypeShape EntityType="jrcarModel.tblState" Width="1.5" PointX="9.625" PointY="0.875" />
-        <EntityTypeShape EntityType="jrcarModel.tblZone" Width="1.5" PointX="14.125" PointY="1" />
+        <EntityTypeShape EntityType="jrcarModel.tblCity" Width="1.5" PointX="11.875" PointY="1" />
+        <EntityTypeShape EntityType="jrcarModel.tblCountry" Width="1.5" PointX="7.375" PointY="1.25" />
+        <EntityTypeShape EntityType="jrcarModel.tblState" Width="1.5" PointX="9.625" PointY="1" />
+        <EntityTypeShape EntityType="jrcarModel.tblZone" Width="1.5" PointX="14.125" PointY="0.875" />
         <AssociationConnector Association="jrcarModel.FK_tblCity_tblState" />
         <AssociationConnector Association="jrcarModel.FK_tblZone_tblCity" />
         <AssociationConnector Association="jrcarModel.FK_tblState_tblCountry" />

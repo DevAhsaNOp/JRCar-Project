@@ -384,6 +384,8 @@
           <Property Name="ZoneId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ZoneName" Type="nvarchar(max)" Nullable="false" />
           <Property Name="CityId" Type="int" />
+          <Property Name="Latitude" Type="decimal" Precision="18" Scale="8" />
+          <Property Name="Longitude" Type="decimal" Precision="18" Scale="8" />
         </EntityType>
         <Association Name="FK_dbo_tblAdmins_dbo_tblRoles_tblRoleID">
           <End Role="tblRoles" Type="Self.tblRoles" Multiplicity="1">
@@ -1707,6 +1709,8 @@
           <Property Name="ZoneId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ZoneName" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="CityId" Type="Int32" />
+          <Property Name="Latitude" Type="Decimal" Precision="18" Scale="8" />
+          <Property Name="Longitude" Type="Decimal" Precision="18" Scale="8" />
           <NavigationProperty Name="tblCity" Relationship="jrcarModel.FK_tblZone_tblCity" FromRole="tblZone" ToRole="tblCity" />
         </EntityType>
         <Association Name="FK_tblCity_tblState">
@@ -2151,6 +2155,8 @@
           <EntitySetMapping Name="tblZones">
             <EntityTypeMapping TypeName="jrcarModel.tblZone">
               <MappingFragment StoreEntitySet="tblZone">
+                <ScalarProperty Name="Longitude" ColumnName="Longitude" />
+                <ScalarProperty Name="Latitude" ColumnName="Latitude" />
                 <ScalarProperty Name="CityId" ColumnName="CityId" />
                 <ScalarProperty Name="ZoneName" ColumnName="ZoneName" />
                 <ScalarProperty Name="ZoneId" ColumnName="ZoneId" />

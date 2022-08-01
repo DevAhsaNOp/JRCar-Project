@@ -82,18 +82,25 @@
                             <li class="cs-user-option">
                                 <div class="cs-login">
                                     <div class="cs-login-dropdown">
-                                        <a href="#"><i class="icon-user2"></i> @Session["Name"] <i class="icon-chevron-down2"></i></a>
-                                        <div class="cs-user-dropdown">
-                                            <ul>
-                                                <li><a href="@Url.Action("ProfileSettings","Website")">Profile Settings<span class="cs-bgcolor">3</span></a></li>
-                                                <li><a href="user-car-listing.html">My Posted Cars <span class="cs-bgcolor">23</span></a></li>
-                                                <li><a href="@Url.Action("PostNewVehicles","Website")">Post New Car</a></li>
-                                                <li><a href="user-car-shortlist.html">Shortlisted</a></li>
-                                            </ul>
-                                            <a class="btn-sign-out" href="@Url.Action("Logout", "Account")">Logout</a>
-                                        </div>
+                                        @if (@Session["Name"] == null)
+                                        {
+                                            <a class="cs-bgcolor btn-form" style="margin-right:10px !important;" href="@Url.Action("SignIn","Account")"><i class="icon-login"></i> Sign In </a>
+                                        }
+                                        else
+                                        {
+                                            <a href="#"><i class="icon-user2"></i> @Session["Name"] <i class="icon-chevron-down2"></i></a>
+                                            <div class="cs-user-dropdown">
+                                                <ul>
+                                                    <li><a href="@Url.Action("ProfileSettings","Website")">Profile Setting<span class="cs-bgcolor">3</span></a></li>
+                                                    <li><a href="user-car-listing.html">My Posted Cars <span class="cs-bgcolor">23</span></a></li>
+                                                    <li><a href="@Url.Action("PostNewVehicles","Website")">Post New Car</a></li>
+                                                    <li><a href="user-car-shortlist.html">Shortlisted</a></li>
+                                                </ul>
+                                                <a class="btn-sign-out" href="@Url.Action("Logout", "Account")">Logout</a>
+                                            </div>
+                                        }
                                     </div>
-                                    <a class="cs-bgcolor btn-form" href="#"><i class="icon-plus"></i> Sell Car</a>
+                                    <a class="cs-bgcolor btn-form" href="@Url.Action("PostNewVehicles","Website")"><i class="icon-plus"></i> Sell Car</a>
                                     <!-- Modal Start-->
                                     <!-- Modal End-->
                                 </div>
@@ -183,21 +190,25 @@
                     <div class="cs-user-option hidden-lg visible-sm visible-xs">
                         <div class="cs-login">
                             <div class="cs-login-dropdown">
-                                <a href="#"><i class="icon-user2"></i> @Session["Name"] <i class="icon-chevron-down2"></i></a>
-                                <div class="cs-user-dropdown">
-                                    <strong>Post a new Ad</strong>
-                                    <ul>
-                                        <li><a href="user-genral-setting.html">General Setting<span class="cs-bgcolor">3</span></a></li>
-                                        <li><a href="user-car-listing.html">My Posted Cars <span class="cs-bgcolor">23</span></a></li>
-                                        <li><a href="user-post-new-vehicles.html">Post New Car</a></li>
-                                        <li><a href="user-car-shortlist.html">Shortlisted</a></li>
-                                        <li><a href="user-payments.html">Payment</a></li>
-                                        <li><a href="user-packages.html">Packages</a></li>
-                                    </ul>
-                                    <a class="btn-sign-out" href="#">Logout</a>
-                                </div>
+                                @if (@Session["Name"] == null)
+                                {
+                                    <a class="cs-bgcolor btn-form mr-2" style="margin-right:10px !important;" href="@Url.Action("SignIn","Account")"><i class="icon-login"></i> Sign In</a>
+                                }
+                                else
+                                {
+                                    <a href="#"><i class="icon-user2"></i> @Session["Name"] <i class="icon-chevron-down2"></i></a>
+                                    <div class="cs-user-dropdown">
+                                        <ul>
+                                            <li><a href="@Url.Action("ProfileSettings","Website")">Profile Setting<span class="cs-bgcolor">3</span></a></li>
+                                            <li><a href="user-car-listing.html">My Posted Cars <span class="cs-bgcolor">23</span></a></li>
+                                            <li><a href="@Url.Action("PostNewVehicles","Website")">Post New Car</a></li>
+                                            <li><a href="user-car-shortlist.html">Shortlisted</a></li>
+                                        </ul>
+                                        <a class="btn-sign-out" href="@Url.Action("Logout", "Account")">Logout</a>
+                                    </div>
+                                }
                             </div>
-                            <a class="cs-bgcolor btn-form" href="#"><i class="icon-plus"></i> Sell Car</a>
+                            <a class="cs-bgcolor btn-form" href="@Url.Action("PostNewVehicles","Website")"><i class="icon-plus"></i> Sell Car</a>
                             <!-- Modal Start-->
                             <!-- Modal End-->
                         </div>

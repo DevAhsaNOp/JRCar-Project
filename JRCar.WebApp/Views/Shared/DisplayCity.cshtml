@@ -1,5 +1,5 @@
 ﻿@model JRCar.BOL.tblCity
-<option value="">--- Select City ---</option>
+<option value="0" selected="selected" disabled="disabled" class="selectoption">--- Select City ---</option>
 @if (ViewBag.City != null)
 {
     foreach (var item in ViewBag.City)

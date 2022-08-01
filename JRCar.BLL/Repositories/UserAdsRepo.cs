@@ -12,10 +12,12 @@ namespace JRCar.BLL.Repositories
     public class UserAdsRepo
     {
         private UserAds dbObj;
+        private AddressAutofillRepo AddressRepoObj;
 
         public UserAdsRepo()
         {
             dbObj = new UserAds();
+            AddressRepoObj = new AddressAutofillRepo();
         }
 
         public IEnumerable<tblUserAdd> GetAllUserAds()
@@ -40,31 +42,46 @@ namespace JRCar.BLL.Repositories
             {
                 if (model != null)
                 {
-                    tblUserAdd userAds = new tblUserAdd()
+                    tblAddress addrs = new tblAddress()
                     {
-                        UserID = model.UserID,
-                        Model = model.Model,
-                        Year = model.Year,
-                        Condition = model.Condition,
-                        Title = model.Title,
-                        Description = model.Description,
-                        Price = model.Price,
-                        AddressId = model.AddressId,
-                        Latitude = model.Latitude,
-                        Longitude = model.Longitude
+                        State = model.State,
+                        City = model.City,
+                        Area = model.Area,
+                        CompleteAddress = (model.CompleteAddress == null) ? "" : model.CompleteAddress,
                     };
-                    var user = dbObj.InsertUserAds(userAds);
-                    if (user > 0)
+                    var addrsID = AddressRepoObj.InsertAddress(addrs);
+                    if (addrsID > 0)
                     {
-                        ValidateUserAdsImage userAdImagesObj = new ValidateUserAdsImage()
+                        tblUserAdd userAds = new tblUserAdd()
                         {
-                            Image = model.CarImage,
-                            tblUserAddID = user
+                            UserID = model.UserID,
+                            Model = model.Model,
+                            Year = model.Year,
+                            Condition = model.Condition,
+                            Title = model.Title,
+                            Description = model.Description,
+                            Price = model.Price,
+                            AddressId = addrsID,
+                            Latitude = model.Latitude,
+                            Longitude = model.Longitude
                         };
-                        var userAdImages = InsertUserAdsImages(userAdImagesObj);
-                        if (userAdImages)
+                        var user = dbObj.InsertUserAds(userAds);
+                        if (user > 0)
                         {
-                            return true;
+                            ValidateUserAdsImage userAdImagesObj = new ValidateUserAdsImage()
+                            {
+                                Image = model.CarImage,
+                                tblUserAddID = user
+                            };
+                            var userAdImages = InsertUserAdsImages(userAdImagesObj);
+                            if (userAdImages)
+                            {
+                                return true;
+                            }
+                            else
+                            {
+                                return false;
+                            }
                         }
                         else
                         {
@@ -72,9 +89,7 @@ namespace JRCar.BLL.Repositories
                         }
                     }
                     else
-                    {
                         return false;
-                    }
                 }
                 else
                 {

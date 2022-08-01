@@ -25,7 +25,7 @@ namespace JRCar.BLL.Repositories
                 if (model != null)
                 {
                     var addressId = dbObj.InsertAddress(model);
-                    if(addressId > 0)
+                    if (addressId > 0)
                         return addressId;
                     else
                         return 0;
@@ -46,7 +46,7 @@ namespace JRCar.BLL.Repositories
                 if (model != null)
                 {
                     var addressId = dbObj.UpdateAddress(model);
-                    if(addressId == true)
+                    if (addressId == true)
                         return true;
                     else
                         return false;
@@ -105,5 +105,22 @@ namespace JRCar.BLL.Repositories
         {
             return dbObj.GetZoneByCity(CityId);
         }
+
+        public Tuple<decimal?, decimal?, string> GetZoneLatLong(int ZoneId)
+        {
+            if (ZoneId > 0)
+                return dbObj.GetZoneLatLong(ZoneId);
+            else
+                return null;
+        }
+
+        public Tuple<string, string> GetStateandCity(int CityId)
+        {
+            if (CityId > 0)
+                return dbObj.GetStateandCity(CityId);
+            else
+                return null;
+        }
     }
+
 }
