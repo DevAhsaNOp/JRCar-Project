@@ -20,9 +20,14 @@ namespace JRCar.BLL.Repositories
             AddressRepoObj = new AddressAutofillRepo();
         }
 
-        public IEnumerable<tblUserAdd> GetAllUserAds()
+        public IEnumerable<tblUserAdd> GetAllUserActiveAds()
         {
-            return dbObj.GetAllUserAds();
+            return dbObj.GetAllUserActiveAds();
+        }
+        
+        public IEnumerable<tblUserAdd> GetAllUserInActiveAds()
+        {
+            return dbObj.GetAllUserInActiveAds();
         }
 
         public ValidationUserAds GetUserAdsDetail(int AdsId)
@@ -109,9 +114,13 @@ namespace JRCar.BLL.Repositories
                 if (model != null)
                 {
                     var user = dbObj.UpdateUserAds(model);
-                    return true;
+                    if (user == true)
+                        return user;
+                    else
+                        return false;
                 }
-                else { return false; }
+                else
+                    return false;
             }
             catch (Exception ex)
             {
@@ -131,7 +140,10 @@ namespace JRCar.BLL.Repositories
                         tblUserAddID = model.tblUserAddID
                     };
                     var user = dbObj.InsertUserAdsImages(userAddImage);
-                    return user;
+                    if (user == true)
+                        return user;
+                    else
+                        return false;
                 }
                 else
                 {
@@ -151,9 +163,55 @@ namespace JRCar.BLL.Repositories
                 if (model != null)
                 {
                     var user = dbObj.UpdateUserAdsImages(model);
-                    return true;
+                    if (user == true)
+                        return user;
+                    else
+                        return false;
                 }
-                else { return false; }
+                else
+                    return false;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public bool InActiveUserAds(int AdID)
+        {
+            try
+            {
+                if (AdID > 0)
+                {
+                    var user = dbObj.InActiveUserAds(AdID);
+                    if (user == true)
+                        return user;
+                    else
+                        return false;
+                }
+                else
+                    return false;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public bool ReActiveUserAds(int AdID)
+        {
+            try
+            {
+                if (AdID > 0)
+                {
+                    var user = dbObj.ReActiveUserAds(AdID);
+                    if (user == true)
+                        return user;
+                    else
+                        return false;
+                }
+                else
+                    return false;
             }
             catch (Exception ex)
             {

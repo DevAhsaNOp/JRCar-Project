@@ -3065,6 +3065,21 @@
     <Content Include="scripts\umd\popper.js" />
     <Content Include="scripts\umd\popper.min.js" />
     <Content Include="style.css" />
+    <Content Include="uploads\4SZGZ15CWM5L769\18bb0f46-6784-44b8-9ff5-32d494810603.jpg" />
+    <Content Include="uploads\4SZGZ15CWM5L769\55a97408-e34f-4bbf-aa86-11ca8ae7e010.png" />
+    <Content Include="uploads\4SZGZ15CWM5L769\a3d3e00b-58c2-4854-a85b-085bd3a8b793.jpg" />
+    <Content Include="uploads\E1SIDGXAK1LL142\284c3a2b-e020-444f-817e-9c75e37c3457.png" />
+    <Content Include="uploads\E1SIDGXAK1LL142\5bdb9ea3-0484-448d-850a-e191bdda49f7.png" />
+    <Content Include="uploads\E1SIDGXAK1LL142\707bb597-28d1-4c01-901b-9ebfcd3c9488.jpg" />
+    <Content Include="uploads\E1SIDGXAK1LL142\ba091b04-bb50-4f9b-ab9b-de6a0f169ae2.jpg" />
+    <Content Include="uploads\K2G89FINVTG3598\10c3432e-994c-4629-954c-9004c504e33c.jpg" />
+    <Content Include="uploads\K2G89FINVTG3598\5523562d-a17e-4ee9-9779-096e60ed8e1e.jpg" />
+    <Content Include="uploads\K2G89FINVTG3598\85dc0387-af3a-45d7-a72a-fddfbf2fec2d.png" />
+    <Content Include="uploads\K2G89FINVTG3598\bde27590-54ff-4d71-a27e-ccbe1ff4d6ce.png" />
+    <Content Include="uploads\OLLT6WBYKR0J418\33fd00d0-d4f9-45f6-b9b6-84ca88e0ab62.jpg" />
+    <Content Include="uploads\XTHFHOKR22PB572\52ccc25a-4d8a-4e5b-bc1e-d02a7c24213a.jpg" />
+    <Content Include="uploads\XTHFHOKR22PB572\5cd7ae2d-608e-42f7-b266-70a36cdbc6bb.jpg" />
+    <Content Include="uploads\XTHFHOKR22PB572\f335053a-7b43-4aca-8f99-be20d5fe0b72.jpg" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -3211,6 +3226,7 @@
     <Content Include="Views\Website\ProfileSettings.cshtml" />
     <Content Include="Views\Shared\DisplayCity.cshtml" />
     <Content Include="Views\Shared\DisplayZone.cshtml" />
+    <Content Include="Views\Website\CarDetail.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -3222,7 +3238,6 @@
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
     <Folder Include="Roles\" />
-    <Folder Include="uploads\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\JRCar.BLL\JRCar.BLL.csproj">

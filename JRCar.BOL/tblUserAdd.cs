@@ -33,6 +33,8 @@ namespace JRCar.BOL
         public System.DateTime CreatedOn { get; set; }
         public System.DateTime ExpiryDate { get; set; }
         public Nullable<int> AddressId { get; set; }
+        public Nullable<bool> Isactive { get; set; }
+        public Nullable<bool> Isarchive { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tblUserAddImage> tblUserAddImages { get; set; }

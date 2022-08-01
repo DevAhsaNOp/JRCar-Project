@@ -93,6 +93,12 @@ namespace JRCar.BOL.Validation_Classes
         [Display(Name = "Address")]
         public string CompleteAddress { get; set; }
 
+        [Display(Name = "Active")]
+        public bool? Isactive { get; set; }
+        
+        [Display(Name = "Archive")]
+        public bool? Isarchive { get; set; }
+
         public virtual ICollection<tblUserAddImage> tblUserAddImages { get; set; }
         public virtual tblUser tblUser { get; set; }
 

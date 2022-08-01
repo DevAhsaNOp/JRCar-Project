@@ -50,13 +50,13 @@ namespace JRCar.WebApp.Controllers
                 year.Add(new SelectListItem() { Text = DateTime.Now.AddYears(i).ToString("yyyy"), Value = DateTime.Now.AddYears(i).ToString("yyyy") });
             }
             ViewBag.Years = year;
-            
+
             var condition = new List<SelectListItem>();
             condition.Add(new SelectListItem() { Text = "---Select Condition---", Value = "0", Disabled = true, Selected = true });
             condition.Add(new SelectListItem() { Text = "Used", Value = "1" });
             condition.Add(new SelectListItem() { Text = "New", Value = "2" });
             ViewBag.Conditions = condition;
-            
+
             return View();
         }
 
@@ -148,6 +148,29 @@ namespace JRCar.WebApp.Controllers
         public ActionResult Shortlisted(ImageFile objImage, ValidationUserAds userAds)
         {
             return View();
+        }
+
+        [AcceptVerbs(HttpVerbs.Get)]
+        [Authorize(Roles = "User")]
+        public ActionResult CarDetail(int AdID)
+        {
+            var carDetail = RepoObj1.GetUserAdsDetail(AdID);
+            if (Convert.ToString(Session["Email"]) == carDetail.Email)
+            {
+                if (carDetail == null)
+                {
+                    TempData["ErrorMsg"] = "Car you trying to view is not exists!";
+                    return RedirectToAction("Myvehicles");
+                }
+                else
+                    return View(carDetail);
+            }
+            else
+            {
+                TempData["ErrorMsg"] = "Car you trying to view is not exists!";
+                return RedirectToAction("Myvehicles");
+            }
+
         }
 
         [AcceptVerbs(HttpVerbs.Get)]
