@@ -198,6 +198,7 @@
     <script>
         $(document).ready(function () {
             console.log("ready!");
+
             $("#Year").on("change", function () {
                 console.log("Year change");
                 var ar = $('#Year').select2('data');
@@ -267,9 +268,9 @@
             $('#postvehicle').bind("click", function () {
                 var imgVal = $('#files').val();
                 if (imgVal == '') {
-                    var element = document.getElementsByClassName("upload-text");
+                    var element = document.getElementsByClassName("image-uploader");
                     for (item of element) {
-                        item.style.border = "1px solid #f16060";
+                        item.style.border = "2px solid #f16060";
                     }
                     $('html, body').animate({
                         scrollTop: $("#images-not").offset().top
@@ -285,6 +286,8 @@
                 var state = $('#State').hasClass('input-validation-error');
                 var city = $('#City').hasClass('input-validation-error');
                 var arr = $('#Area').hasClass('input-validation-error');
+                var a = $(".uploaded")[0].children.length;
+                console.log(a);
                 if (year == true) {
                     $('[aria-labelledby="select2-Year-container"]').css('border', '1px solid #f16060');
                 }
@@ -300,8 +303,16 @@
                 else if (arr == true) {
                     $('[aria-labelledby="select2-Area-container"]').css('border', '1px solid #f16060');
                 }
-                else {
-
+                else if (a < 5) {
+                    alert("Minimum 5 images you need to upload");
+                    var element = document.getElementsByClassName("image-uploader");
+                    for (item of element) {
+                        item.style.border = "2px solid #f16060";
+                    }
+                    $('html, body').animate({
+                        scrollTop: $("#images-not").offset().top
+                    }, 100);
+                    return false;
                 }
             });
 

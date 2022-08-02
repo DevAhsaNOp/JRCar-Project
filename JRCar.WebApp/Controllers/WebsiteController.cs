@@ -155,22 +155,24 @@ namespace JRCar.WebApp.Controllers
         public ActionResult CarDetail(int AdID)
         {
             var carDetail = RepoObj1.GetUserAdsDetail(AdID);
-            if (Convert.ToString(Session["Email"]) == carDetail.Email)
-            {
-                if (carDetail == null)
-                {
-                    TempData["ErrorMsg"] = "Car you trying to view is not exists!";
-                    return RedirectToAction("Myvehicles");
-                }
-                else
-                    return View(carDetail);
-            }
-            else
+            if (carDetail == null)
             {
                 TempData["ErrorMsg"] = "Car you trying to view is not exists!";
                 return RedirectToAction("Myvehicles");
             }
-
+            else
+            {
+                string path = Server.MapPath("" + carDetail.CarImage + "");
+                string[] FolderName = carDetail.CarImage.Split('/');
+                string[] imageFiles = Directory.GetFiles(path);
+                List<string> images = new List<string>();
+                foreach (var item in imageFiles)
+                {
+                    images.Add(FolderName[2] + "/" + Path.GetFileName(item));
+                }
+                ViewBag.Images = images;
+                return View(carDetail);
+            }
         }
 
         [AcceptVerbs(HttpVerbs.Get)]

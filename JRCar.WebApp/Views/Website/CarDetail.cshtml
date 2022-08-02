@@ -41,51 +41,54 @@
         <!-- Single - Page Slider Start -->
         <div class="cs-banner loader">
             <ul class="cs-banner-slider">
-                <li>
-                    <div class="cs-media">
-                        <figure><img src="~/uploads/4SZGZ15CWM5L769/18bb0f46-6784-44b8-9ff5-32d494810603.jpg" alt="" /></figure>
-                    </div>
-                </li>
-                <li>
-                    <div class="cs-media">
-                        <figure><img src="~/uploads/4SZGZ15CWM5L769/55a97408-e34f-4bbf-aa86-11ca8ae7e010.png" alt="" /></figure>
-                    </div>
-                </li>
-                <li>
-                    <div class="cs-media">
-                        <figure><img src="~/uploads/4SZGZ15CWM5L769/a3d3e00b-58c2-4854-a85b-085bd3a8b793.jpg" alt="" /></figure>
-                    </div>
-                </li>
-                <li>
-                    <div class="cs-media">
-                        <figure><img src="~/uploads/4SZGZ15CWM5L769/55a97408-e34f-4bbf-aa86-11ca8ae7e010.png" alt="" /></figure>
-                    </div>
-                </li>
-                <li>
-                    <div class="cs-media">
-                        <figure><img src="~/uploads/4SZGZ15CWM5L769/18bb0f46-6784-44b8-9ff5-32d494810603.jpg" alt="" /></figure>
-                    </div>
-                </li>
-                <li>
-                    <div class="cs-media">
-                        <figure><img src="~/uploads/4SZGZ15CWM5L769/a3d3e00b-58c2-4854-a85b-085bd3a8b793.jpg" alt="" /></figure>
-                    </div>
-                </li>
-                <li>
-                    <div class="cs-media">
-                        <figure><img src="~/uploads/4SZGZ15CWM5L769/55a97408-e34f-4bbf-aa86-11ca8ae7e010.png" alt="" /></figure>
-                    </div>
-                </li>
-                <li>
-                    <div class="cs-media">
-                        <figure><img src="~/uploads/4SZGZ15CWM5L769/18bb0f46-6784-44b8-9ff5-32d494810603.jpg" alt="" /></figure>
-                    </div>
-                </li>
-                <li>
-                    <div class="cs-media">
-                        <figure><img src="~/uploads/4SZGZ15CWM5L769/a3d3e00b-58c2-4854-a85b-085bd3a8b793.jpg" alt="" /></figure>
-                    </div>
-                </li>
+                @foreach (var item in ViewBag.Images)
+                {
+                    <li>
+                        <div class="cs-media">
+                            <figure><img src="~/uploads/@item" alt="" /></figure>
+                        </div>
+                    </li>
+                }
+                @*<li>
+                        <div class="cs-media">
+                            <figure><img src="~/uploads/4SZGZ15CWM5L769/55a97408-e34f-4bbf-aa86-11ca8ae7e010.png" alt="" /></figure>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="cs-media">
+                            <figure><img src="~/uploads/4SZGZ15CWM5L769/a3d3e00b-58c2-4854-a85b-085bd3a8b793.jpg" alt="" /></figure>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="cs-media">
+                            <figure><img src="~/uploads/4SZGZ15CWM5L769/55a97408-e34f-4bbf-aa86-11ca8ae7e010.png" alt="" /></figure>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="cs-media">
+                            <figure><img src="~/uploads/4SZGZ15CWM5L769/18bb0f46-6784-44b8-9ff5-32d494810603.jpg" alt="" /></figure>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="cs-media">
+                            <figure><img src="~/uploads/4SZGZ15CWM5L769/a3d3e00b-58c2-4854-a85b-085bd3a8b793.jpg" alt="" /></figure>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="cs-media">
+                            <figure><img src="~/uploads/4SZGZ15CWM5L769/55a97408-e34f-4bbf-aa86-11ca8ae7e010.png" alt="" /></figure>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="cs-media">
+                            <figure><img src="~/uploads/4SZGZ15CWM5L769/18bb0f46-6784-44b8-9ff5-32d494810603.jpg" alt="" /></figure>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="cs-media">
+                            <figure><img src="~/uploads/4SZGZ15CWM5L769/a3d3e00b-58c2-4854-a85b-085bd3a8b793.jpg" alt="" /></figure>
+                        </div>
+                    </li>*@
             </ul>
             <div class="container">
                 <div class="row">
