@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace JRCar.BOL.Validation_Classes
 {
@@ -18,6 +19,7 @@ namespace JRCar.BOL.Validation_Classes
         [Required(ErrorMessage = "*")]
         [Display(Name = "Email")]
         [EmailAddress(ErrorMessage = "Invalid Email Address")]
+        [Remote("IsEmailExist", "Account",ErrorMessage ="Email is already registered!")]
         public string Email { get; set; }
 
         [Required(ErrorMessage = "*")]

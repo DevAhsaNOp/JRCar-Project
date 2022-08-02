@@ -21,6 +21,15 @@ namespace JRCar.DAL.DBLayer
             _context = new jrcarEntities();
         }
 
+        public bool IsEmailExist(string Email)
+        {
+            var reas = GetUserDetail(Email);
+            if (reas != null)
+                return true;
+            else
+                return false;
+        }
+
         public IEnumerable<tblUser> GetAllUsers()
         {
             return _context.tblUsers.ToList();
@@ -210,7 +219,7 @@ namespace JRCar.DAL.DBLayer
                 Image = s.Image,
                 Password = s.Password,
                 OTP = s.OTP,
-                Role= s.tblRole.Role
+                Role = s.tblRole.Role
             }).FirstOrDefault();
 
             var union = _context.tblUnions.Where(x => x.Email == emailtext).Select(s => new UserDefine.UserViewDetail()
@@ -254,7 +263,7 @@ namespace JRCar.DAL.DBLayer
             else
                 return null;
         }
-        
+
         public ValidateUser GetUserDetailById(int Id)
         {
             var user = _context.tblUsers.Where(x => x.ID == Id).Select(s => new ValidateUser()
@@ -327,7 +336,7 @@ namespace JRCar.DAL.DBLayer
                 throw;
             }
         }
-        
+
         public void InsertAdmin(tblAdmin model)
         {
             try
@@ -347,7 +356,7 @@ namespace JRCar.DAL.DBLayer
                 throw ex;
             }
         }
-        
+
         public void InsertUnion(tblUnion model)
         {
             try
@@ -365,8 +374,8 @@ namespace JRCar.DAL.DBLayer
             {
                 throw ex;
             }
-        }   
-        
+        }
+
         public void InsertShowroom(tblShowroom model)
         {
             try
@@ -482,7 +491,7 @@ namespace JRCar.DAL.DBLayer
                 throw ex;
             }
         }
-        
+
         public void InActiveAdmin(tblAdmin model)
         {
             try
@@ -499,8 +508,8 @@ namespace JRCar.DAL.DBLayer
             {
                 throw ex;
             }
-        } 
-        
+        }
+
         public void InActiveUnion(tblUnion model)
         {
             try
@@ -517,8 +526,8 @@ namespace JRCar.DAL.DBLayer
             {
                 throw ex;
             }
-        }  
-        
+        }
+
         public void InActiveShowroom(tblShowroom model)
         {
             try

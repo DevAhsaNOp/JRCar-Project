@@ -23,6 +23,22 @@ namespace JRCar.BLL.Repositories
             dbObj.InActiveUser(model);
         }
 
+        public bool IsEmailExist(string Email) 
+        {
+            if (Email != null)
+            {
+                var reas = dbObj.IsEmailExist(Email);
+                if (reas)
+                    return true;
+                else
+                    return false;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         public IEnumerable<tblUser> GetAllUsers()
         {
             return dbObj.GetAllUsers();

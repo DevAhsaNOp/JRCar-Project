@@ -22,6 +22,11 @@ namespace JRCar.WebApp.Controllers
             RepoObj = new UserRepo();
         }
 
+        public JsonResult IsEmailExist(string Email)
+        {
+            return Json(!RepoObj.IsEmailExist(Email),JsonRequestBehavior.AllowGet);   
+        }
+
         [AcceptVerbs(HttpVerbs.Get)]
         [Authorize(Roles = "Admin,Showroom,Union")]
         public ActionResult Index()
