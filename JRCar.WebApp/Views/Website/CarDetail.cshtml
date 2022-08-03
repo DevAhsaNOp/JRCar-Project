@@ -32,6 +32,21 @@
     <script src="~/Files/scripts/jquery.js"></script>
     <script src="~/Files/scripts/modernizr.js"></script>
     <script src="~/Files/scripts/bootstrap.min.js"></script>
+    <style>
+        .single-page .cs-banner ul.cs-banner-slider li .cs-media figure img {
+            height: 50vh !important;
+        }
+
+        .single-page .auto-overview ul li .auto-text strong {
+            font-size: 13px !important;
+            line-height: 20px !important;
+            font-weight: 800 !important;
+        }
+
+        .gm-ui-hover-effect{
+            display: none !important;
+        }
+    </style>
 </head>
 <body class="wp-automobile single-page">
     <div class="wrapper">
@@ -49,53 +64,13 @@
                         </div>
                     </li>
                 }
-                @*<li>
-                        <div class="cs-media">
-                            <figure><img src="~/uploads/4SZGZ15CWM5L769/55a97408-e34f-4bbf-aa86-11ca8ae7e010.png" alt="" /></figure>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="cs-media">
-                            <figure><img src="~/uploads/4SZGZ15CWM5L769/a3d3e00b-58c2-4854-a85b-085bd3a8b793.jpg" alt="" /></figure>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="cs-media">
-                            <figure><img src="~/uploads/4SZGZ15CWM5L769/55a97408-e34f-4bbf-aa86-11ca8ae7e010.png" alt="" /></figure>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="cs-media">
-                            <figure><img src="~/uploads/4SZGZ15CWM5L769/18bb0f46-6784-44b8-9ff5-32d494810603.jpg" alt="" /></figure>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="cs-media">
-                            <figure><img src="~/uploads/4SZGZ15CWM5L769/a3d3e00b-58c2-4854-a85b-085bd3a8b793.jpg" alt="" /></figure>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="cs-media">
-                            <figure><img src="~/uploads/4SZGZ15CWM5L769/55a97408-e34f-4bbf-aa86-11ca8ae7e010.png" alt="" /></figure>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="cs-media">
-                            <figure><img src="~/uploads/4SZGZ15CWM5L769/18bb0f46-6784-44b8-9ff5-32d494810603.jpg" alt="" /></figure>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="cs-media">
-                            <figure><img src="~/uploads/4SZGZ15CWM5L769/a3d3e00b-58c2-4854-a85b-085bd3a8b793.jpg" alt="" /></figure>
-                        </div>
-                    </li>*@
             </ul>
             <div class="container">
                 <div class="row">
                     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 pull-right">
                         <div class="cs-button-style">
                             <a class="btn-video" href="#"><i class="icon-play_arrow"></i> Watch video</a>
-                            <a class="btn-compare" href="#"><i class="icon-flow-tree"></i> Compare</a>
+                            @*<a class="btn-compare" href="#"><i class="icon-flow-tree"></i> Compare</a>*@
                             <a class="btn-shortlist" href="#"><i class="icon-heart-o"></i> shortlist</a>
                         </div>
                     </div>
@@ -114,19 +89,17 @@
                                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                         <div class="car-detail-heading">
                                             <div class="auto-text">
-                                                <h2>Alfa Romeo Launch Edition 2dr Coupe</h2>
-                                                <span><i class="icon-building-o"></i> Quartz Blue Metallic</span>
-                                                <address><i class="icon-location"></i>1840 E Garvey Ave South West Covina, CA 91791</address>
+                                                <h2>@Html.DisplayFor(model => model.Title)</h2>
+                                                <span><i class="icon-building-o"></i> @Html.DisplayFor(model => model.State)</span>
+                                                <address id="ELocated"><i class="icon-location"></i>@Html.DisplayFor(model => model.Area), @Html.DisplayFor(model => model.City)</address>
                                             </div>
-                                            <div class="auto-price"><span class="cs-color">$17,845</span> <em>MSRP $32,000</em></div>
+                                            <div class="auto-price"><span class="cs-color" id="RPrice">Rs @Html.DisplayFor(model => model.Price)</span> <em id="DollarPrice"></em></div>
                                         </div>
                                     </div>
                                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                         <div class="cs-detail-nav">
                                             <ul>
                                                 <li><a class="active" href="#vehicle">Vehicle overview</a></li>
-                                                <li><a href="#specification">Technical Specification</a></li>
-                                                <li><a href="#accessories">Accessories</a></li>
                                                 <li><a href="#location">Location</a></li>
                                                 <li><a href="#contact">Contact Us</a></li>
                                             </ul>
@@ -142,20 +115,20 @@
                                                 <ul class="row">
                                                     <li class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
                                                         <div class="cs-media">
-                                                            <figure><i class="icon-driving2 cs-color"></i></figure>
+                                                            <figure><i class="icon-calendar-check-o cs-color"></i></figure>
                                                         </div>
                                                         <div class="auto-text">
                                                             <span>Year</span>
-                                                            <strong>2002</strong>
+                                                            <strong>@Html.DisplayFor(model => model.Year)</strong>
                                                         </div>
                                                     </li>
                                                     <li class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
                                                         <div class="cs-media">
-                                                            <figure><i class="icon-vehicle92 cs-color"></i></figure>
+                                                            <figure><i class="icon-driving2 cs-color"></i></figure>
                                                         </div>
                                                         <div class="auto-text">
-                                                            <span>Mileage</span>
-                                                            <strong>121,899</strong>
+                                                            <span>CONDITION</span>
+                                                            <strong>@Html.DisplayFor(model => model.Condition)</strong>
                                                         </div>
                                                     </li>
                                                     <li class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
@@ -163,8 +136,8 @@
                                                             <figure><i class="icon-engine cs-color"></i></figure>
                                                         </div>
                                                         <div class="auto-text">
-                                                            <span>Trans</span>
-                                                            <strong>Automatic</strong>
+                                                            <span>make Model</span>
+                                                            <strong>@Html.DisplayFor(model => model.Model)</strong>
                                                         </div>
                                                     </li>
                                                     <li class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
@@ -177,224 +150,9 @@
                                                         </div>
                                                     </li>
                                                 </ul>
-                                                <p class="more-text">
-                                                    Arear view camera and lane departure warning. This car has 6 airbags fitted for your protection. It has front & rear power windows, central locking and 2nd row split folding seats. Family life is made easy in this 2016 Jaguar XF. This car has Bluetooth connectivity, side curtain airbags, subwoofer, trailer sway control, sports pedals and heads up information display. This car has forward collision alert/warning. This car comes with enough seats for 5. You can relax, this car also has park assist. It has electric power assisted steering. It has 19" alloy wheels. It has an ANCAP safety rating 4. This car has starter button. Options added to vehicle includes Seats - 2nd Row Electric Folding, Sunvisors - Rear and Sunvisors - Rear.
+                                                <p class="more-text" style="text-align:left !important">
+                                                    @Html.DisplayFor(model => model.Description)
                                                 </p>
-                                                <p class="more-text">
-                                                    This Stunning Brand New Jaguar XF 2016 comes with 3 years / Unlimited km new car warranty. This car has an ANCAP safety rating of 4 so you can be sure you are driving with utmost safety new car available to order.Family life is made easy in this 2016 Jaguar XF. This car has Bluetooth connectivity, side curtain airbags, subwoofer, trailer sway control, sports pedals and heads up information display.
-                                                </p>
-                                                <p class="more-text">
-                                                    This Stunning Brand New Jaguar XF 2016 comes with 3 years / Unlimited km new car warranty. This car has an ANCAP safety rating of 4 so you can be sure you are driving with utmost safety new car available to order.Family life is made easy in this 2016 Jaguar XF.
-                                                </p>
-                                                <a id="load-text" href="#" class="btn-show-more cs-color"> + Show More</a>
-                                            </div>
-                                            <div id="specification" class="auto-specifications detail-content">
-                                                <div class="section-title" style="text-align:left;">
-                                                    <h4>Technical Specifications</h4>
-                                                </div>
-                                                <ul class="row">
-                                                    <li class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                                                        <div class="element-title">
-                                                            <i class="cs-color icon-engine"></i>
-                                                            <span>Engine and Drive Train</span>
-                                                        </div>
-                                                    </li>
-                                                    <li class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                                                        <div class="specifications-info">
-                                                            <ul>
-                                                                <li>
-                                                                    <span>Number of cylinders</span>
-                                                                    <strong>825 KG</strong>
-                                                                </li>
-                                                                <li>
-                                                                    <span>Displacement</span>
-                                                                    <strong>KM/L</strong>
-                                                                </li>
-                                                                <li>
-                                                                    <span>Drive layout</span>
-                                                                    <strong>4 doors</strong>
-                                                                </li>
-                                                                <li>
-                                                                    <span>Horespower</span>
-                                                                    <strong>1670 mm</strong>
-                                                                </li>
-                                                                <li>
-                                                                    <span>@@rpm</span>
-                                                                    <strong>3600 mm</strong>
-                                                                </li>
-                                                            </ul>
-                                                        </div>
-                                                    </li>
-                                                    <li class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                                                        <div class="specifications-info">
-                                                            <ul>
-                                                                <li>
-                                                                    <span>Weight</span>
-                                                                    <strong>Est. 42 mpg</strong>
-                                                                </li>
-                                                                <li>
-                                                                    <span>Mileage</span>
-                                                                    <strong>ECO driving mode</strong>
-                                                                </li>
-                                                                <li>
-                                                                    <span>No of Doors</span>
-                                                                    <strong>Standard Bluetooth®</strong>
-                                                                </li>
-                                                                <li>
-                                                                    <span>Height</span>
-                                                                    <strong>Backup camera</strong>
-                                                                </li>
-                                                                <li>
-                                                                    <span>Length</span>
-                                                                    <strong>Voice recognitioN</strong>
-                                                                </li>
-                                                            </ul>
-                                                        </div>
-                                                    </li>
-                                                </ul>
-                                                <ul class="row">
-                                                    <li class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                                                        <div class="element-title">
-                                                            <i class="cs-color icon-vehicle92"></i>
-                                                            <span>Transmission</span>
-                                                        </div>
-                                                    </li>
-                                                    <li class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                                                        <div class="specifications-info">
-                                                            <ul>
-                                                                <li>
-                                                                    <span>Weiaght</span>
-                                                                    <strong>Sport gauge cluster</strong>
-                                                                </li>
-                                                                <li>
-                                                                    <span>MileagE</span>
-                                                                    <strong>Sportier driver’s position</strong>
-                                                                </li>
-                                                            </ul>
-                                                        </div>
-                                                    </li>
-                                                    <li class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                                                        <div class="specifications-info">
-                                                            <ul>
-                                                                <li>
-                                                                    <span>Weiaght</span>
-                                                                    <strong>Paddle shifters</strong>
-                                                                </li>
-                                                                <li>
-                                                                    <span>MileagE</span>
-                                                                    <strong>6-speed manual</strong>
-                                                                </li>
-                                                            </ul>
-                                                        </div>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                            <div id="accessories" class="cs-auto-accessories detail-content">
-                                                <div class="element-title">
-                                                    <i class="cs-color icon-gear42"></i>
-                                                    <span>Accessories & Options</span>
-                                                </div>
-                                                <ul>
-                                                    <li class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                                                        <div class="cs-listing-icon">
-                                                            <ul>
-                                                                <li class="available">
-
-                                                                    <span>Automatic Stability Control</span>
-                                                                </li>
-                                                                <li class="available">
-
-                                                                    <span>Tire Pressure Monitoring</span>
-                                                                </li>
-                                                                <li class="available">
-
-                                                                    <span>Bluetooth</span>
-                                                                </li>
-                                                                <li class="available">
-
-                                                                    <span>Onboard computer</span>
-                                                                </li>
-                                                                <li class="available">
-
-                                                                    <span>Mirrors in body color</span>
-                                                                </li>
-                                                                <li class="available">
-
-                                                                    <span>Outside temperature display</span>
-                                                                </li>
-                                                                <li class="available">
-
-                                                                    <span>Body-color bumpers</span>
-                                                                </li>
-                                                            </ul>
-                                                        </div>
-                                                    </li>
-                                                    <li class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                                                        <div class="cs-listing-icon">
-                                                            <ul>
-                                                                <li class="available">
-
-                                                                    <span>Car Kit</span>
-                                                                </li>
-                                                                <li class="available">
-
-                                                                    <span>Remote central locking</span>
-                                                                </li>
-                                                                <li class="not-available">
-                                                                    <span>Climate control</span>
-                                                                </li>
-                                                                <li class="available">
-
-                                                                    <span>Cruise Control</span>
-                                                                </li>
-                                                                <li class="not-available">
-                                                                    <span>Roof rails</span>
-                                                                </li>
-                                                                <li class="available">
-
-                                                                    <span>Power sunroof</span>
-                                                                </li>
-                                                                <li class="available">
-
-                                                                    <span>Power windows front</span>
-                                                                </li>
-                                                            </ul>
-                                                        </div>
-                                                    </li>
-                                                    <li class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                                                        <div class="cs-listing-icon">
-                                                            <ul>
-                                                                <li class="available">
-
-                                                                    <span>Headlight washers</span>
-                                                                </li>
-                                                                <li class="available">
-
-                                                                    <span>Leather steering wheel</span>
-                                                                </li>
-                                                                <li class="available">
-
-                                                                    <span>Alloy wheels (17)</span>
-                                                                </li>
-                                                                <li class="available">
-
-                                                                    <span>Adaptive headlights</span>
-                                                                </li>
-                                                                <li class="available">
-
-                                                                    <span>Center rear armrest</span>
-                                                                </li>
-                                                                <li class="available">
-
-                                                                    <span>Front armrest</span>
-                                                                <li class="available">
-
-                                                                    <span>Navigation</span>
-                                                                </li>
-                                                            </ul>
-                                                        </div>
-                                                    </li>
-                                                </ul>
                                             </div>
                                             <div id="contact" class="cs-contact-form detail-content">
                                                 <div class="section-title">
@@ -720,8 +478,6 @@
                                         </div>
                                     </div>
                                 </div>
-
-
                             </div>
                             <div class="auto-detail-filter">
                                 <div class="element-title">
@@ -780,7 +536,6 @@
             </div>
             <div class="page-section" style="margin-bottom:50px">
                 <div id="location" class="cs-map loader maps">
-                    <iframe height='450' src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d155419.5727920435!2d13.426141949999993!3d52.507541899999964!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47a84e2b719cf2f3%3A0x8dba8fa58c57d186!2sBerlin!5e0!3m2!1sen!2sde!4v1411014193840">  </iframe>
                 </div>
             </div>
             <div class="page-section" style="margin-bottom:30px;">
@@ -935,13 +690,52 @@
     <script src="~/Files/scripts/slick.js"></script>
     <script src="~/Files/scripts/bootstrap-slider.js"></script>
     <script src="~/Files/scripts/echo.js"></script>
+    <script src="~/scripts/jquery.unobtrusive-ajax.min.js"></script>
     <!-- Put all Functions in functions.js -->
     <script src="~/Files/scripts/functions.js"></script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBbOrZwDc-kz9jl_v2-rbweDtludOEZ7VI&sensor=false"></script>
     <script>
         $(document).ready(function () {
             setInterval(function () {
                 $('.slick-next').click();
             }, 3000);
+            
+            var amount = document.getElementById("RPrice").textContent.replace(/\D/g, "");
+
+            var settings = {
+                "url": "https://api.exchangerate.host/convert?from=PKR&to=USD&amount=" + amount,
+                "method": "GET",
+                "timeout": 0,
+            };
+
+            $.ajax(settings).done(function (response) {
+                document.getElementById("DollarPrice").textContent = "$" + response.result.toFixed(2);
+            });
+
+            success();
+
+            function success() {
+                var lat = @Model.Latitude;
+                var long = @Model.Longitude;
+                var area = $("#ELocated")[0].innerText;
+                var myLatlng = new google.maps.LatLng(lat, long);
+
+                var myOptions = {
+                    center: myLatlng,
+                    zoom: 12,
+                    mapTypeId: google.maps.MapTypeId.ROADMAP
+                };
+
+                var map = new google.maps.Map(document.getElementById("location"), myOptions);
+                var marker = new google.maps.Marker({
+                    position: myLatlng,
+                    title: "lat: " + lat + " long: " + long
+                });
+
+                marker.setMap(map);
+                var infowindow = new google.maps.InfoWindow({ content: "<b>Address Location: </b>" + area +"" });
+                infowindow.open(map, marker);
+            }
         })
     </script>
 </body>

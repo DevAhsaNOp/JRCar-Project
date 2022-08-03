@@ -151,7 +151,7 @@ namespace JRCar.WebApp.Controllers
         }
 
         [AcceptVerbs(HttpVerbs.Get)]
-        [Authorize(Roles = "User")]
+        [Authorize]
         public ActionResult CarDetail(int AdID)
         {
             var carDetail = RepoObj1.GetUserAdsDetail(AdID);

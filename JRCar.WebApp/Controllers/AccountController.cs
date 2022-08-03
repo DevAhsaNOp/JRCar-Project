@@ -22,9 +22,9 @@ namespace JRCar.WebApp.Controllers
             RepoObj = new UserRepo();
         }
 
-        public JsonResult IsEmailExist(string Email)
+        public JsonResult IsEmailExist(string SignUpEmail)
         {
-            return Json(!RepoObj.IsEmailExist(Email),JsonRequestBehavior.AllowGet);   
+            return Json(!RepoObj.IsEmailExist(SignUpEmail),JsonRequestBehavior.AllowGet);   
         }
 
         [AcceptVerbs(HttpVerbs.Get)]
@@ -55,6 +55,7 @@ namespace JRCar.WebApp.Controllers
                 {
                     if (file.ContentLength <= 10000000)
                     {
+                        user.Email = user.SignUpEmail;
                         RepoObj.InsertUser(user);
                         file.SaveAs(path);
                         TempData["SuccessMsg"] = "Account Created Successfully!";
