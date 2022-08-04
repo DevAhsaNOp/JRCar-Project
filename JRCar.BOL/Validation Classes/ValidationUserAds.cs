@@ -63,6 +63,9 @@ namespace JRCar.BOL.Validation_Classes
         [Display(Name = "Name")]
         public string UserName { get; set; }
 
+        [Display(Name = "Member Since")]
+        public System.DateTime UserCreatedOn { get; set; }
+
         [Display(Name = "Email")]
         public string Email { get; set; }
 

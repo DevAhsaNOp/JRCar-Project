@@ -54,7 +54,8 @@ namespace JRCar.DAL.DBLayer
                 UserName = s.tblUser.Name,
                 Email = s.tblUser.Email,
                 UserRole = s.tblUser.tblRole.Role,
-                Number = s.tblUser.Number
+                Number = s.tblUser.Number,
+                UserCreatedOn = s.tblUser.CreatedOn
             }).FirstOrDefault();
 
             if (user != null)

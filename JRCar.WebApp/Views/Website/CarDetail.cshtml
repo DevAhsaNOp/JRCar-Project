@@ -46,6 +46,15 @@
         .gm-ui-hover-effect{
             display: none !important;
         }
+
+        .owner-detail-head {
+            text-align: center !important;
+            font-size: 18px !important;
+            font-weight: 500 !important;
+            border-bottom: 1px solid #d5d5d5 !important;
+            padding-bottom: 10px !important;
+            margin-bottom: 10px !important;
+        }
     </style>
 </head>
 <body class="wp-automobile single-page">
@@ -480,8 +489,11 @@
                                 </div>
                             </div>
                             <div class="auto-detail-filter">
-                                <div class="element-title">
-                                    <h6><i class="cs-bgcolor icon-line-graph"></i> Financing calculator</h6>
+                                <div class="owner-detail-head">Seller Information</div>
+                                <div class="element-title" style="text-align:center !important;">
+                                    <img src="@Url.Content(Model.UserImage.ToString())" alt="Person Image" style="width:70px !important; height:70px !important;border-radius:50% !important;" />
+                                    <h6>@Model.UserName</h6>
+                                    <h6 style="font-size: 10px !important;">Member since: @Model.UserCreatedOn.ToString("MMM d,yyyy")</h6>
                                 </div>
                                 <div class="auto-filter">
                                     <form>
@@ -699,16 +711,35 @@
             setInterval(function () {
                 $('.slick-next').click();
             }, 3000);
-            
-            var amount = document.getElementById("RPrice").textContent.replace(/\D/g, "");
 
+            const currentTimezoneOffset = 8; // UTC+8:00 timezone, change it
+
+            Date.prototype.yyyymmdd = function () {
+                return [
+                    this.getFullYear(),
+                    (this.getMonth() + 1).toString().padStart(2, '0'), // getMonth() is zero-based
+                    this.getDate().toString().padStart(2, '0')
+                ].join('-');
+            };
+
+            function getTodayDateStr() {
+                const d = new Date();
+                // console.log(d);
+                const d2 = new Date(d.getTime() + (d.getTimezoneOffset() + currentTimezoneOffset * 60) * 60 * 1000);
+                // console.log(d2, d2.yyyymmdd());
+                return d2.yyyymmdd();
+            }
+
+            var amount = document.getElementById("RPrice").textContent.replace(/\D/g, "");
+            console.log(amount);
             var settings = {
-                "url": "https://api.exchangerate.host/convert?from=PKR&to=USD&amount=" + amount,
+                "url": "https://api.exchangerate.host/convert?from=PKR&to=USD&amount=" + amount + "&date=" + getTodayDateStr(),
                 "method": "GET",
                 "timeout": 0,
             };
 
             $.ajax(settings).done(function (response) {
+                console.log(response);
                 document.getElementById("DollarPrice").textContent = "$" + response.result.toFixed(2);
             });
 
