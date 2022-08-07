@@ -1,0 +1,113 @@
+﻿@model IEnumerable<JRCar.BOL.Validation_Classes.ValidationUserAds>
+
+@{
+    ViewBag.Title = "Myvehicles";
+    Layout = "~/Views/Shared/_WebLayout.cshtml";
+}
+
+@if (User.Identity.IsAuthenticated)
+{
+    <div class="page-section" style="background: url(../../Files/extra-images/user-bg-img.jpg) no-repeat; background-size: cover; min-height: 175px; margin-top: -30px; margin-bottom: -129px;"></div>
+    <div class="page-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="cs-user-account-holder">
+                        <div class="row" id="DivUpdate">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <ul class="cs-user-accounts-list">
+                                    <li class="active"><a href="@Url.Action("Myvehicles","Website")">My vehicles</a></li>
+                                    <li><a href="user-car-shortlist.html">Shortlisted</a></li>
+                                    <li>
+                                        <a href="@Url.Action("ProfileSettings","Website")">Profile Settings</a>
+                                    </li>
+                                    <li><a href="@Url.Action("PostNewVehicles","Website")">Post a vehicles</a></li>
+                                    <li><a href="@Url.Action("Logout", "Account")">Sign Out</a></li>
+                                </ul>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <div class="cs-user-section-title">
+                                    <h4>Posted vehicles</h4>
+                                    <ul>
+                                        <li>
+                                            <a href="#" class="cs-active-btn">Active</a>
+                                            <ul><li><a href="#">Expired</a></li> <li><a href="#">Removed</a></li></ul>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <ul class="cs-featurelisted-car">
+                                @foreach (var item in Model)
+                                {
+                                    <li class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <div class="cs-media">
+                                            @if (item.CarImage != null)
+                                            {
+                                                string path = Server.MapPath("" + item.CarImage + "");
+                                                string[] FolderName = item.CarImage.Split('/');
+                                                string[] imageFiles = Directory.GetFiles(path);
+                                                List<string> images = new List<string>();
+                                                foreach (var jha in imageFiles)
+                                                {
+                                                    images.Add(FolderName[2] + "/" + Path.GetFileName(jha));
+                                                }
+                                                <figure><a href="#"><img src="~/uploads/@images[0]" alt="Ad Image" style=" width:-webkit-fill-available !important;" /></a></figure>
+                                            }
+                                        </div>
+                                        <div class="cs-text">
+                                            <h6><a href="#">@item.Title</a></h6>
+                                            <div class="post-options">
+                                                <span>Expires on: <em>@item.ExpiryDate.ToString("dd MMMM yyyy")</em></span>
+                                            </div>
+                                            <div class="cs-post-types">
+                                                <div class="cs-post-list">
+                                                    <div class="cs-edit-post">
+                                                        <a href="#" data-toggle="tooltip" data-placement="top" title="Edit Post"><i class="icon-edit2"></i></a>
+                                                        <a href="#" data-toggle="tooltip" data-placement="top" title="Delete"><i class="icon-trash-o"></i></a>
+                                                    </div>
+                                                    <div class="cs-list">
+                                                        <a href="#" data-toggle="tooltip" data-placement="top" title="Share"><i class="icon-forward4"></i></a>
+                                                        <a href="#" data-toggle="tooltip" data-placement="top" title="Edit Post"><i class="icon-edit2"></i></a>
+                                                        <a href="#" data-toggle="tooltip" data-placement="top" title="Delete"><i class="icon-trash-o"></i></a>
+                                                    </div>
+                                                </div>
+                                                <span class="cs-default-btn" style="color:#4aa818; border:1px solid #4aa818;">Active</span>
+                                            </div>
+                                        </div>
+                                    </li>
+                                }
+                            </ul>
+                            <div class="cs-load-more">
+                                <div id="loader" style="display: none!important;">
+                                    <img src="~/Content/Spinner-1s-200px.gif" alt="Please Wait......" width="100" height="100" />
+                                </div>
+                                @Ajax.ActionLink("Load more", "LoadVehicle", "Website", new AjaxOptions()
+                                {
+                                    HttpMethod = "POST",
+                                    InsertionMode = InsertionMode.Replace,
+                                    UpdateTargetId = "DivUpdate",
+                                    LoadingElementId = "loader"
+                                }, new { @class = "loadmore-btn" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="page-section" style="background:#19171a;">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="cs-ad" style="text-align:center; padding:55px 0 32px;">
+                        <div class="cs-media">
+                            <figure>
+                                <img src="~/Files/extra-images/cs-ad-img.jpg" alt="" />
+                            </figure>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}

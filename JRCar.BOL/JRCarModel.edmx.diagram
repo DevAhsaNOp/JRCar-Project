@@ -21,7 +21,7 @@
         <EntityTypeShape EntityType="jrcarModel.tblNotification" Width="1.5" PointX="9.75" PointY="24.5" IsExpanded="true" />
         <EntityTypeShape EntityType="jrcarModel.tblRole" Width="1.5" PointX="0.75" PointY="19.75" IsExpanded="true" />
         <EntityTypeShape EntityType="jrcarModel.tblSearchHist" Width="1.5" PointX="5.25" PointY="19" IsExpanded="true" />
-        <EntityTypeShape EntityType="jrcarModel.tblShowroom" Width="1.5" PointX="5.25" PointY="27.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="jrcarModel.tblShowroom" Width="1.75" PointX="5.25" PointY="27.375" IsExpanded="true" />
         <EntityTypeShape EntityType="jrcarModel.tblToken" Width="1.5" PointX="5.25" PointY="23" IsExpanded="true" />
         <EntityTypeShape EntityType="jrcarModel.tblUnion" Width="1.5" PointX="3" PointY="11.5" IsExpanded="true" />
         <EntityTypeShape EntityType="jrcarModel.tblUserAddImage" Width="1.5" PointX="7.5" PointY="34.625" IsExpanded="true" />
@@ -48,14 +48,7 @@
         <AssociationConnector Association="jrcarModel.FK_dbo_tblUserAdds_dbo_tblUsers_UserID" ManuallyRouted="false" />
         <EntityTypeShape EntityType="jrcarModel.tblAddress" Width="1.5" PointX="5.375" PointY="6.75" />
         <AssociationConnector Association="jrcarModel.FK_tblCars_tblAddress" />
-        <AssociationConnector Association="jrcarModel.FK_tblShowrooms_tblAddress" ManuallyRouted="true" >
-          <ConnectorPoint PointX="5.3830759230769214" PointY="9.3071907552083335" />
-          <ConnectorPoint PointX="4.9768259230769232" PointY="9.7134407552083317" />
-          <ConnectorPoint PointX="4.875" PointY="9.7134407552083317" />
-          <ConnectorPoint PointX="4.875" PointY="26.998847153846153" />
-          <ConnectorPoint PointX="4.8785744349011217" PointY="27.002421588747278" />
-          <ConnectorPoint PointX="4.9964255650988791" PointY="27.120272718945035" />
-          <ConnectorPoint PointX="5.2511528461538459" PointY="27.375" />
+        <AssociationConnector Association="jrcarModel.FK_tblShowrooms_tblAddress" ManuallyRouted="false" >
         </AssociationConnector>
         <AssociationConnector Association="jrcarModel.FK_tblUserAdds_tblAddress" />
         <EntityTypeShape EntityType="jrcarModel.tblCity" Width="1.5" PointX="11.875" PointY="1" />

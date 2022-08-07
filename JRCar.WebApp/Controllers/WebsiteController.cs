@@ -32,6 +32,7 @@ namespace JRCar.WebApp.Controllers
 
         [AcceptVerbs(HttpVerbs.Get)]
         [Authorize(Roles = "User")]
+        [Route("Ads/PostNewVehicles")]
         public ActionResult PostNewVehicles()
         {
             var AllStates = AddressRepoObj.GetAllState();
@@ -151,8 +152,8 @@ namespace JRCar.WebApp.Controllers
         }
 
         [AcceptVerbs(HttpVerbs.Get)]
-        [Authorize]
-        public ActionResult CarDetail(int AdID)
+        [Route("Ads/{AdID}")]
+        public ActionResult CarDetail(string AdID)
         {
             var carDetail = RepoObj1.GetUserAdsDetail(AdID);
             if (carDetail == null)
@@ -176,15 +177,25 @@ namespace JRCar.WebApp.Controllers
         }
 
         [AcceptVerbs(HttpVerbs.Get)]
+        [Authorize(Roles = "User")]
+        [Route("Myvehicles")]
         public ActionResult Myvehicles()
         {
-            return View();
+            var id = Convert.ToInt32(Session["Id"]);
+            int rows = 2;
+            Session["rows"] = rows;
+            var reas = RepoObj1.GetAllUserAds(id).Take(rows);
+            return View(reas);
         }
-
-        [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult Myvehicles(ImageFile objImage, ValidationUserAds userAds)
+        
+        [Authorize(Roles = "User")]
+        public ActionResult LoadVehicle()
         {
-            return View();
+            var id = Convert.ToInt32(Session["Id"]);
+            var rows = Convert.ToInt32(Session["rows"]) + 2;
+            var reas = RepoObj1.GetAllUserAds(id).Take(rows);
+            Session["rows"] = rows;
+            return PartialView("_LoadVehicle", reas);
         }
 
         [AcceptVerbs(HttpVerbs.Get)]

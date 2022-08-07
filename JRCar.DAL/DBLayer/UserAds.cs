@@ -1,5 +1,6 @@
 ﻿using JRCar.BOL;
 using JRCar.BOL.Validation_Classes;
+using JRCar.DAL.UserDefine;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,10 +22,31 @@ namespace JRCar.DAL.DBLayer
         {
             return _context.tblUserAdds.Where(x => x.Isactive == true).ToList();
         }
-        
+
         public IEnumerable<tblUserAdd> GetAllUserInActiveAds()
         {
             return _context.tblUserAdds.Where(x => x.Isactive == false).ToList();
+        }
+        
+        public IEnumerable<tblUserAdd> GetAllUserActiveAds(int UserID)
+        {
+            return _context.tblUserAdds.Where(x => x.Isactive == true && x.UserID == UserID).ToList();
+        }
+
+        public IEnumerable<tblUserAdd> GetAllUserInActiveAds(int UserID)
+        {
+            return _context.tblUserAdds.Where(x => x.Isactive == false && x.UserID == UserID).ToList();
+        }
+
+        public IEnumerable<ValidationUserAds> GetAllUserAds(int UserID)
+        {
+            return _context.tblUserAdds.Where(x => x.UserID == UserID).Select(s => new ValidationUserAds()
+            {
+                Title = s.Title,
+                Isactive = s.Isactive,
+                ExpiryDate = s.ExpiryDate,
+                CarImage = s.tblUserAddImages.Select(a => a.Image).FirstOrDefault(),
+            }).ToList();
         }
 
         public ValidationUserAds GetUserAdsDetail(int AdsId)
@@ -66,19 +88,64 @@ namespace JRCar.DAL.DBLayer
                 return null;
         }
 
-        public int InsertUserAds(tblUserAdd model)
+        public ValidationUserAds GetUserAdsDetail(string AdsId)
+        {
+            var user = _context.tblUserAdds.Where(x => x.UserAdsURL == AdsId).Select(s => new ValidationUserAds()
+            {
+                /*---Car Details---*/
+                Model = s.Model,
+                Year = s.Year,
+                Condition = s.Condition,
+                Title = s.Title,
+                Description = ((s.Description == null) ? "" : s.Description),
+                Price = s.Price,
+                Latitude = ((s.Latitude == null) ? "" : s.Latitude.ToString()),
+                Longitude = ((s.Longitude == null) ? "" : s.Longitude.ToString()),
+                State = s.tblAddress.State,
+                City = s.tblAddress.City,
+                Area = s.tblAddress.Area,
+                CompleteAddress = ((s.tblAddress.CompleteAddress == null) ? "Not Available" : s.tblAddress.CompleteAddress),
+                Isactive = s.Isactive,
+                CreatedOn = s.CreatedOn,
+                ExpiryDate = s.ExpiryDate,
+                CarImage = s.tblUserAddImages.Select(a => a.Image).FirstOrDefault(),
+
+                /*---User Details---*/
+                UserImage = s.tblUser.Image,
+                UserName = s.tblUser.Name,
+                Email = s.tblUser.Email,
+                UserRole = s.tblUser.tblRole.Role,
+                Number = s.tblUser.Number,
+                UserCreatedOn = s.tblUser.CreatedOn
+            }).FirstOrDefault();
+
+            if (user != null)
+            {
+                return user;
+            }
+            else
+                return null;
+        }
+
+        public int InsertUserAds(tblUserAdd model, string city)
         {
             try
             {
                 if (model != null)
                 {
-                    model.Isactive = true;
-                    model.Isarchive = false;
-                    model.CreatedOn = DateTime.Now;
-                    model.ExpiryDate = DateTime.Now.AddMonths(2);
-                    _context.tblUserAdds.Add(model);
-                    Save();
-                    return model.ID;
+                    model.UserAdsURL = UserAdsURLGenerate(model.Title, model.Year, city);
+                    if (model.UserAdsURL != null)
+                    {
+                        model.Isactive = true;
+                        model.Isarchive = false;
+                        model.CreatedOn = DateTime.Now;
+                        model.ExpiryDate = DateTime.Now.AddMonths(2);
+                        _context.tblUserAdds.Add(model);
+                        Save();
+                        return model.ID;
+                    }
+                    else
+                        return 0;
                 }
                 else
                     return 0;
@@ -116,14 +183,14 @@ namespace JRCar.DAL.DBLayer
                 throw ex;
             }
         }
-        
+
         public bool InActiveUserAds(int AdID)
         {
             try
             {
                 if (AdID > 0)
                 {
-                    var reas = _context.tblUserAdds.Where(x => x.ID == AdID).FirstOrDefault(); 
+                    var reas = _context.tblUserAdds.Where(x => x.ID == AdID).FirstOrDefault();
                     reas.Isactive = false;
                     reas.Isarchive = true;
                     reas.CreatedOn = GetUserAdsDetail(reas.ID).CreatedOn;
@@ -140,14 +207,14 @@ namespace JRCar.DAL.DBLayer
                 throw ex;
             }
         }
-        
+
         public bool ReActiveUserAds(int AdID)
         {
             try
             {
                 if (AdID > 0)
                 {
-                    var reas = _context.tblUserAdds.Where(x => x.ID == AdID).FirstOrDefault(); 
+                    var reas = _context.tblUserAdds.Where(x => x.ID == AdID).FirstOrDefault();
                     reas.Isactive = true;
                     reas.Isarchive = false;
                     reas.CreatedOn = GetUserAdsDetail(reas.ID).CreatedOn;
@@ -200,6 +267,20 @@ namespace JRCar.DAL.DBLayer
             catch (Exception ex)
             {
                 throw ex;
+            }
+        }
+
+        public string UserAdsURLGenerate(string AdTitle, string Year, string CityLocation)
+        {
+            if (AdTitle != null && Year != null && CityLocation != null)
+            {
+                string URL = AdTitle + "-" + Year + "-for-sale-in-" + CityLocation + "-" + OTPGenerator.GenerateRandomOTP() + DateTime.Now.ToString("ddMMyy") + DateTime.Now.Millisecond.ToString() + DateTime.Now.Minute.ToString() + DateTime.Now.Second.ToString();
+                var rURL = URL.Replace(" ", "-");
+                return rURL;
+            }
+            else
+            {
+                return null;
             }
         }
     }

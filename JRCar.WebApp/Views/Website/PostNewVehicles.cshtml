@@ -36,7 +36,7 @@
                         <div class="row">
                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                 <ul class="cs-user-accounts-list">
-                                    <li><a href="user-car-listing.html">My vehicles</a></li>
+                                    <li><a href="@Url.Action("Myvehicles","Website")">My vehicles</a></li>
                                     <li><a href="user-car-shortlist.html">Shortlisted</a></li>
                                     <li><a href="@Url.Action("ProfileSettings", "Website")">Profile Settings</a></li>
                                     <li class="active"><a href="@Url.Action("PostNewVehicles", "Website")">Post a vehicles</a></li>
@@ -172,7 +172,7 @@
                                     </div>
                                     <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
                                         <div class="cs-field">
-                                            @Html.DropDownListFor(model => model.State, (IEnumerable<SelectListItem>)ViewBag.State,"---Select State---", htmlAttributes: new { @class = "form-control" })
+                                            @Html.DropDownListFor(model => model.State, (IEnumerable<SelectListItem>)ViewBag.State, "---Select State---", htmlAttributes: new { @class = "form-control" })
                                         </div>
                                     </div>
                                 </div>

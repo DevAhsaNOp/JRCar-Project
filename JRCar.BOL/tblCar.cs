@@ -44,6 +44,7 @@ namespace JRCar.BOL
         public string Description { get; set; }
         public string Transmission { get; set; }
         public Nullable<int> AddressId { get; set; }
+        public string CarsURL { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tblAppointment> tblAppointments { get; set; }

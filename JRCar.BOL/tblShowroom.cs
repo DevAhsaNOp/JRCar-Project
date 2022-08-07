@@ -41,6 +41,7 @@ namespace JRCar.BOL
         public string Token { get; set; }
         public string OTP { get; set; }
         public Nullable<int> AddressId { get; set; }
+        public string ShowroomURL { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tblBlog> tblBlogs { get; set; }

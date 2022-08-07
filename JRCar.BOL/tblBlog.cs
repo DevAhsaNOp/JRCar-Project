@@ -27,6 +27,7 @@ namespace JRCar.BOL
         public bool Isactive { get; set; }
         public bool Isarchive { get; set; }
         public string Path { get; set; }
+        public string BlogsURL { get; set; }
     
         public virtual tblShowroom tblShowroom { get; set; }
     }

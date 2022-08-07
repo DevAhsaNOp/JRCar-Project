@@ -35,6 +35,7 @@ namespace JRCar.BOL
         public Nullable<int> AddressId { get; set; }
         public Nullable<bool> Isactive { get; set; }
         public Nullable<bool> Isarchive { get; set; }
+        public string UserAdsURL { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tblUserAddImage> tblUserAddImages { get; set; }

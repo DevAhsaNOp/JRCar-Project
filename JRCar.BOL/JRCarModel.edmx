@@ -100,6 +100,7 @@
           <Property Name="Isactive" Type="bit" Nullable="false" />
           <Property Name="Isarchive" Type="bit" Nullable="false" />
           <Property Name="Path" Type="nvarchar(max)" />
+          <Property Name="BlogsURL" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="tblCarFeatures">
           <Key>
@@ -198,6 +199,7 @@
           <Property Name="Description" Type="nvarchar(max)" />
           <Property Name="Transmission" Type="nvarchar(max)" />
           <Property Name="AddressId" Type="int" />
+          <Property Name="CarsURL" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="tblCity">
           <Key>
@@ -294,6 +296,7 @@
           <Property Name="Token" Type="nvarchar(max)" />
           <Property Name="OTP" Type="nvarchar(max)" />
           <Property Name="AddressId" Type="int" />
+          <Property Name="ShowroomURL" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="tblState">
           <Key>
@@ -359,6 +362,7 @@
           <Property Name="AddressId" Type="int" />
           <Property Name="Isactive" Type="bit" />
           <Property Name="Isarchive" Type="bit" />
+          <Property Name="UserAdsURL" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="tblUsers">
           <Key>
@@ -945,6 +949,7 @@
           <Property Name="Isarchive" Type="Boolean" Nullable="false" />
           <Property Name="Path" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="tblShowroom" Relationship="Self.FK_dbo_tblBlogs_dbo_tblShowrooms_Showrooms_ID" FromRole="tblBlogs" ToRole="tblShowrooms" />
+          <Property Name="BlogsURL" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="tblCarFeature">
           <Key>
@@ -1053,6 +1058,7 @@
           <NavigationProperty Name="tblFavAdds" Relationship="Self.FK_dbo_tblFavAdds_dbo_tblCars_CarID" FromRole="tblCars" ToRole="tblFavAdds" />
           <Property Name="AddressId" Type="Int32" />
           <NavigationProperty Name="tblAddress" Relationship="jrcarModel.FK_tblCars_tblAddress" FromRole="tblCar" ToRole="tblAddress" />
+          <Property Name="CarsURL" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="tblClient">
           <Key>
@@ -1148,6 +1154,7 @@
           <NavigationProperty Name="tblUser" Relationship="Self.FK_dbo_tblShowrooms_dbo_tblUsers_tblUser_ID" FromRole="tblShowrooms" ToRole="tblUsers" />
           <Property Name="AddressId" Type="Int32" />
           <NavigationProperty Name="tblAddress" Relationship="jrcarModel.FK_tblShowrooms_tblAddress" FromRole="tblShowroom" ToRole="tblAddress" />
+          <Property Name="ShowroomURL" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="tblToken">
           <Key>
@@ -1212,6 +1219,7 @@
           <NavigationProperty Name="tblAddress" Relationship="jrcarModel.FK_tblUserAdds_tblAddress" FromRole="tblUserAdd" ToRole="tblAddress" />
           <Property Name="Isactive" Type="Boolean" />
           <Property Name="Isarchive" Type="Boolean" />
+          <Property Name="UserAdsURL" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="tblUser">
           <Key>
@@ -1834,6 +1842,7 @@
           <EntitySetMapping Name="tblBlogs">
             <EntityTypeMapping TypeName="jrcarModel.tblBlog">
               <MappingFragment StoreEntitySet="tblBlogs">
+                <ScalarProperty Name="BlogsURL" ColumnName="BlogsURL" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="BlogText" ColumnName="BlogText" />
                 <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
@@ -1927,6 +1936,7 @@
           <EntitySetMapping Name="tblCars">
             <EntityTypeMapping TypeName="jrcarModel.tblCar">
               <MappingFragment StoreEntitySet="tblCars">
+                <ScalarProperty Name="CarsURL" ColumnName="CarsURL" />
                 <ScalarProperty Name="AddressId" ColumnName="AddressId" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="CarModelID" ColumnName="CarModelID" />
@@ -2017,6 +2027,7 @@
           <EntitySetMapping Name="tblShowrooms">
             <EntityTypeMapping TypeName="jrcarModel.tblShowroom">
               <MappingFragment StoreEntitySet="tblShowrooms">
+                <ScalarProperty Name="ShowroomURL" ColumnName="ShowroomURL" />
                 <ScalarProperty Name="AddressId" ColumnName="AddressId" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="Image" ColumnName="Image" />
@@ -2083,6 +2094,7 @@
           <EntitySetMapping Name="tblUserAdds">
             <EntityTypeMapping TypeName="jrcarModel.tblUserAdd">
               <MappingFragment StoreEntitySet="tblUserAdds">
+                <ScalarProperty Name="UserAdsURL" ColumnName="UserAdsURL" />
                 <ScalarProperty Name="Isarchive" ColumnName="Isarchive" />
                 <ScalarProperty Name="Isactive" ColumnName="Isactive" />
                 <ScalarProperty Name="AddressId" ColumnName="AddressId" />

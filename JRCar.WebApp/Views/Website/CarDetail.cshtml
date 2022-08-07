@@ -43,14 +43,14 @@
             font-weight: 800 !important;
         }
 
-        .gm-ui-hover-effect{
+        .gm-ui-hover-effect {
             display: none !important;
         }
 
         .owner-detail-head {
             text-align: center !important;
             font-size: 18px !important;
-            font-weight: 500 !important;
+            font-weight: 600 !important;
             border-bottom: 1px solid #d5d5d5 !important;
             padding-bottom: 10px !important;
             margin-bottom: 10px !important;
@@ -491,55 +491,11 @@
                             <div class="auto-detail-filter">
                                 <div class="owner-detail-head">Seller Information</div>
                                 <div class="element-title" style="text-align:center !important;">
-                                    <img src="@Url.Content(Model.UserImage.ToString())" alt="Person Image" style="width:70px !important; height:70px !important;border-radius:50% !important;" />
-                                    <h6>@Model.UserName</h6>
-                                    <h6 style="font-size: 10px !important;">Member since: @Model.UserCreatedOn.ToString("MMM d,yyyy")</h6>
-                                </div>
-                                <div class="auto-filter">
-                                    <form>
-                                        <ul>
-                                            <li class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                                <div class="auto-field">
-                                                    <label>Vehicle price <span class="cs-color"> (&#x24;)</span></label>
-                                                    <select data-placeholder="$25,000" style="width:100%;" class="chosen-select" tabindex="5">
-                                                        <option>$30,000</option>
-                                                        <option>$35,000</option>
-                                                        <option>$45,000</option>
-                                                        <option>$55,000</option>
-                                                    </select>
-                                                </div>
-                                            </li>
-                                            <li class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                                <div class="auto-field">
-                                                    <label>Interest rate <span class="cs-color"> (&#x25;)</span></label>
-                                                    <select data-placeholder="50%" style="width:100%;" class="chosen-select" tabindex="5">
-                                                        <option>30%</option>
-                                                        <option>35%</option>
-                                                        <option>45%</option>
-                                                        <option>55%</option>
-                                                    </select>
-                                                </div>
-                                            </li>
-                                            <li class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                                <div class="auto-field">
-                                                    <label>Period <span class="cs-color"> (month)</span></label>
-                                                    <span id="ex6CurrentSliderValLabel"><span id="ex6SliderVal">9</span> Months</span>
-                                                    <input id="ex6" type="text" data-slider-min="0" data-slider-max="12" data-slider-step="1" data-slider-value="9" />
-                                                </div>
-                                            </li>
-                                            <li class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                                <div class="auto-field">
-                                                    <label>Down Payment<span class="cs-color"> (&#x25;)</span></label>
-                                                    <input type="text" placeholder="$326,500">
-                                                </div>
-                                            </li>
-                                            <li class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                                <div class="auto-field">
-                                                    <input class="cs-bgcolor" type="submit" value="Calculate">
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </form>
+                                    <img src="@Url.Content(Model.UserImage.ToString())" alt="Person Image" style="width: 70px !important; height: 70px !important; border-radius: 50% !important; margin-bottom: 10px !important;" />
+                                    <h6 style="user-select: none !important; margin: 0 !important;">@Model.UserName</h6>
+                                    <h6 style="user-select: none !important; margin: 0 !important; font-size: 11px !important; font-family: 'Roboto' !important;">Member since: @Model.UserCreatedOn.ToString("MMM d, yyyy")</h6>
+                                    <h6 style="font-size: 13px !important; font-family: 'Roboto' !important;font-weight:600 !important;" id="PhoneNumber"></h6>
+                                    <input type="button" name="Number" id="btnShow" style="border-radius: 2px !important;" value="Show Phone Number" class="btn btn-success" />
                                 </div>
                             </div>
                         </aside>
@@ -705,7 +661,7 @@
     <script src="~/scripts/jquery.unobtrusive-ajax.min.js"></script>
     <!-- Put all Functions in functions.js -->
     <script src="~/Files/scripts/functions.js"></script>
-    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBbOrZwDc-kz9jl_v2-rbweDtludOEZ7VI&sensor=false"></script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB8fdkR1Jhqr932rD0XtkiiJS85LLHEplc&sensor=false"></script>
     <script>
         $(document).ready(function () {
             setInterval(function () {
@@ -743,6 +699,31 @@
                 document.getElementById("DollarPrice").textContent = "$" + response.result.toFixed(2);
             });
 
+            $("#btnShow").click(function (e) {
+                var userAuthorized = @User.Identity.IsAuthenticated.ToString().ToLower();
+                if (userAuthorized) {
+                    $("#PhoneNumber").html("Phone Number: 0" + @Model.Number);
+                    $("#btnShow").hide();
+                }
+                else {
+                    window.location.href = "@Url.Action("SignIn", "Account")";
+                    SetTempData();
+                }
+            });
+
+            function SetTempData() {
+                $.ajax({
+                    type: "POST",
+                    url: '/Account/SetTempData',
+                    data: '{ value: "Please Sign In to see a Phone number..."}',
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "text",
+                    success: function (r) {
+                        console.log(r);
+                    }
+                });
+            }
+
             success();
 
             function success() {
@@ -753,7 +734,7 @@
 
                 var myOptions = {
                     center: myLatlng,
-                    zoom: 12,
+                    zoom: 15,
                     mapTypeId: google.maps.MapTypeId.ROADMAP
                 };
 

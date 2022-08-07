@@ -3227,6 +3227,8 @@
     <Content Include="Views\Shared\DisplayCity.cshtml" />
     <Content Include="Views\Shared\DisplayZone.cshtml" />
     <Content Include="Views\Website\CarDetail.cshtml" />
+    <Content Include="Views\Website\Myvehicles.cshtml" />
+    <Content Include="Views\Shared\_LoadVehicle.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -49,11 +49,11 @@ namespace JRCar.WebApp.Controllers
                     user.Image = "~/Images/" + _filename;
                     if (extension.ToLower() == ".jpg" || extension.ToLower() == ".jpeg" || extension.ToLower() == ".png")
                     {
-                        if (file.ContentLength <= 1000000)
+                        var role = Session["Role"].ToString();
+                        user.tblRoleName = role;
+                        if (file.ContentLength <= 10000000)
                         {
                             user.ID = (int)Session["Id"];
-                            var role = Session["Role"].ToString();
-                            user.tblRoleName = role;
                             user.UpdatedBy = (int)Session["Id"];
                             var IsUpdated = RepoObj.UpdateUser(user);
                             string oldImgPath = Request.MapPath(Session["Image"].ToString());
@@ -80,11 +80,42 @@ namespace JRCar.WebApp.Controllers
                                     }
                                 }
                             }
+                            else
+                            {
+                                if (role == "Admin" || role == "Union" || role == "Showroom")
+                                {
+                                    TempData["ErrorMsg"] = "Error occured on login Account!";
+                                    return View("UpdateProfile");
+                                }
+                                else if (role == "User")
+                                {
+                                    TempData["ErrorMsg"] = "Error occured on login Account!";
+                                    return RedirectToAction("ProfileSettings", "Website");
+                                }
+                                else
+                                {
+                                    TempData["ErrorMsg"] = "Error occured on login Account!";
+                                    return RedirectToAction("SignIn");
+                                }
+                            }
                         }
                         else
                         {
-                            TempData["ErrorMsg"] = "Image size is very large";
-                            return View("UpdateProfile");
+                            if (role == "Admin" || role == "Union" || role == "Showroom")
+                            {
+                                TempData["ErrorMsg"] = "Image size is very large";
+                                return View("UpdateProfile");
+                            }
+                            else if (role == "User")
+                            {
+                                TempData["ErrorMsg"] = "Image size is very large";
+                                return RedirectToAction("ProfileSettings", "Website");
+                            }
+                            else
+                            {
+                                TempData["ErrorMsg"] = "Error occured on login Account!";
+                                return RedirectToAction("SignIn");
+                            }
                         }
                     }
                 }
@@ -106,6 +137,24 @@ namespace JRCar.WebApp.Controllers
                         }
                         else if (role == "User")
                         {
+                            return RedirectToAction("ProfileSettings", "Website");
+                        }
+                        else
+                        {
+                            TempData["ErrorMsg"] = "Error occured on login Account!";
+                            return RedirectToAction("SignIn");
+                        }
+                    }
+                    else
+                    {
+                        if (role == "Admin" || role == "Union" || role == "Showroom")
+                        {
+                            TempData["ErrorMsg"] = "Error occured on login Account!";
+                            return View("UpdateProfile");
+                        }
+                        else if (role == "User")
+                        {
+                            TempData["ErrorMsg"] = "Error occured on login Account!";
                             return RedirectToAction("ProfileSettings", "Website");
                         }
                         else

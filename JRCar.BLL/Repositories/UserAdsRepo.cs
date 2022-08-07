@@ -30,12 +30,60 @@ namespace JRCar.BLL.Repositories
             return dbObj.GetAllUserInActiveAds();
         }
 
-        public ValidationUserAds GetUserAdsDetail(int AdsId)
+        public ValidationUserAds GetUserAdsDetail(string AdsId)
         {
             var user = dbObj.GetUserAdsDetail(AdsId);
             if (user != null)
             {
                 return user;
+            }
+            else
+                return null;
+        }
+
+        public IEnumerable<tblUserAdd> GetAllUserActiveAds(int UserID)
+        {
+            if (UserID > 0)
+            {
+                var reas = dbObj.GetAllUserActiveAds(UserID);
+                if (reas != null)
+                {
+                    return reas;
+                }
+                else
+                    return null ;
+            }
+            else
+                return null;
+        }
+
+        public IEnumerable<tblUserAdd> GetAllUserInActiveAds(int UserID)
+        {
+            if (UserID > 0)
+            {
+                var reas = dbObj.GetAllUserInActiveAds(UserID);
+                if (reas != null)
+                {
+                    return reas;
+                }
+                else
+                    return null;
+            }
+            else
+                return null;
+        }
+
+        public IEnumerable<ValidationUserAds> GetAllUserAds(int UserID)
+        {
+            if (UserID > 0)
+            {
+                var reas = dbObj.GetAllUserAds(UserID);
+                if (reas != null)
+                {
+                    return reas;
+                }
+                else
+                    return null;
             }
             else
                 return null;
@@ -70,7 +118,7 @@ namespace JRCar.BLL.Repositories
                             Latitude = model.Latitude,
                             Longitude = model.Longitude
                         };
-                        var user = dbObj.InsertUserAds(userAds);
+                        var user = dbObj.InsertUserAds(userAds, model.City);
                         if (user > 0)
                         {
                             ValidateUserAdsImage userAdImagesObj = new ValidateUserAdsImage()
