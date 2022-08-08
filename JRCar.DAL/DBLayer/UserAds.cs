@@ -18,24 +18,60 @@ namespace JRCar.DAL.DBLayer
             _context = new jrcarEntities();
         }
 
-        public IEnumerable<tblUserAdd> GetAllUserActiveAds()
+        public IEnumerable<ValidationUserAds> GetAllActiveAds()
         {
-            return _context.tblUserAdds.Where(x => x.Isactive == true).ToList();
+            return _context.tblUserAdds.Where(x => x.Isactive == true).Select(s => new ValidationUserAds()
+            {
+                Title = s.Title,
+                Price = s.Price,
+                Year = s.Year,
+                Model = s.Model,
+                Condition = s.Condition,
+                CreatedOn = s.CreatedOn,
+                City = s.tblAddress.City,
+                AdURL = s.UserAdsURL,
+                CarImage = s.tblUserAddImages.Select(a => a.Image).FirstOrDefault(),
+            }).ToList();
         }
 
-        public IEnumerable<tblUserAdd> GetAllUserInActiveAds()
+        public IEnumerable<ValidationUserAds> GetAllInActiveAds()
         {
-            return _context.tblUserAdds.Where(x => x.Isactive == false).ToList();
-        }
-        
-        public IEnumerable<tblUserAdd> GetAllUserActiveAds(int UserID)
-        {
-            return _context.tblUserAdds.Where(x => x.Isactive == true && x.UserID == UserID).ToList();
+            return _context.tblUserAdds.Where(x => x.Isactive == false).Select(s => new ValidationUserAds()
+            {
+                Title = s.Title,
+                Price = s.Price,
+                Year = s.Year,
+                Model = s.Model,
+                Condition = s.Condition,
+                CreatedOn = s.CreatedOn,
+                City = s.tblAddress.City,
+                AdURL = s.UserAdsURL,
+                CarImage = s.tblUserAddImages.Select(a => a.Image).FirstOrDefault(),
+            }).ToList();
         }
 
-        public IEnumerable<tblUserAdd> GetAllUserInActiveAds(int UserID)
+        public IEnumerable<ValidationUserAds> GetAllUserActiveAds(int UserID)
         {
-            return _context.tblUserAdds.Where(x => x.Isactive == false && x.UserID == UserID).ToList();
+            return _context.tblUserAdds.Where(x => x.Isactive == true && x.UserID == UserID).Select(s => new ValidationUserAds()
+            {
+                Title = s.Title,
+                Isactive = s.Isactive,
+                ExpiryDate = s.ExpiryDate,
+                AdURL = s.UserAdsURL,
+                CarImage = s.tblUserAddImages.Select(a => a.Image).FirstOrDefault(),
+            }).ToList();
+        }
+
+        public IEnumerable<ValidationUserAds> GetAllUserInActiveAds(int UserID)
+        {
+            return _context.tblUserAdds.Where(x => x.Isactive == false && x.UserID == UserID).Select(s => new ValidationUserAds()
+            {
+                Title = s.Title,
+                Isactive = s.Isactive,
+                ExpiryDate = s.ExpiryDate,
+                AdURL = s.UserAdsURL,
+                CarImage = s.tblUserAddImages.Select(a => a.Image).FirstOrDefault(),
+            }).ToList();
         }
 
         public IEnumerable<ValidationUserAds> GetAllUserAds(int UserID)
@@ -45,6 +81,7 @@ namespace JRCar.DAL.DBLayer
                 Title = s.Title,
                 Isactive = s.Isactive,
                 ExpiryDate = s.ExpiryDate,
+                AdURL = s.UserAdsURL,
                 CarImage = s.tblUserAddImages.Select(a => a.Image).FirstOrDefault(),
             }).ToList();
         }

@@ -20,14 +20,14 @@ namespace JRCar.BLL.Repositories
             AddressRepoObj = new AddressAutofillRepo();
         }
 
-        public IEnumerable<tblUserAdd> GetAllUserActiveAds()
+        public IEnumerable<ValidationUserAds> GetAllActiveAds()
         {
-            return dbObj.GetAllUserActiveAds();
+            return dbObj.GetAllActiveAds();
         }
         
-        public IEnumerable<tblUserAdd> GetAllUserInActiveAds()
+        public IEnumerable<ValidationUserAds> GetAllInActiveAds()
         {
-            return dbObj.GetAllUserInActiveAds();
+            return dbObj.GetAllInActiveAds();
         }
 
         public ValidationUserAds GetUserAdsDetail(string AdsId)
@@ -41,7 +41,7 @@ namespace JRCar.BLL.Repositories
                 return null;
         }
 
-        public IEnumerable<tblUserAdd> GetAllUserActiveAds(int UserID)
+        public IEnumerable<ValidationUserAds> GetAllUserActiveAds(int UserID)
         {
             if (UserID > 0)
             {
@@ -57,7 +57,7 @@ namespace JRCar.BLL.Repositories
                 return null;
         }
 
-        public IEnumerable<tblUserAdd> GetAllUserInActiveAds(int UserID)
+        public IEnumerable<ValidationUserAds> GetAllUserInActiveAds(int UserID)
         {
             if (UserID > 0)
             {

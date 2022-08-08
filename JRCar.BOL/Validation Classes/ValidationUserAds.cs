@@ -95,6 +95,9 @@ namespace JRCar.BOL.Validation_Classes
 
         [Display(Name = "Address")]
         public string CompleteAddress { get; set; }
+        
+        [Display(Name = "AdURL")]
+        public string AdURL { get; set; }
 
         [Display(Name = "Active")]
         public bool? Isactive { get; set; }

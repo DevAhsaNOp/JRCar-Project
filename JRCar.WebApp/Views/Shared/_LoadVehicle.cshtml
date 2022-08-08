@@ -42,7 +42,7 @@
                     }
                 </div>
                 <div class="cs-text">
-                    <h6><a href="#">@item.Title</a></h6>
+                    <h6><a href="@Url.Action("CarDetail","Website",new { AdID = item.AdURL })">@item.Title</a></h6>
                     <div class="post-options">
                         <span>Expires on: <em>@item.ExpiryDate.ToString("dd MMMM yyyy")</em></span>
                     </div>

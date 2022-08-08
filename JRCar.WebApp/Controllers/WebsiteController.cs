@@ -30,6 +30,7 @@ namespace JRCar.WebApp.Controllers
             return View();
         }
 
+        #region **Post New Vehicle**
         [AcceptVerbs(HttpVerbs.Get)]
         [Authorize(Roles = "User")]
         [Route("Ads/PostNewVehicles")]
@@ -37,7 +38,6 @@ namespace JRCar.WebApp.Controllers
         {
             var AllStates = AddressRepoObj.GetAllState();
             var states = new List<SelectListItem>();
-            //states.Add(new SelectListItem() { Text = "---Select State---", Value = "0", Disabled = true, Selected = true });
             foreach (var item in AllStates)
             {
                 states.Add(new SelectListItem() { Text = item.StateName, Value = item.StateId.ToString() });
@@ -137,7 +137,8 @@ namespace JRCar.WebApp.Controllers
                 throw ex;
             }
             return RedirectToAction("PostNewVehicles");
-        }
+        } 
+        #endregion
 
         [AcceptVerbs(HttpVerbs.Get)]
         public ActionResult Shortlisted()
@@ -151,8 +152,9 @@ namespace JRCar.WebApp.Controllers
             return View();
         }
 
+        #region **Car Detail**
         [AcceptVerbs(HttpVerbs.Get)]
-        [Route("Ads/{AdID}")]
+        [Route("Ad/{AdID}")]
         public ActionResult CarDetail(string AdID)
         {
             var carDetail = RepoObj1.GetUserAdsDetail(AdID);
@@ -175,7 +177,9 @@ namespace JRCar.WebApp.Controllers
                 return View(carDetail);
             }
         }
+        #endregion
 
+        #region **User Vehicle**
         [AcceptVerbs(HttpVerbs.Get)]
         [Authorize(Roles = "User")]
         [Route("Myvehicles")]
@@ -187,7 +191,7 @@ namespace JRCar.WebApp.Controllers
             var reas = RepoObj1.GetAllUserAds(id).Take(rows);
             return View(reas);
         }
-        
+
         [Authorize(Roles = "User")]
         public ActionResult LoadVehicle()
         {
@@ -197,7 +201,9 @@ namespace JRCar.WebApp.Controllers
             Session["rows"] = rows;
             return PartialView("_LoadVehicle", reas);
         }
+        #endregion
 
+        #region **User Profile Setting**
         [AcceptVerbs(HttpVerbs.Get)]
         [Authorize(Roles = "User")]
         public ActionResult ProfileSettings()
@@ -212,14 +218,25 @@ namespace JRCar.WebApp.Controllers
         {
             return View();
         }
+        #endregion
+
+        [AcceptVerbs(HttpVerbs.Get)]
+        [Route("Ads")]
+        public ActionResult AllVehicles()
+        {
+            var reas = RepoObj1.GetAllActiveAds();
+            return View(reas);
+        }
 
         private static Random random = new Random();
+
         public static string RandomString()
         {
             const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
             return new string(Enumerable.Repeat(chars, 12)
                 .Select(s => s[random.Next(s.Length)]).ToArray());
         }
+
         public class ImageFile
         {
             public List<HttpPostedFileBase> files { get; set; }
