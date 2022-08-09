@@ -9,6 +9,9 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
+using PagedList.Mvc;
+using PagedList;
+using JRCar.WebApp.ViewModels;
 
 namespace JRCar.WebApp.Controllers
 {
@@ -137,7 +140,7 @@ namespace JRCar.WebApp.Controllers
                 throw ex;
             }
             return RedirectToAction("PostNewVehicles");
-        } 
+        }
         #endregion
 
         [AcceptVerbs(HttpVerbs.Get)]
@@ -220,12 +223,28 @@ namespace JRCar.WebApp.Controllers
         }
         #endregion
 
-        [AcceptVerbs(HttpVerbs.Get)]
-        [Route("Ads")]
-        public ActionResult AllVehicles()
+        [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
+        [Route("Ads")]    
+        public ActionResult AllVehicles(string searchTerm, int? minimumPrice, int? maximumPrice, int? sortBy, int? page)
         {
-            var reas = RepoObj1.GetAllActiveAds();
-            return View(reas);
+            AdsViewModel adsView = new AdsViewModel();
+            adsView.SearchTerm = searchTerm;
+            adsView.SortBy = sortBy;
+            adsView.MaximumPrice = Convert.ToInt32(RepoObj1.GetAllActiveAdsFilter(searchTerm, minimumPrice, maximumPrice, sortBy).Max(x => x.Price));
+
+            /***Number of Records you want per Page***/
+            int pagesize = 2, pageindex = 1;
+            pageindex = page.HasValue ? Convert.ToInt32(page) : 1;
+            var list = RepoObj1.GetAllActiveAdsFilter(searchTerm, minimumPrice, maximumPrice, sortBy);
+            IPagedList<ValidationUserAds> reas = list.ToPagedList(pageindex, pagesize);
+            if (sortBy.HasValue)
+            {
+                return PartialView("_LoadAdsOn",reas);
+            }
+            else
+            {
+                return View(reas);
+            }
         }
 
         private static Random random = new Random();

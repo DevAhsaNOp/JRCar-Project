@@ -18,9 +18,9 @@ namespace JRCar.DAL.DBLayer
             _context = new jrcarEntities();
         }
 
-        public IEnumerable<ValidationUserAds> GetAllActiveAds()
+        public IEnumerable<ValidationUserAds> GetAllActiveAdsFilter(string searchTerm, int? minimumPrice, int? maximumPrice, int? sortBy)
         {
-            return _context.tblUserAdds.Where(x => x.Isactive == true).Select(s => new ValidationUserAds()
+            var reas = _context.tblUserAdds.Where(x => x.Isactive == true).Select(s => new ValidationUserAds()
             {
                 Title = s.Title,
                 Price = s.Price,
@@ -32,6 +32,54 @@ namespace JRCar.DAL.DBLayer
                 AdURL = s.UserAdsURL,
                 CarImage = s.tblUserAddImages.Select(a => a.Image).FirstOrDefault(),
             }).ToList();
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                reas = reas.Where(x => x.Title.ToLower().Contains(searchTerm.ToLower())).ToList();
+            }
+            if (maximumPrice.HasValue)
+            {
+                reas = reas.Where(x => Convert.ToInt32(x.Price) <= maximumPrice.Value).ToList();
+            }
+            if (minimumPrice.HasValue)
+            {
+                reas = reas.Where(x => Convert.ToInt32(x.Price) >= minimumPrice.Value).ToList();
+            }
+            if (sortBy.HasValue)
+            {
+                switch (sortBy.Value)
+                {
+                    case 1:
+                        reas = reas.OrderBy(Ad => Ad.CreatedOn).ToList();
+                        break;
+                    case 2:
+                        reas = reas.OrderBy(x => Convert.ToInt32(x.Price)).ToList();
+                        break;
+                    case 3:
+                        reas = reas.OrderByDescending(x => Convert.ToInt32(x.Price)).ToList();
+                        break;
+                    default:
+                        reas = reas.OrderBy(Ad => Ad.CreatedOn).ToList();
+                        break;
+                }
+            }
+            return reas;
+        }
+        
+        public IEnumerable<ValidationUserAds> GetAllActiveAds()
+        {
+            var reas = _context.tblUserAdds.OrderBy(Ad => Ad.CreatedOn).Where(x => x.Isactive == true).Select(s => new ValidationUserAds()
+            {
+                Title = s.Title,
+                Price = s.Price,
+                Year = s.Year,
+                Model = s.Model,
+                Condition = s.Condition,
+                CreatedOn = s.CreatedOn,
+                City = s.tblAddress.City,
+                AdURL = s.UserAdsURL,
+                CarImage = s.tblUserAddImages.Select(a => a.Image).FirstOrDefault(),
+            }).ToList();
+            return reas;
         }
 
         public IEnumerable<ValidationUserAds> GetAllInActiveAds()

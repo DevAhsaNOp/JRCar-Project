@@ -201,6 +201,19 @@
         $(document).ready(function () {
             console.log("ready!");
 
+            $('#SortByVehicle').change(function () {
+                var SelectedOption = $(this).find(':selected').val();
+                console.log("Selected Val:" + SelectedOption);
+                $.ajax({
+                    type: "GET",
+                    url: "/Ads?sortBy=" + SelectedOption,
+                    contentType: "application/json; charset=utf-8",
+                    success: function (response) {
+                        $("#VehicleDiv").html(response);  
+                    }
+                })
+            });
+
             $("#Year").on("change", function () {
                 console.log("Year change");
                 var ar = $('#Year').select2('data');

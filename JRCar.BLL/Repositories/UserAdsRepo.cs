@@ -20,6 +20,11 @@ namespace JRCar.BLL.Repositories
             AddressRepoObj = new AddressAutofillRepo();
         }
 
+        public IEnumerable<ValidationUserAds> GetAllActiveAdsFilter(string searchTerm, int? minimumPrice, int? maximumPrice, int? sortBy)
+        {
+            return dbObj.GetAllActiveAdsFilter(searchTerm, minimumPrice, maximumPrice, sortBy);
+        }
+        
         public IEnumerable<ValidationUserAds> GetAllActiveAds()
         {
             return dbObj.GetAllActiveAds();

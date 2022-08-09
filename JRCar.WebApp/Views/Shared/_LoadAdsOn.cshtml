@@ -1,0 +1,134 @@
+﻿@using PagedList.Mvc
+@model  PagedList.IPagedList<JRCar.BOL.Validation_Classes.ValidationUserAds>
+
+
+<div class="row" id="TableContainer">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="auto-sort-filter">
+            <div class="auto-show-resuilt"><span>SHOWING <em>25</em> RESULTS FOR YOUR SEARCH</span></div>
+            <div class="auto-list">
+                <span>Sort</span>
+                <ul>
+                    <li>
+                        <div class="cs-select-post" id="SortByVehicle">
+                            <select data-placeholder="Recent Added" class="chosen-select-no-single" tabindex="5">
+                                <option value="1">Newest</option>
+                                <option value="2">Price Low to High</option>
+                                <option value="3">Price High to Low</option>
+                            </select>
+                        </div>
+                    </li>
+                    <li><a href="#"><i class=" icon-view_module"></i></a></li>
+                    <li><a href="#"><i class="icon-view_array"></i></a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="auto-your-search">
+            <ul class="filtration-tags">
+                <li><a href="#">Hybrid <i class="icon-cross2"></i></a></li>
+                <li><a href="#">Bmw<i class="icon-cross2"></i></a></li>
+                <li><a href="#">Compact hatchbac<i class="icon-cross2"></i></a></li>
+            </ul>
+            <a href="#" class="clear-tags cs-color">Clear Filters</a>
+        </div>
+    </div>
+    @foreach (var item in Model)
+    {
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="auto-listing">
+                <div class="cs-media auto-media-slider">
+                    @if (item.CarImage != null)
+                    {
+                        string path = Server.MapPath("" + item.CarImage + "");
+                        string[] FolderName = item.CarImage.Split('/');
+                        string[] imageFiles = Directory.GetFiles(path);
+                        List<string> images = new List<string>();
+                        foreach (var jha in imageFiles)
+                        {
+                            images.Add(FolderName[2] + "/" + Path.GetFileName(jha));
+                        }
+                        var i = 1;
+                        foreach (var AdImg in images)
+                        {
+                            <figure>
+                                <img src="~/uploads/@AdImg" alt="Ad Image" style="height: 200px !important;" />
+                                <figcaption>
+                                    <div class="cs-photo">@i / @images.Count Photos</div>
+                                </figcaption>
+                            </figure>
+                            i++;
+                        }
+                    }
+                </div>
+                <div class="auto-text">
+                    <div class="post-title">
+                        <h4><a href="@Url.Action("CarDetail","Website",new { AdID = item.AdURL })">@item.Title</a></h4>
+                        <h6><a href="@Url.Action("CarDetail","Website",new { AdID = item.AdURL })">@item.Title</a></h6>
+                        <div class="auto-price" style="margin-bottom:10px !important"><span class="cs-color">PKR @string.Format("{0:n0}", Convert.ToDecimal(item.Price))</span></div>
+                    </div>
+                    <p style="font-weight:600 !important">Location: @item.City</p>
+                    <ul class="auto-info-detail">
+                        <li>Year<span style="font-size: 14px !important;line-height: 26px !important">@item.Year</span></li>
+                        <li>Model<span style="font-size: 14px !important;line-height: 26px !important">@item.Model</span></li>
+                        <li>Condition<span style="font-size: 14px !important;line-height: 26px !important">@item.Condition</span></li>
+                        @if (item.CreatedOn != null)
+                        {
+                            int years, weeks, months;
+                            var Tdays = Convert.ToInt32((0 - (item.CreatedOn.Date - DateTime.Today.Date).TotalDays));
+                            years = (Tdays / 365);
+                            months = Convert.ToInt32((Tdays / 30.4368499));
+                            weeks = (Tdays % 365) / 7;
+                            Tdays = Tdays - ((years * 365) + (weeks * 7));
+                            if (years > 0)
+                            {
+                                <li>
+                                    Posted On
+                                    <span style="font-size: 14px !important; line-height: 26px !important;text-transform: lowercase !important">
+                                        @years @((years > 1) ? "years" : "year") ago
+                                    </span>
+                                </li>
+                            }
+                            else if (months > 0)
+                            {
+                                <li>
+                                    Posted On
+                                    <span style="font-size: 14px !important;line-height: 26px !important;text-transform: lowercase !important">
+                                        @months @((months > 1) ? "months" : "month") ago
+                                    </span>
+                                </li>
+                            }
+                            else if (weeks > 0)
+                            {
+                                <li>
+                                    Posted On
+                                    <span style="font-size: 14px !important;line-height: 26px !important;text-transform: lowercase !important">
+                                        @weeks @((weeks > 1) ? "weeks" : "week") ago
+                                    </span>
+                                </li>
+                            }
+                            else
+                            {
+                                <li>
+                                    Posted On
+                                    <span style="font-size: 14px !important;line-height: 26px !important;text-transform: lowercase !important">
+                                        @Tdays @((Tdays > 1) ? "days" : "day") ago
+                                    </span>
+                                </li>
+                            }
+                        }
+                    </ul>
+                    <a href="#" class="short-list cs-color" style="margin-right: 14px !important;"><i class="icon-heart-o"></i>ShortList</a>
+                    <a href="@Url.Action("CarDetail","Website",new { AdID = item.AdURL })" class="View-btn" style="display:inline-block !important;">View Detail<i class=" icon-arrow-long-right"></i></a>
+                </div>
+            </div>
+        </div>
+    }
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <nav style=" text-align: center !important;">
+            Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+            @Html.PagedListPager(Model, page => Url.Action("AllVehicles", "Website", new { page, searchTerm = Request.QueryString["searchTerm"] }), PagedListRenderOptions.ClassicPlusFirstAndLast)
+        </nav>
+    </div>
+</div>

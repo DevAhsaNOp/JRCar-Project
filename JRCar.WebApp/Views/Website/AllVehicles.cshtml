@@ -1,4 +1,5 @@
-﻿@model IEnumerable<JRCar.BOL.Validation_Classes.ValidationUserAds>
+﻿@using PagedList.Mvc
+@model  PagedList.IPagedList<JRCar.BOL.Validation_Classes.ValidationUserAds>
 
 @{
     ViewBag.Title = "Vehicles Ads";
@@ -23,6 +24,14 @@
                                     <option>Select make</option>
                                     <option>Select make</option>
                                 </select>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="main-search" style="margin-bottom:15px !important;">
+                        <form>
+                            <div class="search-input">
+                                <input type="text" placeholder="Search by Keyword" name="searchTerm">
+                                <i class="icon-search2" style="left: 90% !important;"></i>
                             </div>
                         </form>
                     </div>
@@ -356,102 +365,8 @@
                     </div>
                 </div>
             </aside>
-            <div class="section-content col-lg-9 col-md-9 col-sm-12 col-xs-12">
-                <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <div class="auto-sort-filter">
-                            <div class="auto-show-resuilt"><span>SHOWING <em>25</em> RESULTS FOR YOUR SEARCH</span></div>
-                            <div class="auto-list">
-                                <span>Sort</span>
-                                <ul>
-                                    <li>
-                                        <div class="cs-select-post">
-                                            <select data-placeholder="Recent Added" class="chosen-select-no-single" tabindex="5">
-                                                <option>Recent Added</option>
-                                                <option>Recent Added</option>
-                                                <option>Recent Added</option>
-                                                <option>Recent Added</option>
-                                            </select>
-                                        </div>
-                                    </li>
-                                    <li><a href="#"><i class=" icon-view_module"></i></a></li>
-                                    <li><a href="#"><i class="icon-view_array"></i></a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <div class="auto-your-search">
-                            <ul class="filtration-tags">
-                                <li><a href="#">Hybrid <i class="icon-cross2"></i></a></li>
-                                <li><a href="#">Bmw<i class="icon-cross2"></i></a></li>
-                                <li><a href="#">Compact hatchbac<i class="icon-cross2"></i></a></li>
-                            </ul>
-                            <a href="#" class="clear-tags cs-color">Clear Filters</a>
-                        </div>
-                    </div>
-                    @foreach (var item in Model)
-                    {
-                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                            <div class="auto-listing">
-                                <div class="cs-media auto-media-slider">
-                                    @if (item.CarImage != null)
-                                    {
-                                        string path = Server.MapPath("" + item.CarImage + "");
-                                        string[] FolderName = item.CarImage.Split('/');
-                                        string[] imageFiles = Directory.GetFiles(path);
-                                        List<string> images = new List<string>();
-                                        foreach (var jha in imageFiles)
-                                        {
-                                            images.Add(FolderName[2] + "/" + Path.GetFileName(jha));
-                                        }
-                                        foreach (var AdImg in images)
-                                        {
-                                            <figure>
-                                                <img src="~/uploads/@AdImg" alt="Ad Image" style="height: 200px !important;" />
-                                                <figcaption>
-                                                    <div class="cs-photo">@images.Count Photos</div>
-                                                </figcaption>
-                                            </figure>
-                                        }
-                                    }
-                                </div>
-                                <div class="auto-text">
-                                    <div class="post-title">
-                                        <h4><a href="#">@item.Title</a></h4>
-                                        <h6><a href="#">@item.Title</a></h6>
-                                        <div class="auto-price" style="margin-bottom:10px !important"><span class="cs-color">PKR @string.Format("{0:n0}",Convert.ToDecimal(item.Price))</span></div>
-                                    </div>
-                                    <p style="font-weight:600 !important">Location: @item.City</p>
-                                    <ul class="auto-info-detail">
-                                        <li>Year<span>@item.Year</span></li>
-                                        <li>Model<span>@item.Model</span></li>
-                                        <li>Condition<span>@item.Condition</span></li>
-                                        <li>Posted On<span>@item.CreatedOn.ToString("ddd MMM yyyy")</span></li>
-                                    </ul>
-                                    @*<div class="btn-list">
-                                            <a href="javascript:void(0)" class="btn btn-danger collapsed" data-toggle="collapse" data-target="#list-view"></a><div id="list-view" class="collapse">
-                                                <ul>
-                                                    <li>30/36 est. mpg 18</li>
-                                                    <li>Black front grille with chrome accent</li>
-                                                    <li>Cruise control</li>
-                                                    <li>Remote keyless entry system</li>
-                                                    <li>Tilt 3-spoke steering wheel with audio controls</li>
-                                                    <li>15-in. alloy wheels</li>
-                                                </ul>
-                                            </div>
-                                        </div>*@
-                                    @*<div class="cs-checkbox">
-                                            <input type="checkbox" name="list" value="check-listn" id="check-list">
-                                            <label for="check-list">Compare</label>
-                                        </div>*@
-                                    <a href="#" class="short-list cs-color" style="margin-right: 14px !important;"><i class="icon-heart-o"></i>ShortList</a>
-                                    <a href="@Url.Action("CarDetail","Website",new { AdID = item.AdURL })" class="View-btn" style="display:inline-block !important;">View Detail<i class=" icon-arrow-long-right"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                    }
-                </div>
+            <div class="section-content col-lg-9 col-md-9 col-sm-12 col-xs-12" id="VehicleDiv">
+                @Html.Partial("_LoadAdsOn", Model)
             </div>
         </div>
     </div>
