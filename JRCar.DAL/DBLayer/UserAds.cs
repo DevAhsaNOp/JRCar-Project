@@ -49,7 +49,7 @@ namespace JRCar.DAL.DBLayer
                 switch (sortBy.Value)
                 {
                     case 1:
-                        reas = reas.OrderBy(Ad => Ad.CreatedOn).ToList();
+                        reas = reas.OrderByDescending(Ad => Ad.CreatedOn).ToList();
                         break;
                     case 2:
                         reas = reas.OrderBy(x => Convert.ToInt32(x.Price)).ToList();
