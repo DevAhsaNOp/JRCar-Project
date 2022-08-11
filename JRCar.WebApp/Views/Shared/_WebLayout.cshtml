@@ -102,6 +102,64 @@
             border-radius: 2px;
         }
 
+        #divLoader {
+            position: absolute;
+            background: #fbfbfb96;
+            z-index: 100000;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: not-allowed;
+            margin-top: -13rem;
+        }
+
+        @@media screen and (min-device-width: 390px) and (max-device-width: 625px) {
+            #divLoader {
+                position: absolute;
+                background: #fbfbfb96;
+                z-index: 100000;
+                width: 100%;
+                height: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: not-allowed;
+                margin-top: -17rem;
+            }
+        }
+
+        @@media screen and (min-device-width: 310px) and (max-device-width: 389px) {
+            #divLoader {
+                position: absolute;
+                background: #fbfbfb96;
+                z-index: 100000;
+                width: 100%;
+                height: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: not-allowed;
+                margin-top: -19rem;
+            }
+        }
+
+        @@media screen and (min-device-width: 280px) and (max-device-width: 309px) {
+            #divLoader {
+                position: absolute;
+                background: #fbfbfb96;
+                z-index: 100000;
+                width: 100%;
+                height: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: not-allowed;
+                margin-top: -26rem;
+            }
+        }
+
         #map_canvas {
             height: 100%;
         }
@@ -204,14 +262,16 @@
             $('#SortByVehicle').change(function () {
                 var SelectedOption = $(this).find(':selected').val();
                 console.log("Selected Val:" + SelectedOption);
+                $("#divLoader").show();
                 $.ajax({
                     type: "GET",
                     url: "/Ads?sortBy=" + SelectedOption,
                     contentType: "application/json; charset=utf-8",
                     success: function (response) {
-                        $("#VehicleAdsLst").html(response);  
+                        $("#divLoader").hide();
+                        $("#VehicleAdsLst").html(response);
                     }
-                })
+                });
             });
 
             $("#Year").on("change", function () {
