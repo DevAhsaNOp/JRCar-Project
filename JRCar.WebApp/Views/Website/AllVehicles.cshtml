@@ -28,12 +28,13 @@
                         </form>
                     </div>
                     <div class="main-search" style="margin-bottom:15px !important;">
-                        <form>
-                            <div class="search-input">
-                                <input type="text" placeholder="Search by Keyword" name="searchTerm">
-                                <i class="icon-search2" style="left: 90% !important;"></i>
-                            </div>
-                        </form>
+                        <div class="search-input">
+                            <input type="text" placeholder="Search by Keyword" name="searchTerm" id="searchTerm_TxtBox">
+                            <a href="#" onclick="FormVAds()">
+                                <i class="icon-search2" style="left: 90% !important;">
+                                </i>
+                            </a>
+                        </div>
                     </div>
                     <div class="cs-select-model">
                         <div class="cs-filter-title"><h6>Select Model</h6></div>
@@ -424,3 +425,22 @@
         </div>
     </div>
 </div>
+
+<script>
+    function FormVAds() {
+        var search = $('#searchTerm_TxtBox').val();
+        console.log(search);
+        $("#divLoader").show();
+        $.ajax({
+            type: 'POST',
+            url: "@Url.Action("GetAds", "Website")",
+            data: JSON.stringify({ searchTerm: search }),
+            contentType: "application/json; charset=utf-8",
+            success: function (response) {
+                console.log(response);
+                $("#divLoader").hide();
+                $("#VehicleAdsLst").html(response);
+            }
+        });
+    }
+</script>

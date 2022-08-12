@@ -264,8 +264,9 @@
                 console.log("Selected Val:" + SelectedOption);
                 $("#divLoader").show();
                 $.ajax({
-                    type: "GET",
-                    url: "/Ads?sortBy=" + SelectedOption,
+                    type: "POST",
+                    url: "@Url.Action("GetAds", "Website")",
+                    data: JSON.stringify({ sortBy: SelectedOption }),
                     contentType: "application/json; charset=utf-8",
                     success: function (response) {
                         $("#divLoader").hide();
@@ -273,6 +274,46 @@
                     }
                 });
             });
+
+            $(document).on("click", "#ContentPager a[href]", function () {
+                $("#divLoader").show();
+                var pageno = $(this).text();
+                console.log("Page No:" + pageno);
+                var SortBy = $("#SortByVehicle").find(':selected').val();
+                console.log("SortBY Val from pager:" + SortBy);
+                var search = $('#searchTerm_TxtBox').val();
+                console.log(search);
+                console.log("Attr: " + $(this).attr("href")); 
+                $.ajax({
+                    url: $(this).attr("href"),
+                    type: 'POST',
+                    data: JSON.stringify({ sortBy: SortBy, page: pageno, searchTerm: search }),
+                    contentType: "application/json; charset=utf-8",
+                    success: function (resp) {
+                        $("#divLoader").hide();
+                        $("#VehicleAdsLst").html(resp);
+                    }
+                });
+                return false;
+            });
+
+            @*$('#AdsSearchForm').submit(function () {
+                var search = $('#searchTerm_TxtBox').val();
+                $("#divLoader").show();
+                debugger;
+                $.ajax({
+                    type: "post",
+                    url: "@Url.Action("Website", "GetAds")",
+                    data: {
+                        searchTerm: search
+                    },
+                    contentType: "application/json; charset=utf-8",
+                    success: function (response) {
+                        $("#divLoader").hide();
+                        $("#VehicleAdsLst").html(response);
+                    }
+                });
+            });*@
 
             $("#Year").on("change", function () {
                 console.log("Year change");
