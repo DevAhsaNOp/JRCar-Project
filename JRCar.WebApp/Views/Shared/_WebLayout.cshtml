@@ -261,12 +261,14 @@
 
             $('#SortByVehicle').change(function () {
                 var SelectedOption = $(this).find(':selected').val();
+                var search = $('#searchTerm_TxtBox').val();
                 console.log("Selected Val:" + SelectedOption);
+                console.log("Search Term Val:" + search);
                 $("#divLoader").show();
                 $.ajax({
                     type: "POST",
                     url: "@Url.Action("GetAds", "Website")",
-                    data: JSON.stringify({ sortBy: SelectedOption }),
+                    data: JSON.stringify({ searchTerm:search, sortBy: SelectedOption }),
                     contentType: "application/json; charset=utf-8",
                     success: function (response) {
                         $("#divLoader").hide();

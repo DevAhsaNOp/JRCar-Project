@@ -230,7 +230,7 @@ namespace JRCar.WebApp.Controllers
         {
             AdsViewModel adsView = new AdsViewModel();
             adsView.SearchTerm = searchTerm;
-            adsView.SortBy = sortBy;
+            sortBy = sortBy.HasValue ? sortBy.Value : 1;
             adsView.MaximumPrice = Convert.ToInt32(RepoObj1.GetAllActiveAdsFilter(searchTerm, minimumPrice, maximumPrice, sortBy).Max(x => x.Price));
             ViewBag.SortBy = (sortBy.HasValue ? sortBy.Value : 1);
 
@@ -239,12 +239,12 @@ namespace JRCar.WebApp.Controllers
             pageindex = page.HasValue ? Convert.ToInt32(page) : 1;
             var list = RepoObj1.GetAllActiveAdsFilter(searchTerm, minimumPrice, maximumPrice, sortBy);
             IPagedList<ValidationUserAds> reas = list.ToPagedList(pageindex, pagesize);
-            if (searchTerm != null)
-                return PartialView("_LoadAdsOn", reas);
-            else if (sortBy.HasValue && page.HasValue)
-                return PartialView("_LoadAdsOn", reas);
-            else
-                return View(reas);
+            //if (searchTerm != null)
+            //    return PartialView("_LoadAdsOn", reas);
+            //else if (sortBy.HasValue && page.HasValue)
+            //    return PartialView("_LoadAdsOn", reas);
+            //else
+            return View(reas);
         }
 
 
@@ -253,7 +253,7 @@ namespace JRCar.WebApp.Controllers
         {
             AdsViewModel adsView = new AdsViewModel();
             adsView.SearchTerm = searchTerm;
-            adsView.SortBy = sortBy;
+            sortBy = sortBy.HasValue ? sortBy.Value : 1;
             adsView.MaximumPrice = Convert.ToInt32(RepoObj1.GetAllActiveAdsFilter(searchTerm, minimumPrice, maximumPrice, sortBy).Max(x => x.Price));
             ViewBag.SortBy = (sortBy.HasValue ? sortBy.Value : 1);
 
