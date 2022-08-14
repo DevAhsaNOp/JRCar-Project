@@ -18,6 +18,7 @@ namespace JRCar.BOL
         public tblCity()
         {
             this.tblZones = new HashSet<tblZone>();
+            this.tblAddresses = new HashSet<tblAddress>();
         }
     
         public int CityId { get; set; }
@@ -27,5 +28,7 @@ namespace JRCar.BOL
         public virtual tblState tblState { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tblZone> tblZones { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tblAddress> tblAddresses { get; set; }
     }
 }

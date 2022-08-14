@@ -63,9 +63,9 @@ namespace JRCar.DAL.DBLayer
                 {
                     var address = _context.tblAddresses.Where(x => x.ID == id).Select(a => new ValidateAddress()
                     {
-                        State = a.State,
-                        City = a.City,
-                        Area = ((a.Area == null) ? "" : a.Area),
+                        State = a.tblState.StateName,
+                        City = a.tblCity.CityName,
+                        Area = ((a.Area == null) ? "" : a.tblZone.ZoneName),
                         CompleteAddress = ((a.CompleteAddress == null) ? "" : a.CompleteAddress)
                     }).FirstOrDefault();
                     if (address != null)

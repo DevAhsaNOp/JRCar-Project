@@ -30,9 +30,9 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="State" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="City" Type="nvarchar" MaxLength="200" Nullable="false" />
-          <Property Name="Area" Type="nvarchar" MaxLength="200" />
+          <Property Name="State" Type="int" Nullable="false" />
+          <Property Name="City" Type="int" Nullable="false" />
+          <Property Name="Area" Type="int" />
           <Property Name="CompleteAddress" Type="nvarchar" MaxLength="200" />
         </EntityType>
         <EntityType Name="tblAdmins">
@@ -655,6 +655,42 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_tblAddress_tblCity">
+          <End Role="tblCity" Type="Self.tblCity" Multiplicity="1" />
+          <End Role="tblAddress" Type="Self.tblAddress" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblCity">
+              <PropertyRef Name="CityId" />
+            </Principal>
+            <Dependent Role="tblAddress">
+              <PropertyRef Name="City" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblAddress_tblState">
+          <End Role="tblState" Type="Self.tblState" Multiplicity="1" />
+          <End Role="tblAddress" Type="Self.tblAddress" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblState">
+              <PropertyRef Name="StateId" />
+            </Principal>
+            <Dependent Role="tblAddress">
+              <PropertyRef Name="State" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblAddress_tblZone">
+          <End Role="tblZone" Type="Self.tblZone" Multiplicity="0..1" />
+          <End Role="tblAddress" Type="Self.tblAddress" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblZone">
+              <PropertyRef Name="ZoneId" />
+            </Principal>
+            <Dependent Role="tblAddress">
+              <PropertyRef Name="Area" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_tblCars_tblAddress">
           <End Role="tblAddress" Type="Self.tblAddress" Multiplicity="0..1" />
           <End Role="tblCars" Type="Self.tblCars" Multiplicity="*" />
@@ -830,6 +866,18 @@
           <AssociationSet Name="FK_dbo_tblUsers_dbo_tblRoles_tblRoleID" Association="Self.FK_dbo_tblUsers_dbo_tblRoles_tblRoleID">
             <End Role="tblRoles" EntitySet="tblRoles" />
             <End Role="tblUsers" EntitySet="tblUsers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblAddress_tblCity" Association="Self.FK_tblAddress_tblCity">
+            <End Role="tblCity" EntitySet="tblCity" />
+            <End Role="tblAddress" EntitySet="tblAddress" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblAddress_tblState" Association="Self.FK_tblAddress_tblState">
+            <End Role="tblState" EntitySet="tblState" />
+            <End Role="tblAddress" EntitySet="tblAddress" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblAddress_tblZone" Association="Self.FK_tblAddress_tblZone">
+            <End Role="tblZone" EntitySet="tblZone" />
+            <End Role="tblAddress" EntitySet="tblAddress" />
           </AssociationSet>
           <AssociationSet Name="FK_tblCars_tblAddress" Association="Self.FK_tblCars_tblAddress">
             <End Role="tblAddress" EntitySet="tblAddress" />
@@ -1057,8 +1105,8 @@
           <NavigationProperty Name="tblShowroom" Relationship="Self.FK_dbo_tblCars_dbo_tblShowrooms_tblShowroomID" FromRole="tblCars" ToRole="tblShowrooms" />
           <NavigationProperty Name="tblFavAdds" Relationship="Self.FK_dbo_tblFavAdds_dbo_tblCars_CarID" FromRole="tblCars" ToRole="tblFavAdds" />
           <Property Name="AddressId" Type="Int32" />
-          <NavigationProperty Name="tblAddress" Relationship="jrcarModel.FK_tblCars_tblAddress" FromRole="tblCar" ToRole="tblAddress" />
           <Property Name="CarsURL" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="tblAddress" Relationship="jrcarModel.FK_tblCars_tblAddress" FromRole="tblCar" ToRole="tblAddress" />
         </EntityType>
         <EntityType Name="tblClient">
           <Key>
@@ -1153,8 +1201,8 @@
           <NavigationProperty Name="tblCars" Relationship="Self.FK_dbo_tblCars_dbo_tblShowrooms_tblShowroomID" FromRole="tblShowrooms" ToRole="tblCars" />
           <NavigationProperty Name="tblUser" Relationship="Self.FK_dbo_tblShowrooms_dbo_tblUsers_tblUser_ID" FromRole="tblShowrooms" ToRole="tblUsers" />
           <Property Name="AddressId" Type="Int32" />
-          <NavigationProperty Name="tblAddress" Relationship="jrcarModel.FK_tblShowrooms_tblAddress" FromRole="tblShowroom" ToRole="tblAddress" />
           <Property Name="ShowroomURL" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="tblAddress" Relationship="jrcarModel.FK_tblShowrooms_tblAddress" FromRole="tblShowroom" ToRole="tblAddress" />
         </EntityType>
         <EntityType Name="tblToken">
           <Key>
@@ -1216,10 +1264,10 @@
           <NavigationProperty Name="tblUserAddImages" Relationship="Self.FK_dbo_tblUserAddImages_dbo_tblUserAdds_tblUserAddID" FromRole="tblUserAdds" ToRole="tblUserAddImages" />
           <NavigationProperty Name="tblUser" Relationship="Self.FK_dbo_tblUserAdds_dbo_tblUsers_UserID" FromRole="tblUserAdds" ToRole="tblUsers" />
           <Property Name="AddressId" Type="Int32" />
-          <NavigationProperty Name="tblAddress" Relationship="jrcarModel.FK_tblUserAdds_tblAddress" FromRole="tblUserAdd" ToRole="tblAddress" />
           <Property Name="Isactive" Type="Boolean" />
           <Property Name="Isarchive" Type="Boolean" />
           <Property Name="UserAdsURL" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="tblAddress" Relationship="jrcarModel.FK_tblUserAdds_tblAddress" FromRole="tblUserAdd" ToRole="tblAddress" />
         </EntityType>
         <EntityType Name="tblUser">
           <Key>
@@ -1607,19 +1655,6 @@
             <End Role="tblUsers" EntitySet="tblUsers" />
             <End Role="tblUserAdds" EntitySet="tblUserAdds" />
           </AssociationSet>
-          <EntitySet Name="tblAddresses" EntityType="jrcarModel.tblAddress" />
-          <AssociationSet Name="FK_tblCars_tblAddress" Association="jrcarModel.FK_tblCars_tblAddress">
-            <End Role="tblAddress" EntitySet="tblAddresses" />
-            <End Role="tblCar" EntitySet="tblCars" />
-          </AssociationSet>
-          <AssociationSet Name="FK_tblShowrooms_tblAddress" Association="jrcarModel.FK_tblShowrooms_tblAddress">
-            <End Role="tblAddress" EntitySet="tblAddresses" />
-            <End Role="tblShowroom" EntitySet="tblShowrooms" />
-          </AssociationSet>
-          <AssociationSet Name="FK_tblUserAdds_tblAddress" Association="jrcarModel.FK_tblUserAdds_tblAddress">
-            <End Role="tblAddress" EntitySet="tblAddresses" />
-            <End Role="tblUserAdd" EntitySet="tblUserAdds" />
-          </AssociationSet>
           <EntitySet Name="tblCities" EntityType="jrcarModel.tblCity" />
           <EntitySet Name="tblCountries" EntityType="jrcarModel.tblCountry" />
           <EntitySet Name="tblStates" EntityType="jrcarModel.tblState" />
@@ -1636,56 +1671,32 @@
             <End Role="tblCountry" EntitySet="tblCountries" />
             <End Role="tblState" EntitySet="tblStates" />
           </AssociationSet>
+          <EntitySet Name="tblAddresses" EntityType="jrcarModel.tblAddress" />
+          <AssociationSet Name="FK_tblAddress_tblCity" Association="jrcarModel.FK_tblAddress_tblCity">
+            <End Role="tblCity" EntitySet="tblCities" />
+            <End Role="tblAddress" EntitySet="tblAddresses" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblAddress_tblState" Association="jrcarModel.FK_tblAddress_tblState">
+            <End Role="tblState" EntitySet="tblStates" />
+            <End Role="tblAddress" EntitySet="tblAddresses" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblAddress_tblZone" Association="jrcarModel.FK_tblAddress_tblZone">
+            <End Role="tblZone" EntitySet="tblZones" />
+            <End Role="tblAddress" EntitySet="tblAddresses" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblCars_tblAddress" Association="jrcarModel.FK_tblCars_tblAddress">
+            <End Role="tblAddress" EntitySet="tblAddresses" />
+            <End Role="tblCar" EntitySet="tblCars" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblShowrooms_tblAddress" Association="jrcarModel.FK_tblShowrooms_tblAddress">
+            <End Role="tblAddress" EntitySet="tblAddresses" />
+            <End Role="tblShowroom" EntitySet="tblShowrooms" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblUserAdds_tblAddress" Association="jrcarModel.FK_tblUserAdds_tblAddress">
+            <End Role="tblAddress" EntitySet="tblAddresses" />
+            <End Role="tblUserAdd" EntitySet="tblUserAdds" />
+          </AssociationSet>
           </EntityContainer>
-        <EntityType Name="tblAddress">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="State" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="City" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="Area" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="CompleteAddress" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="tblCars" Relationship="jrcarModel.FK_tblCars_tblAddress" FromRole="tblAddress" ToRole="tblCar" />
-          <NavigationProperty Name="tblShowrooms" Relationship="jrcarModel.FK_tblShowrooms_tblAddress" FromRole="tblAddress" ToRole="tblShowroom" />
-          <NavigationProperty Name="tblUserAdds" Relationship="jrcarModel.FK_tblUserAdds_tblAddress" FromRole="tblAddress" ToRole="tblUserAdd" />
-        </EntityType>
-        <Association Name="FK_tblCars_tblAddress">
-          <End Type="jrcarModel.tblAddress" Role="tblAddress" Multiplicity="0..1" />
-          <End Type="jrcarModel.tblCar" Role="tblCar" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="tblAddress">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="tblCar">
-              <PropertyRef Name="AddressId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_tblShowrooms_tblAddress">
-          <End Type="jrcarModel.tblAddress" Role="tblAddress" Multiplicity="0..1" />
-          <End Type="jrcarModel.tblShowroom" Role="tblShowroom" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="tblAddress">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="tblShowroom">
-              <PropertyRef Name="AddressId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_tblUserAdds_tblAddress">
-          <End Type="jrcarModel.tblAddress" Role="tblAddress" Multiplicity="0..1" />
-          <End Type="jrcarModel.tblUserAdd" Role="tblUserAdd" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="tblAddress">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="tblUserAdd">
-              <PropertyRef Name="AddressId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="tblCity">
           <Key>
             <PropertyRef Name="CityId" />
@@ -1695,6 +1706,7 @@
           <Property Name="StateId" Type="Int32" />
           <NavigationProperty Name="tblState" Relationship="jrcarModel.FK_tblCity_tblState" FromRole="tblCity" ToRole="tblState" />
           <NavigationProperty Name="tblZones" Relationship="jrcarModel.FK_tblZone_tblCity" FromRole="tblCity" ToRole="tblZone" />
+          <NavigationProperty Name="tblAddresses" Relationship="jrcarModel.FK_tblAddress_tblCity" FromRole="tblCity" ToRole="tblAddress" />
         </EntityType>
         <EntityType Name="tblCountry">
           <Key>
@@ -1713,6 +1725,7 @@
           <Property Name="CountryID" Type="Int32" />
           <NavigationProperty Name="tblCities" Relationship="jrcarModel.FK_tblCity_tblState" FromRole="tblState" ToRole="tblCity" />
           <NavigationProperty Name="tblCountry" Relationship="jrcarModel.FK_tblState_tblCountry" FromRole="tblState" ToRole="tblCountry" />
+          <NavigationProperty Name="tblAddresses" Relationship="jrcarModel.FK_tblAddress_tblState" FromRole="tblState" ToRole="tblAddress" />
         </EntityType>
         <EntityType Name="tblZone">
           <Key>
@@ -1724,6 +1737,7 @@
           <Property Name="Latitude" Type="Decimal" Precision="18" Scale="8" />
           <Property Name="Longitude" Type="Decimal" Precision="18" Scale="8" />
           <NavigationProperty Name="tblCity" Relationship="jrcarModel.FK_tblZone_tblCity" FromRole="tblZone" ToRole="tblCity" />
+          <NavigationProperty Name="tblAddresses" Relationship="jrcarModel.FK_tblAddress_tblZone" FromRole="tblZone" ToRole="tblAddress" />
         </EntityType>
         <Association Name="FK_tblCity_tblState">
           <End Type="jrcarModel.tblState" Role="tblState" Multiplicity="0..1" />
@@ -1758,6 +1772,94 @@
             </Principal>
             <Dependent Role="tblState">
               <PropertyRef Name="CountryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="tblAddress">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="State" Type="Int32" Nullable="false" />
+          <Property Name="City" Type="Int32" Nullable="false" />
+          <Property Name="Area" Type="Int32" />
+          <Property Name="CompleteAddress" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="tblCity" Relationship="jrcarModel.FK_tblAddress_tblCity" FromRole="tblAddress" ToRole="tblCity" />
+          <NavigationProperty Name="tblState" Relationship="jrcarModel.FK_tblAddress_tblState" FromRole="tblAddress" ToRole="tblState" />
+          <NavigationProperty Name="tblZone" Relationship="jrcarModel.FK_tblAddress_tblZone" FromRole="tblAddress" ToRole="tblZone" />
+          <NavigationProperty Name="tblCars" Relationship="jrcarModel.FK_tblCars_tblAddress" FromRole="tblAddress" ToRole="tblCar" />
+          <NavigationProperty Name="tblShowrooms" Relationship="jrcarModel.FK_tblShowrooms_tblAddress" FromRole="tblAddress" ToRole="tblShowroom" />
+          <NavigationProperty Name="tblUserAdds" Relationship="jrcarModel.FK_tblUserAdds_tblAddress" FromRole="tblAddress" ToRole="tblUserAdd" />
+        </EntityType>
+        <Association Name="FK_tblAddress_tblCity">
+          <End Type="jrcarModel.tblCity" Role="tblCity" Multiplicity="1" />
+          <End Type="jrcarModel.tblAddress" Role="tblAddress" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblCity">
+              <PropertyRef Name="CityId" />
+            </Principal>
+            <Dependent Role="tblAddress">
+              <PropertyRef Name="City" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblAddress_tblState">
+          <End Type="jrcarModel.tblState" Role="tblState" Multiplicity="1" />
+          <End Type="jrcarModel.tblAddress" Role="tblAddress" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblState">
+              <PropertyRef Name="StateId" />
+            </Principal>
+            <Dependent Role="tblAddress">
+              <PropertyRef Name="State" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblAddress_tblZone">
+          <End Type="jrcarModel.tblZone" Role="tblZone" Multiplicity="0..1" />
+          <End Type="jrcarModel.tblAddress" Role="tblAddress" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblZone">
+              <PropertyRef Name="ZoneId" />
+            </Principal>
+            <Dependent Role="tblAddress">
+              <PropertyRef Name="Area" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblCars_tblAddress">
+          <End Type="jrcarModel.tblAddress" Role="tblAddress" Multiplicity="0..1" />
+          <End Type="jrcarModel.tblCar" Role="tblCar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblAddress">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="tblCar">
+              <PropertyRef Name="AddressId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblShowrooms_tblAddress">
+          <End Type="jrcarModel.tblAddress" Role="tblAddress" Multiplicity="0..1" />
+          <End Type="jrcarModel.tblShowroom" Role="tblShowroom" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblAddress">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="tblShowroom">
+              <PropertyRef Name="AddressId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblUserAdds_tblAddress">
+          <End Type="jrcarModel.tblAddress" Role="tblAddress" Multiplicity="0..1" />
+          <End Type="jrcarModel.tblUserAdd" Role="tblUserAdd" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblAddress">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="tblUserAdd">
+              <PropertyRef Name="AddressId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2133,17 +2235,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="tblAddresses">
-            <EntityTypeMapping TypeName="jrcarModel.tblAddress">
-              <MappingFragment StoreEntitySet="tblAddress">
-                <ScalarProperty Name="CompleteAddress" ColumnName="CompleteAddress" />
-                <ScalarProperty Name="Area" ColumnName="Area" />
-                <ScalarProperty Name="City" ColumnName="City" />
-                <ScalarProperty Name="State" ColumnName="State" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="tblCities">
             <EntityTypeMapping TypeName="jrcarModel.tblCity">
               <MappingFragment StoreEntitySet="tblCity">
@@ -2178,6 +2269,17 @@
                 <ScalarProperty Name="CityId" ColumnName="CityId" />
                 <ScalarProperty Name="ZoneName" ColumnName="ZoneName" />
                 <ScalarProperty Name="ZoneId" ColumnName="ZoneId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblAddresses">
+            <EntityTypeMapping TypeName="jrcarModel.tblAddress">
+              <MappingFragment StoreEntitySet="tblAddress">
+                <ScalarProperty Name="CompleteAddress" ColumnName="CompleteAddress" />
+                <ScalarProperty Name="Area" ColumnName="Area" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -14,6 +14,12 @@ namespace JRCar.BOL
     
     public partial class tblZone
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public tblZone()
+        {
+            this.tblAddresses = new HashSet<tblAddress>();
+        }
+    
         public int ZoneId { get; set; }
         public string ZoneName { get; set; }
         public Nullable<int> CityId { get; set; }
@@ -21,5 +27,7 @@ namespace JRCar.BOL
         public Nullable<decimal> Longitude { get; set; }
     
         public virtual tblCity tblCity { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tblAddress> tblAddresses { get; set; }
     }
 }

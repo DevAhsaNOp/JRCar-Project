@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="d4b3004bd5f1413399f14f09a678d153" Name="Diagram1" ZoomLevel="100" DisplayType="true">
+      <Diagram DiagramId="d4b3004bd5f1413399f14f09a678d153" Name="Diagram1" ZoomLevel="86" DisplayType="true">
         <EntityTypeShape EntityType="jrcarModel.C__MigrationHistory" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="jrcarModel.sysdiagram" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="jrcarModel.tblAdmin" Width="1.5" PointX="3" PointY="6.625" IsExpanded="true" />
@@ -46,11 +46,6 @@
         <AssociationConnector Association="jrcarModel.FK_dbo_tblTokens_dbo_tblUsers_UserID" ManuallyRouted="false" />
         <AssociationConnector Association="jrcarModel.FK_dbo_tblUserAddImages_dbo_tblUserAdds_tblUserAddID" ManuallyRouted="false" />
         <AssociationConnector Association="jrcarModel.FK_dbo_tblUserAdds_dbo_tblUsers_UserID" ManuallyRouted="false" />
-        <EntityTypeShape EntityType="jrcarModel.tblAddress" Width="1.5" PointX="5.375" PointY="6.75" />
-        <AssociationConnector Association="jrcarModel.FK_tblCars_tblAddress" />
-        <AssociationConnector Association="jrcarModel.FK_tblShowrooms_tblAddress" ManuallyRouted="false" >
-        </AssociationConnector>
-        <AssociationConnector Association="jrcarModel.FK_tblUserAdds_tblAddress" />
         <EntityTypeShape EntityType="jrcarModel.tblCity" Width="1.5" PointX="11.875" PointY="1" />
         <EntityTypeShape EntityType="jrcarModel.tblCountry" Width="1.5" PointX="7.375" PointY="1.25" />
         <EntityTypeShape EntityType="jrcarModel.tblState" Width="1.5" PointX="9.625" PointY="1" />
@@ -58,6 +53,13 @@
         <AssociationConnector Association="jrcarModel.FK_tblCity_tblState" />
         <AssociationConnector Association="jrcarModel.FK_tblZone_tblCity" />
         <AssociationConnector Association="jrcarModel.FK_tblState_tblCountry" />
+        <EntityTypeShape EntityType="jrcarModel.tblAddress" Width="1.5" PointX="16.375" PointY="0.75" />
+        <AssociationConnector Association="jrcarModel.FK_tblAddress_tblCity" />
+        <AssociationConnector Association="jrcarModel.FK_tblAddress_tblState" />
+        <AssociationConnector Association="jrcarModel.FK_tblAddress_tblZone" />
+        <AssociationConnector Association="jrcarModel.FK_tblCars_tblAddress" />
+        <AssociationConnector Association="jrcarModel.FK_tblShowrooms_tblAddress" />
+        <AssociationConnector Association="jrcarModel.FK_tblUserAdds_tblAddress" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

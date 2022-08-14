@@ -102,9 +102,9 @@ namespace JRCar.BLL.Repositories
                 {
                     tblAddress addrs = new tblAddress()
                     {
-                        State = model.State,
-                        City = model.City,
-                        Area = model.Area,
+                        State = Convert.ToInt32(model.State),
+                        City = Convert.ToInt32(model.City),
+                        Area = Convert.ToInt32(model.Area),
                         CompleteAddress = (model.CompleteAddress == null) ? "" : model.CompleteAddress,
                     };
                     var addrsID = AddressRepoObj.InsertAddress(addrs);
@@ -123,7 +123,8 @@ namespace JRCar.BLL.Repositories
                             Latitude = model.Latitude,
                             Longitude = model.Longitude
                         };
-                        var user = dbObj.InsertUserAds(userAds, model.City);
+                        var cityName = AddressRepoObj.GetStateandCity(Convert.ToInt32(model.City));
+                        var user = dbObj.InsertUserAds(userAds, cityName.Item2);
                         if (user > 0)
                         {
                             ValidateUserAdsImage userAdImagesObj = new ValidateUserAdsImage()

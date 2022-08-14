@@ -101,13 +101,12 @@ namespace JRCar.WebApp.Controllers
                         if (userAds.State != null && userAds.City != null && userAds.Area != null)
                         {
                             userAds.Condition = (userAds.Condition == "1") ? "Used" : "New";
-                            var reas = AddressRepoObj.GetStateandCity(Convert.ToInt32(userAds.City));
                             var area = AddressRepoObj.GetZoneLatLong(Convert.ToInt32(userAds.Area));
                             userAds.UserID = Convert.ToInt32(Session["Id"]);
                             userAds.CarImage = name;
-                            userAds.State = reas.Item1;
-                            userAds.City = reas.Item2;
-                            userAds.Area = area.Item3;
+                            userAds.State = userAds.State;
+                            userAds.City = userAds.City;
+                            userAds.Area = userAds.Area;
                             userAds.CompleteAddress = userAds.Address;
                             userAds.Latitude = area.Item1.ToString();
                             userAds.Longitude = area.Item2.ToString();

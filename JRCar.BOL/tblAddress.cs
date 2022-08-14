@@ -23,11 +23,14 @@ namespace JRCar.BOL
         }
     
         public int ID { get; set; }
-        public string State { get; set; }
-        public string City { get; set; }
-        public string Area { get; set; }
+        public int State { get; set; }
+        public int City { get; set; }
+        public Nullable<int> Area { get; set; }
         public string CompleteAddress { get; set; }
     
+        public virtual tblCity tblCity { get; set; }
+        public virtual tblState tblState { get; set; }
+        public virtual tblZone tblZone { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tblCar> tblCars { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
