@@ -1,0 +1,153 @@
+﻿@model JRCar.BOL.tblZone
+
+<style>
+
+    #CheckBOxZOne::-webkit-scrollbar {
+        width: 6px;
+        height: 80px;
+    }
+
+    #CheckBOxZOne::-webkit-scrollbar-track {
+        border-radius: 10px;
+        background-color: #e9e9e9;
+    }
+
+    #CheckBOxZOne::-webkit-scrollbar-thumb {
+        background-color: #c6c6c6;
+        border-radius: 10px;
+    }
+
+        #CheckBOxZOne::-webkit-scrollbar-thumb:hover {
+            background: #D00000;
+            border-radius: 10px;
+        }
+</style>
+
+@if (ViewBag.Zone != null)
+{
+    <ul class="cs-checkbox-list mCustomScrollbar" id="CheckBOxZOne" data-mcs-theme="dark" style="overflow: auto;">
+        @foreach (var item in ViewBag.Zone)
+        {
+            <li>
+                <div class="ChcBoxLst checkbox">
+                    <input type="checkbox" id="ZoneListChkBox_@item.Value" name="ZoneListChkBox" value="@item.Value" class="chkZoneclass" style="margin: 0 !important;" />
+                    <label for="ZoneListChkBox_@item.Value" id="LblZoneListChkBox_@item.Value" style="margin: 0 !important;">@item.Text</label>
+                </div>
+            </li>
+        }
+    </ul>
+}
+
+<script>
+
+    $('.chkZoneclass').click(function () {
+        //CSSSetting(this);
+        PostZone();
+    });
+
+    //function CSSSetting(e) {
+    //    var getchkid = $(e).attr('id');
+    //    //console.log(getchkid);
+    //    if ($('#' + getchkid).is(':checked') == true) {
+    //        var lbl = $(e).attr('id');
+    //        $('#Lbl' + lbl).css("color", "white");
+    //        $('#Lbl' + lbl).css("background-color", "blue");
+    //        $('#Lbl' + lbl).css("padding", "2px 12px");
+    //    }
+    //    else {
+    //        var lbl = $(e).attr('id');
+    //        $('#Lbl' + lbl).css("color", "black");
+    //        $('#Lbl' + lbl).css("background-color", "white");
+    //        $('#Lbl' + lbl).css("padding", "0px");
+    //    }
+    //}
+
+    function PostZone() {
+        var ZoneNameListVal = null;
+        ZoneNameListVal = [];
+
+        $("input[name='ZoneListChkBox']:checked").each(function () {
+            ZoneNameListVal.push($(this).attr('value'));
+        });
+
+        sessionStorage.setItem('Checked', ZoneNameListVal);
+
+        //console.log('Traversal' + ZoneNameListVal);
+        //console.log("CityName Arrasysssrsrsr:");
+        //console.log(ZoneNameListVal);
+
+        if (ZoneNameListVal.length > 0) {
+            $("#divLoader").show();
+            $.ajax({
+                type: "post",
+                url: "/Website/GetAds",
+                data: { ZoneId: ZoneNameListVal },
+                datatype: "json",
+                traditional: true,
+                success: function (data) {
+
+                    //for (let [key, value] of Object.entries(data)) {
+                    //    console.log(key, value);
+                    //    console.log(value);
+                    //    console.log("Cities Name:");
+                    //    for (var i of value) {
+                    //        console.log(i.CityName);
+                    //    }
+                    //}
+
+                    if (data != null) {
+
+                        var CityListVal = null;
+                        CityListVal = [];
+                        $("input[name='CityListChkBox']:checked").each(function () {
+                            CityListVal.push($(this).attr('value'));
+                        });
+
+                        var StatId = $("input[name = 'StateRR']").val();
+                        $("#divLoader").show();
+
+                        $.ajax({
+                            type: "post",
+                            url: "/Website/GetAds",
+                            data: { StateId: StatId, CityId: CityListVal, ZoneId: ZoneNameListVal },
+                            datatype: "json",
+                            traditional: true,
+                            success: function (response) {
+                                $("#divLoader").hide();
+                                $("#VehicleAdsLst").html(response);
+                            }
+                        });
+                    }
+
+                    //console.log('You have Selected City ::= ' + data);
+                }
+            });
+        }
+        else {
+            //alert('You have Selected Zero Cities');
+
+            var CityListVal = null;
+            CityListVal = [];
+            $("input[name='CityListChkBox']:checked").each(function () {
+                CityListVal.push($(this).attr('value'));
+            });
+
+            var StatId = $("input[name = 'StateRR']").val();
+            $("#divLoader").show();
+
+            $.ajax({
+                type: "post",
+                url: "/Website/GetAds",
+                data: { StateId: StatId, CityId: CityListVal },
+                datatype: "json",
+                traditional: true,
+                success: function (response) {
+                    $("#divLoader").hide();
+                    $("#VehicleAdsLst").html(response);
+                }
+            });
+        }
+    }
+
+</script>
+

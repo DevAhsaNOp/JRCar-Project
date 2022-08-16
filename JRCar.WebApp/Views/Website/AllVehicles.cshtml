@@ -5,7 +5,20 @@
     ViewBag.Title = "Vehicles Ads";
     Layout = "~/Views/Shared/_WebLayout.cshtml";
 }
+<style>
+    #StateRadio:hover {
+        color: #d00000 !important;
+        cursor:pointer !important;
+    }
 
+    #StateRadio {
+        list-style: none !important;
+        display: flex;
+        align-items: center;
+        column-gap: 10px;
+        padding-bottom: 10px;
+    }
+</style>
 <div class="page-section">
     <div class="container">
         <div class="row">
@@ -36,82 +49,41 @@
                             </a>
                         </div>
                     </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="headingfive">
+                            <a class="collapsed" role="button" data-toggle="collapse" href="#collapsefive" aria-expanded="false" aria-controls="collapsefive">
+                                SELECT State
+                            </a>
+                        </div>
+                        <div id="collapsefive" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingfive">
+                            <div class="panel-body">
+                                <div class="cs-select-transmission">
+                                    <form>
+                                        <ul>
+                                            @foreach (var item in ViewBag.State)
+                                            {
+                                                <li id="StateRadio">
+                                                    <input type="radio" style="margin-top: 0px !important;" name="StateRR"                              id="R_@item.StateId" value="@item.StateId" />
+                                                    <label for="R_@item.StateId" style="text-transform:uppercase;font-size:12px;                        font-weight:bold;line-height: 12px;margin-bottom: 0px;">@item.StateName</label>
+                                                </li>
+                                            }
+                                        </ul>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="cs-select-model">
-                        <div class="cs-filter-title"><h6>Select Model</h6></div>
-                        <form>
-                            <ul class="cs-checkbox-list mCustomScrollbar" data-mcs-theme="dark">
-                                <li>
-                                    <div class="checkbox">
-                                        <input id="checkbox" type="checkbox" value="Speed">
-                                        <label for="checkbox">5-Speed Automatic</label>
-                                        <span>(34)</span>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="checkbox">
-                                        <input id="checkbox1" type="checkbox" value="Speed">
-                                        <label for="checkbox1">5-Speed Manual</label>
-                                        <span>(12)</span>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="checkbox">
-                                        <input id="checkbox2" type="checkbox" value="Speed">
-                                        <label for="checkbox2">6-Speed Automatic</label>
-                                        <span>(45)</span>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="checkbox">
-                                        <input id="checkbox3" type="checkbox" value="Speed">
-                                        <label for="checkbox3">6-Speed Manual</label>
-                                        <span>(32)</span>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="checkbox">
-                                        <input id="checkbox4" type="checkbox" value="Speed">
-                                        <label for="checkbox4">6-Speed Semi-Auto</label>
-                                        <span>(102)</span>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="checkbox">
-                                        <input id="checkbox5" type="checkbox" value="Speed">
-                                        <label for="checkbox5">7-Speed PDK</label>
-                                        <span>(122)</span>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="checkbox">
-                                        <input id="checkbox6" type="checkbox" value="Speed">
-                                        <label for="checkbox6">8-Speed Automatic</label>
-                                        <span>(34)</span>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="checkbox">
-                                        <input id="checkbox7" type="checkbox" value="Speed">
-                                        <label for="checkbox7">8-Speed Tiptronic</label>
-                                        <span>(12)</span>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="checkbox">
-                                        <input id="checkbox8" type="checkbox" value="Speed">
-                                        <label for="checkbox8">5-Speed Automatic</label>
-                                        <span>(34)</span>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="checkbox">
-                                        <input id="checkbox9" type="checkbox" value="Speed">
-                                        <label for="checkbox9">5-Speed Automatic</label>
-                                        <span>(34)</span>
-                                    </div>
-                                </li>
-                            </ul>
-                        </form>
+                        <div class="cs-filter-title"><h6>Select City</h6></div>
+                        <div id="CityList">
+
+                        </div>
+                    </div>
+                    <div class="cs-select-model">
+                        <div class="cs-filter-title"><h6>Select Zone</h6></div>
+                        <div id="ZoneList">
+
+                        </div>
                     </div>
                     <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
                         <div class="panel panel-default">
@@ -443,4 +415,34 @@
             }
         });
     }
+
+    $("input[name = 'StateRR']").change(function () {
+        var StatId = $(this).val();
+        console.log(StatId);
+        $.ajax({
+            type: "GET",
+            url: "/Website/GetCityListCheckBox?StateId=" + StatId,
+            contentType: "html",
+            success: function (response) {
+                $("#CityList").empty();
+                $("#ZoneList").empty();
+                $("#CityList").html(response);
+                if (response != null) {
+                    console.log('Hey from CCRRR' + StatId);
+                    $("#divLoader").show();
+                    $.ajax({
+                        type: "post",
+                        url: "/Website/GetAds",
+                        data: { StateId: StatId },
+                        datatype: "json",
+                        traditional: true,
+                        success: function (response) {
+                            $("#divLoader").hide();
+                            $("#VehicleAdsLst").html(response);
+                        }
+                    });
+                }
+            }
+        })
+    })
 </script>

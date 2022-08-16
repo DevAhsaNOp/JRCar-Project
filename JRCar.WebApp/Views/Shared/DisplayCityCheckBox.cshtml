@@ -1,0 +1,269 @@
+﻿@model JRCar.BOL.tblCity
+
+<style>
+
+    #CheckBOxCity::-webkit-scrollbar {
+        width: 6px;
+        height: 80px;
+    }
+
+    #CheckBOxCity::-webkit-scrollbar-track {
+        border-radius: 10px;
+        background-color: #e9e9e9;
+    }
+
+    #CheckBOxCity::-webkit-scrollbar-thumb {
+        background-color: #c6c6c6;
+        border-radius: 10px;
+    }
+
+        #CheckBOxCity::-webkit-scrollbar-thumb:hover {
+            background: #D00000;
+            border-radius: 10px;
+        }
+</style>
+
+@if (ViewBag.City != null)
+{
+    <ul class="cs-checkbox-list mCustomScrollbar" id="CheckBOxCity" data-mcs-theme="dark" style="overflow: auto;height:80px !important;">
+        @foreach (var item in ViewBag.City)
+        {
+            <li>
+                <div class="ChcBoxLst checkbox">
+                    <input type="checkbox" id="CityListChkBox_@item.Value" name="CityListChkBox" value="@item.Value" class="chkCityclass" style="margin: 0 !important;" />
+                    <label for="CityListChkBox_@item.Value" id="LblCityListChkBox_@item.Value" style="margin: 0 !important;">@item.Text</label>
+                </div>
+            </li>
+        }
+    </ul>
+}
+
+<script>
+
+    //$('.chkCityclass').click(function () {
+    //    var getchkid = $(this).attr('id');
+    //    //console.log(getchkid);
+    //    if ($('#' + getchkid).is(':checked') == true) {
+    //        var lbl = $(this).attr('id');
+    //        $('#Lbl' + lbl).css("color", "white");
+    //        $('#Lbl' + lbl).css("background-color", "blue");
+    //        $('#Lbl' + lbl).css("padding", "2px 12px");
+    //    }
+    //    else {
+    //        var lbl = $(this).attr('id');
+    //        //var Cityval = $(this).attr('value');
+    //        //GetZonesToRemove(Cityval);
+    //        $('#Lbl' + lbl).css("color", "black");
+    //        $('#Lbl' + lbl).css("background-color", "white");
+    //        $('#Lbl' + lbl).css("padding", "0px");
+    //    }
+    //});
+
+    //function CityCSSSetting(e) {
+    //    var getchkid = $(e).attr('id');
+    //    //console.log(getchkid);
+    //    if ($('#' + getchkid).is(':checked') == true) {
+    //        var lbl = $(e).attr('id');
+    //        $('#Lbl' + lbl).css("color", "white");
+    //        $('#Lbl' + lbl).css("background-color", "blue");
+    //        $('#Lbl' + lbl).css("padding", "2px 12px");
+    //    }
+    //    else {
+    //        var lbl = $(e).attr('id');
+    //        $('#Lbl' + lbl).css("color", "black");
+    //        $('#Lbl' + lbl).css("background-color", "white");
+    //        $('#Lbl' + lbl).css("padding", "0px");
+    //    }
+    //}
+
+    $('.chkCityclass').click(function () {
+
+        var CityNameListVal = null;
+        CityNameListVal = [];
+
+        $("input[name='CityListChkBox']:checked").each(function () {
+            CityNameListVal.push($(this).attr('value'));
+        });
+
+        //console.log('Traversal' + CityNameListVal);
+        if (CityNameListVal.length > 0) {
+            $("#divLoader").show();
+            $.ajax({
+                type: "post",
+                url: "/Website/GetZoneListCheckBox",
+                data: { CityId: CityNameListVal },
+                datatype: "json",
+                traditional: true,
+                success: function (data) {
+
+                    //alert('You have Selected Citys Ids- ' + data);
+                    $("#ZoneList").html(data);
+
+                    if (data != null) {
+
+                        var val = sessionStorage.getItem('Checked');
+                        if (val != null && val.length != 0 && val.match('0') == null) {
+
+                            var myArr = val.split`,`.map(x => +x);
+                            //console.log(myArr);
+
+                            var ChckBoxL = null;
+                            ChckBoxL = [];
+                            var CTChckBoxL = null;
+                            CTChckBoxL = [];
+
+                            for (var i = 0; i < myArr.length; i++) {
+                                ChckBoxL.push("#ZoneListChkBox_" + myArr[i]);
+                            }
+
+                            for (var i = 0; i < myArr.length; i++) {
+                                CTChckBoxL.push(myArr[i]);
+                            }
+
+                            //console.log("ChckBoxL Arr:");
+                            //console.log(ChckBoxL);
+
+                            //console.log("CIty ChckBoxL Arr:");
+                            //console.log(CTChckBoxL);
+
+                            if (ChckBoxL.length > 0) {
+                                $.each(ChckBoxL, function (index, value) {
+                                    //console.log("Checkbox Len:" + value);
+                                    $(value).prop("checked", true);
+                                    //CSSSetting(value);
+                                });
+                            }
+
+                            var StatId = $("input[name = 'StateRR']").val();
+                            $("#divLoader").show();
+
+                            $.ajax({
+                                type: "post",
+                                url: "/Website/GetAds",
+                                data: { StateId: StatId, CityId: CityNameListVal, ZoneId: CTChckBoxL },
+                                datatype: "json",
+                                traditional: true,
+                                success: function (response) {
+                                    $("#divLoader").hide();
+                                    $("#VehicleAdsLst").html(response);
+                                }
+                            });
+
+                        }
+                        else {
+                            var StatId = $("input[name = 'StateRR']").val();
+                            $("#divLoader").show();
+
+                            $.ajax({
+                                type: "post",
+                                url: "/Website/GetAds",
+                                data: { StateId: StatId, CityId: CityNameListVal },
+                                datatype: "json",
+                                traditional: true,
+                                success: function (response) {
+                                    $("#divLoader").hide();
+                                    $("#VehicleAdsLst").html(response);
+                                }
+                            });
+                        }
+                    }
+                }
+            });
+        }
+        else {
+            //alert('You have Selected Zero Citys');
+            $("#ZoneList").empty();
+            var StatId = $("input[name = 'StateRR']").val();
+            $("#divLoader").show();
+
+            $.ajax({
+                type: "post",
+                url: "/Website/GetAds",
+                data: { StateId: StatId },
+                datatype: "json",
+                traditional: true,
+                success: function (response) {
+                    $("#divLoader").hide();
+                    $("#VehicleAdsLst").html(response);
+                }
+            });
+        }
+    });
+
+    function GetZonesToRemove(CityNameListVal) {
+        $("#divLoader").show();
+        $.ajax({
+            type: "post",
+            url: "/Website/GetAds",
+            data: { CityId: CityNameListVal },
+            datatype: "json",
+            traditional: true,
+            success: function (data) {
+
+                //alert('You have Removed Citys Id:' + CityNameListVal);
+                var val = sessionStorage.getItem('Checked');
+
+                if (val != null && data != null && val.match('0') == null) {
+                    var myArr = val.split`,`.map(x => +x);
+                    //console.log("Already exists City Ids:: " + myArr);
+
+                    var ChckBoxL = null;
+                    ChckBoxL = [];
+
+                    for (var i = 0; i < myArr.length; i++) {
+                        ChckBoxL.push(myArr[i]);
+                    }
+                    //console.log("ChckBoxL Already exists Cities Arr:");
+                    //console.log(ChckBoxL);
+
+                    var ZoneRemoveL = null;
+                    ZoneRemoveL = [];
+
+                    //for (let [key, value] of Object.entries(data)) {
+                    //    console.log(key, value);
+                    //    console.log(value);
+                    //    for (var i of value) {
+                    //        ZoneRemoveL.push(i.CityId);
+                    //    }
+                    //}
+
+                    //console.log("Cities Id's To Removed:");
+                    //console.log(ZoneRemoveL);
+
+                    var ZoneChckBoxL = ChckBoxL.filter(function (el) {
+                        return ZoneRemoveL.indexOf(el) < 0;
+                    });
+
+                    //console.log("Cities Id's To Array Removed:");
+                    //console.log(ZoneChckBoxL);
+                    sessionStorage.setItem('Checked', ZoneChckBoxL);
+
+                    var CityListVal = null;
+                    CityListVal = [];
+                    $("input[name='CityListChkBox']:checked").each(function () {
+                        CityListVal.push($(this).attr('value'));
+                    });
+
+                    var StatId = $("input[name = 'StateRR']").val();
+                    $("#divLoader").show();
+
+                    $.ajax({
+                        type: "post",
+                        url: "/Website/GetAds",
+                        data: { StateId: StatId, CityId: CityListVal, ZoneId: ZoneChckBoxL },
+                        datatype: "json",
+                        traditional: true,
+                        success: function (response) {
+                            $("#divLoader").hide();
+                            $("#VehicleAdsLst").html(response);
+                        }
+                    });
+                }
+                else {
+                    console.log('City Session have no value!');
+                }
+            }
+        });
+    }
+
+</script>

@@ -228,6 +228,14 @@ namespace JRCar.WebApp.Controllers
         public ActionResult AllVehicles(string searchTerm, int? minimumPrice, int? maximumPrice, int? sortBy, int? page)
         {
             AdsViewModel adsView = new AdsViewModel();
+            var AllStates = AddressRepoObj.GetAllState();
+            var states = new List<SelectListItem>();
+            foreach (var item in AllStates)
+            {
+                states.Add(new SelectListItem() { Text = item.StateName, Value = item.StateId.ToString() });
+            }
+            ViewBag.State = AllStates;
+
             adsView.SearchTerm = searchTerm;
             sortBy = sortBy.HasValue ? sortBy.Value : 1;
             adsView.MaximumPrice = Convert.ToInt32(RepoObj1.GetAllActiveAdsFilter(searchTerm, minimumPrice, maximumPrice, sortBy).Max(x => x.Price));
@@ -238,17 +246,36 @@ namespace JRCar.WebApp.Controllers
             pageindex = page.HasValue ? Convert.ToInt32(page) : 1;
             var list = RepoObj1.GetAllActiveAdsFilter(searchTerm, minimumPrice, maximumPrice, sortBy);
             IPagedList<ValidationUserAds> reas = list.ToPagedList(pageindex, pagesize);
-            //if (searchTerm != null)
-            //    return PartialView("_LoadAdsOn", reas);
-            //else if (sortBy.HasValue && page.HasValue)
-            //    return PartialView("_LoadAdsOn", reas);
-            //else
             return View(reas);
         }
 
+        public ActionResult GetCityListCheckBox(int StateId)
+        {
+            var city = AddressRepoObj.GetCitiesByState(StateId);
+            ViewBag.City = new SelectList(city, "CityId", "CityName");
+            return PartialView("DisplayCityCheckBox");
+        }
+
+        public ActionResult GetZoneListCheckBox(int[] CityId)
+        {
+            var list = new List<Data>();
+            var zoneList = new List<Data>();
+            foreach (var item in CityId)
+            {
+                var val = item;
+                list = AddressRepoObj.GetZoneByCity(item).Select(x => new Data()
+                {
+                    ZoneId = x.ZoneId,
+                    ZoneName = x.ZoneName
+                }).ToList();
+                zoneList.AddRange(list);
+            }
+            ViewBag.Zone = new SelectList(zoneList, "ZoneId", "ZoneName");
+            return PartialView("DisplayZoneCheckBox");
+        }
 
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult GetAds(string searchTerm, int? minimumPrice, int? maximumPrice, int? sortBy, int? page)
+        public ActionResult GetAds(string searchTerm, int? minimumPrice, int? maximumPrice, int? sortBy, int? page, int StateId, int[] CityId, int[] ZoneId)
         {
             AdsViewModel adsView = new AdsViewModel();
             adsView.SearchTerm = searchTerm;
@@ -276,6 +303,12 @@ namespace JRCar.WebApp.Controllers
         public class ImageFile
         {
             public List<HttpPostedFileBase> files { get; set; }
+        }
+
+        public class Data
+        {
+            public int ZoneId { get; set; }
+            public string ZoneName { get; set; }
         }
 
     }
