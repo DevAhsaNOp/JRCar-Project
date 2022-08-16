@@ -2,6 +2,7 @@
 using JRCar.BOL.Validation_Classes;
 using JRCar.DAL.UserDefine;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,7 +19,7 @@ namespace JRCar.DAL.DBLayer
             _context = new jrcarEntities();
         }
 
-        public IEnumerable<ValidationUserAds> GetAllActiveAdsFilter(string searchTerm, int? minimumPrice, int? maximumPrice, int? sortBy)
+        public IEnumerable<ValidationUserAds> GetAllActiveAdsFilter(string searchTerm, int? minimumPrice, int? maximumPrice, int? sortBy, int? StateId, int?[] CityId, int?[] ZoneId)
         {
             var reas = _context.tblUserAdds.Where(x => x.Isactive == true).Select(s => new ValidationUserAds()
             {
@@ -29,6 +30,7 @@ namespace JRCar.DAL.DBLayer
                 Condition = s.Condition,
                 CreatedOn = s.CreatedOn,
                 City = s.tblAddress.tblCity.CityName,
+                tblAddress = s.tblAddress,
                 AdURL = s.UserAdsURL,
                 CarImage = s.tblUserAddImages.Select(a => a.Image).FirstOrDefault(),
             }).ToList();
@@ -62,9 +64,39 @@ namespace JRCar.DAL.DBLayer
                         break;
                 }
             }
+            if (StateId > 0 && CityId == null && ZoneId == null)
+            {
+                reas = reas.Where(x => x.tblAddress.State == StateId).ToList();
+            }
+            if (StateId > 0 && CityId != null && ZoneId == null)
+            {
+                List<ValidationUserAds> AdsList = new List<ValidationUserAds>();
+                foreach (var item in CityId)
+                {
+                    var val = item;
+                    reas = reas.Where(x => x.tblAddress.City == item).ToList();
+                    AdsList.AddRange(reas);
+                }
+                reas = AdsList;
+            }
+            if (StateId > 0 && CityId != null && ZoneId != null)
+            {
+                List<ValidationUserAds> AdsList = new List<ValidationUserAds>();
+                foreach (var cities in CityId)
+                {
+                    var val = cities;
+                    foreach (var zones in ZoneId)
+                    {
+                        var val1 = cities;
+                        reas = reas.Where(x => x.tblAddress.City == cities && x.tblAddress.Area == zones).ToList();
+                        AdsList.AddRange(reas);
+                    }
+                }
+                reas = AdsList;
+            }
             return reas;
         }
-        
+
         public IEnumerable<ValidationUserAds> GetAllActiveAds()
         {
             var reas = _context.tblUserAdds.OrderBy(Ad => Ad.CreatedOn).Where(x => x.Isactive == true).Select(s => new ValidationUserAds()

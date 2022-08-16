@@ -12,6 +12,7 @@ using System.Web.Security;
 using PagedList.Mvc;
 using PagedList;
 using JRCar.WebApp.ViewModels;
+using System.Security.Policy;
 
 namespace JRCar.WebApp.Controllers
 {
@@ -225,7 +226,7 @@ namespace JRCar.WebApp.Controllers
 
         [AcceptVerbs(HttpVerbs.Get)]
         [Route("Ads")]
-        public ActionResult AllVehicles(string searchTerm, int? minimumPrice, int? maximumPrice, int? sortBy, int? page)
+        public ActionResult AllVehicles(string searchTerm, int? minimumPrice, int? maximumPrice, int? sortBy, int? page, int? StateId, int?[] CityId, int?[] ZoneId)
         {
             AdsViewModel adsView = new AdsViewModel();
             var AllStates = AddressRepoObj.GetAllState();
@@ -238,13 +239,13 @@ namespace JRCar.WebApp.Controllers
 
             adsView.SearchTerm = searchTerm;
             sortBy = sortBy.HasValue ? sortBy.Value : 1;
-            adsView.MaximumPrice = Convert.ToInt32(RepoObj1.GetAllActiveAdsFilter(searchTerm, minimumPrice, maximumPrice, sortBy).Max(x => x.Price));
+            adsView.MaximumPrice = Convert.ToInt32(RepoObj1.GetAllActiveAdsFilter(searchTerm, minimumPrice, maximumPrice, sortBy, StateId, CityId, ZoneId).Max(x => x.Price));
             ViewBag.SortBy = (sortBy.HasValue ? sortBy.Value : 1);
 
             /***Number of Records you want per Page***/
             int pagesize = 2, pageindex = 1;
             pageindex = page.HasValue ? Convert.ToInt32(page) : 1;
-            var list = RepoObj1.GetAllActiveAdsFilter(searchTerm, minimumPrice, maximumPrice, sortBy);
+            var list = RepoObj1.GetAllActiveAdsFilter(searchTerm, minimumPrice, maximumPrice, sortBy, StateId, CityId, ZoneId);
             IPagedList<ValidationUserAds> reas = list.ToPagedList(pageindex, pagesize);
             return View(reas);
         }
@@ -275,18 +276,18 @@ namespace JRCar.WebApp.Controllers
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult GetAds(string searchTerm, int? minimumPrice, int? maximumPrice, int? sortBy, int? page, int StateId, int[] CityId, int[] ZoneId)
+        public ActionResult GetAds(string searchTerm, int? minimumPrice, int? maximumPrice, int? sortBy, int? page, int? StateId, int?[] CityId, int?[] ZoneId)
         {
             AdsViewModel adsView = new AdsViewModel();
             adsView.SearchTerm = searchTerm;
             sortBy = sortBy.HasValue ? sortBy.Value : 1;
-            adsView.MaximumPrice = Convert.ToInt32(RepoObj1.GetAllActiveAdsFilter(searchTerm, minimumPrice, maximumPrice, sortBy).Max(x => x.Price));
+            adsView.MaximumPrice = Convert.ToInt32(RepoObj1.GetAllActiveAdsFilter(searchTerm, minimumPrice, maximumPrice, sortBy, StateId, CityId, ZoneId).Max(x => x.Price));
             ViewBag.SortBy = (sortBy.HasValue ? sortBy.Value : 1);
 
             /***Number of Records you want per Page***/
             int pagesize = 2, pageindex = 1;
             pageindex = page.HasValue ? Convert.ToInt32(page) : 1;
-            var list = RepoObj1.GetAllActiveAdsFilter(searchTerm, minimumPrice, maximumPrice, sortBy);
+            var list = RepoObj1.GetAllActiveAdsFilter(searchTerm, minimumPrice, maximumPrice, sortBy, StateId, CityId, ZoneId);
             IPagedList<ValidationUserAds> reas = list.ToPagedList(pageindex, pagesize);
             return PartialView("_LoadAdsOn", reas);
         }
