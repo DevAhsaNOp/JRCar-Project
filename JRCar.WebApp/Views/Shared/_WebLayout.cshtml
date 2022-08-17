@@ -262,13 +262,27 @@
             $('#SortByVehicle').change(function () {
                 var SelectedOption = $(this).find(':selected').val();
                 var search = $('#searchTerm_TxtBox').val();
+                var ZoneNameListVal = null;
+                ZoneNameListVal = [];
+                var CityListVal = null;
+                CityListVal = [];
+                var state = $("input[name='StateRR']:checked").val();
+
+                $("input[name='CityListChkBox']:checked").each(function () {
+                    CityListVal.push($(this).attr('value'));
+                });
+
+                $("input[name='ZoneListChkBox']:checked").each(function () {
+                    ZoneNameListVal.push($(this).attr('value'));
+                });
+
                 console.log("Selected Val:" + SelectedOption);
                 console.log("Search Term Val:" + search);
                 $("#divLoader").show();
                 $.ajax({
                     type: "POST",
                     url: "@Url.Action("GetAds", "Website")",
-                    data: JSON.stringify({ searchTerm:search, sortBy: SelectedOption }),
+                    data: JSON.stringify({ searchTerm: search, sortBy: SelectedOption, StateId: state, CityId: CityListVal, ZoneId: ZoneNameListVal }),
                     contentType: "application/json; charset=utf-8",
                     success: function (response) {
                         $("#divLoader").hide();
@@ -284,12 +298,25 @@
                 var SortBy = $("#SortByVehicle").find(':selected').val();
                 console.log("SortBY Val from pager:" + SortBy);
                 var search = $('#searchTerm_TxtBox').val();
+                var ZoneNameListVal = null;
+                ZoneNameListVal = [];
+                var CityListVal = null;
+                CityListVal = [];
+                var state = $("input[name='StateRR']:checked").val();
+
+                $("input[name='CityListChkBox']:checked").each(function () {
+                    CityListVal.push($(this).attr('value'));
+                });
+
+                $("input[name='ZoneListChkBox']:checked").each(function () {
+                    ZoneNameListVal.push($(this).attr('value'));
+                });
                 console.log(search);
                 console.log("Attr: " + $(this).attr("href")); 
                 $.ajax({
                     url: $(this).attr("href"),
                     type: 'POST',
-                    data: JSON.stringify({ sortBy: SortBy, page: pageno, searchTerm: search }),
+                    data: JSON.stringify({ sortBy: SortBy, page: pageno, searchTerm: search, StateId: state, CityId: CityListVal, ZoneId: ZoneNameListVal }),
                     contentType: "application/json; charset=utf-8",
                     success: function (resp) {
                         $("#divLoader").hide();

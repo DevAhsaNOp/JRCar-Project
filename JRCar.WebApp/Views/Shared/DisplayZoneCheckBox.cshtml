@@ -78,10 +78,13 @@
 
         if (ZoneNameListVal.length > 0) {
             $("#divLoader").show();
+            var SortBy = $("#SortByVehicle").find(':selected').val();
+            var search = $('#searchTerm_TxtBox').val();
+
             $.ajax({
                 type: "post",
                 url: "/Website/GetAds",
-                data: { ZoneId: ZoneNameListVal },
+                data: { searchTerm: search, sortBy: SortBy, ZoneId: ZoneNameListVal },
                 datatype: "json",
                 traditional: true,
                 success: function (data) {
@@ -105,11 +108,13 @@
 
                         var StatId = $("input[name = 'StateRR']").val();
                         $("#divLoader").show();
+                        var SortBy = $("#SortByVehicle").find(':selected').val();
+                        var search = $('#searchTerm_TxtBox').val();
 
                         $.ajax({
                             type: "post",
                             url: "/Website/GetAds",
-                            data: { StateId: StatId, CityId: CityListVal, ZoneId: ZoneNameListVal },
+                            data: { searchTerm: search, sortBy: SortBy, StateId: StatId, CityId: CityListVal, ZoneId: ZoneNameListVal },
                             datatype: "json",
                             traditional: true,
                             success: function (response) {
@@ -134,11 +139,13 @@
 
             var StatId = $("input[name = 'StateRR']").val();
             $("#divLoader").show();
+            var SortBy = $("#SortByVehicle").find(':selected').val();
+            var search = $('#searchTerm_TxtBox').val();
 
             $.ajax({
                 type: "post",
                 url: "/Website/GetAds",
-                data: { StateId: StatId, CityId: CityListVal },
+                data: { searchTerm: search, sortBy: SortBy, StateId: StatId, CityId: CityListVal },
                 datatype: "json",
                 traditional: true,
                 success: function (response) {

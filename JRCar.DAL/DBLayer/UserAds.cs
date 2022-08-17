@@ -74,8 +74,8 @@ namespace JRCar.DAL.DBLayer
                 foreach (var item in CityId)
                 {
                     var val = item;
-                    reas = reas.Where(x => x.tblAddress.City == item).ToList();
-                    AdsList.AddRange(reas);
+                    var ads = reas.Where(x => x.tblAddress.City == item).ToList();
+                    AdsList.AddRange(ads);
                 }
                 reas = AdsList;
             }
@@ -88,8 +88,8 @@ namespace JRCar.DAL.DBLayer
                     foreach (var zones in ZoneId)
                     {
                         var val1 = cities;
-                        reas = reas.Where(x => x.tblAddress.City == cities && x.tblAddress.Area == zones).ToList();
-                        AdsList.AddRange(reas);
+                        var ads = reas.Where(x => x.tblAddress.City == cities && x.tblAddress.Area == zones).ToList();
+                        AdsList.AddRange(ads);
                     }
                 }
                 reas = AdsList;

@@ -88,6 +88,8 @@
         //console.log('Traversal' + CityNameListVal);
         if (CityNameListVal.length > 0) {
             $("#divLoader").show();
+            var SortBy = $("#SortByVehicle").find(':selected').val();
+            var search = $('#searchTerm_TxtBox').val();
             $.ajax({
                 type: "post",
                 url: "/Website/GetZoneListCheckBox",
@@ -136,11 +138,13 @@
 
                             var StatId = $("input[name = 'StateRR']").val();
                             $("#divLoader").show();
+                            var SortBy = $("#SortByVehicle").find(':selected').val();
+                            var search = $('#searchTerm_TxtBox').val();
 
                             $.ajax({
                                 type: "post",
                                 url: "/Website/GetAds",
-                                data: { StateId: StatId, CityId: CityNameListVal, ZoneId: CTChckBoxL },
+                                data: { searchTerm: search, sortBy: SortBy, StateId: StatId, CityId: CityNameListVal, ZoneId: CTChckBoxL },
                                 datatype: "json",
                                 traditional: true,
                                 success: function (response) {
@@ -153,11 +157,13 @@
                         else {
                             var StatId = $("input[name = 'StateRR']").val();
                             $("#divLoader").show();
+                            var SortBy = $("#SortByVehicle").find(':selected').val();
+                            var search = $('#searchTerm_TxtBox').val();
 
                             $.ajax({
                                 type: "post",
                                 url: "/Website/GetAds",
-                                data: { StateId: StatId, CityId: CityNameListVal },
+                                data: { searchTerm: search, sortBy: SortBy, StateId: StatId, CityId: CityNameListVal },
                                 datatype: "json",
                                 traditional: true,
                                 success: function (response) {
@@ -175,11 +181,13 @@
             $("#ZoneList").empty();
             var StatId = $("input[name = 'StateRR']").val();
             $("#divLoader").show();
+            var SortBy = $("#SortByVehicle").find(':selected').val();
+            var search = $('#searchTerm_TxtBox').val();
 
             $.ajax({
                 type: "post",
                 url: "/Website/GetAds",
-                data: { StateId: StatId },
+                data: { searchTerm: search, sortBy: SortBy, StateId: StatId },
                 datatype: "json",
                 traditional: true,
                 success: function (response) {
@@ -192,10 +200,13 @@
 
     function GetZonesToRemove(CityNameListVal) {
         $("#divLoader").show();
+        var SortBy = $("#SortByVehicle").find(':selected').val();
+        var search = $('#searchTerm_TxtBox').val();
+
         $.ajax({
             type: "post",
             url: "/Website/GetAds",
-            data: { CityId: CityNameListVal },
+            data: { searchTerm: search, sortBy: SortBy, CityId: CityNameListVal },
             datatype: "json",
             traditional: true,
             success: function (data) {
@@ -246,11 +257,13 @@
 
                     var StatId = $("input[name = 'StateRR']").val();
                     $("#divLoader").show();
+                    var SortBy = $("#SortByVehicle").find(':selected').val();
+                    var search = $('#searchTerm_TxtBox').val();
 
                     $.ajax({
                         type: "post",
                         url: "/Website/GetAds",
-                        data: { StateId: StatId, CityId: CityListVal, ZoneId: ZoneChckBoxL },
+                        data: { searchTerm: search, sortBy: SortBy, StateId: StatId, CityId: CityListVal, ZoneId: ZoneChckBoxL },
                         datatype: "json",
                         traditional: true,
                         success: function (response) {

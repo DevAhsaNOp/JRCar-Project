@@ -401,15 +401,29 @@
 <script>
     function FormVAds() {
         var search = $('#searchTerm_TxtBox').val();
+        var ZoneNameListVal = null;
+        ZoneNameListVal = [];
+        var CityListVal = null;
+        CityListVal = [];
+        var state = $("input[name='StateRR']:checked").val();
+
+        $("input[name='CityListChkBox']:checked").each(function () {
+            CityListVal.push($(this).attr('value'));
+        });
+
+        $("input[name='ZoneListChkBox']:checked").each(function () {
+            ZoneNameListVal.push($(this).attr('value'));
+        });
+
         console.log(search);
         $("#divLoader").show();
         $.ajax({
             type: 'POST',
             url: "@Url.Action("GetAds", "Website")",
-            data: JSON.stringify({ searchTerm: search }),
+            data: JSON.stringify({ searchTerm: search, StateId: state, CityId: CityListVal, ZoneId: ZoneNameListVal }),
             contentType: "application/json; charset=utf-8",
             success: function (response) {
-                console.log(response);
+                //console.log(response);
                 $("#divLoader").hide();
                 $("#VehicleAdsLst").html(response);
             }
@@ -418,6 +432,8 @@
 
     $("input[name = 'StateRR']").change(function () {
         var StatId = $(this).val();
+        var SortBy = $("#SortByVehicle").find(':selected').val();
+        var search = $('#searchTerm_TxtBox').val();
         console.log(StatId);
         $.ajax({
             type: "GET",
@@ -433,7 +449,7 @@
                     $.ajax({
                         type: "post",
                         url: "/Website/GetAds",
-                        data: { StateId: StatId },
+                        data: { StateId: StatId, searchTerm: search, sortBy: SortBy },
                         datatype: "json",
                         traditional: true,
                         success: function (response) {
