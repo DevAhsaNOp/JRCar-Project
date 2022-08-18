@@ -13,6 +13,7 @@ using PagedList.Mvc;
 using PagedList;
 using JRCar.WebApp.ViewModels;
 using System.Security.Policy;
+using System.Collections;
 
 namespace JRCar.WebApp.Controllers
 {
@@ -37,7 +38,7 @@ namespace JRCar.WebApp.Controllers
         #region **Post New Vehicle**
         [AcceptVerbs(HttpVerbs.Get)]
         [Authorize(Roles = "User")]
-        [Route("Ads/PostNewVehicles")]
+        [Route("Ads/PostNewVehicle")]
         public ActionResult PostNewVehicles()
         {
             var AllStates = AddressRepoObj.GetAllState();
@@ -80,60 +81,69 @@ namespace JRCar.WebApp.Controllers
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
-        [Route("Ads/PostNewVehicles")]
+        [Route("Ads/PostNewVehicle")]
         public ActionResult PostNewVehicles(ImageFile objImage, ValidationUserAds userAds)
         {
             try
             {
-                var name = string.Format("~/uploads/{0}{1}", RandomString(), DateTime.Now.Millisecond);
-                string createFolder = Server.MapPath(name);
-                if (!Directory.Exists(createFolder))
+                if (User.Identity.IsAuthenticated)
                 {
-                    Directory.CreateDirectory(createFolder);
-                    foreach (var file in objImage.files)
+                    var name = string.Format("~/uploads/{0}{1}", RandomString(), DateTime.Now.Millisecond);
+                    string createFolder = Server.MapPath(name);
+                    if (!Directory.Exists(createFolder))
                     {
-                        if (file != null && file.ContentLength > 0)
+                        Directory.CreateDirectory(createFolder);
+                        foreach (var file in objImage.files)
                         {
-                            file.SaveAs(Path.Combine(Server.MapPath(name), Guid.NewGuid() + Path.GetExtension(file.FileName)));
+                            if (file != null && file.ContentLength > 0)
+                            {
+                                file.SaveAs(Path.Combine(Server.MapPath(name), Guid.NewGuid() + Path.GetExtension(file.FileName)));
+                            }
                         }
-                    }
-                    if (userAds != null)
-                    {
-                        if (userAds.State != null && userAds.City != null && userAds.Area != null)
+                        if (userAds != null)
                         {
-                            userAds.Condition = (userAds.Condition == "1") ? "Used" : "New";
-                            var area = AddressRepoObj.GetZoneLatLong(Convert.ToInt32(userAds.Area));
-                            userAds.UserID = Convert.ToInt32(Session["Id"]);
-                            userAds.CarImage = name;
-                            userAds.State = userAds.State;
-                            userAds.City = userAds.City;
-                            userAds.Area = userAds.Area;
-                            userAds.CompleteAddress = userAds.Address;
-                            userAds.Latitude = area.Item1.ToString();
-                            userAds.Longitude = area.Item2.ToString();
-                            var AdsPublish = RepoObj1.InsertUserAds(userAds);
-                            if (AdsPublish)
+                            if (userAds.State != null && userAds.City != null && userAds.Area != null)
                             {
-                                TempData["SuccessMsg"] = "Ad Publish Successfully!";
-                                return RedirectToAction("PostNewVehicles");
+                                userAds.Condition = (userAds.Condition == "1") ? "Used" : "New";
+                                var area = AddressRepoObj.GetZoneLatLong(Convert.ToInt32(userAds.Area));
+                                userAds.UserID = Convert.ToInt32(Session["Id"]);
+                                userAds.CarImage = name;
+                                userAds.State = userAds.State;
+                                userAds.City = userAds.City;
+                                userAds.Area = userAds.Area;
+                                userAds.CompleteAddress = userAds.Address;
+                                userAds.Latitude = area.Item1.ToString();
+                                userAds.Longitude = area.Item2.ToString();
+                                var AdsPublish = RepoObj1.InsertUserAds(userAds);
+                                if (AdsPublish)
+                                {
+                                    TempData["SuccessMsg"] = "Ad Publish Successfully!";
+                                    return RedirectToAction("PostNewVehicles");
+                                }
+                                else
+                                {
+                                    TempData["ErrorMsg"] = "Error on Ads Publishing please try again!";
+                                    return RedirectToAction("PostNewVehicles");
+                                }
                             }
-                            else
-                            {
-                                TempData["ErrorMsg"] = "Error on Ads Publishing please try again!";
-                                return RedirectToAction("PostNewVehicles");
-                            }
+                        }
+                        else
+                        {
+                            ViewBag.Error = "Error please try again!";
+                            return View("PostNewVehicles");
                         }
                     }
                     else
                     {
-                        ViewBag.Error = "Error please try again!";
+                        ViewBag.Error = "Error on uploading file!";
                         return View("PostNewVehicles");
                     }
                 }
                 else
                 {
                     ViewBag.Error = "Error on uploading file!";
-                    return View("PostNewVehicles");
+                    var err = (int)HttpStatusCode.BadRequest;
+                    return Json(new { error = err + " Bad Request Error " + "Invalid Request!!" });
                 }
             }
             catch (Exception ex)
@@ -151,7 +161,7 @@ namespace JRCar.WebApp.Controllers
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult Shortlisted(ImageFile objImage, ValidationUserAds userAds)
+        public ActionResult Shortlisted(ValidationUserAds userAds)
         {
             return View();
         }
@@ -224,6 +234,7 @@ namespace JRCar.WebApp.Controllers
         }
         #endregion
 
+        #region **Search Page**
         [AcceptVerbs(HttpVerbs.Get)]
         [Route("Ads")]
         public ActionResult AllVehicles(string searchTerm, int? minimumPrice, int? maximumPrice, int? sortBy, int? page, int? StateId, int?[] CityId, int?[] ZoneId)
@@ -291,7 +302,9 @@ namespace JRCar.WebApp.Controllers
             IPagedList<ValidationUserAds> reas = list.ToPagedList(pageindex, pagesize);
             return PartialView("_LoadAdsOn", reas);
         }
+        #endregion
 
+        #region **Usabale Functions & Classes**
         private static Random random = new Random();
 
         public static string RandomString()
@@ -311,6 +324,7 @@ namespace JRCar.WebApp.Controllers
             public int ZoneId { get; set; }
             public string ZoneName { get; set; }
         }
+        #endregion
 
     }
 }
