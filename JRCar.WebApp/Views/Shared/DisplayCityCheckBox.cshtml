@@ -140,11 +140,15 @@
                             $("#divLoader").show();
                             var SortBy = $("#SortByVehicle").find(':selected').val();
                             var search = $('#searchTerm_TxtBox').val();
-
+                            var priceRange = $("#price").val();
+                            console.log(priceRange);
+                            var myArr = priceRange.split`,`.map(x => +x);
+                            var minimum = myArr[0];
+                            var maximum = myArr[1];
                             $.ajax({
                                 type: "post",
                                 url: "/Website/GetAds",
-                                data: { searchTerm: search, sortBy: SortBy, StateId: StatId, CityId: CityNameListVal, ZoneId: CTChckBoxL },
+                                data: { searchTerm: search, sortBy: SortBy, StateId: StatId, CityId: CityNameListVal, ZoneId: CTChckBoxL, maximumPrice: maximum, minimumPrice: minimum },
                                 datatype: "json",
                                 traditional: true,
                                 success: function (response) {
@@ -159,11 +163,16 @@
                             $("#divLoader").show();
                             var SortBy = $("#SortByVehicle").find(':selected').val();
                             var search = $('#searchTerm_TxtBox').val();
+                            var priceRange = $("#price").val();
+                            console.log(priceRange);
+                            var myArr = priceRange.split`,`.map(x => +x);
+                            var minimum = myArr[0];
+                            var maximum = myArr[1];
 
                             $.ajax({
                                 type: "post",
                                 url: "/Website/GetAds",
-                                data: { searchTerm: search, sortBy: SortBy, StateId: StatId, CityId: CityNameListVal },
+                                data: { searchTerm: search, sortBy: SortBy, StateId: StatId, CityId: CityNameListVal, maximumPrice: maximum, minimumPrice: minimum },
                                 datatype: "json",
                                 traditional: true,
                                 success: function (response) {
@@ -183,11 +192,16 @@
             $("#divLoader").show();
             var SortBy = $("#SortByVehicle").find(':selected').val();
             var search = $('#searchTerm_TxtBox').val();
+            var priceRange = $("#price").val();
+            console.log(priceRange);
+            var myArr = priceRange.split`,`.map(x => +x);
+            var minimum = myArr[0];
+            var maximum = myArr[1];
 
             $.ajax({
                 type: "post",
                 url: "/Website/GetAds",
-                data: { searchTerm: search, sortBy: SortBy, StateId: StatId },
+                data: { searchTerm: search, sortBy: SortBy, StateId: StatId, maximumPrice: maximum, minimumPrice: minimum },
                 datatype: "json",
                 traditional: true,
                 success: function (response) {
@@ -202,11 +216,16 @@
         $("#divLoader").show();
         var SortBy = $("#SortByVehicle").find(':selected').val();
         var search = $('#searchTerm_TxtBox').val();
+        var priceRange = $("#price").val();
+        console.log(priceRange);
+        var myArr = priceRange.split`,`.map(x => +x);
+        var minimum = myArr[0];
+        var maximum = myArr[1];
 
         $.ajax({
             type: "post",
             url: "/Website/GetAds",
-            data: { searchTerm: search, sortBy: SortBy, CityId: CityNameListVal },
+            data: { searchTerm: search, sortBy: SortBy, CityId: CityNameListVal, maximumPrice: maximum, minimumPrice: minimum },
             datatype: "json",
             traditional: true,
             success: function (data) {
@@ -259,11 +278,16 @@
                     $("#divLoader").show();
                     var SortBy = $("#SortByVehicle").find(':selected').val();
                     var search = $('#searchTerm_TxtBox').val();
+                    var priceRange = $("#price").val();
+                    console.log(priceRange);
+                    var myArr = priceRange.split`,`.map(x => +x);
+                    var minimum = myArr[0];
+                    var maximum = myArr[1];
 
                     $.ajax({
                         type: "post",
                         url: "/Website/GetAds",
-                        data: { searchTerm: search, sortBy: SortBy, StateId: StatId, CityId: CityListVal, ZoneId: ZoneChckBoxL },
+                        data: { searchTerm: search, sortBy: SortBy, StateId: StatId, CityId: CityListVal, ZoneId: ZoneChckBoxL, maximumPrice: maximum, minimumPrice: minimum },
                         datatype: "json",
                         traditional: true,
                         success: function (response) {

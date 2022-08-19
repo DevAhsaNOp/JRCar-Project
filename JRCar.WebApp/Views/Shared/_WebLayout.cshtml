@@ -258,6 +258,49 @@
     <script>
         $(document).ready(function () {
             console.log("ready!");
+            var CallTimeOut;
+
+            function PriceChangeData() {
+                var priceRange = $("#price").val();
+                console.log(priceRange);
+                var myArr = priceRange.split`,`.map(x => +x);
+                var minimum = myArr[0];
+                var maximum = myArr[1];
+                var SortBy = $("#SortByVehicle").find(':selected').val();
+                var search = $('#searchTerm_TxtBox').val();
+                var ZoneNameListVal = null;
+                ZoneNameListVal = [];
+                var CityListVal = null;
+                CityListVal = [];
+                var state = $("input[name='StateRR']:checked").val();
+
+                $("input[name='CityListChkBox']:checked").each(function () {
+                    CityListVal.push($(this).attr('value'));
+                });
+
+                $("input[name='ZoneListChkBox']:checked").each(function () {
+                    ZoneNameListVal.push($(this).attr('value'));
+                });
+
+                console.log("Search Term Val:" + search);
+                $("#divLoader").show();
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("GetAds", "Website")",
+                    data: JSON.stringify({ searchTerm: search, sortBy: SortBy, StateId: state, CityId: CityListVal, ZoneId: ZoneNameListVal, maximumPrice: maximum, minimumPrice: minimum }),
+                    contentType: "application/json; charset=utf-8",
+                    success: function (response) {
+                        $("#divLoader").hide();
+                        $("#VehicleAdsLst").html(response);
+                    }
+                });
+            }
+
+            $("#price").change(function () {
+                clearTimeout(CallTimeOut);
+                CallTimeOut = setTimeout(PriceChangeData, 1000);
+            });
+
 
             $('#SortByVehicle').change(function () {
                 var SelectedOption = $(this).find(':selected').val();
@@ -266,6 +309,11 @@
                 ZoneNameListVal = [];
                 var CityListVal = null;
                 CityListVal = [];
+                var priceRange = $("#price").val();
+                console.log(priceRange);
+                var myArr = priceRange.split`,`.map(x => +x);
+                var minimum = myArr[0];
+                var maximum = myArr[1];
                 var state = $("input[name='StateRR']:checked").val();
 
                 $("input[name='CityListChkBox']:checked").each(function () {
@@ -282,7 +330,7 @@
                 $.ajax({
                     type: "POST",
                     url: "@Url.Action("GetAds", "Website")",
-                    data: JSON.stringify({ searchTerm: search, sortBy: SelectedOption, StateId: state, CityId: CityListVal, ZoneId: ZoneNameListVal }),
+                    data: JSON.stringify({ searchTerm: search, sortBy: SelectedOption, StateId: state, CityId: CityListVal, ZoneId: ZoneNameListVal, maximumPrice: maximum, minimumPrice: minimum }),
                     contentType: "application/json; charset=utf-8",
                     success: function (response) {
                         $("#divLoader").hide();
@@ -293,6 +341,11 @@
 
             $(document).on("click", "#ContentPager a[href]", function () {
                 $("#divLoader").show();
+                var priceRange = $("#price").val();
+                console.log(priceRange);
+                var myArr = priceRange.split`,`.map(x => +x);
+                var minimum = myArr[0];
+                var maximum = myArr[1];
                 var pageno = $(this).text();
                 console.log("Page No:" + pageno);
                 var SortBy = $("#SortByVehicle").find(':selected').val();
@@ -312,11 +365,11 @@
                     ZoneNameListVal.push($(this).attr('value'));
                 });
                 console.log(search);
-                console.log("Attr: " + $(this).attr("href")); 
+                console.log("Attr: " + $(this).attr("href"));
                 $.ajax({
                     url: $(this).attr("href"),
                     type: 'POST',
-                    data: JSON.stringify({ sortBy: SortBy, page: pageno, searchTerm: search, StateId: state, CityId: CityListVal, ZoneId: ZoneNameListVal }),
+                    data: JSON.stringify({ sortBy: SortBy, page: pageno, searchTerm: search, StateId: state, CityId: CityListVal, ZoneId: ZoneNameListVal, maximumPrice: maximum, minimumPrice: minimum }),
                     contentType: "application/json; charset=utf-8",
                     success: function (resp) {
                         $("#divLoader").hide();

@@ -239,18 +239,20 @@ namespace JRCar.WebApp.Controllers
         [Route("Ads")]
         public ActionResult AllVehicles(string searchTerm, int? minimumPrice, int? maximumPrice, int? sortBy, int? page, int? StateId, int?[] CityId, int?[] ZoneId)
         {
-            AdsViewModel adsView = new AdsViewModel();
+            ValidationUserAds adsView = new ValidationUserAds();
             var AllStates = AddressRepoObj.GetAllState();
             var states = new List<SelectListItem>();
             foreach (var item in AllStates)
             {
                 states.Add(new SelectListItem() { Text = item.StateName, Value = item.StateId.ToString() });
             }
+
             ViewBag.State = AllStates;
 
-            adsView.SearchTerm = searchTerm;
             sortBy = sortBy.HasValue ? sortBy.Value : 1;
-            adsView.MaximumPrice = Convert.ToInt32(RepoObj1.GetAllActiveAdsFilter(searchTerm, minimumPrice, maximumPrice, sortBy, StateId, CityId, ZoneId).Max(x => x.Price));
+            ViewBag.MaximumPrice = RepoObj1.GetAllActiveAds().Select(x => Convert.ToInt32(x.Price)).Max();
+            ViewBag.MinimumPrice = RepoObj1.GetAllActiveAds().Select(x => Convert.ToInt32(x.Price)).Min();
+
             ViewBag.SortBy = (sortBy.HasValue ? sortBy.Value : 1);
 
             /***Number of Records you want per Page***/
@@ -294,6 +296,8 @@ namespace JRCar.WebApp.Controllers
             sortBy = sortBy.HasValue ? sortBy.Value : 1;
             adsView.MaximumPrice = Convert.ToInt32(RepoObj1.GetAllActiveAdsFilter(searchTerm, minimumPrice, maximumPrice, sortBy, StateId, CityId, ZoneId).Max(x => x.Price));
             ViewBag.SortBy = (sortBy.HasValue ? sortBy.Value : 1);
+            ViewBag.MaximumPrice = (maximumPrice.HasValue ? maximumPrice.Value : RepoObj1.GetAllActiveAds().Select(x => Convert.ToInt32(x.Price)).Max());
+            ViewBag.MinimumPrice = (minimumPrice.HasValue ? minimumPrice.Value : RepoObj1.GetAllActiveAds().Select(x => Convert.ToInt32(x.Price)).Min());
 
             /***Number of Records you want per Page***/
             int pagesize = 2, pageindex = 1;

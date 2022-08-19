@@ -197,10 +197,10 @@
                                 <div class="panel-body">
                                     <div class="cs-price-range">
                                         <form>
-                                            <input id="price" type="text" class="span2" value="3000" data-slider-min="10" data-slider-max="1000" data-slider-step="5" data-slider-value="[600,200]" />
+                                            <input id="price" type="text" class="span2" value="3000" data-slider-min="@ViewBag.MinimumPrice" data-slider-max="@ViewBag.MaximumPrice" data-slider-step="5" data-slider-value="[@ViewBag.MinimumPrice,@ViewBag.MaximumPrice]" />
                                             <div class="selector-value">
-                                                <span>$60,000</span>
-                                                <span class="pull-right">$20,000</span>
+                                                <span>$@ViewBag.MinimumPrice</span>
+                                                <span class="pull-right">$@ViewBag.MaximumPrice</span>
                                             </div>
                                         </form>
                                     </div>
@@ -315,7 +315,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="panel panel-default">
+                        @*<div class="panel panel-default">
                             <div class="panel-heading" role="tab" id="headingsix">
                                 <a class="collapsed" role="button" data-toggle="collapse" href="#collapsesix" aria-expanded="false" aria-controls="collapsesix">
                                     Engine Capacity(cc)
@@ -334,7 +334,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div>*@
                     </div>
                 </div>
             </aside>
@@ -417,10 +417,15 @@
 
         console.log(search);
         $("#divLoader").show();
+        var priceRange = $("#price").val();
+        console.log(priceRange);
+        var myArr = priceRange.split`,`.map(x => +x);
+        var minimum = myArr[0];
+        var maximum = myArr[1];
         $.ajax({
             type: 'POST',
             url: "@Url.Action("GetAds", "Website")",
-            data: JSON.stringify({ searchTerm: search, StateId: state, CityId: CityListVal, ZoneId: ZoneNameListVal }),
+            data: JSON.stringify({ searchTerm: search, StateId: state, CityId: CityListVal, ZoneId: ZoneNameListVal, maximumPrice: maximum, minimumPrice: minimum }),
             contentType: "application/json; charset=utf-8",
             success: function (response) {
                 //console.log(response);
@@ -434,6 +439,11 @@
         var StatId = $(this).val();
         var SortBy = $("#SortByVehicle").find(':selected').val();
         var search = $('#searchTerm_TxtBox').val();
+        var priceRange = $("#price").val();
+        console.log(priceRange);
+        var myArr = priceRange.split`,`.map(x => +x);
+        var minimum = myArr[0];
+        var maximum = myArr[1];
         console.log(StatId);
         $.ajax({
             type: "GET",
@@ -449,7 +459,7 @@
                     $.ajax({
                         type: "post",
                         url: "/Website/GetAds",
-                        data: { StateId: StatId, searchTerm: search, sortBy: SortBy },
+                        data: { StateId: StatId, searchTerm: search, sortBy: SortBy, maximumPrice: maximum, minimumPrice: minimum },
                         datatype: "json",
                         traditional: true,
                         success: function (response) {
