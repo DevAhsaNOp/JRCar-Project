@@ -121,7 +121,11 @@ namespace JRCar.BLL.Repositories
                             Price = model.Price,
                             AddressId = addrsID,
                             Latitude = model.Latitude,
-                            Longitude = model.Longitude
+                            Longitude = model.Longitude,
+                            CategoryId = model.CategoryId,
+                            SubCategoryId = model.SubCategoryId,
+                            ManufacturerId = model.ManufacturerId,
+                            ManufacturerCarModelID = model.ManufacturerCarModelID
                         };
                         var cityName = AddressRepoObj.GetStateandCity(Convert.ToInt32(model.City));
                         var user = dbObj.InsertUserAds(userAds, cityName.Item2);
@@ -271,6 +275,36 @@ namespace JRCar.BLL.Repositories
             {
                 throw ex;
             }
+        }
+
+        public IEnumerable<tblManufacturer> GetAllMakes()
+        {
+            return dbObj.GetAllMakes();
+        }
+
+        public IEnumerable<tblManfacturerCarModel> GetAllModels()
+        {
+            return dbObj.GetAllModels();
+        }
+
+        public IEnumerable<tblCategory> GetAllCategory()
+        {
+            return dbObj.GetAllCategory();
+        }
+
+        public IEnumerable<tblSubCategory> GetAllSubCategory()
+        {
+            return dbObj.GetAllSubCategory();
+        }
+
+        public IEnumerable<tblManfacturerCarModel> GetModelsByMake(int ManufacturerId)
+        {
+            return dbObj.GetModelsByMake(ManufacturerId);
+        }
+
+        public IEnumerable<tblSubCategory> GetSubCategoriesByCategory(int CategoryId)
+        {
+            return dbObj.GetSubCategoriesByCategory(CategoryId);
         }
     }
 }

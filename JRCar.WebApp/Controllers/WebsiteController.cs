@@ -63,6 +63,24 @@ namespace JRCar.WebApp.Controllers
             condition.Add(new SelectListItem() { Text = "New", Value = "2" });
             ViewBag.Conditions = condition;
 
+            var AllCategory = RepoObj1.GetAllCategory();
+            var categories = new List<SelectListItem>();
+            categories.Add(new SelectListItem() { Text = "---Select Category---", Value = "0", Disabled = true, Selected = true });
+            foreach (var item in AllCategory)
+            {
+                categories.Add(new SelectListItem() { Text = item.CategoryName, Value = item.CategoryID.ToString() });
+            }
+            ViewBag.Category = categories;
+
+            var AllMake = RepoObj1.GetAllMakes();
+            var makes = new List<SelectListItem>();
+            makes.Add(new SelectListItem() { Text = "---Select Model---", Value = "0", Disabled = true, Selected = true });
+            foreach (var item in AllMake)
+            {
+                makes.Add(new SelectListItem() { Text = item.Manufacturer_Name, Value = item.Manufacturer_Id.ToString() });
+            }
+            ViewBag.Make = makes;
+
             return View();
         }
 
@@ -78,6 +96,20 @@ namespace JRCar.WebApp.Controllers
             var zone = AddressRepoObj.GetZoneByCity(CityId);
             ViewBag.Zone = new SelectList(zone, "ZoneId", "ZoneName");
             return PartialView("DisplayZone");
+        }
+
+        public ActionResult GetModelsList(int MakeId)
+        {
+            var carModels = RepoObj1.GetModelsByMake(MakeId);
+            ViewBag.carModels = new SelectList(carModels, "ManufacturerCarModel_Id", "Manufacturer_CarModelName");
+            return PartialView("DisplayModels");
+        }
+
+        public ActionResult GetSubCategoryList(int CategoryId)
+        {
+            var subCategories = RepoObj1.GetSubCategoriesByCategory(CategoryId);
+            ViewBag.subCategories = new SelectList(subCategories, "SubCategoryId", "SubCategoryName");
+            return PartialView("DisplaySubCategory");
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
@@ -114,6 +146,10 @@ namespace JRCar.WebApp.Controllers
                                 userAds.CompleteAddress = userAds.Address;
                                 userAds.Latitude = area.Item1.ToString();
                                 userAds.Longitude = area.Item2.ToString();
+                                userAds.CategoryId = Convert.ToInt32(userAds.CategoryName);
+                                userAds.SubCategoryId = Convert.ToInt32(userAds.SubCategoryName);
+                                userAds.ManufacturerId = Convert.ToInt32(userAds.Manufacturer_Name);
+                                userAds.ManufacturerCarModelID = Convert.ToInt32(userAds.Manufacturer_CarModelName);
                                 var AdsPublish = RepoObj1.InsertUserAds(userAds);
                                 if (AdsPublish)
                                 {

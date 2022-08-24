@@ -1,0 +1,10 @@
+﻿@model JRCar.BOL.tblSubCategory
+<option value="0" selected="selected" disabled="disabled" class="selectoption">--- Select Sub Category ---</option>
+@if (ViewBag.subCategories != null)
+{
+    foreach (var item in ViewBag.subCategories)
+    {
+        <option value="@item.Value">@item.Text</option>
+    }
+}
+

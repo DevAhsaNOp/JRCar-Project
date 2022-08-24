@@ -273,6 +273,36 @@ namespace JRCar.DAL.DBLayer
             }
         }
 
+        public IEnumerable<tblManufacturer> GetAllMakes()
+        {
+            return _context.tblManufacturers.ToList();
+        }
+
+        public IEnumerable<tblManfacturerCarModel> GetAllModels()
+        {
+            return _context.tblManfacturerCarModels.ToList();
+        }
+
+        public IEnumerable<tblCategory> GetAllCategory()
+        {
+            return _context.tblCategories.ToList();
+        }
+
+        public IEnumerable<tblSubCategory> GetAllSubCategory()
+        {
+            return _context.tblSubCategories.ToList();
+        }
+
+        public IEnumerable<tblManfacturerCarModel> GetModelsByMake(int ManufacturerId)
+        {
+            return _context.tblManfacturerCarModels.Where(x => x.Manufacturer_Id == ManufacturerId).ToList();
+        }
+
+        public IEnumerable<tblSubCategory> GetSubCategoriesByCategory(int CategoryId)
+        {
+            return _context.tblSubCategories.Where(x => x.CategoryId == CategoryId).ToList();
+        }
+
         public void Save()
         {
             _context.SaveChanges();

@@ -20,6 +20,7 @@ namespace JRCar.BOL
             this.tblAdmins = new HashSet<tblAdmin>();
             this.tblUnions = new HashSet<tblUnion>();
             this.tblUsers = new HashSet<tblUser>();
+            this.tblShowrooms = new HashSet<tblShowroom>();
         }
     
         public int ID { get; set; }
@@ -31,5 +32,7 @@ namespace JRCar.BOL
         public virtual ICollection<tblUnion> tblUnions { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tblUser> tblUsers { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tblShowroom> tblShowrooms { get; set; }
     }
 }

@@ -317,26 +317,27 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Image" Type="varchar(max)" />
+          <Property Name="FullName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Email" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Password" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="CNIC" Type="varchar" MaxLength="20" />
+          <Property Name="Contact" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="ShopNumber" Type="varchar" MaxLength="150" Nullable="false" />
           <Property Name="Latitude" Type="varchar" MaxLength="50" />
           <Property Name="Longitude" Type="varchar" MaxLength="50" />
-          <Property Name="ShopNumber" Type="varchar" MaxLength="150" Nullable="false" />
-          <Property Name="Password" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="Image" Type="varchar(max)" />
+          <Property Name="Token" Type="nvarchar(max)" />
+          <Property Name="OTP" Type="nvarchar(max)" />
+          <Property Name="ShowroomURL" Type="nvarchar(max)" />
+          <Property Name="RoleId" Type="int" />
+          <Property Name="AddressId" Type="int" />
+          <Property Name="UnionId" Type="int" />
           <Property Name="Isactive" Type="bit" Nullable="false" />
           <Property Name="Isarchive" Type="bit" Nullable="false" />
           <Property Name="CreatedBy" Type="int" Nullable="false" />
           <Property Name="CreatedOn" Type="datetime" Nullable="false" />
           <Property Name="UpdatedBy" Type="int" Nullable="false" />
           <Property Name="UpdatedOn" Type="datetime" Nullable="false" />
-          <Property Name="CNIC" Type="varchar" MaxLength="20" />
-          <Property Name="FullName" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="Email" Type="varchar" MaxLength="100" Nullable="false" />
-          <Property Name="Contact" Type="varchar" MaxLength="20" Nullable="false" />
-          <Property Name="Token" Type="nvarchar(max)" />
-          <Property Name="OTP" Type="nvarchar(max)" />
-          <Property Name="AddressId" Type="int" />
-          <Property Name="ShowroomURL" Type="nvarchar(max)" />
-          <Property Name="UnionId" Type="int" />
         </EntityType>
         <EntityType Name="tblState">
           <Key>
@@ -863,6 +864,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_tblShowrooms_tblRoles">
+          <End Role="tblRoles" Type="Self.tblRoles" Multiplicity="0..1" />
+          <End Role="tblShowrooms" Type="Self.tblShowrooms" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblRoles">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="tblShowrooms">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_tblShowrooms_tblUnions">
           <End Role="tblUnions" Type="Self.tblUnions" Multiplicity="0..1" />
           <End Role="tblShowrooms" Type="Self.tblShowrooms" Multiplicity="*" />
@@ -1132,6 +1145,10 @@
             <End Role="tblAddress" EntitySet="tblAddress" />
             <End Role="tblShowrooms" EntitySet="tblShowrooms" />
           </AssociationSet>
+          <AssociationSet Name="FK_tblShowrooms_tblRoles" Association="Self.FK_tblShowrooms_tblRoles">
+            <End Role="tblRoles" EntitySet="tblRoles" />
+            <End Role="tblShowrooms" EntitySet="tblShowrooms" />
+          </AssociationSet>
           <AssociationSet Name="FK_tblShowrooms_tblUnions" Association="Self.FK_tblShowrooms_tblUnions">
             <End Role="tblUnions" EntitySet="tblUnions" />
             <End Role="tblShowrooms" EntitySet="tblShowrooms" />
@@ -1369,6 +1386,10 @@
           <AssociationSet Name="FK_dbo_tblUserAdds_dbo_tblUsers_UserID" Association="jrcarModel.FK_dbo_tblUserAdds_dbo_tblUsers_UserID">
             <End Role="tblUser" EntitySet="tblUsers" />
             <End Role="tblUserAdd" EntitySet="tblUserAdds" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblShowrooms_tblRoles" Association="jrcarModel.FK_tblShowrooms_tblRoles">
+            <End Role="tblRole" EntitySet="tblRoles" />
+            <End Role="tblShowroom" EntitySet="tblShowrooms" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="C__MigrationHistory">
@@ -1718,6 +1739,7 @@
           <NavigationProperty Name="tblAdmins" Relationship="jrcarModel.FK_dbo_tblAdmins_dbo_tblRoles_tblRoleID" FromRole="tblRole" ToRole="tblAdmin" />
           <NavigationProperty Name="tblUnions" Relationship="jrcarModel.FK_dbo_tblUnions_dbo_tblRoles_tblRoleID" FromRole="tblRole" ToRole="tblUnion" />
           <NavigationProperty Name="tblUsers" Relationship="jrcarModel.FK_dbo_tblUsers_dbo_tblRoles_tblRoleID" FromRole="tblRole" ToRole="tblUser" />
+          <NavigationProperty Name="tblShowrooms" Relationship="jrcarModel.FK_tblShowrooms_tblRoles" FromRole="tblRole" ToRole="tblShowroom" />
         </EntityType>
         <EntityType Name="tblSearchHist">
           <Key>
@@ -1758,6 +1780,8 @@
           <NavigationProperty Name="tblCars" Relationship="jrcarModel.FK_dbo_tblCars_dbo_tblShowrooms_tblShowroomID" FromRole="tblShowroom" ToRole="tblCar" />
           <NavigationProperty Name="tblNotifications" Relationship="jrcarModel.FK_tblNotification_tblShowrooms" FromRole="tblShowroom" ToRole="tblNotification" />
           <NavigationProperty Name="tblUnion" Relationship="jrcarModel.FK_tblShowrooms_tblUnions" FromRole="tblShowroom" ToRole="tblUnion" />
+          <Property Name="RoleId" Type="Int32" />
+          <NavigationProperty Name="tblRole" Relationship="jrcarModel.FK_tblShowrooms_tblRoles" FromRole="tblShowroom" ToRole="tblRole" />
         </EntityType>
         <EntityType Name="tblState">
           <Key>
@@ -2419,6 +2443,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_tblShowrooms_tblRoles">
+          <End Type="jrcarModel.tblRole" Role="tblRole" Multiplicity="0..1" />
+          <End Type="jrcarModel.tblShowroom" Role="tblShowroom" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblRole">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="tblShowroom">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2757,6 +2793,7 @@
           <EntitySetMapping Name="tblShowrooms">
             <EntityTypeMapping TypeName="jrcarModel.tblShowroom">
               <MappingFragment StoreEntitySet="tblShowrooms">
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
                 <ScalarProperty Name="UnionId" ColumnName="UnionId" />
                 <ScalarProperty Name="ShowroomURL" ColumnName="ShowroomURL" />
                 <ScalarProperty Name="AddressId" ColumnName="AddressId" />

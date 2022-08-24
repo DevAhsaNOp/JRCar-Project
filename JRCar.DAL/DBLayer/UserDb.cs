@@ -240,8 +240,7 @@ namespace JRCar.DAL.DBLayer
                 Email = s.Email,
                 Image = s.Image,
                 Password = s.Password,
-                OTP = s.OTP,
-                Role = s.tblUser.tblRole.Role
+                OTP = s.OTP
             }).FirstOrDefault();
 
             if (user != null)

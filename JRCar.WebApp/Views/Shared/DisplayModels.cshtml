@@ -1,0 +1,9 @@
+﻿@model JRCar.BOL.tblManufacturer
+<option value="0" selected="selected" disabled="disabled" class="selectoption">--- Select Models ---</option>
+@if (ViewBag.carModels != null)
+{
+    foreach (var item in ViewBag.carModels)
+    {
+        <option value="@item.Value">@item.Text</option>
+    }
+}

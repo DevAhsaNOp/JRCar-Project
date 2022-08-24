@@ -3285,6 +3285,9 @@
     <Content Include="Views\Shared\_LoadAdsOn.cshtml" />
     <Content Include="Views\Shared\DisplayCityCheckBox.cshtml" />
     <Content Include="Views\Shared\DisplayZoneCheckBox.cshtml" />
+    <Content Include="Views\Shared\DisplayModels.cshtml" />
+    <Content Include="Views\Shared\DisplaySubCategory.cshtml" />
+    <Content Include="Views\Account\ShowroomSignUp.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

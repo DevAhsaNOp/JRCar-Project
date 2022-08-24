@@ -35,6 +35,12 @@ namespace JRCar.WebApp.Controllers
         }
 
         [AcceptVerbs(HttpVerbs.Get)]
+        public ActionResult ShowroomSignUp()
+        {
+            return View();
+        }
+
+        [AcceptVerbs(HttpVerbs.Get)]
         public ActionResult SignUp()
         {
             return View();

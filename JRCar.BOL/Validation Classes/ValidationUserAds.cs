@@ -105,14 +105,50 @@ namespace JRCar.BOL.Validation_Classes
         [Display(Name = "Archive")]
         public bool? Isarchive { get; set; }
 
+        public int? ManufacturerId { get; set; }
+
+        [Required(ErrorMessage = "*")]
+        [Display(Name = "Make")]
+        [Range(1, Int32.MaxValue, ErrorMessage = "Must select a Make")]
+        public string Manufacturer_Name { get; set; }
+
+        public int? ManufacturerCarModelID { get; set; }
+
+        [Required(ErrorMessage = "*")]
+        [Display(Name = "Model")]
+        [Range(1, Int32.MaxValue, ErrorMessage = "Must select a Model")]
+        public string Manufacturer_CarModelName { get; set; }
+
+        public int? CategoryId { get; set; }
+
+        [Required(ErrorMessage = "*")]
+        [Display(Name = "Category")]
+        [Range(1, Int32.MaxValue, ErrorMessage = "Must select a Category")]
+        public string CategoryName { get; set; }
+
+        public int? SubCategoryId { get; set; }
+
+        [Required(ErrorMessage = "*")]
+        [Display(Name = "Category")]
+        [Range(1, Int32.MaxValue, ErrorMessage = "Must select a SubCategory")]
+        public string SubCategoryName { get; set; }
+
+        public int MaximumPrice { get; set; }
+
+        public int MinimumPrice { get; set; }
+
         public virtual ICollection<tblUserAddImage> tblUserAddImages { get; set; }
 
         public virtual tblUser tblUser { get; set; }
 
         public virtual tblAddress tblAddress { get; set; }
 
-        public int MaximumPrice { get; set; }
+        public virtual tblCategory tblCategory { get; set; }
 
-        public int MinimumPrice { get; set; }
+        public virtual tblManfacturerCarModel tblManfacturerCarModel { get; set; }
+
+        public virtual tblManufacturer tblManufacturer { get; set; }
+
+        public virtual tblSubCategory tblSubCategory { get; set; }
     }
 }

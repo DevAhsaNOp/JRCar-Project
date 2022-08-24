@@ -43,6 +43,7 @@ namespace JRCar.BOL
         public Nullable<int> AddressId { get; set; }
         public string ShowroomURL { get; set; }
         public Nullable<int> UnionId { get; set; }
+        public Nullable<int> RoleId { get; set; }
     
         public virtual tblAddress tblAddress { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -52,5 +53,6 @@ namespace JRCar.BOL
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tblNotification> tblNotifications { get; set; }
         public virtual tblUnion tblUnion { get; set; }
+        public virtual tblRole tblRole { get; set; }
     }
 }

@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="d4b3004bd5f1413399f14f09a678d153" Name="Diagram1" ZoomLevel="86" DisplayType="true">
+      <Diagram DiagramId="d4b3004bd5f1413399f14f09a678d153" Name="Diagram1" ZoomLevel="93" DisplayType="true">
         <EntityTypeShape EntityType="jrcarModel.C__MigrationHistory" Width="1.5" PointX="3.75" PointY="1.375" />
         <EntityTypeShape EntityType="jrcarModel.sysdiagram" Width="1.5" PointX="3.75" PointY="4.375" />
         <EntityTypeShape EntityType="jrcarModel.tblAddress" Width="1.5" PointX="3" PointY="8.375" />
@@ -78,6 +78,7 @@
         <AssociationConnector Association="jrcarModel.FK_dbo_tblTokens_dbo_tblUsers_UserID" />
         <AssociationConnector Association="jrcarModel.FK_dbo_tblUserAddImages_dbo_tblUserAdds_tblUserAddID" />
         <AssociationConnector Association="jrcarModel.FK_dbo_tblUserAdds_dbo_tblUsers_UserID" />
+        <AssociationConnector Association="jrcarModel.FK_tblShowrooms_tblRoles" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
