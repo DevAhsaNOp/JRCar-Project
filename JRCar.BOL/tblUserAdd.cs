@@ -30,6 +30,10 @@ namespace JRCar.BOL
         public string Price { get; set; }
         public string Latitude { get; set; }
         public string Longitude { get; set; }
+        public Nullable<int> ManufacturerId { get; set; }
+        public Nullable<int> ManufacturerCarModelID { get; set; }
+        public Nullable<int> CategoryId { get; set; }
+        public Nullable<int> SubCategoryId { get; set; }
         public System.DateTime CreatedOn { get; set; }
         public System.DateTime ExpiryDate { get; set; }
         public Nullable<int> AddressId { get; set; }
@@ -37,9 +41,13 @@ namespace JRCar.BOL
         public Nullable<bool> Isarchive { get; set; }
         public string UserAdsURL { get; set; }
     
+        public virtual tblAddress tblAddress { get; set; }
+        public virtual tblCategory tblCategory { get; set; }
+        public virtual tblManfacturerCarModel tblManfacturerCarModel { get; set; }
+        public virtual tblManufacturer tblManufacturer { get; set; }
+        public virtual tblSubCategory tblSubCategory { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tblUserAddImage> tblUserAddImages { get; set; }
         public virtual tblUser tblUser { get; set; }
-        public virtual tblAddress tblAddress { get; set; }
     }
 }

@@ -14,6 +14,13 @@ namespace JRCar.BOL
     
     public partial class tblUnion
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public tblUnion()
+        {
+            this.tblNotifications = new HashSet<tblNotification>();
+            this.tblShowrooms = new HashSet<tblShowroom>();
+        }
+    
         public int ID { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }
@@ -30,6 +37,10 @@ namespace JRCar.BOL
         public string OTP { get; set; }
         public bool Verified { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tblNotification> tblNotifications { get; set; }
         public virtual tblRole tblRole { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tblShowroom> tblShowrooms { get; set; }
     }
 }

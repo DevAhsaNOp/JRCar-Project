@@ -18,7 +18,7 @@ namespace JRCar.BOL
         public tblClient()
         {
             this.tblAnnouncements = new HashSet<tblAnnouncement>();
-            this.tblNotifications = new HashSet<tblNotification>();
+            this.tblNotifications = new HashSet<tblNotification1>();
         }
     
         public int ID { get; set; }
@@ -32,6 +32,6 @@ namespace JRCar.BOL
         public virtual ICollection<tblAnnouncement> tblAnnouncements { get; set; }
         public virtual tblToken tblToken { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<tblNotification> tblNotifications { get; set; }
+        public virtual ICollection<tblNotification1> tblNotifications { get; set; }
     }
 }

@@ -5,62 +5,80 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="d4b3004bd5f1413399f14f09a678d153" Name="Diagram1" ZoomLevel="86" DisplayType="true">
-        <EntityTypeShape EntityType="jrcarModel.C__MigrationHistory" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="jrcarModel.sysdiagram" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="jrcarModel.tblAdmin" Width="1.5" PointX="3" PointY="6.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="jrcarModel.tblAnnouncement" Width="1.5" PointX="9.75" PointY="21.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="jrcarModel.tblAppointment" Width="1.5" PointX="12.75" PointY="31" IsExpanded="true" />
-        <EntityTypeShape EntityType="jrcarModel.tblBlog" Width="1.5" PointX="7.5" PointY="28.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="jrcarModel.tblCarFeature" Width="1.5" PointX="6" PointY="39.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="jrcarModel.tblCarImage" Width="1.5" PointX="12.75" PointY="35.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="jrcarModel.tblCarModel" Width="1.5" PointX="8.25" PointY="40.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="jrcarModel.tblCar" Width="1.5" PointX="10.5" PointY="31" IsExpanded="true" />
-        <EntityTypeShape EntityType="jrcarModel.tblClient" Width="1.5" PointX="7.5" PointY="22.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="jrcarModel.tblContactU" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="jrcarModel.tblFavAdd" Width="1.5" PointX="10.25" PointY="27.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="jrcarModel.tblNotification" Width="1.5" PointX="9.75" PointY="24.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="jrcarModel.tblRole" Width="1.5" PointX="0.75" PointY="19.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="jrcarModel.tblSearchHist" Width="1.5" PointX="5.25" PointY="19" IsExpanded="true" />
-        <EntityTypeShape EntityType="jrcarModel.tblShowroom" Width="1.75" PointX="5.25" PointY="27.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="jrcarModel.tblToken" Width="1.5" PointX="5.25" PointY="23" IsExpanded="true" />
-        <EntityTypeShape EntityType="jrcarModel.tblUnion" Width="1.5" PointX="3" PointY="11.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="jrcarModel.tblUserAddImage" Width="1.5" PointX="7.5" PointY="34.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="jrcarModel.tblUserAdd" Width="1.5" PointX="5.25" PointY="33.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="jrcarModel.tblUser" Width="1.5" PointX="3" PointY="23.125" IsExpanded="true" />
-        <AssociationConnector Association="jrcarModel.FK_dbo_tblAdmins_dbo_tblRoles_tblRoleID" ManuallyRouted="false" />
-        <AssociationConnector Association="jrcarModel.FK_dbo_tblAnnouncements_dbo_tblClients_ClientID" ManuallyRouted="false" />
-        <AssociationConnector Association="jrcarModel.FK_dbo_tblAppointments_dbo_tblCars_CarID" ManuallyRouted="false" />
-        <AssociationConnector Association="jrcarModel.FK_dbo_tblBlogs_dbo_tblShowrooms_Showrooms_ID" ManuallyRouted="false" />
-        <AssociationConnector Association="jrcarModel.FK_dbo_tblCarModels_dbo_tblCarFeatures_CarFeatureID" ManuallyRouted="false" />
-        <AssociationConnector Association="jrcarModel.FK_dbo_tblCarImages_dbo_tblCars_CarID" ManuallyRouted="false" />
-        <AssociationConnector Association="jrcarModel.FK_dbo_tblCars_dbo_tblCarModels_CarModelID" ManuallyRouted="false" />
-        <AssociationConnector Association="jrcarModel.FK_dbo_tblCars_dbo_tblShowrooms_tblShowroomID" ManuallyRouted="false" />
-        <AssociationConnector Association="jrcarModel.FK_dbo_tblFavAdds_dbo_tblCars_CarID" ManuallyRouted="false" />
-        <AssociationConnector Association="jrcarModel.FK_dbo_tblClients_dbo_tblTokens_TokenID" ManuallyRouted="false" />
-        <AssociationConnector Association="jrcarModel.FK_dbo_tblNotifications_dbo_tblClients_ClientID" ManuallyRouted="false" />
-        <AssociationConnector Association="jrcarModel.FK_dbo_tblFavAdds_dbo_tblUsers_UserID" ManuallyRouted="false" />
-        <AssociationConnector Association="jrcarModel.FK_dbo_tblUnions_dbo_tblRoles_tblRoleID" ManuallyRouted="false" />
-        <AssociationConnector Association="jrcarModel.FK_dbo_tblUsers_dbo_tblRoles_tblRoleID" ManuallyRouted="false" />
-        <AssociationConnector Association="jrcarModel.FK_dbo_tblSearchHists_dbo_tblUsers_UserID" ManuallyRouted="false" />
-        <AssociationConnector Association="jrcarModel.FK_dbo_tblShowrooms_dbo_tblUsers_tblUser_ID" ManuallyRouted="false" />
-        <AssociationConnector Association="jrcarModel.FK_dbo_tblTokens_dbo_tblUsers_UserID" ManuallyRouted="false" />
-        <AssociationConnector Association="jrcarModel.FK_dbo_tblUserAddImages_dbo_tblUserAdds_tblUserAddID" ManuallyRouted="false" />
-        <AssociationConnector Association="jrcarModel.FK_dbo_tblUserAdds_dbo_tblUsers_UserID" ManuallyRouted="false" />
-        <EntityTypeShape EntityType="jrcarModel.tblCity" Width="1.5" PointX="11.875" PointY="1" />
-        <EntityTypeShape EntityType="jrcarModel.tblCountry" Width="1.5" PointX="7.375" PointY="1.25" />
-        <EntityTypeShape EntityType="jrcarModel.tblState" Width="1.5" PointX="9.625" PointY="1" />
-        <EntityTypeShape EntityType="jrcarModel.tblZone" Width="1.5" PointX="14.125" PointY="0.875" />
-        <AssociationConnector Association="jrcarModel.FK_tblCity_tblState" />
-        <AssociationConnector Association="jrcarModel.FK_tblZone_tblCity" />
-        <AssociationConnector Association="jrcarModel.FK_tblState_tblCountry" />
-        <EntityTypeShape EntityType="jrcarModel.tblAddress" Width="1.5" PointX="16.375" PointY="0.75" />
+        <EntityTypeShape EntityType="jrcarModel.C__MigrationHistory" Width="1.5" PointX="3.75" PointY="1.375" />
+        <EntityTypeShape EntityType="jrcarModel.sysdiagram" Width="1.5" PointX="3.75" PointY="4.375" />
+        <EntityTypeShape EntityType="jrcarModel.tblAddress" Width="1.5" PointX="3" PointY="8.375" />
+        <EntityTypeShape EntityType="jrcarModel.tblAdmin" Width="1.5" PointX="3" PointY="13.375" />
+        <EntityTypeShape EntityType="jrcarModel.tblAnnouncement" Width="1.5" PointX="9.75" PointY="30.875" />
+        <EntityTypeShape EntityType="jrcarModel.tblAppointment" Width="1.5" PointX="18.75" PointY="22.875" />
+        <EntityTypeShape EntityType="jrcarModel.tblBlog" Width="1.5" PointX="13.5" PointY="21.375" />
+        <EntityTypeShape EntityType="jrcarModel.tblCarFeature" Width="1.5" PointX="12" PointY="11.25" />
+        <EntityTypeShape EntityType="jrcarModel.tblCarImage" Width="1.5" PointX="18.75" PointY="27.125" />
+        <EntityTypeShape EntityType="jrcarModel.tblCarModel" Width="1.5" PointX="14.25" PointY="13" />
+        <EntityTypeShape EntityType="jrcarModel.tblCar" Width="1.5" PointX="16.5" PointY="19.25" />
+        <EntityTypeShape EntityType="jrcarModel.tblCategory" Width="1.5" PointX="3" PointY="38.25" />
+        <EntityTypeShape EntityType="jrcarModel.tblCity" Width="1.5" PointX="0.75" PointY="10.5" />
+        <EntityTypeShape EntityType="jrcarModel.tblClient" Width="1.5" PointX="7.5" PointY="29.125" />
+        <EntityTypeShape EntityType="jrcarModel.tblContactU" Width="1.875" PointX="5.75" PointY="1.375" />
+        <EntityTypeShape EntityType="jrcarModel.tblCountry" Width="1.5" PointX="1.5" PointY="0.75" />
+        <EntityTypeShape EntityType="jrcarModel.tblFavAdd" Width="1.5" PointX="18.75" PointY="19.25" />
+        <EntityTypeShape EntityType="jrcarModel.tblManfacturerCarModel" Width="1.5" PointX="3" PointY="32.375" />
+        <EntityTypeShape EntityType="jrcarModel.tblManufacturer" Width="1.5" PointX="0.75" PointY="32.5" />
+        <EntityTypeShape EntityType="jrcarModel.tblNotification" Width="1.5" PointX="8.25" PointY="23" />
+        <EntityTypeShape EntityType="jrcarModel.tblNotification1" Width="1.5" PointX="9.75" PointY="27.75" />
+        <EntityTypeShape EntityType="jrcarModel.tblRole" Width="1.5" PointX="0.75" PointY="21.5" />
+        <EntityTypeShape EntityType="jrcarModel.tblSearchHist" Width="1.5" PointX="5.25" PointY="25.25" />
+        <EntityTypeShape EntityType="jrcarModel.tblShowroom" Width="1.5" PointX="11.25" PointY="20.25" />
+        <EntityTypeShape EntityType="jrcarModel.tblState" Width="1.5" PointX="1.5" PointY="3.5" />
+        <EntityTypeShape EntityType="jrcarModel.tblSubCategory" Width="1.5" PointX="3" PointY="35.25" />
+        <EntityTypeShape EntityType="jrcarModel.tblToken" Width="1.5" PointX="5.25" PointY="29.375" />
+        <EntityTypeShape EntityType="jrcarModel.tblUnion" Width="1.5" PointX="3" PointY="27" />
+        <EntityTypeShape EntityType="jrcarModel.tblUserAddImage" Width="1.5" PointX="7.5" PointY="20.375" />
+        <EntityTypeShape EntityType="jrcarModel.tblUserAdd" Width="1.5" PointX="5.25" PointY="18.125" />
+        <EntityTypeShape EntityType="jrcarModel.tblUser" Width="1.5" PointX="3" PointY="19.875" />
+        <EntityTypeShape EntityType="jrcarModel.tblZone" Width="1.5" PointX="0.75" PointY="7.375" />
         <AssociationConnector Association="jrcarModel.FK_tblAddress_tblCity" />
         <AssociationConnector Association="jrcarModel.FK_tblAddress_tblState" />
         <AssociationConnector Association="jrcarModel.FK_tblAddress_tblZone" />
         <AssociationConnector Association="jrcarModel.FK_tblCars_tblAddress" />
         <AssociationConnector Association="jrcarModel.FK_tblShowrooms_tblAddress" />
         <AssociationConnector Association="jrcarModel.FK_tblUserAdds_tblAddress" />
-        </Diagram>
+        <AssociationConnector Association="jrcarModel.FK_dbo_tblAdmins_dbo_tblRoles_tblRoleID" />
+        <AssociationConnector Association="jrcarModel.FK_dbo_tblAnnouncements_dbo_tblClients_ClientID" />
+        <AssociationConnector Association="jrcarModel.FK_dbo_tblAppointments_dbo_tblCars_CarID" />
+        <AssociationConnector Association="jrcarModel.FK_dbo_tblBlogs_dbo_tblShowrooms_Showrooms_ID" />
+        <AssociationConnector Association="jrcarModel.FK_dbo_tblCarModels_dbo_tblCarFeatures_CarFeatureID" />
+        <AssociationConnector Association="jrcarModel.FK_dbo_tblCarImages_dbo_tblCars_CarID" />
+        <AssociationConnector Association="jrcarModel.FK_dbo_tblCars_dbo_tblCarModels_CarModelID" />
+        <AssociationConnector Association="jrcarModel.FK_dbo_tblCars_dbo_tblShowrooms_tblShowroomID" />
+        <AssociationConnector Association="jrcarModel.FK_dbo_tblFavAdds_dbo_tblCars_CarID" />
+        <AssociationConnector Association="jrcarModel.FK_tblCars_tblCategory" />
+        <AssociationConnector Association="jrcarModel.FK_tblCars_tblManfacturerCarModel" />
+        <AssociationConnector Association="jrcarModel.FK_tblCars_tblManufacturer" />
+        <AssociationConnector Association="jrcarModel.FK_tblCars_tblSubCategory" />
+        <AssociationConnector Association="jrcarModel.FK_tblSubCategory_tblCategory" />
+        <AssociationConnector Association="jrcarModel.FK_tblUserAdds_tblCategory" />
+        <AssociationConnector Association="jrcarModel.FK_tblCity_tblState" />
+        <AssociationConnector Association="jrcarModel.FK_tblZone_tblCity" />
+        <AssociationConnector Association="jrcarModel.FK_dbo_tblClients_dbo_tblTokens_TokenID" />
+        <AssociationConnector Association="jrcarModel.FK_dbo_tblNotifications_dbo_tblClients_ClientID" />
+        <AssociationConnector Association="jrcarModel.FK_tblState_tblCountry" />
+        <AssociationConnector Association="jrcarModel.FK_dbo_tblFavAdds_dbo_tblUsers_UserID" />
+        <AssociationConnector Association="jrcarModel.FK_tblManfacturerCarModel_tblManufacturer" />
+        <AssociationConnector Association="jrcarModel.FK_tblUserAdds_tblManfacturerCarModel" />
+        <AssociationConnector Association="jrcarModel.FK_tblUserAdds_tblManufacturer" />
+        <AssociationConnector Association="jrcarModel.FK_tblNotification_tblShowrooms" />
+        <AssociationConnector Association="jrcarModel.FK_tblNotification_tblUnions" />
+        <AssociationConnector Association="jrcarModel.FK_tblNotification_tblUsers" />
+        <AssociationConnector Association="jrcarModel.FK_dbo_tblUnions_dbo_tblRoles_tblRoleID" />
+        <AssociationConnector Association="jrcarModel.FK_dbo_tblUsers_dbo_tblRoles_tblRoleID" />
+        <AssociationConnector Association="jrcarModel.FK_dbo_tblSearchHists_dbo_tblUsers_UserID" />
+        <AssociationConnector Association="jrcarModel.FK_tblShowrooms_tblUnions" />
+        <AssociationConnector Association="jrcarModel.FK_tblUserAdds_tblSubCategory" />
+        <AssociationConnector Association="jrcarModel.FK_dbo_tblTokens_dbo_tblUsers_UserID" />
+        <AssociationConnector Association="jrcarModel.FK_dbo_tblUserAddImages_dbo_tblUserAdds_tblUserAddID" />
+        <AssociationConnector Association="jrcarModel.FK_dbo_tblUserAdds_dbo_tblUsers_UserID" />
+      </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>

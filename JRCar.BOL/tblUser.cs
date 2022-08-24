@@ -18,8 +18,8 @@ namespace JRCar.BOL
         public tblUser()
         {
             this.tblFavAdds = new HashSet<tblFavAdd>();
+            this.tblNotifications = new HashSet<tblNotification>();
             this.tblSearchHists = new HashSet<tblSearchHist>();
-            this.tblShowrooms = new HashSet<tblShowroom>();
             this.tblTokens = new HashSet<tblToken>();
             this.tblUserAdds = new HashSet<tblUserAdd>();
         }
@@ -41,11 +41,11 @@ namespace JRCar.BOL
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tblFavAdd> tblFavAdds { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tblNotification> tblNotifications { get; set; }
         public virtual tblRole tblRole { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tblSearchHist> tblSearchHists { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<tblShowroom> tblShowrooms { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tblToken> tblTokens { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

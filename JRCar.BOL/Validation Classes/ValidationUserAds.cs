@@ -106,10 +106,13 @@ namespace JRCar.BOL.Validation_Classes
         public bool? Isarchive { get; set; }
 
         public virtual ICollection<tblUserAddImage> tblUserAddImages { get; set; }
+
         public virtual tblUser tblUser { get; set; }
 
         public virtual tblAddress tblAddress { get; set; }
+
         public int MaximumPrice { get; set; }
+
         public int MinimumPrice { get; set; }
     }
 }

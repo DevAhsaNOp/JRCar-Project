@@ -123,6 +123,9 @@
     <Compile Include="tblCarModel.cs">
       <DependentUpon>JRCarModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="tblCategory.cs">
+      <DependentUpon>JRCarModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="tblCity.cs">
       <DependentUpon>JRCarModel.tt</DependentUpon>
     </Compile>
@@ -138,7 +141,16 @@
     <Compile Include="tblFavAdd.cs">
       <DependentUpon>JRCarModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="tblManfacturerCarModel.cs">
+      <DependentUpon>JRCarModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblManufacturer.cs">
+      <DependentUpon>JRCarModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="tblNotification.cs">
+      <DependentUpon>JRCarModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblNotification1.cs">
       <DependentUpon>JRCarModel.tt</DependentUpon>
     </Compile>
     <Compile Include="tblRole.cs">
@@ -151,6 +163,9 @@
       <DependentUpon>JRCarModel.tt</DependentUpon>
     </Compile>
     <Compile Include="tblState.cs">
+      <DependentUpon>JRCarModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblSubCategory.cs">
       <DependentUpon>JRCarModel.tt</DependentUpon>
     </Compile>
     <Compile Include="tblToken.cs">

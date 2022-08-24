@@ -19,13 +19,13 @@ namespace JRCar.BOL
         {
             this.tblBlogs = new HashSet<tblBlog>();
             this.tblCars = new HashSet<tblCar>();
+            this.tblNotifications = new HashSet<tblNotification>();
         }
     
         public int ID { get; set; }
         public string Image { get; set; }
         public string Latitude { get; set; }
         public string Longitude { get; set; }
-        public Nullable<int> tblUser_ID { get; set; }
         public string ShopNumber { get; set; }
         public string Password { get; set; }
         public bool Isactive { get; set; }
@@ -42,12 +42,15 @@ namespace JRCar.BOL
         public string OTP { get; set; }
         public Nullable<int> AddressId { get; set; }
         public string ShowroomURL { get; set; }
+        public Nullable<int> UnionId { get; set; }
     
+        public virtual tblAddress tblAddress { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tblBlog> tblBlogs { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tblCar> tblCars { get; set; }
-        public virtual tblUser tblUser { get; set; }
-        public virtual tblAddress tblAddress { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tblNotification> tblNotifications { get; set; }
+        public virtual tblUnion tblUnion { get; set; }
     }
 }

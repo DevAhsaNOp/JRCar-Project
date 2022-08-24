@@ -26,8 +26,8 @@ namespace JRCar.BOL
         public Nullable<decimal> Latitude { get; set; }
         public Nullable<decimal> Longitude { get; set; }
     
-        public virtual tblCity tblCity { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tblAddress> tblAddresses { get; set; }
+        public virtual tblCity tblCity { get; set; }
     }
 }

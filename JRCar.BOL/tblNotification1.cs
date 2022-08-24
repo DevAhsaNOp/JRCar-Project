@@ -12,20 +12,15 @@ namespace JRCar.BOL
     using System;
     using System.Collections.Generic;
     
-    public partial class tblNotification
+    public partial class tblNotification1
     {
         public int ID { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
-        public Nullable<int> FromUserID { get; set; }
-        public Nullable<int> FromUnionID { get; set; }
-        public Nullable<int> FromShowroomID { get; set; }
-        public Nullable<bool> IsShowroomInterested { get; set; }
-        public Nullable<bool> IsRead { get; set; }
+        public int ClientID { get; set; }
         public System.DateTime CreatedOn { get; set; }
+        public Nullable<bool> IsRead { get; set; }
     
-        public virtual tblShowroom tblShowroom { get; set; }
-        public virtual tblUnion tblUnion { get; set; }
-        public virtual tblUser tblUser { get; set; }
+        public virtual tblClient tblClient { get; set; }
     }
 }

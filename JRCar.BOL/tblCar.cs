@@ -45,7 +45,12 @@ namespace JRCar.BOL
         public string Transmission { get; set; }
         public Nullable<int> AddressId { get; set; }
         public string CarsURL { get; set; }
+        public Nullable<int> ManufacturerId { get; set; }
+        public Nullable<int> ManufacturerCarModelID { get; set; }
+        public Nullable<int> CategoryId { get; set; }
+        public Nullable<int> SubCategoryId { get; set; }
     
+        public virtual tblAddress tblAddress { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tblAppointment> tblAppointments { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -54,6 +59,9 @@ namespace JRCar.BOL
         public virtual tblShowroom tblShowroom { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tblFavAdd> tblFavAdds { get; set; }
-        public virtual tblAddress tblAddress { get; set; }
+        public virtual tblCategory tblCategory { get; set; }
+        public virtual tblManfacturerCarModel tblManfacturerCarModel { get; set; }
+        public virtual tblManufacturer tblManufacturer { get; set; }
+        public virtual tblSubCategory tblSubCategory { get; set; }
     }
 }
