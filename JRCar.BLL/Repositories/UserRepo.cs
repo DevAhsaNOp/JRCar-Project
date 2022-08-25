@@ -251,7 +251,14 @@ namespace JRCar.BLL.Repositories
                 }
                 else if (ShowroomData != null)
                 {
+                    ShowroomData.FullName = model.Name;
+                    ShowroomData.Email = model.Email;
+                    ShowroomData.Contact = model.Number;
+                    ShowroomData.ShopNumber = model.Address;
                     ShowroomData.Password = EncDec.Encrypt(model.Password);
+                    ShowroomData.Image = model.Image;
+                    ShowroomData.CNIC = model.CNIC;
+                    ShowroomData.UpdatedBy = model.UpdatedBy;
                     dbObj.UpdateShowroom(ShowroomData);
                     return true;
                 }

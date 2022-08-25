@@ -177,7 +177,6 @@ namespace JRCar.WebApp.Controllers
                 }
                 else
                 {
-                    ViewBag.Error = "Error on uploading file!";
                     var err = (int)HttpStatusCode.BadRequest;
                     return Json(new { error = err + " Bad Request Error " + "Invalid Request!!" });
                 }

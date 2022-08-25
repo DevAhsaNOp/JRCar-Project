@@ -40,37 +40,58 @@ namespace JRCar.WebApp.Controllers
         {
             try
             {
-                if (file != null)
+                if (User.Identity.IsAuthenticated)
                 {
-                    string filename = Path.GetFileName(file.FileName);
-                    string _filename = DateTime.Now.ToString("yymmssfff") + filename;
-                    string extension = Path.GetExtension(file.FileName);
-                    string path = Path.Combine(Server.MapPath("~/Images/"), _filename);
-                    user.Image = "~/Images/" + _filename;
-                    if (extension.ToLower() == ".jpg" || extension.ToLower() == ".jpeg" || extension.ToLower() == ".png")
+                    if (file != null)
                     {
-                        var role = Session["Role"].ToString();
-                        user.tblRoleName = role;
-                        if (file.ContentLength <= 10000000)
+                        string filename = Path.GetFileName(file.FileName);
+                        string _filename = DateTime.Now.ToString("yymmssfff") + filename;
+                        string extension = Path.GetExtension(file.FileName);
+                        string path = Path.Combine(Server.MapPath("~/Images/"), _filename);
+                        user.Image = "~/Images/" + _filename;
+                        if (extension.ToLower() == ".jpg" || extension.ToLower() == ".jpeg" || extension.ToLower() == ".png")
                         {
-                            user.ID = (int)Session["Id"];
-                            user.UpdatedBy = (int)Session["Id"];
-                            var IsUpdated = RepoObj.UpdateUser(user);
-                            string oldImgPath = Request.MapPath(Session["Image"].ToString());
-                            if (IsUpdated)
+                            var role = Session["Role"].ToString();
+                            user.tblRoleName = role;
+                            if (file.ContentLength <= 10000000)
                             {
-                                file.SaveAs(path);
-                                if (System.IO.File.Exists(oldImgPath))
+                                user.ID = (int)Session["Id"];
+                                user.UpdatedBy = (int)Session["Id"];
+                                var IsUpdated = RepoObj.UpdateUser(user);
+                                string oldImgPath = Request.MapPath(Session["Image"].ToString());
+                                if (IsUpdated)
                                 {
-                                    System.IO.File.Delete(oldImgPath);
-                                    TempData["SuccessMsg"] = "Account Updated Successfully!";
-                                    Session["Image"] = user.Image;
+                                    file.SaveAs(path);
+                                    if (System.IO.File.Exists(oldImgPath))
+                                    {
+                                        System.IO.File.Delete(oldImgPath);
+                                        TempData["SuccessMsg"] = "Account Updated Successfully!";
+                                        Session["Image"] = user.Image;
+                                        if (role == "Admin" || role == "Union" || role == "Showroom")
+                                        {
+                                            return View("UpdateProfile");
+                                        }
+                                        else if (role == "User")
+                                        {
+                                            return RedirectToAction("ProfileSettings", "Website");
+                                        }
+                                        else
+                                        {
+                                            TempData["ErrorMsg"] = "Error occured on login Account!";
+                                            return RedirectToAction("SignIn");
+                                        }
+                                    }
+                                }
+                                else
+                                {
                                     if (role == "Admin" || role == "Union" || role == "Showroom")
                                     {
+                                        TempData["ErrorMsg"] = "Error occured on login Account!";
                                         return View("UpdateProfile");
                                     }
                                     else if (role == "User")
                                     {
+                                        TempData["ErrorMsg"] = "Error occured on login Account!";
                                         return RedirectToAction("ProfileSettings", "Website");
                                     }
                                     else
@@ -84,12 +105,12 @@ namespace JRCar.WebApp.Controllers
                             {
                                 if (role == "Admin" || role == "Union" || role == "Showroom")
                                 {
-                                    TempData["ErrorMsg"] = "Error occured on login Account!";
+                                    TempData["ErrorMsg"] = "Image size is very large";
                                     return View("UpdateProfile");
                                 }
                                 else if (role == "User")
                                 {
-                                    TempData["ErrorMsg"] = "Error occured on login Account!";
+                                    TempData["ErrorMsg"] = "Image size is very large";
                                     return RedirectToAction("ProfileSettings", "Website");
                                 }
                                 else
@@ -99,16 +120,43 @@ namespace JRCar.WebApp.Controllers
                                 }
                             }
                         }
-                        else
+                    }
+                    else
+                    {
+                        user.Image = Session["Image"].ToString();
+                        user.ID = (int)Session["Id"];
+                        var role = Session["Role"].ToString();
+                        user.tblRoleName = role;
+                        user.UpdatedBy = (int)Session["Id"];
+                        var IsUpdated = RepoObj.UpdateUser(user);
+                        if (IsUpdated)
                         {
+                            TempData["SuccessMsg"] = "Account Updated Successfully!";
+                            FormsAuthentication.SetAuthCookie(user.Email, false);
                             if (role == "Admin" || role == "Union" || role == "Showroom")
                             {
-                                TempData["ErrorMsg"] = "Image size is very large";
                                 return View("UpdateProfile");
                             }
                             else if (role == "User")
                             {
-                                TempData["ErrorMsg"] = "Image size is very large";
+                                return RedirectToAction("ProfileSettings", "Website");
+                            }
+                            else
+                            {
+                                TempData["ErrorMsg"] = "Error occured on login Account!";
+                                return RedirectToAction("SignIn");
+                            }
+                        }
+                        else
+                        {
+                            if (role == "Admin" || role == "Union" || role == "Showroom")
+                            {
+                                TempData["ErrorMsg"] = "Error occured on login Account!";
+                                return View("UpdateProfile");
+                            }
+                            else if (role == "User")
+                            {
+                                TempData["ErrorMsg"] = "Error occured on login Account!";
                                 return RedirectToAction("ProfileSettings", "Website");
                             }
                             else
@@ -118,53 +166,13 @@ namespace JRCar.WebApp.Controllers
                             }
                         }
                     }
+                    return View();
                 }
                 else
                 {
-                    user.Image = Session["Image"].ToString();
-                    user.ID = (int)Session["Id"];
-                    var role = Session["Role"].ToString();
-                    user.tblRoleName = role;
-                    user.UpdatedBy = (int)Session["Id"];
-                    var IsUpdated = RepoObj.UpdateUser(user);
-                    if (IsUpdated)
-                    {
-                        TempData["SuccessMsg"] = "Account Updated Successfully!";
-                        FormsAuthentication.SetAuthCookie(user.Email, false);
-                        if (role == "Admin" || role == "Union" || role == "Showroom")
-                        {
-                            return View("UpdateProfile");
-                        }
-                        else if (role == "User")
-                        {
-                            return RedirectToAction("ProfileSettings", "Website");
-                        }
-                        else
-                        {
-                            TempData["ErrorMsg"] = "Error occured on login Account!";
-                            return RedirectToAction("SignIn");
-                        }
-                    }
-                    else
-                    {
-                        if (role == "Admin" || role == "Union" || role == "Showroom")
-                        {
-                            TempData["ErrorMsg"] = "Error occured on login Account!";
-                            return View("UpdateProfile");
-                        }
-                        else if (role == "User")
-                        {
-                            TempData["ErrorMsg"] = "Error occured on login Account!";
-                            return RedirectToAction("ProfileSettings", "Website");
-                        }
-                        else
-                        {
-                            TempData["ErrorMsg"] = "Error occured on login Account!";
-                            return RedirectToAction("SignIn");
-                        }
-                    }
+                    var err = (int)HttpStatusCode.BadRequest;
+                    return Json(new { error = err + " Bad Request Error " + "Invalid Request!!" });
                 }
-                return View();
             }
             catch (Exception ex)
             {

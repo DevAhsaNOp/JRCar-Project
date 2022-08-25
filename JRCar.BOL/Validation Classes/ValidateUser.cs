@@ -17,14 +17,14 @@ namespace JRCar.BOL.Validation_Classes
         public string Name { get; set; }
 
         [Required(ErrorMessage = "*")]
-        [Display(Name = "Email")]
-        [EmailAddress(ErrorMessage = "Invalid Email Address")]
+        [Display(Name = "Email Address")]
+        [RegularExpression("^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$", ErrorMessage = "Invalid Email Address")]
         public string Email { get; set; }
 
         [Required(ErrorMessage = "*")]
         [Display(Name = "Email")]
-        [EmailAddress(ErrorMessage = "Invalid Email Address")]
-        [Remote("IsEmailExist", "Account",ErrorMessage ="Email is already registered!")]
+        [RegularExpression("^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$", ErrorMessage = "Invalid Email Address")]
+        [Remote("IsEmailExist", "Account", ErrorMessage = "Email is already registered!")]
         public string SignUpEmail { get; set; }
 
         [Required(ErrorMessage = "*")]
@@ -51,7 +51,7 @@ namespace JRCar.BOL.Validation_Classes
         public Nullable<System.DateTime> UpdatedOn { get; set; }
         public Nullable<int> UpdatedBy { get; set; }
         public int tblRoleID { get; set; }
-        
+
         public virtual tblRole tblRole { get; set; }
         public string tblRoleName { get; set; }
 
@@ -59,5 +59,10 @@ namespace JRCar.BOL.Validation_Classes
         [Display(Name = "OTP")]
         [RegularExpression(@"^\d{6}$", ErrorMessage = "Invalid OTP")]
         public string OTP { get; set; }
+
+        [Required(ErrorMessage = "*")]
+        [Display(Name = "CNIC")]
+        [RegularExpression(@"^\d{5}[-]?\d{7}[-]?\d{1}$", ErrorMessage = "Invalid CNIC Number")]
+        public string CNIC { get; set; }
     }
 }

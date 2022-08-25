@@ -301,6 +301,19 @@ namespace JRCar.DAL.DBLayer
                 Password = s.Password,
                 tblRoleID = s.tblRoleID
             }).FirstOrDefault();
+            
+            var showroom = _context.tblShowrooms.Where(x => x.ID == Id).Select(s => new ValidateUser()
+            {
+                ID = s.ID,
+                Name = s.FullName,
+                Email = s.Email,
+                Address = s.ShopNumber,
+                Number = s.Contact,
+                Image = s.Image,
+                Password = s.Password,
+                CNIC = s.CNIC,
+                tblRoleID = s.RoleId.Value
+            }).FirstOrDefault();
 
             if (user != null)
             {
@@ -313,6 +326,10 @@ namespace JRCar.DAL.DBLayer
             else if (union != null)
             {
                 return union;
+            }
+            else if (showroom != null)
+            {
+                return showroom;
             }
             else
                 return null;
@@ -553,7 +570,7 @@ namespace JRCar.DAL.DBLayer
         {
             if (ShowroomName != null && Zone != null && CityLocation != null)
             {
-                string URL = ShowroomName + "-showroom-in-" + Zone + "-" + CityLocation + "-" + OTPGenerator.GenerateRandomOTP() + DateTime.Now.ToString("ddMMyy") + DateTime.Now.Millisecond.ToString() + DateTime.Now.Minute.ToString() + DateTime.Now.Second.ToString();
+                string URL = ShowroomName + "-Dealer-In-" + Zone + "-" + CityLocation + "-" + OTPGenerator.GenerateRandomOTP() + DateTime.Now.ToString("ddMMyy") + DateTime.Now.Millisecond.ToString() + DateTime.Now.Minute.ToString() + DateTime.Now.Second.ToString();
                 var rURL = URL.Replace(" ", "-");
                 return rURL;
             }

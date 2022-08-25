@@ -36,12 +36,14 @@ namespace JRCar.WebApp.Controllers
             return View();
         }
 
-        [AcceptVerbs(HttpVerbs.Get)]
-        public ActionResult ShowroomSignUp()
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult SetTempData(string value)
         {
-            return View();
+            TempData["SuccessMsg"] = value;
+            return new EmptyResult();
         }
 
+        #region **Account Configuration**
         [AcceptVerbs(HttpVerbs.Get)]
         public ActionResult SignUp()
         {
@@ -83,6 +85,12 @@ namespace JRCar.WebApp.Controllers
                 TempData["ErrorMsg"] = "Error occured on creating Account!" + ex.Message;
                 return RedirectToAction("SignUp");
             }
+        }
+
+        [AcceptVerbs(HttpVerbs.Get)]
+        public ActionResult ShowroomSignUp()
+        {
+            return View();
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
@@ -127,13 +135,6 @@ namespace JRCar.WebApp.Controllers
                 TempData["ErrorMsg"] = "Error occured on creating Account!" + ex.Message;
                 return RedirectToAction("ShowroomSignUp");
             }
-        }
-
-        [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult SetTempData(string value)
-        {
-            TempData["SuccessMsg"] = value;
-            return new EmptyResult();
         }
 
         [AcceptVerbs(HttpVerbs.Get)]
@@ -183,8 +184,10 @@ namespace JRCar.WebApp.Controllers
                 TempData["ErrorMsg"] = "Error occured on login Account!" + ex.Message;
                 return RedirectToAction("SignIn");
             }
-        }
+        } 
+        #endregion
 
+        #region **Password Configuration**
         public ActionResult ForgotPassword()
         {
             return View();
@@ -266,7 +269,8 @@ namespace JRCar.WebApp.Controllers
                 TempData["ErrorMsg"] = "Error occured on Account!" + ex.Message;
                 return RedirectToAction("ResetPass");
             }
-        }
+        } 
+        #endregion
 
         [Authorize(Roles = "Admin,Union")]
         public ActionResult Details(int? id)
