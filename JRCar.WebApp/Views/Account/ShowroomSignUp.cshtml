@@ -51,14 +51,12 @@
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                    <div class="cs-signin" style="background: url(../../Images/bg-1.jpg); box-shadow: 0px 0px 7px 3px #a5a5a5; min-height: 65rem !important; background-position: unset; background-repeat: no-repeat; background-size: cover;">
-                        <div class="row">
-                        </div>
+                    <div class="cs-signin" style="background: url(../../Images/bg-1.jpg); margin-top: 15px !important; box-shadow: 0px 0px 7px 3px #a5a5a5; min-height: 75rem !important; background-position: unset; background-repeat: no-repeat; background-size: cover;">
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                     <div class="cs-register">
-                        <h4>SIGN UP</h4>
+                        <h4 style="font-size: 24px !important; line-height: 28px !important;">SIGN UP AS SHOWROOM</h4>
                         <div class="row">
                             @using (Html.BeginForm("SignUp", "Account", FormMethod.Post, new { enctype = "multipart/form-data" }))
                             {
@@ -68,7 +66,7 @@
                                         @Html.ValidationMessageFor(model => model.FullName, "", new { @class = "text-danger" })
                                     </div>
                                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                        @Html.EditorFor(model => model.FullName, new { htmlAttributes = new { placeholder = "Type your Username" } })
+                                        @Html.EditorFor(model => model.FullName, new { htmlAttributes = new { placeholder = "Type your Shop name" } })
                                     </div>
                                 </div>
                                 <div class="cs-field-holder">
@@ -77,7 +75,7 @@
                                         @Html.ValidationMessageFor(model => model.SignUpEmail, "", new { @class = "text-danger" })
                                     </div>
                                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                        @Html.EditorFor(model => model.SignUpEmail, new { htmlAttributes = new { placeholder = "Enter your email" } })
+                                        @Html.EditorFor(model => model.SignUpEmail, new { htmlAttributes = new { placeholder = "Enter your Email" } })
                                     </div>
                                 </div>
                                 <div class="cs-field-holder">
@@ -86,7 +84,7 @@
                                         @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
                                     </div>
                                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                        @Html.PasswordFor(model => model.Password, new { placeholder = "Enter your password" })
+                                        @Html.PasswordFor(model => model.Password, new { placeholder = "Enter your Password" })
                                     </div>
                                 </div>
                                 <div class="cs-field-holder">
@@ -95,49 +93,37 @@
                                         @Html.ValidationMessageFor(model => model.CNIC, "", new { @class = "text-danger" })
                                     </div>
                                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                        @Html.EditorFor(model => model.CNIC, new { htmlAttributes = new { placeholder = "Enter your Phone number" } })
-                                    </div>
-                                </div>
-                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                    <div class="panel panel-default">
-                                        <div class="panel-heading" role="tab" id="headingOne">
-                                            <a role="button" data-toggle="collapse" href="#collapseOne"
-                                               aria-expanded="true" aria-controls="collapseOne">
-                                                Contact and Location Information
-                                            </a>
-                                        </div>
-                                        <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel"
-                                             aria-labelledby="headingOne">
-                                            <div class="panel-body">
-                                                <div class="cs-field-holder">
-                                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                                        <label>Phone Number </label>
-                                                        @Html.ValidationMessageFor(model => model.Contact, "", new { @class = "text-danger" })
-                                                    </div>
-                                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                                        @Html.EditorFor(model => model.Contact, new { htmlAttributes = new { placeholder = "Enter your Phone number" } })
-                                                    </div>
-                                                </div>
-                                                <div class="cs-field-holder">
-                                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                                        <label>Shop Number</label>
-                                                        @Html.ValidationMessageFor(model => model.ShopNumber, "", new { @class = "text-danger" })
-                                                    </div>
-                                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                                        @Html.EditorFor(model => model.ShopNumber, new { htmlAttributes = new { placeholder = "Enter your Address" } })
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        @Html.EditorFor(model => model.CNIC, new { htmlAttributes = new { placeholder = "Enter your CNIC number" } })
                                     </div>
                                 </div>
                                 <div class="cs-field-holder">
                                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                        <label>Select Image</label>
+                                        <label>Phone Number </label>
+                                        @Html.ValidationMessageFor(model => model.Contact, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        @Html.EditorFor(model => model.Contact, new { htmlAttributes = new { placeholder = "Enter your Phone number" } })
+                                    </div>
+                                </div>
+                                <div class="cs-field-holder">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <label>Shop Number</label>
+                                        @Html.ValidationMessageFor(model => model.ShopNumber, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        @Html.EditorFor(model => model.ShopNumber, new { htmlAttributes = new { placeholder = "Enter your Shop number" } })
+                                    </div>
+                                </div>
+                                <div class="cs-field-holder" style="margin: 0 !important">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <label>Select Company Logo</label>
                                         @Html.ValidationMessageFor(model => model.Image, "", new { @class = "text-danger" })
                                     </div>
                                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                         <input type="file" name="file" required="required" accept="image/png,image/jpg,image/jpeg" id="formFile" class="form-control" />
+                                    </div>
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="visibility:hidden !important">
+                                        @Html.EditorFor(model => model.Image, new { htmlAttributes = new { placeholder = "Image", @readonly = "readonly" } })
                                     </div>
                                 </div>
                                 <div class="cs-field-holder">
@@ -172,4 +158,15 @@
         </div>
     </div>
 </div>
-
+<script>
+    $("input[name='file']").change(function () {
+        console.log('Hello');
+        var SelectFileslength = $("input[name='file']")[0].files.length;
+        if (SelectFileslength >= 1) {
+            $("#Image").val(SelectFileslength);
+        }
+        else {
+            $("#Image").val("");
+        }
+    })
+</script>
