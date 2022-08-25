@@ -16,10 +16,12 @@ namespace JRCar.WebApp.Controllers
     public class AccountController : Controller
     {
         private UserRepo RepoObj;
+        private AddressAutofillRepo AddressRepoObj;
 
         public AccountController()
         {
             RepoObj = new UserRepo();
+            AddressRepoObj = new AddressAutofillRepo();
         }
 
         public JsonResult IsEmailExist(string SignUpEmail)
@@ -80,6 +82,50 @@ namespace JRCar.WebApp.Controllers
             {
                 TempData["ErrorMsg"] = "Error occured on creating Account!" + ex.Message;
                 return RedirectToAction("SignUp");
+            }
+        }
+
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult ShowroomSignUp(HttpPostedFileBase file, ValidateShowroom user)
+        {
+            try
+            {
+                string filename = Path.GetFileName(file.FileName);
+                string _filename = DateTime.Now.ToString("yymmssfff") + filename;
+                string extension = Path.GetExtension(file.FileName);
+                string path = Path.Combine(Server.MapPath("~/Images/"), _filename);
+                user.Image = "~/Images/" + _filename;
+
+                if (extension.ToLower() == ".jpg" || extension.ToLower() == ".jpeg" || extension.ToLower() == ".png")
+                {
+                    if (file.ContentLength <= 10000000)
+                    {
+                        user.Email = user.SignUpEmail;
+                        /*These are hard coded values change it when project scope is changes to multiple Union*/
+                        user.UnionId = 1;
+                        user.AddressId = 2009;
+                        var area = AddressRepoObj.GetZoneLatLong(284);
+                        user.Latitude = area.Item1.ToString();
+                        user.Longitude = area.Item2.ToString();
+                        /*-------------------------------------THE-----END-------------------------------------*/
+                        RepoObj.InsertShowroom(user);
+                        file.SaveAs(path);
+                        TempData["SuccessMsg"] = "Account Created Successfully!";
+                        ModelState.Clear();
+                        return RedirectToAction("SignIn");
+                    }
+                    else
+                    {
+                        TempData["ErrorMsg"] = "Image size is very large";
+                        return RedirectToAction("ShowroomSignUp");
+                    }
+                }
+                return View();
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMsg"] = "Error occured on creating Account!" + ex.Message;
+                return RedirectToAction("ShowroomSignUp");
             }
         }
 

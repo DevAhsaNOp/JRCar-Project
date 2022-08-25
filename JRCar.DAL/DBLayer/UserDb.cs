@@ -240,7 +240,8 @@ namespace JRCar.DAL.DBLayer
                 Email = s.Email,
                 Image = s.Image,
                 Password = s.Password,
-                OTP = s.OTP
+                OTP = s.OTP,
+                Role = s.tblRole.Role
             }).FirstOrDefault();
 
             if (user != null)
@@ -378,13 +379,16 @@ namespace JRCar.DAL.DBLayer
         public void InsertShowroom(tblShowroom model)
         {
             try
-            {
+            {       
+                var zone = _context.tblAddresses.Where(x => x.ID == model.AddressId).FirstOrDefault().tblZone.ZoneName;
+                var city = _context.tblAddresses.Where(x => x.ID == model.AddressId).FirstOrDefault().tblCity.CityName;
+                model.ShowroomURL = ShowroomURLGenerate(model.FullName, zone, city);
                 model.Isactive = true;
                 model.Isarchive = false;
+                model.CreatedBy = 3;
                 model.CreatedOn = DateTime.Now;
-                model.CreatedBy = 2;
-                model.UpdatedOn = DateTime.Now;
-                model.UpdatedBy = 4;
+                model.UpdatedBy = null;
+                model.UpdatedOn = null;
                 _context.tblShowrooms.Add(model);
                 Save();
             }
@@ -545,5 +549,18 @@ namespace JRCar.DAL.DBLayer
             }
         }
 
+        public string ShowroomURLGenerate(string ShowroomName, string Zone, string CityLocation)
+        {
+            if (ShowroomName != null && Zone != null && CityLocation != null)
+            {
+                string URL = ShowroomName + "-showroom-in-" + Zone + "-" + CityLocation + "-" + OTPGenerator.GenerateRandomOTP() + DateTime.Now.ToString("ddMMyy") + DateTime.Now.Millisecond.ToString() + DateTime.Now.Minute.ToString() + DateTime.Now.Second.ToString();
+                var rURL = URL.Replace(" ", "-");
+                return rURL;
+            }
+            else
+            {
+                return null;
+            }
+        }
     }
 }

@@ -181,6 +181,29 @@ namespace JRCar.BLL.Repositories
             }
         }
 
+        public void InsertShowroom(ValidateShowroom model)
+        {
+            if (model != null)
+            {
+                tblShowroom obj = new tblShowroom()
+                {
+                    FullName = model.FullName,
+                    Email = model.Email,
+                    Password = EncDec.Encrypt(model.Password),
+                    CNIC = model.CNIC,
+                    Contact = model.Contact,
+                    ShopNumber = model.ShopNumber,
+                    Latitude = model.Latitude,
+                    Longitude = model.Longitude,
+                    Image = model.Image,
+                    RoleId = 3,
+                    AddressId = model.AddressId,
+                    UnionId = model.UnionId
+                };
+                dbObj.InsertShowroom(obj);
+            }
+        }
+
         public bool UpdateUser(ValidateUser model)
         {
             if (model != null)

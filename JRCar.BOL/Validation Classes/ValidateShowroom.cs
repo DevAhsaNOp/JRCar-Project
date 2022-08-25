@@ -35,7 +35,7 @@ namespace JRCar.BOL.Validation_Classes
 
         [Required(ErrorMessage = "*")]
         [Display(Name = "OTP")]
-        [RegularExpression(@"^\d{5}-\d{7}-\d{1}$", ErrorMessage = "Invalid CNIC Number")]
+        [RegularExpression(@"^\d{5}[-]?\d{7}[-]?\d{1}$", ErrorMessage = "Invalid CNIC Number")]
         public string CNIC { get; set; }
 
         [Required(ErrorMessage = "*")]

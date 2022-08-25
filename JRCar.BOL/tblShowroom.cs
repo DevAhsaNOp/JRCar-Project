@@ -32,8 +32,8 @@ namespace JRCar.BOL
         public bool Isarchive { get; set; }
         public int CreatedBy { get; set; }
         public System.DateTime CreatedOn { get; set; }
-        public int UpdatedBy { get; set; }
-        public System.DateTime UpdatedOn { get; set; }
+        public Nullable<int> UpdatedBy { get; set; }
+        public Nullable<System.DateTime> UpdatedOn { get; set; }
         public string CNIC { get; set; }
         public string FullName { get; set; }
         public string Email { get; set; }

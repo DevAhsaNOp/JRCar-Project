@@ -13,6 +13,12 @@
         color: #423737;
         font-family: "icomoon";
     }
+
+    .InputSet {
+        color: #999 !important;
+        font-size: 14px !important;
+        border: 1px solid #c4c4c4 !important;
+    }
 </style>
 
 <div class="main-section">
@@ -58,7 +64,7 @@
                     <div class="cs-register">
                         <h4 style="font-size: 24px !important; line-height: 28px !important;">SIGN UP AS SHOWROOM</h4>
                         <div class="row">
-                            @using (Html.BeginForm("SignUp", "Account", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                            @using (Html.BeginForm("ShowroomSignUp", "Account", FormMethod.Post, new { enctype = "multipart/form-data" }))
                             {
                                 <div class="cs-field-holder">
                                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -75,7 +81,7 @@
                                         @Html.ValidationMessageFor(model => model.SignUpEmail, "", new { @class = "text-danger" })
                                     </div>
                                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                        @Html.EditorFor(model => model.SignUpEmail, new { htmlAttributes = new { placeholder = "Enter your Email" } })
+                                        @Html.EditorFor(model => model.SignUpEmail, new { htmlAttributes = new { placeholder = "Enter your Email", @class = "InputSet" } })
                                     </div>
                                 </div>
                                 <div class="cs-field-holder">
@@ -84,7 +90,7 @@
                                         @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
                                     </div>
                                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                        @Html.PasswordFor(model => model.Password, new { placeholder = "Enter your Password" })
+                                        @Html.PasswordFor(model => model.Password, new { placeholder = "Enter your Password", @class = "InputSet" })
                                     </div>
                                 </div>
                                 <div class="cs-field-holder">
@@ -117,7 +123,7 @@
                                 <div class="cs-field-holder" style="margin: 0 !important">
                                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                         <label>Select Company Logo</label>
-                                        @Html.ValidationMessageFor(model => model.Image, "", new { @class = "text-danger" })
+                                        @Html.ValidationMessageFor(model => model.Image, "", new { @class = "text-danger", @id = "ImageFF" })
                                     </div>
                                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                         <input type="file" name="file" required="required" accept="image/png,image/jpg,image/jpeg" id="formFile" class="form-control" />
@@ -169,4 +175,20 @@
             $("#Image").val("");
         }
     })
+
+    setInterval(function () {
+        var SelectFileslength = $("input[name='file']")[0].files.length;
+        if (SelectFileslength >= 1) {
+            $("#ImageFF").attr('class', 'text-danger field-validation-valid');
+            $("#Image-error").remove();
+        }
+        else {
+            var SpanLength = $("#ImageFF").has('span').length;
+            if (SpanLength <= 0) {
+                $("#ImageFF").attr('class', 'text-danger field-validation-error');
+                $("#ImageFF").append("<span id='Image-error' class=''>*</span>");
+            }
+        }
+    }, 1);
+
 </script>
