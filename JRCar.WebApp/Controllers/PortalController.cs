@@ -9,6 +9,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
+using Microsoft.AspNet.Identity;
 
 namespace JRCar.WebApp.Controllers
 {
@@ -178,6 +179,34 @@ namespace JRCar.WebApp.Controllers
             {
                 TempData["ErrorMsg"] = "Error occured on updating Account!" + ex.Message;
                 return View("UpdateProfile");
+            }
+        }
+
+        [HttpGet]
+        public JsonResult GetNotificationsList()
+        {
+            try
+            {
+                if (User.Identity.IsAuthenticated)
+                {
+                    var notificationRegisterTime = Session["LastUpdated"] != null ? Convert.ToDateTime(Session["LastUpdated"]) : DateTime.Now;
+                    NotificationComponent NC = new NotificationComponent();
+                    var list = NC.GetNotifications(notificationRegisterTime);
+                    //Update session here for get only new added (Notifications)
+                    Session["LastUpdate"] = DateTime.Now;
+                    return new JsonResult { Data = list, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
+                }
+                else
+                {
+                    //insert into tblNotification values('Hey','Blablablabalb',2042,1,108,1,1,getdate())
+                    var err = (int)HttpStatusCode.BadRequest;
+                    return Json(new { error = err + " Bad Request Error " + "Invalid Request!!" });
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMsg"] = "Error occured on updating Account!" + ex.Message;
+                throw ex;
             }
         }
     }
