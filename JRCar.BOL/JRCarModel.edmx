@@ -279,8 +279,8 @@
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Title" Type="nvarchar" MaxLength="250" Nullable="false" />
           <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="AdURL" Type="nvarchar(max)" />
           <Property Name="FromUserID" Type="int" />
-          <Property Name="FromUnionID" Type="int" />
           <Property Name="FromShowroomID" Type="int" />
           <Property Name="IsShowroomInterested" Type="bit" />
           <Property Name="IsRead" Type="bit" />
@@ -329,7 +329,7 @@
           <Property Name="Token" Type="nvarchar(max)" />
           <Property Name="OTP" Type="nvarchar(max)" />
           <Property Name="ShowroomURL" Type="nvarchar(max)" />
-          <Property Name="RoleId" Type="int" />
+          <Property Name="RoleId" Type="int" Nullable="false" />
           <Property Name="AddressId" Type="int" />
           <Property Name="UnionId" Type="int" />
           <Property Name="Isactive" Type="bit" Nullable="false" />
@@ -828,18 +828,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_tblNotification_tblUnions">
-          <End Role="tblUnions" Type="Self.tblUnions" Multiplicity="0..1" />
-          <End Role="tblNotification" Type="Self.tblNotification" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="tblUnions">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="tblNotification">
-              <PropertyRef Name="FromUnionID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_tblNotification_tblUsers">
           <End Role="tblUsers" Type="Self.tblUsers" Multiplicity="0..1" />
           <End Role="tblNotification" Type="Self.tblNotification" Multiplicity="*" />
@@ -865,7 +853,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_tblShowrooms_tblRoles">
-          <End Role="tblRoles" Type="Self.tblRoles" Multiplicity="0..1" />
+          <End Role="tblRoles" Type="Self.tblRoles" Multiplicity="1" />
           <End Role="tblShowrooms" Type="Self.tblShowrooms" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="tblRoles">
@@ -1133,10 +1121,6 @@
             <End Role="tblShowrooms" EntitySet="tblShowrooms" />
             <End Role="tblNotification" EntitySet="tblNotification" />
           </AssociationSet>
-          <AssociationSet Name="FK_tblNotification_tblUnions" Association="Self.FK_tblNotification_tblUnions">
-            <End Role="tblUnions" EntitySet="tblUnions" />
-            <End Role="tblNotification" EntitySet="tblNotification" />
-          </AssociationSet>
           <AssociationSet Name="FK_tblNotification_tblUsers" Association="Self.FK_tblNotification_tblUsers">
             <End Role="tblUsers" EntitySet="tblUsers" />
             <End Role="tblNotification" EntitySet="tblNotification" />
@@ -1347,10 +1331,6 @@
             <End Role="tblShowroom" EntitySet="tblShowrooms" />
             <End Role="tblNotification" EntitySet="tblNotifications" />
           </AssociationSet>
-          <AssociationSet Name="FK_tblNotification_tblUnions" Association="jrcarModel.FK_tblNotification_tblUnions">
-            <End Role="tblUnion" EntitySet="tblUnions" />
-            <End Role="tblNotification" EntitySet="tblNotifications" />
-          </AssociationSet>
           <AssociationSet Name="FK_tblNotification_tblUsers" Association="jrcarModel.FK_tblNotification_tblUsers">
             <End Role="tblUser" EntitySet="tblUsers" />
             <End Role="tblNotification" EntitySet="tblNotifications" />
@@ -1362,6 +1342,10 @@
           <AssociationSet Name="FK_dbo_tblUsers_dbo_tblRoles_tblRoleID" Association="jrcarModel.FK_dbo_tblUsers_dbo_tblRoles_tblRoleID">
             <End Role="tblRole" EntitySet="tblRoles" />
             <End Role="tblUser" EntitySet="tblUsers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblShowrooms_tblRoles" Association="jrcarModel.FK_tblShowrooms_tblRoles">
+            <End Role="tblRole" EntitySet="tblRoles" />
+            <End Role="tblShowroom" EntitySet="tblShowrooms" />
           </AssociationSet>
           <AssociationSet Name="FK_dbo_tblSearchHists_dbo_tblUsers_UserID" Association="jrcarModel.FK_dbo_tblSearchHists_dbo_tblUsers_UserID">
             <End Role="tblUser" EntitySet="tblUsers" />
@@ -1386,10 +1370,6 @@
           <AssociationSet Name="FK_dbo_tblUserAdds_dbo_tblUsers_UserID" Association="jrcarModel.FK_dbo_tblUserAdds_dbo_tblUsers_UserID">
             <End Role="tblUser" EntitySet="tblUsers" />
             <End Role="tblUserAdd" EntitySet="tblUserAdds" />
-          </AssociationSet>
-          <AssociationSet Name="FK_tblShowrooms_tblRoles" Association="jrcarModel.FK_tblShowrooms_tblRoles">
-            <End Role="tblRole" EntitySet="tblRoles" />
-            <End Role="tblShowroom" EntitySet="tblShowrooms" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="C__MigrationHistory">
@@ -1708,14 +1688,13 @@
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Title" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="Description" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="AdURL" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="FromUserID" Type="Int32" />
-          <Property Name="FromUnionID" Type="Int32" />
           <Property Name="FromShowroomID" Type="Int32" />
           <Property Name="IsShowroomInterested" Type="Boolean" />
           <Property Name="IsRead" Type="Boolean" />
           <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="tblShowroom" Relationship="jrcarModel.FK_tblNotification_tblShowrooms" FromRole="tblNotification" ToRole="tblShowroom" />
-          <NavigationProperty Name="tblUnion" Relationship="jrcarModel.FK_tblNotification_tblUnions" FromRole="tblNotification" ToRole="tblUnion" />
           <NavigationProperty Name="tblUser" Relationship="jrcarModel.FK_tblNotification_tblUsers" FromRole="tblNotification" ToRole="tblUser" />
         </EntityType>
         <EntityType Name="tblNotification1">
@@ -1755,33 +1734,33 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Image" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="FullName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Password" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="CNIC" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Contact" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="ShopNumber" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
           <Property Name="Latitude" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Longitude" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="ShopNumber" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
-          <Property Name="Password" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Image" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Token" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="OTP" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ShowroomURL" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="RoleId" Type="Int32" Nullable="false" />
+          <Property Name="AddressId" Type="Int32" />
+          <Property Name="UnionId" Type="Int32" />
           <Property Name="Isactive" Type="Boolean" Nullable="false" />
           <Property Name="Isarchive" Type="Boolean" Nullable="false" />
           <Property Name="CreatedBy" Type="Int32" Nullable="false" />
           <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="UpdatedBy" Type="Int32" />
           <Property Name="UpdatedOn" Type="DateTime" Precision="3" />
-          <Property Name="CNIC" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="FullName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Email" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="Contact" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="Token" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="OTP" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="AddressId" Type="Int32" />
-          <Property Name="ShowroomURL" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="UnionId" Type="Int32" />
           <NavigationProperty Name="tblAddress" Relationship="jrcarModel.FK_tblShowrooms_tblAddress" FromRole="tblShowroom" ToRole="tblAddress" />
           <NavigationProperty Name="tblBlogs" Relationship="jrcarModel.FK_dbo_tblBlogs_dbo_tblShowrooms_Showrooms_ID" FromRole="tblShowroom" ToRole="tblBlog" />
           <NavigationProperty Name="tblCars" Relationship="jrcarModel.FK_dbo_tblCars_dbo_tblShowrooms_tblShowroomID" FromRole="tblShowroom" ToRole="tblCar" />
           <NavigationProperty Name="tblNotifications" Relationship="jrcarModel.FK_tblNotification_tblShowrooms" FromRole="tblShowroom" ToRole="tblNotification" />
-          <NavigationProperty Name="tblUnion" Relationship="jrcarModel.FK_tblShowrooms_tblUnions" FromRole="tblShowroom" ToRole="tblUnion" />
-          <Property Name="RoleId" Type="Int32" />
           <NavigationProperty Name="tblRole" Relationship="jrcarModel.FK_tblShowrooms_tblRoles" FromRole="tblShowroom" ToRole="tblRole" />
+          <NavigationProperty Name="tblUnion" Relationship="jrcarModel.FK_tblShowrooms_tblUnions" FromRole="tblShowroom" ToRole="tblUnion" />
         </EntityType>
         <EntityType Name="tblState">
           <Key>
@@ -1835,7 +1814,6 @@
           <Property Name="tblRoleID" Type="Int32" Nullable="false" />
           <Property Name="OTP" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="Verified" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="tblNotifications" Relationship="jrcarModel.FK_tblNotification_tblUnions" FromRole="tblUnion" ToRole="tblNotification" />
           <NavigationProperty Name="tblRole" Relationship="jrcarModel.FK_dbo_tblUnions_dbo_tblRoles_tblRoleID" FromRole="tblUnion" ToRole="tblRole" />
           <NavigationProperty Name="tblShowrooms" Relationship="jrcarModel.FK_tblShowrooms_tblUnions" FromRole="tblUnion" ToRole="tblShowroom" />
         </EntityType>
@@ -2311,18 +2289,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_tblNotification_tblUnions">
-          <End Type="jrcarModel.tblUnion" Role="tblUnion" Multiplicity="0..1" />
-          <End Type="jrcarModel.tblNotification" Role="tblNotification" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="tblUnion">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="tblNotification">
-              <PropertyRef Name="FromUnionID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_tblNotification_tblUsers">
           <End Type="jrcarModel.tblUser" Role="tblUser" Multiplicity="0..1" />
           <End Type="jrcarModel.tblNotification" Role="tblNotification" Multiplicity="*" />
@@ -2360,6 +2326,18 @@
             </Principal>
             <Dependent Role="tblUser">
               <PropertyRef Name="tblRoleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblShowrooms_tblRoles">
+          <End Type="jrcarModel.tblRole" Role="tblRole" Multiplicity="1" />
+          <End Type="jrcarModel.tblShowroom" Role="tblShowroom" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblRole">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="tblShowroom">
+              <PropertyRef Name="RoleId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2440,18 +2418,6 @@
             </Principal>
             <Dependent Role="tblUserAdd">
               <PropertyRef Name="UserID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_tblShowrooms_tblRoles">
-          <End Type="jrcarModel.tblRole" Role="tblRole" Multiplicity="0..1" />
-          <End Type="jrcarModel.tblShowroom" Role="tblShowroom" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="tblRole">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="tblShowroom">
-              <PropertyRef Name="RoleId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2753,8 +2719,8 @@
                 <ScalarProperty Name="IsRead" ColumnName="IsRead" />
                 <ScalarProperty Name="IsShowroomInterested" ColumnName="IsShowroomInterested" />
                 <ScalarProperty Name="FromShowroomID" ColumnName="FromShowroomID" />
-                <ScalarProperty Name="FromUnionID" ColumnName="FromUnionID" />
                 <ScalarProperty Name="FromUserID" ColumnName="FromUserID" />
+                <ScalarProperty Name="AdURL" ColumnName="AdURL" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Title" ColumnName="Title" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
@@ -2793,27 +2759,27 @@
           <EntitySetMapping Name="tblShowrooms">
             <EntityTypeMapping TypeName="jrcarModel.tblShowroom">
               <MappingFragment StoreEntitySet="tblShowrooms">
-                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
-                <ScalarProperty Name="UnionId" ColumnName="UnionId" />
-                <ScalarProperty Name="ShowroomURL" ColumnName="ShowroomURL" />
-                <ScalarProperty Name="AddressId" ColumnName="AddressId" />
-                <ScalarProperty Name="OTP" ColumnName="OTP" />
-                <ScalarProperty Name="Token" ColumnName="Token" />
-                <ScalarProperty Name="Contact" ColumnName="Contact" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="FullName" ColumnName="FullName" />
-                <ScalarProperty Name="CNIC" ColumnName="CNIC" />
                 <ScalarProperty Name="UpdatedOn" ColumnName="UpdatedOn" />
                 <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
                 <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
                 <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
                 <ScalarProperty Name="Isarchive" ColumnName="Isarchive" />
                 <ScalarProperty Name="Isactive" ColumnName="Isactive" />
-                <ScalarProperty Name="Password" ColumnName="Password" />
-                <ScalarProperty Name="ShopNumber" ColumnName="ShopNumber" />
+                <ScalarProperty Name="UnionId" ColumnName="UnionId" />
+                <ScalarProperty Name="AddressId" ColumnName="AddressId" />
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+                <ScalarProperty Name="ShowroomURL" ColumnName="ShowroomURL" />
+                <ScalarProperty Name="OTP" ColumnName="OTP" />
+                <ScalarProperty Name="Token" ColumnName="Token" />
+                <ScalarProperty Name="Image" ColumnName="Image" />
                 <ScalarProperty Name="Longitude" ColumnName="Longitude" />
                 <ScalarProperty Name="Latitude" ColumnName="Latitude" />
-                <ScalarProperty Name="Image" ColumnName="Image" />
+                <ScalarProperty Name="ShopNumber" ColumnName="ShopNumber" />
+                <ScalarProperty Name="Contact" ColumnName="Contact" />
+                <ScalarProperty Name="CNIC" ColumnName="CNIC" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="FullName" ColumnName="FullName" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>

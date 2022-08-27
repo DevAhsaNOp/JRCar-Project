@@ -312,7 +312,7 @@ namespace JRCar.DAL.DBLayer
                 Image = s.Image,
                 Password = s.Password,
                 CNIC = s.CNIC,
-                tblRoleID = s.RoleId.Value
+                tblRoleID = s.RoleId
             }).FirstOrDefault();
 
             if (user != null)
