@@ -128,81 +128,42 @@
         @* Add css  *@
         @*<link href="~/Content/bootstrap.min.css" rel="stylesheet" />*@
 
-        <style type="text/css">
-            /*Added css for design notification area, you can design by your self*/
-            /* COPY css content from youtube video description*/
-            .noti-content {
-                position: fixed;
-                right: 127px;
-                background: #e5e5e5;
-                border-radius: 4px;
-                top: 47px;
-                width: 250px;
-                display: none;
-                border: 1px solid #9E988B;
-            }
-
-            ul#notiContent {
-                max-height: 600px;
-                overflow: auto;
-                padding: 0px;
-                margin: 0px;
-                padding-left: 20px;
-            }
-
-                ul#notiContent li {
-                    margin: 3px;
-                    padding: 6px;
-                    color: black;
-                    background: #fff;
-                }
-
-            .noti-top-arrow {
-                border-color: transparent;
-                border-bottom-color: #F5DEB3;
-                border-style: dashed dashed solid;
-                border-width: 0 8.5px 8.5px;
-                position: absolute;
-                right: 32px;
-                top: -8px;
-            }
-
-            span.noti {
-                color: rgba(255,255,255,.75);
-                margin: 12px 0px;
-                right: 100px;
-                font-size: 18px;
-                cursor: pointer;
-            }
-
-            span.count {
-                position: relative;
-                top: -3px;
-            }
-        </style>
 
         @* Add jquery code for Get Notification & setup signalr *@
         <script type="text/javascript">
             $(document).ready(function () {
                 updateNotification();
                 GetCount();
-                $('span.noti').click(function (e) {
+                $('a.noti').click(function (e) {
                     e.stopPropagation();
-                    $('.noti-content').show();
                     var count = 0;
                     count = parseInt($('span.count').html()) || 0;
                     //Only load notification if not already loaded
                     if (count > 0) {
                         updateNotification();
                         sessionStorage.setItem("count", 0);
+                        $('.noti-content').show();
+                    }
+                    else if ($('.noti-content').css('display') == 'block') {
+                        $('.noti-content').hide();
+                    }
+                    else if ($('.noti-content').css('display') == 'none') {
+                        $('.noti-content').show();
                     }
                     $('span.count', this).html('&nbsp;');
                 })
 
                 // Hide notifications
-                $('html').click(function () {
-                    $('.noti-content').hide();
-                })
+                //$('html').click(function () {
+                //    $('.noti-content').hide();
+                //})
+
+                //$('a.noti').click(function () {
+                //    if ($('.noti-content').css('display') == 'block') {
+                //        console.log('Here');
+                //        $('.noti-content').hide();
+                //    }
+                //})
 
                 // SignalR js code for start hub and send receive notification
                 var notificationHub = $.connection.notificationHub;
@@ -240,10 +201,11 @@
                         $('#notiContent').empty();
                         console.log(response);
                         if (response.length == 0) {
-                            $('#notiContent').append($('<li>No data available</li>'));
+                            $('#notiContent').append($('<a href="#" class="dropdown-item"><i class="fas fa-envelope mr-2"></i> No Notification Available <span class="float-right text-muted text-sm"> 3 mins</span></a>'));
                         }
                         $.each(response, function (index, value) {
-                            $('#notiContent').append($('<li>New Ad Alert: ' + value.Title + ' is less than (' + value.Description + ') </li>'));
+                            $('#notiContent').append($('<a href="#" class="dropdown-item"> <i class="fas fa-envelope mr-2"></i> ' + value.Title + ' <span class="float-right text-muted text-sm"> 3 mins</span></a>'));
+                            //$('#notiContent').append($('<li>New Ad Alert: ' + value.Title + ' is less than (' + value.Description + ') </li>'));
                         });
                     },
                     error: function (error) {

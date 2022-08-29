@@ -198,7 +198,7 @@ namespace JRCar.WebApp.Controllers
                 }
                 else
                 {
-                    //insert into tblNotification values('Hey','Blablablabalb',2042,1,108,1,1,getdate())
+                    //insert into tblNotification values('Hey','Blablablabalb',null,2042,108,1,1,getdate())
                     var err = (int)HttpStatusCode.BadRequest;
                     return Json(new { error = err + " Bad Request Error " + "Invalid Request!!" });
                 }
