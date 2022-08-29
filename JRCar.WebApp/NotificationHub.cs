@@ -8,6 +8,10 @@ namespace JRCar.WebApp
 {
     public class NotificationHub : Hub
     {
-
+        public static void Show()
+        {
+            var notificationhub = GlobalHost.ConnectionManager.GetHubContext<NotificationHub>();
+            notificationhub.Clients.All.DisplayNoti("added");
+        }
     }
 }

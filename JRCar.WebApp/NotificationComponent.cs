@@ -40,18 +40,14 @@ namespace JRCar.WebApp
             {
                 SqlDependency sql = sender as SqlDependency;
                 sql.OnChange -= sqlDep_OnChange;
-
-                var notificationhub = GlobalHost.ConnectionManager.GetHubContext<NotificationHub>();
-                notificationhub.Clients.All.notify("added");
+                NotificationHub.Show();
                 RegisterNotification(DateTime.Now);
             }
             else if (e.Info == SqlNotificationInfo.Insert)
             {
                 SqlDependency sql = sender as SqlDependency;
                 sql.OnChange -= sqlDep_OnChange;
-
-                var notificationhub = GlobalHost.ConnectionManager.GetHubContext<NotificationHub>();
-                notificationhub.Clients.All.notify("added");
+                NotificationHub.Show();
                 RegisterNotification(DateTime.Now);
             }
         }

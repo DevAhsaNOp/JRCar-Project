@@ -124,7 +124,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         @*<script src="~/Scripts/bootstrap.min.js"></script>*@
         <script src="~/scripts/jquery.signalR-2.4.3.min.js"></script>
-        <script src="/signalr/hubs"></script>
+        <script src="~/signalr/hubs"></script>
         @* Add css  *@
         @*<link href="~/Content/bootstrap.min.css" rel="stylesheet" />*@
 
@@ -172,7 +172,7 @@
                 });
 
                 //SignalR method for push server message to client
-                notificationHub.client.notify = function (message) {
+                notificationHub.client.DisplayNoti = function (message) {
                     if (message && message.toLowerCase() == "added") {
                         console.log('Hey Count');
                         updateNotificationCount();
