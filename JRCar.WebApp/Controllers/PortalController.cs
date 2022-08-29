@@ -10,6 +10,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
 using Microsoft.AspNet.Identity;
+using static JRCar.WebApp.Controllers.WebsiteController;
 
 namespace JRCar.WebApp.Controllers
 {
@@ -189,16 +190,17 @@ namespace JRCar.WebApp.Controllers
             {
                 if (User.Identity.IsAuthenticated)
                 {
+                    var ShowroomID = Convert.ToInt32(Session["Id"]);
                     var notificationRegisterTime = Session["LastUpdated"] != null ? Convert.ToDateTime(Session["LastUpdated"]) : DateTime.Now;
                     NotificationComponent NC = new NotificationComponent();
-                    var list = NC.GetNotifications(notificationRegisterTime);
+                    var list = NC.GetNotifications(notificationRegisterTime, ShowroomID);
                     //Update session here for get only new added (Notifications)
                     Session["LastUpdate"] = DateTime.Now;
                     return new JsonResult { Data = list, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
                 }
                 else
                 {
-                    //insert into tblNotification values('Hey','Blablablabalb',null,2042,108,1,1,getdate())
+                    //insert into tblNotification values('Hey','Blablablabalb',null,2042,108,1,0,getdate())
                     var err = (int)HttpStatusCode.BadRequest;
                     return Json(new { error = err + " Bad Request Error " + "Invalid Request!!" });
                 }
@@ -208,6 +210,15 @@ namespace JRCar.WebApp.Controllers
                 TempData["ErrorMsg"] = "Error occured on updating Account!" + ex.Message;
                 throw ex;
             }
+        }
+
+        public int GetSessionID()
+        {
+            var a = 0;
+            if (Convert.ToInt32(Session["Id"]) != null){
+                a = ((Convert.ToInt32(Session["Id"]) == 0) ? 0 : Convert.ToInt32(Session["Id"]));
+            }
+            return a;
         }
     }
 }

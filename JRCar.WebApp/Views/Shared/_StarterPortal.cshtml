@@ -150,13 +150,13 @@
                     else if ($('.noti-content').css('display') == 'none') {
                         $('.noti-content').show();
                     }
-                    $('span.count', this).html('&nbsp;');
+                    $('span.count', this).html('');
                 })
 
                 // Hide notifications
-                //$('html').click(function () {
-                //    $('.noti-content').hide();
-                //})
+                $('html').click(function () {
+                    $('.noti-content').hide();
+                })
 
                 //$('a.noti').click(function () {
                 //    if ($('.noti-content').css('display') == 'block') {
@@ -186,7 +186,7 @@
                     $('span.count').html(count);
                 }
                 else {
-                    $('span.count', this).html('&nbsp;');
+                    $('span.count', this).html('');
                 }
             }
 
