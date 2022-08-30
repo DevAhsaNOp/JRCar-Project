@@ -405,7 +405,6 @@
     <Content Include="docs\_includes\sidebar.html" />
     <Content Include="docs\_layouts\default.html" />
     <Content Include="docs\_layouts\page.html" />
-    <Content Include="filename.txt" />
     <Content Include="Files\css\bootstrap-slider.css" />
     <Content Include="Files\css\bootstrap-theme.css" />
     <Content Include="Files\css\bootstrap.css" />

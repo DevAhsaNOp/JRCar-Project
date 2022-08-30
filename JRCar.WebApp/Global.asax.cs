@@ -33,7 +33,6 @@ namespace JRCar.WebApp
 
         protected void Application_End()
         {
-            NotificationComponent.InsertZero();
             //here we will stop Sql Dependency
             SqlDependency.Stop(con);
         }

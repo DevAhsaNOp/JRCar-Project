@@ -159,12 +159,14 @@
                         sessionStorage.setItem("count", 0);
                         console.log('a.noti inner if' + count);
                         $('.noti-content').show();
+                        updateNotificationRead();
                     }
                     else if ($('.noti-content').css('display') == 'block') {
                         $('.noti-content').hide();
                     }
                     else if ($('.noti-content').css('display') == 'none') {
                         $('.noti-content').show();
+                        updateNotificationRead();
                     }
                     $('span.count', this).html('');
                 })
@@ -223,11 +225,35 @@
             // Update notification count
             function updateNotificationCount() {
                 var count = 0;
-                count = parseInt($('span.count').html()) || 0;
-                count++;
-                $('span.count').html(count);
-                console.log('updateNotificationCount' + count);
-                sessionStorage.setItem("count", count);
+                $.ajax({
+                    type: 'GET',
+                    url: '/Portal/GetNotificationsListCount',
+                    success: function (response) {
+                        console.log('GetNotificationsListCount:: ' + response);
+                        count = response;
+                        $('span.count').html(count);
+                        console.log('updateNotificationCount' + count);
+                        sessionStorage.setItem("count", count);
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    }
+                })
+            }
+
+            // Notifications Change to Read When NotiFication Icon Press
+            function updateNotificationRead() {
+                $.ajax({
+                    type: 'GET',
+                    url: '/Portal/ChangeNotificationToAsRead',
+                    success: function (response) {
+                        console.log('GetNotificationsListRead:: ' + response);
+                        sessionStorage.setItem("count", 0);
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    }
+                })
             }
 
             var loadProfile = function (event) {

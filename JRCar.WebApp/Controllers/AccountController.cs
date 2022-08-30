@@ -155,7 +155,6 @@ namespace JRCar.WebApp.Controllers
                     Session["Email"] = IsSuccess.Email;
                     Session["Image"] = IsSuccess.Image;
                     Session["Role"] = IsSuccess.Role;
-                    NotificationComponent.Insert(IsSuccess.ID.ToString());
                     var role = Session["Role"].ToString();
                     if (role == "Admin" || role == "Union" || role == "Showroom")
                     {
@@ -290,7 +289,6 @@ namespace JRCar.WebApp.Controllers
         public ActionResult Logout()
         {
             FormsAuthentication.SignOut();
-            NotificationComponent.InsertZero();
             Session.Abandon();
             Session.Clear();
             Session.RemoveAll();

@@ -209,7 +209,62 @@ namespace JRCar.WebApp.Controllers
             }
             catch (Exception ex)
             {
-                TempData["ErrorMsg"] = "Error occured on updating Account!" + ex.Message;
+                TempData["ErrorMsg"] = "Error occured on updating Notification!" + ex.Message;
+                throw ex;
+            }
+        }
+        
+        [HttpGet]
+        public JsonResult GetNotificationsListCount()
+        {
+            try
+            {
+                if (User.Identity.IsAuthenticated)
+                {
+                    var ShowroomID = Convert.ToInt32(Session["Id"]);
+                    var notificationRegisterTime = Session["LastUpdated"] != null ? Convert.ToDateTime(Session["LastUpdated"]) : DateTime.Now;
+                    NotificationComponent NC = new NotificationComponent();
+                    var list = NC.GetNotificationsCount(notificationRegisterTime, ShowroomID);
+                    //Update session here for get only new added (Notifications)
+                    Session["LastUpdate"] = DateTime.Now;
+                    return new JsonResult { Data = list, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
+                }
+                else
+                {
+                    var err = (int)HttpStatusCode.BadRequest;
+                    return Json(new { error = err + " Bad Request Error " + "Invalid Request!!" });
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMsg"] = "Error occured on updating Notification Count!" + ex.Message;
+                throw ex;
+            }
+        }
+        
+        [HttpGet]
+        public JsonResult ChangeNotificationToAsRead()
+        {
+            try
+            {
+                if (User.Identity.IsAuthenticated)
+                {
+                    var ShowroomID = Convert.ToInt32(Session["Id"]);
+                    NotificationComponent NC = new NotificationComponent();
+                    var list = NC.ChangeNotificationToAsRead(ShowroomID);
+                    //Update session here for get only new added (Notifications)
+                    Session["LastUpdate"] = DateTime.Now;
+                    return new JsonResult { Data = list, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
+                }
+                else
+                {
+                    var err = (int)HttpStatusCode.BadRequest;
+                    return Json(new { error = err + " Bad Request Error " + "Invalid Request!!" });
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMsg"] = "Error occured on updating Notification As Read!" + ex.Message;
                 throw ex;
             }
         }

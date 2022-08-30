@@ -11,41 +11,18 @@ namespace JRCar.WebApp
 {
     public class NotificationComponent
     {
-        public static void Insert(string writeText)
-        {
-            File.WriteAllText("E:\\JRCar-Project\\JRCar.WebApp\\filename.txt", writeText);
-        }
-
-        public static void InsertZero()
-        {
-            File.WriteAllText("E:\\JRCar-Project\\JRCar.WebApp\\filename.txt", "0");
-        }
-
         public void RegisterNotification(DateTime currentTime)
         {
-            var ID = File.ReadAllText("E:\\JRCar-Project\\JRCar.WebApp\\filename.txt"); // Read the contents of the file
             PortalController pc = new PortalController();
             string constring = ConfigurationManager.ConnectionStrings["jrcarNotification"].ConnectionString;
             string SqlCmd = String.Empty;
-            int ShowroomID = Convert.ToInt32(ID);
-            if (ShowroomID <= 0)
-            {
-                //(([CreatedOn] > @CreatedOn or IsRead <> 1)
-                SqlCmd = @"SELECT [ID] ,[Title] ,[Description] ,[AdURL] ,[FromUserID] ,[FromShowroomID] ,[IsShowroomInterested] ,[IsRead] ,[CreatedOn] FROM [dbo].[tblNotification] WHERE IsRead <> 1";
-            }
-            else
-            {
-                SqlCmd = @"SELECT [ID] ,[Title] ,[Description] ,[AdURL] ,[FromUserID] ,[FromShowroomID] ,[IsShowroomInterested] ,[IsRead] ,[CreatedOn] FROM [dbo].[tblNotification] WHERE (IsRead <> 1 and FromShowroomID = @FromShowroomID)";
-            }
+            //([CreatedOn] > @CreatedOn or IsRead <> 1)
+            SqlCmd = @"SELECT [ID] ,[Title] ,[Description] ,[AdURL] ,[FromUserID] ,[FromShowroomID] ,[IsShowroomInterested] ,[IsRead] ,[CreatedOn] FROM [dbo].[tblNotification] WHERE ([CreatedOn] > @CreatedOn or IsRead <> 1)";
 
             using (SqlConnection con = new SqlConnection(constring))
             {
                 SqlCommand cmd = new SqlCommand(SqlCmd, con);
-                //cmd.Parameters.AddWithValue("@CreatedOn", currentTime);
-                if (ShowroomID > 0)
-                {
-                    cmd.Parameters.AddWithValue("@FromShowroomID", ShowroomID);
-                }
+                cmd.Parameters.AddWithValue("@CreatedOn", currentTime);
                 if (con.State != System.Data.ConnectionState.Open)
                 {
                     con.Open();
@@ -86,11 +63,59 @@ namespace JRCar.WebApp
                 return reas;
             }
         }
+
+        public int GetNotificationsCount(DateTime afterDate, int ShowroomID)
+        {
+            using (jrcarEntities jrcar = new jrcarEntities())
+            {
+                var reas = jrcar.tblNotifications.Where(a => a.IsRead == false && a.FromShowroomID == ShowroomID).Select(x => new NotiShow() { Title = x.Title, Description = x.Description }).ToList().Count;
+                return reas;
+            }
+        }
+
+        public bool ChangeNotificationToAsRead(int ShowroomID)
+        {
+            using (jrcarEntities jrcar = new jrcarEntities())
+            {
+                var reas = jrcar.tblNotifications.Where(a => a.IsRead == false && a.FromShowroomID == ShowroomID).ToList();
+                if (reas.Count > 0)
+                {
+                    foreach (var notification in reas)
+                    {
+                        try
+                        {
+                            notification.ID = notification.ID;
+                            notification.Title = notification.Title;
+                            notification.Description = notification.Description;
+                            notification.AdURL = notification.AdURL;
+                            notification.FromUserID = notification.FromUserID;
+                            notification.FromShowroomID = notification.FromShowroomID;
+                            notification.IsShowroomInterested = notification.IsShowroomInterested;
+                            notification.IsRead = true;
+                            notification.CreatedOn = notification.CreatedOn;
+                            jrcar.Entry(notification).State = System.Data.Entity.EntityState.Modified;
+                            jrcar.SaveChanges();
+                        }
+                        catch (Exception ex)
+                        {
+                            return false;
+                            throw ex;
+                        }
+                    }
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
     }
 
     public class NotiShow
     {
         public string Title { get; set; }
         public string Description { get; set; }
+        public bool? IsRead { get; set; }
     }
 }
