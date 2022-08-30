@@ -132,16 +132,32 @@
         @* Add jquery code for Get Notification & setup signalr *@
         <script type="text/javascript">
             $(document).ready(function () {
+                // SignalR js code for start hub and send receive notification
+                var notificationHub = $.connection.notificationHub;
+                $.connection.hub.start().done(function () {
+                    console.log('Notification hub started');
+                });
+
+                //SignalR method for push server message to client
+                notificationHub.client.DisplayNoti = function (message) {
+                    if (message && message.toLowerCase() == "added") {
+                        console.log('Hey Count');
+                        updateNotificationCount();
+                    }
+                }
                 updateNotification();
                 GetCount();
                 $('a.noti').click(function (e) {
                     e.stopPropagation();
                     var count = 0;
                     count = parseInt($('span.count').html()) || 0;
+                    console.log('a.noti outer' + count);
+
                     //Only load notification if not already loaded
                     if (count > 0) {
                         updateNotification();
                         sessionStorage.setItem("count", 0);
+                        console.log('a.noti inner if' + count);
                         $('.noti-content').show();
                     }
                     else if ($('.noti-content').css('display') == 'block') {
@@ -165,23 +181,13 @@
                 //    }
                 //})
 
-                // SignalR js code for start hub and send receive notification
-                var notificationHub = $.connection.notificationHub;
-                $.connection.hub.start().done(function () {
-                    console.log('Notification hub started');
-                });
 
-                //SignalR method for push server message to client
-                notificationHub.client.DisplayNoti = function (message) {
-                    if (message && message.toLowerCase() == "added") {
-                        console.log('Hey Count');
-                        updateNotificationCount();
-                    }
-                }
             });
 
             function GetCount() {
                 var count = sessionStorage.getItem("count");
+                console.log('a.noti outer' + count);
+
                 if (count > 0) {
                     $('span.count').html(count);
                 }
@@ -220,6 +226,7 @@
                 count = parseInt($('span.count').html()) || 0;
                 count++;
                 $('span.count').html(count);
+                console.log('updateNotificationCount' + count);
                 sessionStorage.setItem("count", count);
             }
 

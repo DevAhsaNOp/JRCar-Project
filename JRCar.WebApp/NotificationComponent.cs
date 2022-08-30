@@ -30,17 +30,18 @@ namespace JRCar.WebApp
             int ShowroomID = Convert.ToInt32(ID);
             if (ShowroomID <= 0)
             {
-                SqlCmd = @"SELECT [ID] ,[Title] ,[Description] ,[AdURL] ,[FromUserID] ,[FromShowroomID] ,[IsShowroomInterested] ,[IsRead] ,[CreatedOn] FROM [dbo].[tblNotification] WHERE ([CreatedOn] > @CreatedOn or IsRead <> 1)";
+                //(([CreatedOn] > @CreatedOn or IsRead <> 1)
+                SqlCmd = @"SELECT [ID] ,[Title] ,[Description] ,[AdURL] ,[FromUserID] ,[FromShowroomID] ,[IsShowroomInterested] ,[IsRead] ,[CreatedOn] FROM [dbo].[tblNotification] WHERE IsRead <> 1";
             }
             else
             {
-                SqlCmd = @"SELECT [ID] ,[Title] ,[Description] ,[AdURL] ,[FromUserID] ,[FromShowroomID] ,[IsShowroomInterested] ,[IsRead] ,[CreatedOn] FROM [dbo].[tblNotification] WHERE (([CreatedOn] > @CreatedOn or IsRead <> 1) and FromShowroomID = @FromShowroomID)";
+                SqlCmd = @"SELECT [ID] ,[Title] ,[Description] ,[AdURL] ,[FromUserID] ,[FromShowroomID] ,[IsShowroomInterested] ,[IsRead] ,[CreatedOn] FROM [dbo].[tblNotification] WHERE (IsRead <> 1 and FromShowroomID = @FromShowroomID)";
             }
 
             using (SqlConnection con = new SqlConnection(constring))
             {
                 SqlCommand cmd = new SqlCommand(SqlCmd, con);
-                cmd.Parameters.AddWithValue("@CreatedOn", currentTime);
+                //cmd.Parameters.AddWithValue("@CreatedOn", currentTime);
                 if (ShowroomID > 0)
                 {
                     cmd.Parameters.AddWithValue("@FromShowroomID", ShowroomID);
