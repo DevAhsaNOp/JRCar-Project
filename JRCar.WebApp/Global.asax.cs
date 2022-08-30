@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -32,6 +33,7 @@ namespace JRCar.WebApp
 
         protected void Application_End()
         {
+            NotificationComponent.InsertZero();
             //here we will stop Sql Dependency
             SqlDependency.Stop(con);
         }

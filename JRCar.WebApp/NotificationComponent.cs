@@ -1,23 +1,33 @@
 ﻿using System;
-using System.Collections.Generic;
+using JRCar.BOL;
 using System.Linq;
-using System.Web;
 using System.Configuration;
 using System.Data.SqlClient;
-using Microsoft.AspNet.SignalR;
-using JRCar.BOL;
 using JRCar.WebApp.Controllers;
+using System.Collections.Generic;
+using System.IO;
 
 namespace JRCar.WebApp
 {
     public class NotificationComponent
     {
+        public static void Insert(string writeText)
+        {
+            File.WriteAllText("E:\\JRCar-Project\\JRCar.WebApp\\filename.txt", writeText);
+        }
+
+        public static void InsertZero()
+        {
+            File.WriteAllText("E:\\JRCar-Project\\JRCar.WebApp\\filename.txt", "0");
+        }
+
         public void RegisterNotification(DateTime currentTime)
         {
+            var ID = File.ReadAllText("E:\\JRCar-Project\\JRCar.WebApp\\filename.txt"); // Read the contents of the file
             PortalController pc = new PortalController();
             string constring = ConfigurationManager.ConnectionStrings["jrcarNotification"].ConnectionString;
             string SqlCmd = String.Empty;
-            int ShowroomID = pc.GetSessionID();
+            int ShowroomID = Convert.ToInt32(ID);
             if (ShowroomID <= 0)
             {
                 SqlCmd = @"SELECT [ID] ,[Title] ,[Description] ,[AdURL] ,[FromUserID] ,[FromShowroomID] ,[IsShowroomInterested] ,[IsRead] ,[CreatedOn] FROM [dbo].[tblNotification] WHERE ([CreatedOn] > @CreatedOn or IsRead <> 1)";

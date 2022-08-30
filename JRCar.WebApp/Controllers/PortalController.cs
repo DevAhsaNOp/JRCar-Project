@@ -11,6 +11,8 @@ using System.Web.Mvc;
 using System.Web.Security;
 using Microsoft.AspNet.Identity;
 using static JRCar.WebApp.Controllers.WebsiteController;
+using System.Security.Claims;
+using System.Threading;
 
 namespace JRCar.WebApp.Controllers
 {
@@ -212,13 +214,6 @@ namespace JRCar.WebApp.Controllers
             }
         }
 
-        public int GetSessionID()
-        {
-            var a = 0;
-            if (Convert.ToInt32(Session["Id"]) != null){
-                a = ((Convert.ToInt32(Session["Id"]) == 0) ? 0 : Convert.ToInt32(Session["Id"]));
-            }
-            return a;
-        }
+      
     }
 }
