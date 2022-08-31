@@ -4,6 +4,7 @@ using JRCar.DAL.DBLayer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Remoting.Contexts;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,24 +13,26 @@ namespace JRCar.BLL.Repositories
     public class UserAdsRepo
     {
         private UserAds dbObj;
+        private NotificationRepo dbObjNoti;
         private AddressAutofillRepo AddressRepoObj;
 
         public UserAdsRepo()
         {
             dbObj = new UserAds();
             AddressRepoObj = new AddressAutofillRepo();
+            dbObjNoti = new NotificationRepo();
         }
 
         public IEnumerable<ValidationUserAds> GetAllActiveAdsFilter(string searchTerm, int? minimumPrice, int? maximumPrice, int? sortBy, int? StateId, int?[] CityId, int?[] ZoneId)
         {
             return dbObj.GetAllActiveAdsFilter(searchTerm, minimumPrice, maximumPrice, sortBy, StateId, CityId, ZoneId);
         }
-        
+
         public IEnumerable<ValidationUserAds> GetAllActiveAds()
         {
             return dbObj.GetAllActiveAds();
         }
-        
+
         public IEnumerable<ValidationUserAds> GetAllInActiveAds()
         {
             return dbObj.GetAllInActiveAds();
@@ -46,6 +49,24 @@ namespace JRCar.BLL.Repositories
                 return null;
         }
 
+        public ValidationUserAds GetUserAdURL(int AdsId)
+        {
+            if (AdsId > 0)
+            {
+                var AdUrl = dbObj.GetUserAdURL(AdsId);
+                if (AdUrl != null)
+                {
+                    return AdUrl;
+                }
+                else
+                    return null;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
         public IEnumerable<ValidationUserAds> GetAllUserActiveAds(int UserID)
         {
             if (UserID > 0)
@@ -56,7 +77,7 @@ namespace JRCar.BLL.Repositories
                     return reas;
                 }
                 else
-                    return null ;
+                    return null;
             }
             else
                 return null;
@@ -139,14 +160,15 @@ namespace JRCar.BLL.Repositories
                             var userAdImages = InsertUserAdsImages(userAdImagesObj);
                             if (userAdImages)
                             {
-
+                                var UserAdURL = GetUserAdURL(user).AdURL;
                                 tblNotification notification = new tblNotification()
                                 {
                                     Title = model.Title,
                                     Description = WithMaxLength(model.Description, 15),
-                                    AdURL = model.AdURL,
+                                    AdURL = UserAdURL,
                                     FromUserID = model.UserID
                                 };
+                                dbObjNoti.InsertNotification(notification);
                                 return true;
                             }
                             else

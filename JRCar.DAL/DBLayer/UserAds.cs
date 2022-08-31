@@ -204,6 +204,21 @@ namespace JRCar.DAL.DBLayer
             else
                 return null;
         }
+        
+        public ValidationUserAds GetUserAdURL(int AdsId)
+        {
+            var user = _context.tblUserAdds.Where(x => x.ID == AdsId).Select(s => new ValidationUserAds()
+            {
+                AdURL = s.UserAdsURL
+            }).FirstOrDefault();
+
+            if (user != null)
+            {
+                return user;
+            }
+            else
+                return null;
+        }
 
         public ValidationUserAds GetUserAdsDetail(string AdsId)
         {
