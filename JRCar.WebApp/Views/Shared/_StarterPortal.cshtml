@@ -147,6 +147,7 @@
 
                 updateNotification();
                 GetCount();
+                updateNotificationCount();
                 $('a.noti').click(function (e) {
                     e.stopPropagation();
                     var count = 0;
@@ -231,7 +232,12 @@
                     success: function (response) {
                         console.log('GetNotificationsListCount:: ' + response);
                         count = response;
-                        $('span.count').html(count);
+                        if (count > 0) {
+                            $('span.count').html(count);
+                        }
+                        else {
+                            $('span.count').html('');
+                        }
                         console.log('updateNotificationCount' + count);
                         sessionStorage.setItem("count", count);
                     },

@@ -82,6 +82,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DBLayer\AddressAutoFillDb.cs" />
+    <Compile Include="DBLayer\NotificationDb.cs" />
     <Compile Include="DBLayer\UserAds.cs" />
     <Compile Include="DBLayer\UserDb.cs" />
     <Compile Include="GlobalSuppressions.cs" />

@@ -139,6 +139,14 @@ namespace JRCar.BLL.Repositories
                             var userAdImages = InsertUserAdsImages(userAdImagesObj);
                             if (userAdImages)
                             {
+
+                                tblNotification notification = new tblNotification()
+                                {
+                                    Title = model.Title,
+                                    Description = WithMaxLength(model.Description, 15),
+                                    AdURL = model.AdURL,
+                                    FromUserID = model.UserID
+                                };
                                 return true;
                             }
                             else
@@ -163,6 +171,11 @@ namespace JRCar.BLL.Repositories
             {
                 throw ex;
             }
+        }
+
+        public string WithMaxLength(string value, int maxLength)
+        {
+            return value?.Substring(0, Math.Min(value.Length, maxLength));
         }
 
         public bool UpdateUserAds(tblUserAdd model)

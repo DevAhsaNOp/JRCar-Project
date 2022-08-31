@@ -6,11 +6,15 @@ using System.Data.SqlClient;
 using JRCar.WebApp.Controllers;
 using System.Collections.Generic;
 using System.IO;
+using JRCar.BLL.Repositories;
+using JRCar.DAL.DBLayer;
 
 namespace JRCar.WebApp
 {
     public class NotificationComponent
     {
+        private NotificationRepo repo = new NotificationRepo();
+
         public void RegisterNotification(DateTime currentTime)
         {
             PortalController pc = new PortalController();
@@ -58,65 +62,28 @@ namespace JRCar.WebApp
 
         public List<NotiShow> GetNotifications(DateTime afterDate, int ShowroomID)
         {
-            using (jrcarEntities jrcar = new jrcarEntities())
-            {
-                var reas = jrcar.tblNotifications.Where(a => (a.CreatedOn > afterDate || a.IsRead == false) && (a.FromShowroomID == ShowroomID)).OrderByDescending(a => a.CreatedOn).Select(x => new NotiShow() { Title = x.Title, Description = x.Description }).ToList();
-                return reas;
-            }
+            var reas = repo.GetNotifications(afterDate, ShowroomID);
+            return reas;
         }
 
         public int GetNotificationsCount(DateTime afterDate, int ShowroomID)
         {
-            using (jrcarEntities jrcar = new jrcarEntities())
-            {
-                var reas = jrcar.tblNotifications.Where(a => a.IsRead == false && a.FromShowroomID == ShowroomID).Select(x => new NotiShow() { Title = x.Title, Description = x.Description }).ToList().Count;
-                return reas;
-            }
+            var reas = repo.GetNotificationsCount(afterDate, ShowroomID);
+            return reas;
         }
 
         public bool ChangeNotificationToAsRead(int ShowroomID)
         {
-            using (jrcarEntities jrcar = new jrcarEntities())
+
+            if (ShowroomID > 0)
             {
-                var reas = jrcar.tblNotifications.Where(a => a.IsRead == false && a.FromShowroomID == ShowroomID).ToList();
-                if (reas.Count > 0)
-                {
-                    foreach (var notification in reas)
-                    {
-                        try
-                        {
-                            notification.ID = notification.ID;
-                            notification.Title = notification.Title;
-                            notification.Description = notification.Description;
-                            notification.AdURL = notification.AdURL;
-                            notification.FromUserID = notification.FromUserID;
-                            notification.FromShowroomID = notification.FromShowroomID;
-                            notification.IsShowroomInterested = notification.IsShowroomInterested;
-                            notification.IsRead = true;
-                            notification.CreatedOn = notification.CreatedOn;
-                            jrcar.Entry(notification).State = System.Data.Entity.EntityState.Modified;
-                            jrcar.SaveChanges();
-                        }
-                        catch (Exception ex)
-                        {
-                            return false;
-                            throw ex;
-                        }
-                    }
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                var reas = repo.ChangeNotificationToAsRead(ShowroomID);
+                return reas;
+            }
+            else
+            {
+                return false;
             }
         }
-    }
-
-    public class NotiShow
-    {
-        public string Title { get; set; }
-        public string Description { get; set; }
-        public bool? IsRead { get; set; }
     }
 }
