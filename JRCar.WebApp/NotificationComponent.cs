@@ -15,6 +15,7 @@ namespace JRCar.WebApp
         {
             PortalController pc = new PortalController();
             string constring = ConfigurationManager.ConnectionStrings["jrcarNotification"].ConnectionString;
+            SqlDependency.Start(constring);
             string SqlCmd = String.Empty;
             //([CreatedOn] > @CreatedOn or IsRead <> 1)
             SqlCmd = @"SELECT [ID] ,[Title] ,[Description] ,[AdURL] ,[FromUserID] ,[FromShowroomID] ,[IsShowroomInterested] ,[IsRead] ,[CreatedOn] FROM [dbo].[tblNotification] WHERE ([CreatedOn] > @CreatedOn or IsRead <> 1)";
@@ -29,7 +30,7 @@ namespace JRCar.WebApp
                 }
                 cmd.Notification = null;
                 SqlDependency sql = new SqlDependency(cmd);
-                sql.OnChange += sqlDep_OnChange;
+                sql.OnChange += new OnChangeEventHandler(sqlDep_OnChange);
                 using (SqlDataReader reader = cmd.ExecuteReader())
                 {
 
@@ -41,15 +42,15 @@ namespace JRCar.WebApp
         {
             if (e.Info == SqlNotificationInfo.Update)
             {
-                SqlDependency sql = sender as SqlDependency;
-                sql.OnChange -= sqlDep_OnChange;
+                //SqlDependency sql = sender as SqlDependency;
+                //sql.OnChange -= sqlDep_OnChange;
                 NotificationHub.Show();
                 RegisterNotification(DateTime.Now);
             }
             else if (e.Info == SqlNotificationInfo.Insert)
             {
-                SqlDependency sql = sender as SqlDependency;
-                sql.OnChange -= sqlDep_OnChange;
+                //SqlDependency sql = sender as SqlDependency;
+                //sql.OnChange -= sqlDep_OnChange;
                 NotificationHub.Show();
                 RegisterNotification(DateTime.Now);
             }
