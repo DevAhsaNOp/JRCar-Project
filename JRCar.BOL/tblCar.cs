@@ -55,7 +55,6 @@ namespace JRCar.BOL
         public virtual ICollection<tblAppointment> tblAppointments { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tblCarImage> tblCarImages { get; set; }
-        public virtual tblCarModel tblCarModel { get; set; }
         public virtual tblShowroom tblShowroom { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tblFavAdd> tblFavAdds { get; set; }
@@ -63,5 +62,6 @@ namespace JRCar.BOL
         public virtual tblManfacturerCarModel tblManfacturerCarModel { get; set; }
         public virtual tblManufacturer tblManufacturer { get; set; }
         public virtual tblSubCategory tblSubCategory { get; set; }
+        public virtual tblCarModel tblCarModel { get; set; }
     }
 }

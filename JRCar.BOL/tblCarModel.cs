@@ -21,9 +21,7 @@ namespace JRCar.BOL
         }
     
         public int ID { get; set; }
-        public string Model { get; set; }
         public string Year { get; set; }
-        public string Manufacturer { get; set; }
         public string BodyType { get; set; }
         public string Seater { get; set; }
         public string Assembly { get; set; }

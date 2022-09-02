@@ -30,6 +30,7 @@ namespace JRCar.WebApp.Controllers
             return View();
         }
 
+        #region **Any Profile Update**
         [AcceptVerbs(HttpVerbs.Get)]
         [Authorize(Roles = "Admin,Showroom,Union")]
         public ActionResult UpdateProfile()
@@ -183,8 +184,10 @@ namespace JRCar.WebApp.Controllers
                 TempData["ErrorMsg"] = "Error occured on updating Account!" + ex.Message;
                 return View("UpdateProfile");
             }
-        }
+        } 
+        #endregion
 
+        #region **Notification For Showroom About New Ads**
         [HttpGet]
         public JsonResult GetNotificationsList()
         {
@@ -213,7 +216,7 @@ namespace JRCar.WebApp.Controllers
                 throw ex;
             }
         }
-        
+
         [HttpGet]
         public JsonResult GetNotificationsListCount()
         {
@@ -241,7 +244,7 @@ namespace JRCar.WebApp.Controllers
                 throw ex;
             }
         }
-        
+
         [HttpGet]
         public JsonResult ChangeNotificationToAsRead()
         {
@@ -269,6 +272,13 @@ namespace JRCar.WebApp.Controllers
             }
         }
 
-      
+        #endregion
+
+        [AcceptVerbs(HttpVerbs.Get)]
+        //[Authorize(Roles = "Showroom")]
+        public ActionResult PostNewAd()
+        {
+            return View();
+        }
     }
 }

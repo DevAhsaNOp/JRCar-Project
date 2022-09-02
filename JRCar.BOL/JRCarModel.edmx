@@ -157,9 +157,7 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Model" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="Year" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="Manufacturer" Type="varchar" MaxLength="80" Nullable="false" />
           <Property Name="BodyType" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="Seater" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="Assembly" Type="varchar" MaxLength="50" Nullable="false" />
@@ -1184,7 +1182,6 @@
           <EntitySet Name="tblBlogs" EntityType="jrcarModel.tblBlog" />
           <EntitySet Name="tblCarFeatures" EntityType="jrcarModel.tblCarFeature" />
           <EntitySet Name="tblCarImages" EntityType="jrcarModel.tblCarImage" />
-          <EntitySet Name="tblCarModels" EntityType="jrcarModel.tblCarModel" />
           <EntitySet Name="tblCars" EntityType="jrcarModel.tblCar" />
           <EntitySet Name="tblCategories" EntityType="jrcarModel.tblCategory" />
           <EntitySet Name="tblCities" EntityType="jrcarModel.tblCity" />
@@ -1247,17 +1244,9 @@
             <End Role="tblShowroom" EntitySet="tblShowrooms" />
             <End Role="tblBlog" EntitySet="tblBlogs" />
           </AssociationSet>
-          <AssociationSet Name="FK_dbo_tblCarModels_dbo_tblCarFeatures_CarFeatureID" Association="jrcarModel.FK_dbo_tblCarModels_dbo_tblCarFeatures_CarFeatureID">
-            <End Role="tblCarFeature" EntitySet="tblCarFeatures" />
-            <End Role="tblCarModel" EntitySet="tblCarModels" />
-          </AssociationSet>
           <AssociationSet Name="FK_dbo_tblCarImages_dbo_tblCars_CarID" Association="jrcarModel.FK_dbo_tblCarImages_dbo_tblCars_CarID">
             <End Role="tblCar" EntitySet="tblCars" />
             <End Role="tblCarImage" EntitySet="tblCarImages" />
-          </AssociationSet>
-          <AssociationSet Name="FK_dbo_tblCars_dbo_tblCarModels_CarModelID" Association="jrcarModel.FK_dbo_tblCars_dbo_tblCarModels_CarModelID">
-            <End Role="tblCarModel" EntitySet="tblCarModels" />
-            <End Role="tblCar" EntitySet="tblCars" />
           </AssociationSet>
           <AssociationSet Name="FK_dbo_tblCars_dbo_tblShowrooms_tblShowroomID" Association="jrcarModel.FK_dbo_tblCars_dbo_tblShowrooms_tblShowroomID">
             <End Role="tblShowroom" EntitySet="tblShowrooms" />
@@ -1370,6 +1359,15 @@
           <AssociationSet Name="FK_dbo_tblUserAdds_dbo_tblUsers_UserID" Association="jrcarModel.FK_dbo_tblUserAdds_dbo_tblUsers_UserID">
             <End Role="tblUser" EntitySet="tblUsers" />
             <End Role="tblUserAdd" EntitySet="tblUserAdds" />
+          </AssociationSet>
+          <EntitySet Name="tblCarModels" EntityType="jrcarModel.tblCarModel" />
+          <AssociationSet Name="FK_dbo_tblCarModels_dbo_tblCarFeatures_CarFeatureID" Association="jrcarModel.FK_dbo_tblCarModels_dbo_tblCarFeatures_CarFeatureID">
+            <End Role="tblCarFeature" EntitySet="tblCarFeatures" />
+            <End Role="tblCarModel" EntitySet="tblCarModels" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_tblCars_dbo_tblCarModels_CarModelID" Association="jrcarModel.FK_dbo_tblCars_dbo_tblCarModels_CarModelID">
+            <End Role="tblCarModel" EntitySet="tblCarModels" />
+            <End Role="tblCar" EntitySet="tblCars" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="C__MigrationHistory">
@@ -1531,29 +1529,6 @@
           <Property Name="Path" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="tblCar" Relationship="jrcarModel.FK_dbo_tblCarImages_dbo_tblCars_CarID" FromRole="tblCarImage" ToRole="tblCar" />
         </EntityType>
-        <EntityType Name="tblCarModel">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Model" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="Year" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Manufacturer" Type="String" Nullable="false" MaxLength="80" FixedLength="false" Unicode="false" />
-          <Property Name="BodyType" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="Seater" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="Assembly" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="EngineCapacity" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="CarFeatureID" Type="Int32" Nullable="false" />
-          <Property Name="CreatedBy" Type="Int32" Nullable="false" />
-          <Property Name="UpdatedBy" Type="Int32" Nullable="false" />
-          <Property Name="CreatedOn" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="UpdatedOn" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Isactive" Type="Boolean" Nullable="false" />
-          <Property Name="Isarchive" Type="Boolean" Nullable="false" />
-          <Property Name="EngineType" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="tblCarFeature" Relationship="jrcarModel.FK_dbo_tblCarModels_dbo_tblCarFeatures_CarFeatureID" FromRole="tblCarModel" ToRole="tblCarFeature" />
-          <NavigationProperty Name="tblCars" Relationship="jrcarModel.FK_dbo_tblCars_dbo_tblCarModels_CarModelID" FromRole="tblCarModel" ToRole="tblCar" />
-        </EntityType>
         <EntityType Name="tblCar">
           <Key>
             <PropertyRef Name="ID" />
@@ -1588,13 +1563,13 @@
           <NavigationProperty Name="tblAddress" Relationship="jrcarModel.FK_tblCars_tblAddress" FromRole="tblCar" ToRole="tblAddress" />
           <NavigationProperty Name="tblAppointments" Relationship="jrcarModel.FK_dbo_tblAppointments_dbo_tblCars_CarID" FromRole="tblCar" ToRole="tblAppointment" />
           <NavigationProperty Name="tblCarImages" Relationship="jrcarModel.FK_dbo_tblCarImages_dbo_tblCars_CarID" FromRole="tblCar" ToRole="tblCarImage" />
-          <NavigationProperty Name="tblCarModel" Relationship="jrcarModel.FK_dbo_tblCars_dbo_tblCarModels_CarModelID" FromRole="tblCar" ToRole="tblCarModel" />
           <NavigationProperty Name="tblShowroom" Relationship="jrcarModel.FK_dbo_tblCars_dbo_tblShowrooms_tblShowroomID" FromRole="tblCar" ToRole="tblShowroom" />
           <NavigationProperty Name="tblFavAdds" Relationship="jrcarModel.FK_dbo_tblFavAdds_dbo_tblCars_CarID" FromRole="tblCar" ToRole="tblFavAdd" />
           <NavigationProperty Name="tblCategory" Relationship="jrcarModel.FK_tblCars_tblCategory" FromRole="tblCar" ToRole="tblCategory" />
           <NavigationProperty Name="tblManfacturerCarModel" Relationship="jrcarModel.FK_tblCars_tblManfacturerCarModel" FromRole="tblCar" ToRole="tblManfacturerCarModel" />
           <NavigationProperty Name="tblManufacturer" Relationship="jrcarModel.FK_tblCars_tblManufacturer" FromRole="tblCar" ToRole="tblManufacturer" />
           <NavigationProperty Name="tblSubCategory" Relationship="jrcarModel.FK_tblCars_tblSubCategory" FromRole="tblCar" ToRole="tblSubCategory" />
+          <NavigationProperty Name="tblCarModel" Relationship="jrcarModel.FK_dbo_tblCars_dbo_tblCarModels_CarModelID" FromRole="tblCar" ToRole="tblCarModel" />
         </EntityType>
         <EntityType Name="tblCategory">
           <Key>
@@ -2021,20 +1996,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_dbo_tblCarModels_dbo_tblCarFeatures_CarFeatureID">
-          <End Type="jrcarModel.tblCarFeature" Role="tblCarFeature" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="jrcarModel.tblCarModel" Role="tblCarModel" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="tblCarFeature">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="tblCarModel">
-              <PropertyRef Name="CarFeatureID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_dbo_tblCarImages_dbo_tblCars_CarID">
           <End Type="jrcarModel.tblCar" Role="tblCar" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -2046,20 +2007,6 @@
             </Principal>
             <Dependent Role="tblCarImage">
               <PropertyRef Name="CarID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_dbo_tblCars_dbo_tblCarModels_CarModelID">
-          <End Type="jrcarModel.tblCarModel" Role="tblCarModel" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="jrcarModel.tblCar" Role="tblCar" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="tblCarModel">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="tblCar">
-              <PropertyRef Name="CarModelID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2421,6 +2368,55 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="tblCarModel">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Year" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="BodyType" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Seater" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Assembly" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="EngineCapacity" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CarFeatureID" Type="Int32" Nullable="false" />
+          <Property Name="CreatedBy" Type="Int32" Nullable="false" />
+          <Property Name="UpdatedBy" Type="Int32" Nullable="false" />
+          <Property Name="CreatedOn" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="UpdatedOn" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Isactive" Type="Boolean" Nullable="false" />
+          <Property Name="Isarchive" Type="Boolean" Nullable="false" />
+          <Property Name="EngineType" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="tblCarFeature" Relationship="jrcarModel.FK_dbo_tblCarModels_dbo_tblCarFeatures_CarFeatureID" FromRole="tblCarModel" ToRole="tblCarFeature" />
+          <NavigationProperty Name="tblCars" Relationship="jrcarModel.FK_dbo_tblCars_dbo_tblCarModels_CarModelID" FromRole="tblCarModel" ToRole="tblCar" />
+        </EntityType>
+        <Association Name="FK_dbo_tblCarModels_dbo_tblCarFeatures_CarFeatureID">
+          <End Type="jrcarModel.tblCarFeature" Role="tblCarFeature" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="jrcarModel.tblCarModel" Role="tblCarModel" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblCarFeature">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="tblCarModel">
+              <PropertyRef Name="CarFeatureID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_tblCars_dbo_tblCarModels_CarModelID">
+          <End Type="jrcarModel.tblCarModel" Role="tblCarModel" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="jrcarModel.tblCar" Role="tblCar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblCarModel">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="tblCar">
+              <PropertyRef Name="CarModelID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2578,28 +2574,6 @@
                 <ScalarProperty Name="Path" ColumnName="Path" />
                 <ScalarProperty Name="CarID" ColumnName="CarID" />
                 <ScalarProperty Name="Image" ColumnName="Image" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="tblCarModels">
-            <EntityTypeMapping TypeName="jrcarModel.tblCarModel">
-              <MappingFragment StoreEntitySet="tblCarModels">
-                <ScalarProperty Name="EngineType" ColumnName="EngineType" />
-                <ScalarProperty Name="Isarchive" ColumnName="Isarchive" />
-                <ScalarProperty Name="Isactive" ColumnName="Isactive" />
-                <ScalarProperty Name="UpdatedOn" ColumnName="UpdatedOn" />
-                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
-                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="CarFeatureID" ColumnName="CarFeatureID" />
-                <ScalarProperty Name="EngineCapacity" ColumnName="EngineCapacity" />
-                <ScalarProperty Name="Assembly" ColumnName="Assembly" />
-                <ScalarProperty Name="Seater" ColumnName="Seater" />
-                <ScalarProperty Name="BodyType" ColumnName="BodyType" />
-                <ScalarProperty Name="Manufacturer" ColumnName="Manufacturer" />
-                <ScalarProperty Name="Year" ColumnName="Year" />
-                <ScalarProperty Name="Model" ColumnName="Model" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -2896,6 +2870,26 @@
                 <ScalarProperty Name="CityId" ColumnName="CityId" />
                 <ScalarProperty Name="ZoneName" ColumnName="ZoneName" />
                 <ScalarProperty Name="ZoneId" ColumnName="ZoneId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblCarModels">
+            <EntityTypeMapping TypeName="jrcarModel.tblCarModel">
+              <MappingFragment StoreEntitySet="tblCarModels">
+                <ScalarProperty Name="EngineType" ColumnName="EngineType" />
+                <ScalarProperty Name="Isarchive" ColumnName="Isarchive" />
+                <ScalarProperty Name="Isactive" ColumnName="Isactive" />
+                <ScalarProperty Name="UpdatedOn" ColumnName="UpdatedOn" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CarFeatureID" ColumnName="CarFeatureID" />
+                <ScalarProperty Name="EngineCapacity" ColumnName="EngineCapacity" />
+                <ScalarProperty Name="Assembly" ColumnName="Assembly" />
+                <ScalarProperty Name="Seater" ColumnName="Seater" />
+                <ScalarProperty Name="BodyType" ColumnName="BodyType" />
+                <ScalarProperty Name="Year" ColumnName="Year" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
