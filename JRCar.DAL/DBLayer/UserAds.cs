@@ -204,7 +204,61 @@ namespace JRCar.DAL.DBLayer
             else
                 return null;
         }
-        
+
+        public ValidationUserAds GetUserAdsDetailOnlyForUpdate(int AdId)
+        {
+            var user = _context.tblUserAdds.Where(x => x.ID == AdId).Select(s => new ValidationUserAds()
+            {
+                /*---Car Details---*/
+                Model = s.Model,
+                Year = s.Year,
+                Condition = s.Condition,
+                Title = s.Title,
+                Description = ((s.Description == null) ? "" : s.Description),
+                Price = s.Price,
+                Latitude = ((s.Latitude == null) ? "" : s.Latitude.ToString()),
+                Longitude = ((s.Longitude == null) ? "" : s.Longitude.ToString()),
+                ManufacturerId = s.ManufacturerId,
+                Manufacturer_Name = s.tblManufacturer.Manufacturer_Name,
+                ManufacturerCarModelID = s.ManufacturerCarModelID,
+                Manufacturer_CarModelName = s.tblManfacturerCarModel.Manufacturer_CarModelName,
+                CategoryId = s.CategoryId,
+                CategoryName = s.tblCategory.CategoryName,
+                SubCategoryId = s.SubCategoryId,
+                SubCategoryName = s.tblSubCategory.SubCategoryName,
+                State = s.tblAddress.tblState.StateName,
+                City = s.tblAddress.tblCity.CityName,
+                Area = s.tblAddress.tblZone.ZoneName,
+                AddressId = s.AddressId,
+                CompleteAddress = ((s.tblAddress.CompleteAddress == null) ? "Not Available" : s.tblAddress.CompleteAddress),
+                Isactive = s.Isactive,
+                Isarchive = s.Isarchive,
+                CreatedOn = s.CreatedOn,
+                ExpiryDate = s.ExpiryDate,
+                tblAddress = s.tblAddress,
+                tblCategory = s.tblCategory,
+                tblManfacturerCarModel = s.tblManfacturerCarModel,
+                tblManufacturer = s.tblManufacturer,
+                tblSubCategory = s.tblSubCategory,
+                tblUserAddImages = s.tblUserAddImages,
+
+                /*---User Details---*/
+                UserImage = s.tblUser.Image,
+                UserName = s.tblUser.Name,
+                Email = s.tblUser.Email,
+                UserRole = s.tblUser.tblRole.Role,
+                Number = s.tblUser.Number,
+                UserCreatedOn = s.tblUser.CreatedOn
+            }).FirstOrDefault();
+
+            if (user != null)
+            {
+                return user;
+            }
+            else
+                return null;
+        }
+
         public ValidationUserAds GetUserAdURL(int AdsId)
         {
             var user = _context.tblUserAdds.Where(x => x.ID == AdsId).Select(s => new ValidationUserAds()

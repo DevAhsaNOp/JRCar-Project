@@ -49,6 +49,22 @@ namespace JRCar.BLL.Repositories
                 return null;
         }
 
+        public ValidationUserAds GetUserAdsDetailOnlyForUpdate(int AdId)
+        {
+            if (AdId > 0)
+            {
+                var reas = dbObj.GetUserAdsDetailOnlyForUpdate(AdId);
+                if (reas != null)
+                {
+                    return reas;
+                }
+                else
+                    return null;
+            }
+            else
+                return null;
+        }
+
         public ValidationUserAds GetUserAdURL(int AdsId)
         {
             if (AdsId > 0)

@@ -105,6 +105,9 @@ namespace JRCar.BOL.Validation_Classes
         [Display(Name = "Archive")]
         public bool? Isarchive { get; set; }
 
+        [Required(ErrorMessage = "*")]
+        [Display(Name = "Make")]
+        [Range(1, Int32.MaxValue, ErrorMessage = "Must select a Make")]
         public int? ManufacturerId { get; set; }
 
         [Required(ErrorMessage = "*")]
@@ -112,6 +115,9 @@ namespace JRCar.BOL.Validation_Classes
         [Range(1, Int32.MaxValue, ErrorMessage = "Must select a Make")]
         public string Manufacturer_Name { get; set; }
 
+        [Required(ErrorMessage = "*")]
+        [Display(Name = "Model")]
+        [Range(1, Int32.MaxValue, ErrorMessage = "Must select a Model")]
         public int? ManufacturerCarModelID { get; set; }
 
         [Required(ErrorMessage = "*")]

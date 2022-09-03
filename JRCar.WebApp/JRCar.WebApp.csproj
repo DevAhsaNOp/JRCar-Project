@@ -3327,6 +3327,7 @@
     <Content Include="Views\Shared\DisplaySubCategory.cshtml" />
     <Content Include="Views\Account\ShowroomSignUp.cshtml" />
     <Content Include="Views\Portal\PostNewAd.cshtml" />
+    <Content Include="Views\Website\EditVehicle.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

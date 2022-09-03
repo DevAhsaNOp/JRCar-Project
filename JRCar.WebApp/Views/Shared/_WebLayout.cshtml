@@ -259,15 +259,15 @@
         $(document).ready(function () {
             console.log("ready!");
             var CallTimeOut;
-            $('#CategoryName').show();
-            $('#SubCategoryD').hide();
-            $('#ManufacD').hide();
-            $('#ModelD').hide();
-            $('#ModelYearD').hide();
-            $('#CondD').hide();
-            $('#StateD').hide();
-            $('#CityD').hide();
-            $('#AreaD').hide();
+            //$('#CategoryName').show();
+            //$('#SubCategoryD').hide();
+            //$('#ManufacD').hide();
+            //$('#ModelD').hide();
+            //$('#ModelYearD').hide();
+            //$('#CondD').hide();
+            //$('#StateD').hide();
+            //$('#CityD').hide();
+            //$('#AreaD').hide();
 
             function PriceChangeData() {
                 var priceRange = $("#price").val();
@@ -406,299 +406,299 @@
                 });
             });*@
 
-            $("#CategoryName").on("change", function () {
-                console.log("CategoryName change");
-                var ar = $('#CategoryName').select2('data');
-                var da = ar[0].id
-                if (da > 0) {
-                    $('[aria-labelledby="select2-CategoryName-container"]').css('border', '1px solid #ededed');
-                    $('#CategoryName').removeClass("input-validation-error");
-                    $('#SubCategoryD').show();
-                }
-                else {
-                    $('[aria-labelledby="select2-CategoryName-container"]').css('border', '1px solid #f16060');
-                }
-            });
+        //    $("#CategoryName").on("change", function () {
+        //        console.log("CategoryName change");
+        //        var ar = $('#CategoryName').select2('data');
+        //        var da = ar[0].id
+        //        if (da > 0) {
+        //            $('[aria-labelledby="select2-CategoryName-container"]').css('border', '1px solid #ededed');
+        //            $('#CategoryName').removeClass("input-validation-error");
+        //            $('#SubCategoryD').show();
+        //        }
+        //        else {
+        //            $('[aria-labelledby="select2-CategoryName-container"]').css('border', '1px solid #f16060');
+        //        }
+        //    });
 
-            $("#SubCategoryName").on("change", function () {
-                console.log("SubCategoryName change");
-                var ar = $('#SubCategoryName').select2('data');
-                var da = ar[0].id
-                if (da > 0) {
-                    $('[aria-labelledby="select2-SubCategoryName-container"]').css('border', '1px solid #ededed');
-                    $('#SubCategoryName').removeClass("input-validation-error");
-                    $('#ManufacD').show();
-                }
-                else {
-                    $('[aria-labelledby="select2-SubCategoryName-container"]').css('border', '1px solid #f16060');
-                }
-            });
+        //    $("#SubCategoryName").on("change", function () {
+        //        console.log("SubCategoryName change");
+        //        var ar = $('#SubCategoryName').select2('data');
+        //        var da = ar[0].id
+        //        if (da > 0) {
+        //            $('[aria-labelledby="select2-SubCategoryName-container"]').css('border', '1px solid #ededed');
+        //            $('#SubCategoryName').removeClass("input-validation-error");
+        //            $('#ManufacD').show();
+        //        }
+        //        else {
+        //            $('[aria-labelledby="select2-SubCategoryName-container"]').css('border', '1px solid #f16060');
+        //        }
+        //    });
 
-            $("#Manufacturer_Name").on("change", function () {
-                console.log("Manufacturer_Name change");
-                var ar = $('#Manufacturer_Name').select2('data');
-                var da = ar[0].id
-                if (da > 0) {
-                    $('[aria-labelledby="select2-Manufacturer_Name-container"]').css('border', '1px solid #ededed');
-                    $('#Manufacturer_Name').removeClass("input-validation-error");
-                    $('#ModelD').show();
-                }
-                else {
-                    $('[aria-labelledby="select2-Manufacturer_Name-container"]').css('border', '1px solid #f16060');
-                }
-            });
+        //    $("#Manufacturer_Name").on("change", function () {
+        //        console.log("Manufacturer_Name change");
+        //        var ar = $('#Manufacturer_Name').select2('data');
+        //        var da = ar[0].id
+        //        if (da > 0) {
+        //            $('[aria-labelledby="select2-Manufacturer_Name-container"]').css('border', '1px solid #ededed');
+        //            $('#Manufacturer_Name').removeClass("input-validation-error");
+        //            $('#ModelD').show();
+        //        }
+        //        else {
+        //            $('[aria-labelledby="select2-Manufacturer_Name-container"]').css('border', '1px solid #f16060');
+        //        }
+        //    });
 
-            $("#Manufacturer_CarModelName").on("change", function () {
-                console.log("Manufacturer_CarModelName change");
-                var ar = $('#Manufacturer_CarModelName').select2('data');
-                var da = ar[0].id
-                if (da > 0) {
-                    $('[aria-labelledby="select2-Manufacturer_CarModelName-container"]').css('border', '1px solid #ededed');
-                    $('#Manufacturer_CarModelName').removeClass("input-validation-error");
-                    $('#ModelYearD').show();
-                }
-                else {
-                    $('[aria-labelledby="select2-Manufacturer_CarModelName-container"]').css('border', '1px solid #f16060');
-                }
-            });
+        //    $("#Manufacturer_CarModelName").on("change", function () {
+        //        console.log("Manufacturer_CarModelName change");
+        //        var ar = $('#Manufacturer_CarModelName').select2('data');
+        //        var da = ar[0].id
+        //        if (da > 0) {
+        //            $('[aria-labelledby="select2-Manufacturer_CarModelName-container"]').css('border', '1px solid #ededed');
+        //            $('#Manufacturer_CarModelName').removeClass("input-validation-error");
+        //            $('#ModelYearD').show();
+        //        }
+        //        else {
+        //            $('[aria-labelledby="select2-Manufacturer_CarModelName-container"]').css('border', '1px solid #f16060');
+        //        }
+        //    });
 
-            $("#Year").on("change", function () {
-                console.log("Year change");
-                var ar = $('#Year').select2('data');
-                var da = ar[0].id
-                if (da > 0) {
-                    $('[aria-labelledby="select2-Year-container"]').css('border', '1px solid #ededed');
-                    $('#Year').removeClass("input-validation-error");
-                    $('#CondD').show();
-                }
-                else {
-                    $('[aria-labelledby="select2-Year-container"]').css('border', '1px solid #f16060');
-                }
-            });
+        //    $("#Year").on("change", function () {
+        //        console.log("Year change");
+        //        var ar = $('#Year').select2('data');
+        //        var da = ar[0].id
+        //        if (da > 0) {
+        //            $('[aria-labelledby="select2-Year-container"]').css('border', '1px solid #ededed');
+        //            $('#Year').removeClass("input-validation-error");
+        //            $('#CondD').show();
+        //        }
+        //        else {
+        //            $('[aria-labelledby="select2-Year-container"]').css('border', '1px solid #f16060');
+        //        }
+        //    });
 
-            $("#Condition").on("change", function () {
-                console.log("Condition change");
-                var ar = $('#Condition').select2('data');
-                var da = ar[0].id
-                if (da > 0) {
-                    $('[aria-labelledby="select2-Condition-container"]').css('border', '1px solid #ededed');
-                    $('#Condition').removeClass("input-validation-error");
-                    $('#StateD').show();
-                }
-                else {
-                    $('[aria-labelledby="select2-Condition-container"]').css('border', '1px solid #f16060');
-                }
-            });
+        //    $("#Condition").on("change", function () {
+        //        console.log("Condition change");
+        //        var ar = $('#Condition').select2('data');
+        //        var da = ar[0].id
+        //        if (da > 0) {
+        //            $('[aria-labelledby="select2-Condition-container"]').css('border', '1px solid #ededed');
+        //            $('#Condition').removeClass("input-validation-error");
+        //            $('#StateD').show();
+        //        }
+        //        else {
+        //            $('[aria-labelledby="select2-Condition-container"]').css('border', '1px solid #f16060');
+        //        }
+        //    });
 
-            $("#State").on("change", function () {
-                console.log("State change");
-                var ar = $('#State').select2('data');
-                var da = ar[0].id
-                if (da > 0) {
-                    $('[aria-labelledby="select2-State-container"]').css('border', '1px solid #ededed');
-                    $('#State').removeClass("input-validation-error");
-                    $('#CityD').show();
-                }
-                else {
-                    $('[aria-labelledby="select2-State-container"]').css('border', '1px solid #f16060');
-                }
-            });
+        //    $("#State").on("change", function () {
+        //        console.log("State change");
+        //        var ar = $('#State').select2('data');
+        //        var da = ar[0].id
+        //        if (da > 0) {
+        //            $('[aria-labelledby="select2-State-container"]').css('border', '1px solid #ededed');
+        //            $('#State').removeClass("input-validation-error");
+        //            $('#CityD').show();
+        //        }
+        //        else {
+        //            $('[aria-labelledby="select2-State-container"]').css('border', '1px solid #f16060');
+        //        }
+        //    });
 
-            $("#City").on("change", function () {
-                console.log("City change");
-                var ar = $('#City').select2('data');
-                var da = ar[0].id
-                if (da > 0) {
-                    $('[aria-labelledby="select2-City-container"]').css('border', '1px solid #ededed');
-                    $('#City').removeClass("input-validation-error");
-                    $('#AreaD').show();
-                }
-                else {
-                    $('[aria-labelledby="select2-City-container"]').css('border', '1px solid #f16060');
-                }
-            });
+        //    $("#City").on("change", function () {
+        //        console.log("City change");
+        //        var ar = $('#City').select2('data');
+        //        var da = ar[0].id
+        //        if (da > 0) {
+        //            $('[aria-labelledby="select2-City-container"]').css('border', '1px solid #ededed');
+        //            $('#City').removeClass("input-validation-error");
+        //            $('#AreaD').show();
+        //        }
+        //        else {
+        //            $('[aria-labelledby="select2-City-container"]').css('border', '1px solid #f16060');
+        //        }
+        //    });
 
-            $("#Area").on("change", function () {
-                console.log("Area change");
-                var ar = $('#Area').select2('data');
-                var da = ar[0].id
-                if (da > 0) {
-                    $('[aria-labelledby="select2-Area-container"]').css('border', '1px solid #ededed');
-                    $('#Area').removeClass("input-validation-error");
-                }
-                else {
-                    $('[aria-labelledby="select2-Area-container"]').css('border', '1px solid #f16060');
-                }
-            });
+        //    $("#Area").on("change", function () {
+        //        console.log("Area change");
+        //        var ar = $('#Area').select2('data');
+        //        var da = ar[0].id
+        //        if (da > 0) {
+        //            $('[aria-labelledby="select2-Area-container"]').css('border', '1px solid #ededed');
+        //            $('#Area').removeClass("input-validation-error");
+        //        }
+        //        else {
+        //            $('[aria-labelledby="select2-Area-container"]').css('border', '1px solid #f16060');
+        //        }
+        //    });
 
-            $('.input-images-1').imageUploader();
-            //$('#postvehicle').bind("click", function () {
-            //    var imgVal = $('#files').val();
-            //    if (imgVal == '') {
-            //        var element = document.getElementsByClassName("image-uploader");
-            //        for (item of element) {
-            //            item.style.border = "2px solid #f16060";
-            //        }
-            //        $('html, body').animate({
-            //            scrollTop: $("#images-not").offset().top
-            //        }, 100);
-            //        return false;
-            //    }
-            //});
+        //    $('.input-images-1').imageUploader();
+        //    //$('#postvehicle').bind("click", function () {
+        //    //    var imgVal = $('#files').val();
+        //    //    if (imgVal == '') {
+        //    //        var element = document.getElementsByClassName("image-uploader");
+        //    //        for (item of element) {
+        //    //            item.style.border = "2px solid #f16060";
+        //    //        }
+        //    //        $('html, body').animate({
+        //    //            scrollTop: $("#images-not").offset().top
+        //    //        }, 100);
+        //    //        return false;
+        //    //    }
+        //    //});
 
-            $('#postvehicle').on("click", function () {
-                Validations();
-                var a = $(".uploaded")[0].children.length;
-                if (a < 5) {
-                    //alert("Minimum 5 images you need to upload");
-                    var element = document.getElementsByClassName("image-uploader");
-                    for (item of element) {
-                        item.style.border = "2px solid #f16060";
-                    }
-                }
-            });
+        //    $('#postvehicle').on("click", function () {
+        //        Validations();
+        //        var a = $(".uploaded")[0].children.length;
+        //        if (a < 5) {
+        //            //alert("Minimum 5 images you need to upload");
+        //            var element = document.getElementsByClassName("image-uploader");
+        //            for (item of element) {
+        //                item.style.border = "2px solid #f16060";
+        //            }
+        //        }
+        //    });
 
-            setInterval(function myfunction() {
-                Validations();
-                var IsClassPresent = $("body").find('.uploaded').length;
-                if (IsClassPresent > 0) {
-                    var a = $(".uploaded")[0].children.length;
-                    if (a >= 5) {
-                        var element = document.getElementsByClassName("image-uploader");
-                        for (item of element) {
-                            item.style.border = "1px solid #ededed";
-                        }
-                    }
-                }
-            },1);
+        //    setInterval(function myfunction() {
+        //        Validations();
+        //        var IsClassPresent = $("body").find('.uploaded').length;
+        //        if (IsClassPresent > 0) {
+        //            var a = $(".uploaded")[0].children.length;
+        //            if (a >= 5) {
+        //                var element = document.getElementsByClassName("image-uploader");
+        //                for (item of element) {
+        //                    item.style.border = "1px solid #ededed";
+        //                }
+        //            }
+        //        }
+        //    },1);
 
-            function Validations() {
-                var year = $('#Year').hasClass('input-validation-error');
-                var condi = $('#Condition').hasClass('input-validation-error');
-                var state = $('#State').hasClass('input-validation-error');
-                var city = $('#City').hasClass('input-validation-error');
-                var arr = $('#Area').hasClass('input-validation-error');
-                var category = $('#CategoryName').hasClass('input-validation-error');
-                var subcategory = $('#SubCategoryName').hasClass('input-validation-error');
-                var manufacturer = $('#Manufacturer_Name').hasClass('input-validation-error');
-                var CarModel = $('#Manufacturer_CarModelName').hasClass('input-validation-error');
-                if (category == true) {
-                    $('[aria-labelledby="select2-CategoryName-container"]').css('border', '1px solid #f16060');
-                }
-                else if (subcategory == true) {
-                    $('[aria-labelledby="select2-SubCategoryName-container"]').css('border', '1px solid #f16060');
-                }
-                else if (manufacturer == true) {
-                    $('[aria-labelledby="select2-Manufacturer_Name-container"]').css('border', '1px solid #f16060');
-                }
-                else if (CarModel == true) {
-                    $('[aria-labelledby="select2-Manufacturer_CarModelName-container"]').css('border', '1px solid #f16060');
-                }
-                else if (year == true) {
-                    $('[aria-labelledby="select2-Year-container"]').css('border', '1px solid #f16060');
-                }
-                else if (condi == true) {
-                    $('[aria-labelledby="select2-Condition-container"]').css('border', '1px solid #f16060');
-                }
-                else if (state == true) {
-                    $('[aria-labelledby="select2-State-container"]').css('border', '1px solid #f16060');
-                }
-                else if (city == true) {
-                    $('[aria-labelledby="select2-City-container"]').css('border', '1px solid #f16060');
-                }
-                else if (arr == true) {
-                    $('[aria-labelledby="select2-Area-container"]').css('border', '1px solid #f16060');
-                }
-            }
+        //    function Validations() {
+        //        var year = $('#Year').hasClass('input-validation-error');
+        //        var condi = $('#Condition').hasClass('input-validation-error');
+        //        var state = $('#State').hasClass('input-validation-error');
+        //        var city = $('#City').hasClass('input-validation-error');
+        //        var arr = $('#Area').hasClass('input-validation-error');
+        //        var category = $('#CategoryName').hasClass('input-validation-error');
+        //        var subcategory = $('#SubCategoryName').hasClass('input-validation-error');
+        //        var manufacturer = $('#Manufacturer_Name').hasClass('input-validation-error');
+        //        var CarModel = $('#Manufacturer_CarModelName').hasClass('input-validation-error');
+        //        if (category == true) {
+        //            $('[aria-labelledby="select2-CategoryName-container"]').css('border', '1px solid #f16060');
+        //        }
+        //        else if (subcategory == true) {
+        //            $('[aria-labelledby="select2-SubCategoryName-container"]').css('border', '1px solid #f16060');
+        //        }
+        //        else if (manufacturer == true) {
+        //            $('[aria-labelledby="select2-Manufacturer_Name-container"]').css('border', '1px solid #f16060');
+        //        }
+        //        else if (CarModel == true) {
+        //            $('[aria-labelledby="select2-Manufacturer_CarModelName-container"]').css('border', '1px solid #f16060');
+        //        }
+        //        else if (year == true) {
+        //            $('[aria-labelledby="select2-Year-container"]').css('border', '1px solid #f16060');
+        //        }
+        //        else if (condi == true) {
+        //            $('[aria-labelledby="select2-Condition-container"]').css('border', '1px solid #f16060');
+        //        }
+        //        else if (state == true) {
+        //            $('[aria-labelledby="select2-State-container"]').css('border', '1px solid #f16060');
+        //        }
+        //        else if (city == true) {
+        //            $('[aria-labelledby="select2-City-container"]').css('border', '1px solid #f16060');
+        //        }
+        //        else if (arr == true) {
+        //            $('[aria-labelledby="select2-Area-container"]').css('border', '1px solid #f16060');
+        //        }
+        //    }
 
-            $("#State").change(function () {
-                var StateId = $(this).val();
-                $.ajax({
-                    type: "post",
-                    url: "/Website/GetCityList?StateId=" + StateId,
-                    contentType: "html",
-                    success: function (response) {
-                        $("#City").empty();
-                        $("#Area").empty();
-                        $("#City").append(response);
-                    }
-                })
-            })
+        //    $("#State").change(function () {
+        //        var StateId = $(this).val();
+        //        $.ajax({
+        //            type: "post",
+        //            url: "/Website/GetCityList?StateId=" + StateId,
+        //            contentType: "html",
+        //            success: function (response) {
+        //                $("#City").empty();
+        //                $("#Area").empty();
+        //                $("#City").append(response);
+        //            }
+        //        })
+        //    })
 
-            $("#City").change(function () {
-                var CityId = $(this).val();
-                $.ajax({
-                    type: "post",
-                    url: "/Website/GetZoneList?CityId=" + CityId,
-                    contentType: "html",
-                    success: function (response) {
-                        $("#Area").empty();
-                        $("#Area").append(response);
-                    }
-                })
-            })
+        //    $("#City").change(function () {
+        //        var CityId = $(this).val();
+        //        $.ajax({
+        //            type: "post",
+        //            url: "/Website/GetZoneList?CityId=" + CityId,
+        //            contentType: "html",
+        //            success: function (response) {
+        //                $("#Area").empty();
+        //                $("#Area").append(response);
+        //            }
+        //        })
+        //    })
 
-            $("#Manufacturer_Name").change(function () {
-                var MakeId = $(this).val();
-                $.ajax({
-                    type: "post",
-                    url: "/Website/GetModelsList?MakeId=" + MakeId,
-                    contentType: "html",
-                    success: function (response) {
-                        $("#Manufacturer_CarModelName").empty();
-                        $("#Manufacturer_CarModelName").append(response);
-                    }
-                })
-            })
+        //    $("#Manufacturer_Name").change(function () {
+        //        var MakeId = $(this).val();
+        //        $.ajax({
+        //            type: "post",
+        //            url: "/Website/GetModelsList?MakeId=" + MakeId,
+        //            contentType: "html",
+        //            success: function (response) {
+        //                $("#Manufacturer_CarModelName").empty();
+        //                $("#Manufacturer_CarModelName").append(response);
+        //            }
+        //        })
+        //    })
 
-            $("#CategoryName").change(function () {
-                var CategoryId = $(this).val();
-                $.ajax({
-                    type: "post",
-                    url: "/Website/GetSubCategoryList?CategoryId=" + CategoryId,
-                    contentType: "html",
-                    success: function (response) {
-                        $("#SubCategoryName").empty();
-                        $("#SubCategoryName").append(response);
-                    }
-                })
-            })
+        //    $("#CategoryName").change(function () {
+        //        var CategoryId = $(this).val();
+        //        $.ajax({
+        //            type: "post",
+        //            url: "/Website/GetSubCategoryList?CategoryId=" + CategoryId,
+        //            contentType: "html",
+        //            success: function (response) {
+        //                $("#SubCategoryName").empty();
+        //                $("#SubCategoryName").append(response);
+        //            }
+        //        })
+        //    })
 
-            $("#State").select2({
-                selectOnClose: false
-            });
+        //    $("#State").select2({
+        //        selectOnClose: false
+        //    });
 
-            $("#City").select2({
-                selectOnClose: false
-            });
+        //    $("#City").select2({
+        //        selectOnClose: false
+        //    });
 
-            $("#Area").select2({
-                selectOnClose: false
-            });
+        //    $("#Area").select2({
+        //        selectOnClose: false
+        //    });
 
-            $("#Year").select2({
-                selectOnClose: false
-            });
+        //    $("#Year").select2({
+        //        selectOnClose: false
+        //    });
 
-            $("#Condition").select2({
-                selectOnClose: false
-            });
+        //    $("#Condition").select2({
+        //        selectOnClose: false
+        //    });
 
-            $("#Manufacturer_CarModelName").select2({
-                selectOnClose: false
-            });
+        //    $("#Manufacturer_CarModelName").select2({
+        //        selectOnClose: false
+        //    });
 
-            $("#Manufacturer_Name").select2({
-                selectOnClose: false
-            });
+        //    $("#Manufacturer_Name").select2({
+        //        selectOnClose: false
+        //    });
 
-            $("#SubCategoryName").select2({
-                selectOnClose: false
-            });
+        //    $("#SubCategoryName").select2({
+        //        selectOnClose: false
+        //    });
 
-            $("#CategoryName").select2({
-                selectOnClose: false
-            });
+        //    $("#CategoryName").select2({
+        //        selectOnClose: false
+        //    });
         });
 
         function fnSuccess() {

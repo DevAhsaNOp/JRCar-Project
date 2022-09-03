@@ -35,7 +35,7 @@ namespace JRCar.WebApp.Controllers
             return View();
         }
 
-        #region **Post New Vehicle**
+        #region **Post & Edit Vehicle**
         [AcceptVerbs(HttpVerbs.Get)]
         [Authorize(Roles = "User")]
         [Route("Ads/PostNewVehicle")]
@@ -82,6 +82,104 @@ namespace JRCar.WebApp.Controllers
             ViewBag.Make = makes;
 
             return View();
+        }
+        
+        [AcceptVerbs(HttpVerbs.Get)]
+        [Authorize(Roles = "User")]
+        //[Route("Ads/PostNewVehicle")]
+        public ActionResult EditVehicle(int AdID)
+        {
+            var AllStates = AddressRepoObj.GetAllState();
+            var states = new List<SelectListItem>();
+            states.Add(new SelectListItem() { Text = "---Select State---", Value = "0", Disabled = true, Selected = true });
+            foreach (var item in AllStates)
+            {
+                states.Add(new SelectListItem() { Text = item.StateName, Value = item.StateId.ToString() });
+            }
+            ViewBag.State = states;
+
+            var year = new List<SelectListItem>();
+            year.Add(new SelectListItem() { Text = "---Select Model Year---", Value = "0", Disabled = true, Selected = true });
+            for (int i = -50; i <= 0; ++i)
+            {
+                year.Add(new SelectListItem() { Text = DateTime.Now.AddYears(i).ToString("yyyy"), Value = DateTime.Now.AddYears(i).ToString("yyyy") });
+            }
+            ViewBag.Years = year;
+
+            var condition = new List<SelectListItem>();
+            condition.Add(new SelectListItem() { Text = "---Select Condition---", Value = "0", Disabled = true, Selected = true });
+            condition.Add(new SelectListItem() { Text = "Used", Value = "1" });
+            condition.Add(new SelectListItem() { Text = "New", Value = "2" });
+            ViewBag.Conditions = condition;
+
+            var AllCategory = RepoObj1.GetAllCategory();
+            var categories = new List<SelectListItem>();
+            categories.Add(new SelectListItem() { Text = "---Select Category---", Value = "0", Disabled = true, Selected = true });
+            foreach (var item in AllCategory)
+            {
+                categories.Add(new SelectListItem() { Text = item.CategoryName, Value = item.CategoryID.ToString() });
+            }
+            ViewBag.Category = categories;
+            
+
+
+            var AllMake = RepoObj1.GetAllMakes();
+            var makes = new List<SelectListItem>();
+            makes.Add(new SelectListItem() { Text = "---Select Make---", Value = "0", Disabled = true, Selected = true });
+            foreach (var item in AllMake)
+            {
+                makes.Add(new SelectListItem() { Text = item.Manufacturer_Name, Value = item.Manufacturer_Id.ToString() });
+            }
+            ViewBag.Make = makes;
+                        
+            var reas = RepoObj1.GetUserAdsDetailOnlyForUpdate(AdID);
+            
+            var AllSubCategory = RepoObj1.GetSubCategoriesByCategory(reas.CategoryId.Value);
+            var Subcategories = new List<SelectListItem>();
+            Subcategories.Add(new SelectListItem() { Text = "---Select SubCategory---", Value = "0", Disabled = true, Selected = true });
+            foreach (var item in AllSubCategory)
+            {
+                Subcategories.Add(new SelectListItem() { Text = item.SubCategoryName, Value = item.SubCategoryId.ToString() });
+            }
+            ViewBag.SubCategory = Subcategories;
+
+            var AllCarModels = RepoObj1.GetModelsByMake(reas.ManufacturerId.Value);
+            var Carmodels = new List<SelectListItem>();
+            Carmodels.Add(new SelectListItem() { Text = "---Select Car Model---", Value = "0", Disabled = true});
+            foreach (var item in AllCarModels)
+            {
+                if (item.ManufacturerCarModel_Id == reas.ManufacturerCarModelID)
+                    Carmodels.Add(new SelectListItem() { Text = item.Manufacturer_CarModelName, Value = item.ManufacturerCarModel_Id.ToString(), Selected = true });
+                else
+                    Carmodels.Add(new SelectListItem() { Text = item.Manufacturer_CarModelName, Value = item.ManufacturerCarModel_Id.ToString() });
+            }
+            ViewBag.CarModel = Carmodels;
+            
+            var AllCities = AddressRepoObj.GetCitiesByState(reas.tblAddress.State);
+            var ACities = new List<SelectListItem>();
+            ACities.Add(new SelectListItem() { Text = "---Select City---", Value = "0", Disabled = true});
+            foreach (var item in AllCities)
+            {
+                if (item.CityId == reas.tblAddress.City)
+                    ACities.Add(new SelectListItem() { Text = item.CityName, Value = item.CityId.ToString(), Selected = true });
+                else
+                    ACities.Add(new SelectListItem() { Text = item.CityName, Value = item.CityId.ToString() });
+            }
+            ViewBag.ACities = ACities;
+            
+            var AllZones = AddressRepoObj.GetZoneByCity(reas.tblAddress.City);
+            var AZones = new List<SelectListItem>();
+            AZones.Add(new SelectListItem() { Text = "---Select Area---", Value = "0", Disabled = true});
+            foreach (var item in AllZones)
+            {
+                if (item.ZoneId == reas.tblAddress.Area)
+                    AZones.Add(new SelectListItem() { Text = item.ZoneName, Value = item.ZoneId.ToString(), Selected = true });
+                else
+                    AZones.Add(new SelectListItem() { Text = item.ZoneName, Value = item.ZoneId.ToString() });
+            }
+            ViewBag.AZones = AZones;
+
+            return View(reas);
         }
 
         public ActionResult GetCityList(int StateId)
