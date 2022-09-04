@@ -92,6 +92,22 @@ namespace JRCar.BOL.Validation_Classes
         [Display(Name = "Area")]
         [Range(1, Int32.MaxValue, ErrorMessage = "Must select a Area")]
         public string Area { get; set; }
+        
+        [Required(ErrorMessage = "*")]
+        [Display(Name = "State")]
+        [Range(1, Int32.MaxValue, ErrorMessage = "Must select a State")]
+        public int StateID { get; set; }
+
+
+        [Required(ErrorMessage = "*")]
+        [Display(Name = "City")]
+        [Range(1, Int32.MaxValue, ErrorMessage = "Must select a City")]
+        public int CityID { get; set; }
+
+        [Required(ErrorMessage = "*")]
+        [Display(Name = "Area")]
+        [Range(1, Int32.MaxValue, ErrorMessage = "Must select a Area")]
+        public int AreaID { get; set; }
 
         [Display(Name = "Address")]
         public string CompleteAddress { get; set; }
@@ -125,6 +141,9 @@ namespace JRCar.BOL.Validation_Classes
         [Range(1, Int32.MaxValue, ErrorMessage = "Must select a Model")]
         public string Manufacturer_CarModelName { get; set; }
 
+        [Required(ErrorMessage = "*")]
+        [Display(Name = "Category")]
+        [Range(1, Int32.MaxValue, ErrorMessage = "Must select a Category")]
         public int? CategoryId { get; set; }
 
         [Required(ErrorMessage = "*")]
@@ -132,16 +151,21 @@ namespace JRCar.BOL.Validation_Classes
         [Range(1, Int32.MaxValue, ErrorMessage = "Must select a Category")]
         public string CategoryName { get; set; }
 
+        [Required(ErrorMessage = "*")]
+        [Display(Name = "SubCategory")]
+        [Range(1, Int32.MaxValue, ErrorMessage = "Must select a SubCategory")]
         public int? SubCategoryId { get; set; }
 
         [Required(ErrorMessage = "*")]
-        [Display(Name = "Category")]
+        [Display(Name = "SubCategory")]
         [Range(1, Int32.MaxValue, ErrorMessage = "Must select a SubCategory")]
         public string SubCategoryName { get; set; }
 
         public int MaximumPrice { get; set; }
 
         public int MinimumPrice { get; set; }
+
+        public int AdID { get; set; }
 
         public virtual ICollection<tblUserAddImage> tblUserAddImages { get; set; }
 

@@ -14,6 +14,8 @@ using PagedList;
 using JRCar.WebApp.ViewModels;
 using System.Security.Policy;
 using System.Collections;
+using System.Drawing;
+using System.Xml.Linq;
 
 namespace JRCar.WebApp.Controllers
 {
@@ -83,10 +85,10 @@ namespace JRCar.WebApp.Controllers
 
             return View();
         }
-        
+
         [AcceptVerbs(HttpVerbs.Get)]
         [Authorize(Roles = "User")]
-        //[Route("Ads/PostNewVehicle")]
+        [Route("Ads/EditVehicle/{AdID}")]
         public ActionResult EditVehicle(int AdID)
         {
             var AllStates = AddressRepoObj.GetAllState();
@@ -120,7 +122,7 @@ namespace JRCar.WebApp.Controllers
                 categories.Add(new SelectListItem() { Text = item.CategoryName, Value = item.CategoryID.ToString() });
             }
             ViewBag.Category = categories;
-            
+
 
 
             var AllMake = RepoObj1.GetAllMakes();
@@ -131,9 +133,12 @@ namespace JRCar.WebApp.Controllers
                 makes.Add(new SelectListItem() { Text = item.Manufacturer_Name, Value = item.Manufacturer_Id.ToString() });
             }
             ViewBag.Make = makes;
-                        
+
             var reas = RepoObj1.GetUserAdsDetailOnlyForUpdate(AdID);
-            
+
+            Session["AddressID"] = reas.AddressId;
+            Session["AdID"] = reas.AdID;
+
             var AllSubCategory = RepoObj1.GetSubCategoriesByCategory(reas.CategoryId.Value);
             var Subcategories = new List<SelectListItem>();
             Subcategories.Add(new SelectListItem() { Text = "---Select SubCategory---", Value = "0", Disabled = true, Selected = true });
@@ -145,7 +150,7 @@ namespace JRCar.WebApp.Controllers
 
             var AllCarModels = RepoObj1.GetModelsByMake(reas.ManufacturerId.Value);
             var Carmodels = new List<SelectListItem>();
-            Carmodels.Add(new SelectListItem() { Text = "---Select Car Model---", Value = "0", Disabled = true});
+            Carmodels.Add(new SelectListItem() { Text = "---Select Car Model---", Value = "0", Disabled = true });
             foreach (var item in AllCarModels)
             {
                 if (item.ManufacturerCarModel_Id == reas.ManufacturerCarModelID)
@@ -154,10 +159,10 @@ namespace JRCar.WebApp.Controllers
                     Carmodels.Add(new SelectListItem() { Text = item.Manufacturer_CarModelName, Value = item.ManufacturerCarModel_Id.ToString() });
             }
             ViewBag.CarModel = Carmodels;
-            
-            var AllCities = AddressRepoObj.GetCitiesByState(reas.tblAddress.State);
+
+            var AllCities = AddressRepoObj.GetCitiesByState(reas.StateID);
             var ACities = new List<SelectListItem>();
-            ACities.Add(new SelectListItem() { Text = "---Select City---", Value = "0", Disabled = true});
+            ACities.Add(new SelectListItem() { Text = "---Select City---", Value = "0", Disabled = true });
             foreach (var item in AllCities)
             {
                 if (item.CityId == reas.tblAddress.City)
@@ -166,10 +171,10 @@ namespace JRCar.WebApp.Controllers
                     ACities.Add(new SelectListItem() { Text = item.CityName, Value = item.CityId.ToString() });
             }
             ViewBag.ACities = ACities;
-            
-            var AllZones = AddressRepoObj.GetZoneByCity(reas.tblAddress.City);
+
+            var AllZones = AddressRepoObj.GetZoneByCity(reas.CityID);
             var AZones = new List<SelectListItem>();
-            AZones.Add(new SelectListItem() { Text = "---Select Area---", Value = "0", Disabled = true});
+            AZones.Add(new SelectListItem() { Text = "---Select Area---", Value = "0", Disabled = true });
             foreach (var item in AllZones)
             {
                 if (item.ZoneId == reas.tblAddress.Area)
@@ -179,6 +184,15 @@ namespace JRCar.WebApp.Controllers
             }
             ViewBag.AZones = AZones;
 
+            string path = Server.MapPath("" + reas.CarImage + "");
+            string[] FolderName = reas.CarImage.Split('/');
+            string[] imageFiles = Directory.GetFiles(path);
+            List<string> images = new List<string>();
+            foreach (var item in imageFiles)
+            {
+                images.Add(FolderName[2] + "/" + Path.GetFileName(item));
+            }
+            ViewBag.Images = images;
             return View(reas);
         }
 
@@ -269,7 +283,7 @@ namespace JRCar.WebApp.Controllers
                     }
                     else
                     {
-                        ViewBag.Error = "Error on uploading file!";
+                        ViewBag.Error = "Error on uploading Image!";
                         return View("PostNewVehicles");
                     }
                 }
@@ -285,6 +299,121 @@ namespace JRCar.WebApp.Controllers
             }
             return RedirectToAction("PostNewVehicles");
         }
+
+        [HttpPost]
+        public ActionResult SetSession(string[] RemovedImages)
+        {
+            Session["DeletedFiles"] = RemovedImages;
+            return Json("Request!!", JsonRequestBehavior.AllowGet);
+        }
+
+        [AcceptVerbs(HttpVerbs.Post)]
+        [Route("Ads/EditVehicle")]
+        public ActionResult EditVehicle(ImageFile objImage, ValidationUserAds userAds)
+        {
+            try
+            {
+                string[] FolderName = null;
+                string[] arr = null;
+                var name = string.Empty;
+                var createFolder = string.Empty;
+                var valerr = Session["DeletedFiles"];
+                if (valerr != null)
+                {
+                    arr = ((IEnumerable)valerr).Cast<object>()
+                             .Select(x => x.ToString())
+                             .ToArray();
+                }
+
+                if (User.Identity.IsAuthenticated)
+                {
+                    if (arr != null && valerr != null)
+                    {
+                        FolderName = arr[0].Split('/');
+                        foreach (var item in arr)
+                        {
+                            string path = Server.MapPath("~" + item);
+                            FileInfo Afile = new FileInfo(path);
+                            if (Afile.Exists)//check Afile exsit or not  
+                            {
+                                Afile.Delete();
+                            }
+                        }
+                        name = string.Format("~/uploads/{0}", FolderName[2]);
+                        createFolder = Server.MapPath(name);
+                    }
+                    if (Directory.Exists(createFolder))
+                    {
+                        foreach (var file in objImage.files)
+                        {
+                            if (file != null && file.ContentLength > 0)
+                            {
+                                file.SaveAs(Path.Combine(Server.MapPath(name), Guid.NewGuid() + Path.GetExtension(file.FileName)));
+                            }
+                        }
+                        UpdateAd(userAds, name);
+                    }
+                    else
+                    {
+                        UpdateAd(userAds, name);
+                    }
+                }
+                else
+                {
+                    var err = (int)HttpStatusCode.BadRequest;
+                    return Json(new { error = err + " Bad Request Error " + "Invalid Request!!" });
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return RedirectToAction("EditVehicle",  userAds.AdID );
+        }
+
+        public ActionResult UpdateAd(ValidationUserAds userAds, string name)
+        {
+            if (userAds != null)
+            {
+                if (userAds.StateID > 0 && userAds.CityID > 0 && userAds.AreaID > 0)
+                {
+                    userAds.Condition = (userAds.Condition == "1") ? "Used" : "New";
+                    var area = AddressRepoObj.GetZoneLatLong(userAds.AreaID);
+                    userAds.UserID = Convert.ToInt32(Session["Id"]);
+                    userAds.CarImage = name;
+                    userAds.AddressId = Convert.ToInt32(Session["AddressID"]);
+                    userAds.AdID = Convert.ToInt32(Session["AdID"]);
+                    userAds.StateID = userAds.StateID;
+                    userAds.CityID = userAds.CityID;
+                    userAds.AreaID = userAds.AreaID;
+                    userAds.CompleteAddress = userAds.CompleteAddress;
+                    userAds.Latitude = area.Item1.ToString();
+                    userAds.Longitude = area.Item2.ToString();
+                    userAds.CategoryId = userAds.CategoryId;
+                    userAds.SubCategoryId = userAds.SubCategoryId;
+                    userAds.ManufacturerId = userAds.ManufacturerId;
+                    userAds.ManufacturerCarModelID = userAds.ManufacturerCarModelID;
+                    var AdsPublish = RepoObj1.UpdateUserAds(userAds);
+                    if (AdsPublish)
+                    {
+                        TempData["SuccessMsg"] = "Ad Update Successfully!";
+                        return RedirectToAction("EditVehicle",  userAds.AdID);
+                    }
+                    else
+                    {
+                        TempData["ErrorMsg"] = "Error on Ads Publishing please try again!";
+                        return RedirectToAction("EditVehicle" , userAds.AdID);
+                    }
+                }
+            }
+            else
+            {
+                ViewBag.Error = "Error please try again!";
+                return RedirectToAction("EditVehicle",  userAds.AdID);
+            }
+            return RedirectToAction("EditVehicle" ,  userAds.AdID);
+        }
+
         #endregion
 
         [AcceptVerbs(HttpVerbs.Get)]

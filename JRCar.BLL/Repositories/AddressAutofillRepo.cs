@@ -39,20 +39,20 @@ namespace JRCar.BLL.Repositories
             }
         }
 
-        public bool UpdateAddress(tblAddress model)
+        public int UpdateAddress(tblAddress model)
         {
             try
             {
                 if (model != null)
                 {
                     var addressId = dbObj.UpdateAddress(model);
-                    if (addressId == true)
-                        return true;
+                    if (addressId > 0)
+                        return addressId;
                     else
-                        return false;
+                        return 0;
                 }
                 else
-                    return false;
+                    return 0;
             }
             catch (Exception ex)
             {

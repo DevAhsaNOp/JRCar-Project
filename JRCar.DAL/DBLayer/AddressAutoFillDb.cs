@@ -36,7 +36,7 @@ namespace JRCar.DAL.DBLayer
             }
         }
 
-        public bool UpdateAddress(tblAddress model)
+        public int UpdateAddress(tblAddress model)
         {
             try
             {
@@ -44,10 +44,10 @@ namespace JRCar.DAL.DBLayer
                 {
                     _context.Entry(model).State = System.Data.Entity.EntityState.Modified;
                     Save();
-                    return true;
+                    return model.ID;
                 }
                 else
-                    return false;
+                    return 0;
             }
             catch (Exception ex)
             {

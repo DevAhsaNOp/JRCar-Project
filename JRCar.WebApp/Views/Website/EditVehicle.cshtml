@@ -23,6 +23,25 @@
     input[type="search"] {
         height: 26px !important;
     }
+
+    .image-uploader .uploaded .uploaded-image .delete-image {
+        display: block !important;
+    }
+
+    .image-uploader .uploaded .uploaded-image .delete-image1 {
+        display: block !important;
+        cursor: pointer;
+        position: absolute;
+        top: 0.2rem;
+        right: 0.2rem;
+        border-radius: 50%;
+        color: white;
+        padding: 0.3rem;
+        line-height: 1;
+        background-color: rgba(34, 34, 34,0.8);
+        -webkit-appearance: none;
+        border: none;
+    }
 </style>
 
 @if (User.Identity.IsAuthenticated)
@@ -39,7 +58,8 @@
                                     <li><a href="@Url.Action("Myvehicles","Website")">My vehicles</a></li>
                                     <li><a href="user-car-shortlist.html">Shortlisted</a></li>
                                     <li><a href="@Url.Action("ProfileSettings", "Website")">Profile Settings</a></li>
-                                    <li class="active"><a href="@Url.Action("PostNewVehicles", "Website")">Post a vehicles</a></li>
+                                    <li><a href="#">Post a vehicles</a></li>
+                                    <li class="active"><a href="#">Edit a vehicle</a></li>
                                     <li><a href="@Url.Action("Logout", "Account")">Sign Out</a></li>
                                 </ul>
                             </div>
@@ -63,10 +83,10 @@
                             </div>
                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                 <div class="cs-user-section-title">
-                                    <h4>Post New Vehicles</h4>
+                                    <h4>Edit Vehicle</h4>
                                 </div>
                             </div>
-                            @using (Html.BeginForm("PostNewVehicles", "Website", FormMethod.Post, new { enctype = "multipart/form-data", @class = "user-post-vehicles", @name = "form-example-1", @id = "form-example-1" }))
+                            @using (Html.BeginForm("EditVehicle", "Website", FormMethod.Post, new { enctype = "multipart/form-data", @class = "user-post-vehicles", @name = "form-example-1", @id = "form-example-1" }))
                             {
                                 <div class="cs-field-holder">
                                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -79,23 +99,23 @@
                                 <div class="cs-field-holder">
                                     <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                                         <label>Category</label>
-                                        @Html.ValidationMessageFor(model => model.CategoryName, "", new { @class = "text-danger" })
+                                        @Html.ValidationMessageFor(model => model.CategoryId, "", new { @class = "text-danger" })
                                     </div>
                                     <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
                                         <div class="cs-field">
-                                            @Html.DropDownListFor(model => model.CategoryName, (IEnumerable<SelectListItem>)ViewBag.Category, htmlAttributes: new { @class = "form-control" })
+                                            @Html.DropDownListFor(model => model.CategoryId, (IEnumerable<SelectListItem>)ViewBag.Category, htmlAttributes: new { @class = "form-control" })
                                         </div>
                                     </div>
                                 </div>
                                 <div class="cs-field-holder" id="SubCategoryD">
                                     <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                                         <label>Sub Category</label>
-                                        @Html.ValidationMessageFor(model => model.SubCategoryName, "", new { @class = "text-danger" })
+                                        @Html.ValidationMessageFor(model => model.SubCategoryId, "", new { @class = "text-danger" })
                                     </div>
                                     <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
                                         <div class="cs-field">
                                             @*@Html.DropDownListFor(model => model.SubCategoryName, new SelectList(""), htmlAttributes: new { @class = "form-control" })*@
-                                            @Html.DropDownListFor(model => model.SubCategoryName, (IEnumerable<SelectListItem>)ViewBag.SubCategory, htmlAttributes: new { @class = "form-control" })
+                                            @Html.DropDownListFor(model => model.SubCategoryId, (IEnumerable<SelectListItem>)ViewBag.SubCategory, htmlAttributes: new { @class = "form-control" })
                                         </div>
                                     </div>
                                 </div>
@@ -198,8 +218,36 @@
                                 <div class="cs-field-holder">
                                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                         <div class="input-field">
-                                            <div class="input-images-1" style="padding-top: .5rem;"></div>
+                                            <div class="input-images-1" style="padding-top: .5rem;">
+                                                <div class="image-uploader has-files" style="border:none !important">
+                                                    <input type="file" required="required" accept=".jpg,.jpeg,.png,.gif,.svg" multiple="multiple">
+                                                    <div class="uploaded" id="previous-images">
+                                                        @{
+                                                            var i = 0;
+                                                        }
+                                                        @foreach (var item in ViewBag.Images)
+                                                        {
+                                                            <div class="uploaded-image" data-index="@i">
+                                                                <img src="~/uploads/@item">
+                                                                <button type="button" class="delete-image1">
+                                                                    <i class="iui-close"></i>
+                                                                </button>
+                                                            </div>
+                                                            i++;
+                                                        }
+                                                    </div>
+                                                    <div class="upload-text">
+                                                        <i class="iui-cloud-upload"></i><span>
+                                                            Drag &amp; Drop files here or click to
+                                                            browse
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
+                                        @*<div class="input-field">
+                                                <div class="input-images-1" style="padding-top: .5rem;"></div>
+                                            </div>*@
                                     </div>
                                 </div>
                                 <div class="cs-field-holder">
@@ -213,46 +261,46 @@
                                 <div class="cs-field-holder" id="StateD">
                                     <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                                         <label>State</label>
-                                        @Html.ValidationMessageFor(model => model.tblAddress.State, "", new { @class = "text-danger" })
+                                        @Html.ValidationMessageFor(model => model.StateID, "", new { @class = "text-danger" })
                                     </div>
                                     <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
                                         <div class="cs-field">
-                                            @Html.DropDownListFor(model => model.tblAddress.State, (IEnumerable<SelectListItem>)ViewBag.State, htmlAttributes: new { @class = "form-control" })
+                                            @Html.DropDownListFor(model => model.StateID, (IEnumerable<SelectListItem>)ViewBag.State, htmlAttributes: new { @class = "form-control" })
                                         </div>
                                     </div>
                                 </div>
                                 <div class="cs-field-holder" id="CityD">
                                     <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                                         <label>City</label>
-                                        @Html.ValidationMessageFor(model => model.tblAddress.City, "", new { @class = "text-danger" })
+                                        @Html.ValidationMessageFor(model => model.CityID, "", new { @class = "text-danger" })
                                     </div>
                                     <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
                                         <div class="cs-field">
                                             @*@Html.DropDownListFor(model => model.City, new SelectList(""), htmlAttributes: new { @class = "form-control" })*@
-                                            @Html.DropDownListFor(model => model.tblAddress.City, (IEnumerable<SelectListItem>)ViewBag.ACities, htmlAttributes: new { @class = "form-control" })
+                                            @Html.DropDownListFor(model => model.CityID, (IEnumerable<SelectListItem>)ViewBag.ACities, htmlAttributes: new { @class = "form-control" })
                                         </div>
                                     </div>
                                 </div>
                                 <div class="cs-field-holder" id="AreaD">
                                     <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                                         <label>Area</label>
-                                        @Html.ValidationMessageFor(model => model.tblAddress.Area, "", new { @class = "text-danger" })
+                                        @Html.ValidationMessageFor(model => model.AreaID, "", new { @class = "text-danger" })
                                     </div>
                                     <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
                                         <div class="cs-field">
                                             @*@Html.DropDownListFor(model => model.Area, new SelectList(""), htmlAttributes: new { @class = "form-control" })*@
-                                            @Html.DropDownListFor(model => model.tblAddress.Area, (IEnumerable<SelectListItem>)ViewBag.AZones, htmlAttributes: new { @class = "form-control" })
+                                            @Html.DropDownListFor(model => model.AreaID, (IEnumerable<SelectListItem>)ViewBag.AZones, htmlAttributes: new { @class = "form-control" })
                                         </div>
                                     </div>
                                 </div>
                                 <div class="cs-field-holder">
                                     <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                                         <label>Complete Address</label>
-                                        @Html.ValidationMessageFor(model => model.tblAddress.CompleteAddress, "", new { @class = "text-danger" })
+                                        @Html.ValidationMessageFor(model => model.CompleteAddress, "", new { @class = "text-danger" })
                                     </div>
                                     <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
                                         <div class="cs-field">
-                                            @Html.TextAreaFor(model => model.tblAddress.CompleteAddress, new { htmlAttributes = new { placeholder = "Enter the Complte Address" } })
+                                            @Html.TextAreaFor(model => model.CompleteAddress, new { htmlAttributes = new { placeholder = "Enter the Complte Address" } })
                                         </div>
                                     </div>
                                 </div>
@@ -325,7 +373,7 @@
 <script>
     $(document).ready(function () {
 
-        $('#CategoryName').show();
+        $('#CategoryId').show();
         $('#SubCategoryD').show();
         $('#ManufacD').show();
         $('#ModelD').show();
@@ -334,32 +382,32 @@
         $('#StateD').show();
         $('#CityD').show();
         $('#AreaD').show();
-        
-        $("#CategoryName").on("change", function () {
-            console.log("CategoryName change");
-            var ar = $('#CategoryName').select2('data');
+
+        $("#CategoryId").on("change", function () {
+            console.log("CategoryId change");
+            var ar = $('#CategoryId').select2('data');
             var da = ar[0].id
             if (da > 0) {
-                $('[aria-labelledby="select2-CategoryName-container"]').css('border', '1px solid #ededed');
-                $('#CategoryName').removeClass("input-validation-error");
+                $('[aria-labelledby="select2-CategoryId-container"]').css('border', '1px solid #ededed');
+                $('#CategoryId').removeClass("input-validation-error");
                 $('#SubCategoryD').show();
             }
             else {
-                $('[aria-labelledby="select2-CategoryName-container"]').css('border', '1px solid #f16060');
+                $('[aria-labelledby="select2-CategoryId-container"]').css('border', '1px solid #f16060');
             }
         });
 
-        $("#SubCategoryName").on("change", function () {
-            console.log("SubCategoryName change");
-            var ar = $('#SubCategoryName').select2('data');
+        $("#SubCategoryId").on("change", function () {
+            console.log("SubCategoryId change");
+            var ar = $('#SubCategoryId').select2('data');
             var da = ar[0].id
             if (da > 0) {
-                $('[aria-labelledby="select2-SubCategoryName-container"]').css('border', '1px solid #ededed');
-                $('#SubCategoryName').removeClass("input-validation-error");
+                $('[aria-labelledby="select2-SubCategoryId-container"]').css('border', '1px solid #ededed');
+                $('#SubCategoryId').removeClass("input-validation-error");
                 $('#ManufacD').show();
             }
             else {
-                $('[aria-labelledby="select2-SubCategoryName-container"]').css('border', '1px solid #f16060');
+                $('[aria-labelledby="select2-SubCategoryId-container"]').css('border', '1px solid #f16060');
             }
         });
 
@@ -419,44 +467,45 @@
             }
         });
 
-        $("#tblAddress_State").on("change", function () {
+        $("#StateID").on("change", function () {
             console.log("State change");
-            var ar = $('#tblAddress_State').select2('data');
+            var ar = $('#StateID').select2('data');
             var da = ar[0].id
             if (da > 0) {
-                $('[aria-labelledby="select2-tblAddress_State-container"]').css('border', '1px solid #ededed');
-                $('#tblAddress_State').removeClass("input-validation-error");
+                $('[aria-labelledby="select2-StateID-container"]').css('border', '1px solid #ededed');
+                $('#StateID').removeClass("input-validation-error");
                 $('#CityD').show();
+                $('#AreaD').hide();
             }
             else {
-                $('[aria-labelledby="select2-tblAddress_State-container"]').css('border', '1px solid #f16060');
+                $('[aria-labelledby="select2-StateID-container"]').css('border', '1px solid #f16060');
             }
         });
 
-        $("#tblAddress_City").on("change", function () {
+        $("#CityID").on("change", function () {
             console.log("City change");
-            var ar = $('#tblAddress_City').select2('data');
+            var ar = $('#CityID').select2('data');
             var da = ar[0].id
             if (da > 0) {
-                $('[aria-labelledby="select2-tblAddress_City-container"]').css('border', '1px solid #ededed');
-                $('#tblAddress_City').removeClass("input-validation-error");
+                $('[aria-labelledby="select2-CityID-container"]').css('border', '1px solid #ededed');
+                $('#CityID').removeClass("input-validation-error");
                 $('#AreaD').show();
             }
             else {
-                $('[aria-labelledby="select2-tblAddress_City-container"]').css('border', '1px solid #f16060');
+                $('[aria-labelledby="select2-CityID-container"]').css('border', '1px solid #f16060');
             }
         });
 
-        $("#tblAddress_Area").on("change", function () {
+        $("#AreaID").on("change", function () {
             console.log("Area change");
-            var ar = $('#tblAddress_Area').select2('data');
+            var ar = $('#AreaID').select2('data');
             var da = ar[0].id
             if (da > 0) {
-                $('[aria-labelledby="select2-tblAddress_Area-container"]').css('border', '1px solid #ededed');
-                $('#tblAddress_Area').removeClass("input-validation-error");
+                $('[aria-labelledby="select2-AreaID-container"]').css('border', '1px solid #ededed');
+                $('#AreaID').removeClass("input-validation-error");
             }
             else {
-                $('[aria-labelledby="select2-tblAddress_Area-container"]').css('border', '1px solid #f16060');
+                $('[aria-labelledby="select2-AreaID-container"]').css('border', '1px solid #f16060');
             }
         });
 
@@ -464,13 +513,48 @@
 
         $('#postvehicle').on("click", function () {
             Validations();
-            var a = $(".uploaded")[0].children.length;
+            var a = $(".uploaded")[0].children.length + $(".uploaded")[1].children.length;
             if (a < 5) {
                 //alert("Minimum 5 images you need to upload");
                 var element = document.getElementsByClassName("image-uploader");
                 for (item of element) {
                     item.style.border = "2px solid #f16060";
                 }
+                $('html, body').animate({
+                    scrollTop: $("#images-not").offset().top
+                }, 100);
+                return false;
+            }
+            else {
+                ImageChangeData();
+            }
+        });
+
+        function ImageChangeData() {
+            var previousRemoved = JSON.parse(sessionStorage.getItem("DeletedFiles"));
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("SetSession", "Website")",
+                data: JSON.stringify({ RemovedImages: previousRemoved }),
+                contentType: "application/json; charset=utf-8",
+                success: function () {
+                    console.log('ok');
+                }
+            });
+        }
+
+        $('.delete-image1').on("click", function () {
+            var previousRemoved = JSON.parse(sessionStorage.getItem("DeletedFiles"));
+            var newValue = $(this).parent().closest('.uploaded-image').find("img")[0].attributes[0].textContent;
+            $(this).parent().closest('.uploaded-image').remove();
+            deletedFilesLst = [];
+            if (previousRemoved != null) {
+                previousRemoved.push(newValue);
+                sessionStorage.setItem('DeletedFiles', JSON.stringify(previousRemoved));
+            }
+            else {
+                deletedFilesLst.push(newValue);
+                sessionStorage.setItem('DeletedFiles', JSON.stringify(deletedFilesLst));
             }
         });
 
@@ -478,7 +562,7 @@
             Validations();
             var IsClassPresent = $("body").find('.uploaded').length;
             if (IsClassPresent > 0) {
-                var a = $(".uploaded")[0].children.length;
+                var a = $(".uploaded")[0].children.length + $(".uploaded")[1].children.length;
                 if (a >= 5) {
                     var element = document.getElementsByClassName("image-uploader");
                     for (item of element) {
@@ -491,18 +575,18 @@
         function Validations() {
             var year = $('#Year').hasClass('input-validation-error');
             var condi = $('#Condition').hasClass('input-validation-error');
-            var state = $('#tblAddress_State').hasClass('input-validation-error');
-            var city = $('#tblAddress_City').hasClass('input-validation-error');
-            var arr = $('#tblAddress_Area').hasClass('input-validation-error');
-            var category = $('#CategoryName').hasClass('input-validation-error');
-            var subcategory = $('#SubCategoryName').hasClass('input-validation-error');
+            var state = $('#StateID').hasClass('input-validation-error');
+            var city = $('#CityID').hasClass('input-validation-error');
+            var arr = $('#AreaID').hasClass('input-validation-error');
+            var category = $('#CategoryId').hasClass('input-validation-error');
+            var subcategory = $('#SubCategoryId').hasClass('input-validation-error');
             var manufacturer = $('#ManufacturerId').hasClass('input-validation-error');
             var CarModel = $('#ManufacturerCarModelID').hasClass('input-validation-error');
             if (category == true) {
-                $('[aria-labelledby="select2-CategoryName-container"]').css('border', '1px solid #f16060');
+                $('[aria-labelledby="select2-CategoryId-container"]').css('border', '1px solid #f16060');
             }
             else if (subcategory == true) {
-                $('[aria-labelledby="select2-SubCategoryName-container"]').css('border', '1px solid #f16060');
+                $('[aria-labelledby="select2-SubCategoryId-container"]').css('border', '1px solid #f16060');
             }
             else if (manufacturer == true) {
                 $('[aria-labelledby="select2-ManufacturerId-container"]').css('border', '1px solid #f16060');
@@ -517,39 +601,39 @@
                 $('[aria-labelledby="select2-Condition-container"]').css('border', '1px solid #f16060');
             }
             else if (state == true) {
-                $('[aria-labelledby="select2-tblAddress_State-container"]').css('border', '1px solid #f16060');
+                $('[aria-labelledby="select2-StateID-container"]').css('border', '1px solid #f16060');
             }
             else if (city == true) {
-                $('[aria-labelledby="select2-tblAddress_City-container"]').css('border', '1px solid #f16060');
+                $('[aria-labelledby="select2-CityID-container"]').css('border', '1px solid #f16060');
             }
             else if (arr == true) {
-                $('[aria-labelledby="select2-tblAddress_Area-container"]').css('border', '1px solid #f16060');
+                $('[aria-labelledby="select2-AreaID-container"]').css('border', '1px solid #f16060');
             }
         }
 
-        $("#tblAddress_State").change(function () {
+        $("#StateID").change(function () {
             var StateId = $(this).val();
             $.ajax({
                 type: "post",
                 url: "/Website/GetCityList?StateId=" + StateId,
                 contentType: "html",
                 success: function (response) {
-                    $("#tblAddress_City").empty();
-                    $("#tblAddress_Area").empty();
-                    $("#tblAddress_City").append(response);
+                    $("#CityID").empty();
+                    $("#AreaID").empty();
+                    $("#CityID").append(response);
                 }
             })
         })
 
-        $("#tblAddress_City").change(function () {
+        $("#CityID").change(function () {
             var CityId = $(this).val();
             $.ajax({
                 type: "post",
                 url: "/Website/GetZoneList?CityId=" + CityId,
                 contentType: "html",
                 success: function (response) {
-                    $("#tblAddress_Area").empty();
-                    $("#tblAddress_Area").append(response);
+                    $("#AreaID").empty();
+                    $("#AreaID").append(response);
                 }
             })
         })
@@ -567,28 +651,28 @@
             })
         })
 
-        $("#CategoryName").change(function () {
+        $("#CategoryId").change(function () {
             var CategoryId = $(this).val();
             $.ajax({
                 type: "post",
                 url: "/Website/GetSubCategoryList?CategoryId=" + CategoryId,
                 contentType: "html",
                 success: function (response) {
-                    $("#SubCategoryName").empty();
-                    $("#SubCategoryName").append(response);
+                    $("#SubCategoryId").empty();
+                    $("#SubCategoryId").append(response);
                 }
             })
         })
 
-        $("#tblAddress_State").select2({
+        $("#StateID").select2({
             selectOnClose: false
         });
 
-        $("#tblAddress_City").select2({
+        $("#CityID").select2({
             selectOnClose: false
         });
 
-        $("#tblAddress_Area").select2({
+        $("#AreaID").select2({
             selectOnClose: false
         });
 
@@ -608,11 +692,11 @@
             selectOnClose: false
         });
 
-        $("#SubCategoryName").select2({
+        $("#SubCategoryId").select2({
             selectOnClose: false
         });
 
-        $("#CategoryName").select2({
+        $("#CategoryId").select2({
             selectOnClose: false
         });
 

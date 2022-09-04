@@ -23,6 +23,10 @@
     input[type="search"] {
         height: 26px !important;
     }
+
+    .image-uploader .uploaded .uploaded-image .delete-image {
+        display: block !important;
+    }
 </style>
 
 @if (User.Identity.IsAuthenticated)
@@ -480,6 +484,10 @@
                 for (item of element) {
                     item.style.border = "2px solid #f16060";
                 }
+                $('html, body').animate({
+                    scrollTop: $("#images-not").offset().top
+                }, 100);
+                return false;
             }
         });
 

@@ -216,20 +216,59 @@ namespace JRCar.BLL.Repositories
             return value?.Substring(0, Math.Min(value.Length, maxLength));
         }
 
-        public bool UpdateUserAds(tblUserAdd model)
+        public bool UpdateUserAds(ValidationUserAds model)
         {
             try
             {
                 if (model != null)
                 {
-                    var user = dbObj.UpdateUserAds(model);
-                    if (user == true)
-                        return user;
+                    tblAddress addrs = new tblAddress()
+                    {
+                        ID = model.AddressId.Value,
+                        State = model.StateID,
+                        City = model.CityID,
+                        Area = model.AreaID,
+                        CompleteAddress = (model.CompleteAddress == null) ? "" : model.CompleteAddress,
+                    };
+                    var addrsID = AddressRepoObj.UpdateAddress(addrs);
+                    if (addrsID > 0)
+                    {
+                        tblUserAdd userAds = new tblUserAdd()
+                        {
+                            ID = model.AdID,
+                            UserID = model.UserID,
+                            Model = model.Model,
+                            Year = model.Year,
+                            Condition = model.Condition,
+                            Title = model.Title,
+                            Description = model.Description,
+                            Price = model.Price,
+                            AddressId = addrsID,
+                            Latitude = model.Latitude,
+                            Longitude = model.Longitude,
+                            CategoryId = model.CategoryId,
+                            SubCategoryId = model.SubCategoryId,
+                            ManufacturerId = model.ManufacturerId,
+                            ManufacturerCarModelID = model.ManufacturerCarModelID
+                        };
+                        var cityName = AddressRepoObj.GetStateandCity(model.CityID);
+                        var user = dbObj.UpdateUserAds(userAds, cityName.Item2);
+                        if (user)
+                        {
+                            return true;
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                    }
                     else
                         return false;
                 }
                 else
+                {
                     return false;
+                }
             }
             catch (Exception ex)
             {

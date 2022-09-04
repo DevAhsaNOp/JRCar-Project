@@ -210,6 +210,7 @@ namespace JRCar.DAL.DBLayer
             var user = _context.tblUserAdds.Where(x => x.ID == AdId).Select(s => new ValidationUserAds()
             {
                 /*---Car Details---*/
+                AdID = s.ID,
                 Model = s.Model,
                 Year = s.Year,
                 Condition = s.Condition,
@@ -226,9 +227,9 @@ namespace JRCar.DAL.DBLayer
                 CategoryName = s.tblCategory.CategoryName,
                 SubCategoryId = s.SubCategoryId,
                 SubCategoryName = s.tblSubCategory.SubCategoryName,
-                State = s.tblAddress.tblState.StateName,
-                City = s.tblAddress.tblCity.CityName,
-                Area = s.tblAddress.tblZone.ZoneName,
+                StateID = s.tblAddress.State,
+                CityID = s.tblAddress.City,
+                AreaID = s.tblAddress.Area.Value,
                 AddressId = s.AddressId,
                 CompleteAddress = ((s.tblAddress.CompleteAddress == null) ? "Not Available" : s.tblAddress.CompleteAddress),
                 Isactive = s.Isactive,
@@ -241,6 +242,7 @@ namespace JRCar.DAL.DBLayer
                 tblManufacturer = s.tblManufacturer,
                 tblSubCategory = s.tblSubCategory,
                 tblUserAddImages = s.tblUserAddImages,
+                CarImage = s.tblUserAddImages.Select(a => a.Image).FirstOrDefault(),
 
                 /*---User Details---*/
                 UserImage = s.tblUser.Image,
@@ -377,19 +379,25 @@ namespace JRCar.DAL.DBLayer
             _context.SaveChanges();
         }
 
-        public bool UpdateUserAds(tblUserAdd model)
+        public bool UpdateUserAds(tblUserAdd model,string city)
         {
             try
             {
                 if (model != null)
                 {
-                    model.Isactive = true;
-                    model.Isarchive = false;
-                    model.CreatedOn = GetUserAdsDetail(model.ID).CreatedOn;
-                    model.ExpiryDate = GetUserAdsDetail(model.ID).ExpiryDate;
-                    _context.Entry(model).State = System.Data.Entity.EntityState.Modified;
-                    Save();
-                    return true;
+                    model.UserAdsURL = UserAdsURLGenerate(model.Title, model.Year, city);
+                    if (model.UserAdsURL != null)
+                    {
+                        model.Isactive = true;
+                        model.Isarchive = false;
+                        model.CreatedOn = GetUserAdsDetail(model.ID).CreatedOn;
+                        model.ExpiryDate = GetUserAdsDetail(model.ID).ExpiryDate;
+                        _context.Entry(model).State = System.Data.Entity.EntityState.Modified;
+                        Save();
+                        return true;
+                    }
+                    else
+                        return false;
                 }
                 else
                     return false;
