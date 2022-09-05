@@ -351,11 +351,27 @@ namespace JRCar.WebApp.Controllers
                                 file.SaveAs(Path.Combine(Server.MapPath(name), Guid.NewGuid() + Path.GetExtension(file.FileName)));
                             }
                         }
-                        UpdateAd(userAds, name);
+                        var reas = UpdateAd(userAds, name);
+                        if (reas)
+                        {
+                            return RedirectToRoute("EditVehicle", new { AdID = userAds.AdID });
+                        }
+                        else
+                        {
+                            return RedirectToRoute("EditVehicle", new { AdID = userAds.AdID });
+                        }
                     }
                     else
                     {
-                        UpdateAd(userAds, name);
+                        var reas = UpdateAd(userAds, name);
+                        if (reas)
+                        {
+                            return RedirectToRoute("EditVehicle", new { AdID = userAds.AdID });
+                        }
+                        else
+                        {
+                            return RedirectToRoute("EditVehicle", new { AdID = userAds.AdID });
+                        }
                     }
                 }
                 else
@@ -368,10 +384,9 @@ namespace JRCar.WebApp.Controllers
             {
                 throw ex;
             }
-            return RedirectToAction("EditVehicle",  userAds.AdID );
         }
 
-        public ActionResult UpdateAd(ValidationUserAds userAds, string name)
+        public bool UpdateAd(ValidationUserAds userAds, string name)
         {
             if (userAds != null)
             {
@@ -397,21 +412,21 @@ namespace JRCar.WebApp.Controllers
                     if (AdsPublish)
                     {
                         TempData["SuccessMsg"] = "Ad Update Successfully!";
-                        return RedirectToAction("EditVehicle",  userAds.AdID);
+                        return true;
                     }
                     else
                     {
                         TempData["ErrorMsg"] = "Error on Ads Publishing please try again!";
-                        return RedirectToAction("EditVehicle" , userAds.AdID);
+                        return false;
                     }
                 }
             }
             else
             {
                 ViewBag.Error = "Error please try again!";
-                return RedirectToAction("EditVehicle",  userAds.AdID);
+                return false;
             }
-            return RedirectToAction("EditVehicle" ,  userAds.AdID);
+            return false;
         }
 
         #endregion

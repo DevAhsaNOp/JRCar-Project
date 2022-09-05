@@ -19,6 +19,13 @@ namespace JRCar.WebApp
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Website", action = "Index", id = UrlParameter.Optional }
             );
+            
+            routes.MapRoute(
+                name: "EditVehicle",
+                url: "Ads/{action}/{AdID}",
+                defaults: new { controller = "Website", action = "EditVehicle", AdID = UrlParameter.Optional }
+            );
+
         }
     }
 }
