@@ -649,7 +649,7 @@ namespace JRCar.DAL.DBLayer
             _context.SaveChanges();
         }
 
-        public bool UpdateShowroomCarModels(tblCarModel model)
+        public int UpdateShowroomCarModels(tblCarModel model)
         {
             try
             {
@@ -663,10 +663,10 @@ namespace JRCar.DAL.DBLayer
                     model.UpdatedBy = model.UpdatedBy;
                     _context.Entry(model).State = System.Data.Entity.EntityState.Modified;
                     Save();
-                    return true;
+                    return model.ID;
                 }
                 else
-                    return false;
+                    return 0;
             }
             catch (Exception ex)
             {
@@ -674,7 +674,7 @@ namespace JRCar.DAL.DBLayer
             }
         }
 
-        public bool UpdateShowroomCarFeatures(tblCarFeature model)
+        public int UpdateShowroomCarFeatures(tblCarFeature model)
         {
             try
             {
@@ -688,10 +688,10 @@ namespace JRCar.DAL.DBLayer
                     model.UpdatedBy = model.UpdatedBy;
                     _context.Entry(model).State = System.Data.Entity.EntityState.Modified;
                     Save();
-                    return true;
+                    return model.ID;
                 }
                 else
-                    return false;
+                    return 0;
             }
             catch (Exception ex)
             {

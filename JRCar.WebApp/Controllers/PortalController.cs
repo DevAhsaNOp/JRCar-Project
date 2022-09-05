@@ -19,10 +19,12 @@ namespace JRCar.WebApp.Controllers
     public class PortalController : Controller
     {
         private UserRepo RepoObj;
+        private ShowroomAdsRepo RepoObj1;
 
         public PortalController()
         {
             RepoObj = new UserRepo();
+            RepoObj1 = new ShowroomAdsRepo();
         }
 
         public ActionResult Index()
@@ -275,9 +277,41 @@ namespace JRCar.WebApp.Controllers
         #endregion
 
         [AcceptVerbs(HttpVerbs.Get)]
-        //[Authorize(Roles = "Showroom")]
+        [Authorize(Roles = "Showroom")]
         public ActionResult PostNewAd()
         {
+            var year = new List<SelectListItem>();
+            year.Add(new SelectListItem() { Text = "---Select Model Year---", Value = "0", Disabled = true, Selected = true });
+            for (int i = -50; i <= 0; ++i)
+            {
+                year.Add(new SelectListItem() { Text = DateTime.Now.AddYears(i).ToString("yyyy"), Value = DateTime.Now.AddYears(i).ToString("yyyy") });
+            }
+            ViewBag.Years = year;
+
+            var condition = new List<SelectListItem>();
+            condition.Add(new SelectListItem() { Text = "---Select Condition---", Value = "0", Disabled = true, Selected = true });
+            condition.Add(new SelectListItem() { Text = "Used", Value = "1" });
+            condition.Add(new SelectListItem() { Text = "New", Value = "2" });
+            ViewBag.Conditions = condition;
+
+            var AllCategory = RepoObj1.GetAllCategory();
+            var categories = new List<SelectListItem>();
+            categories.Add(new SelectListItem() { Text = "---Select Category---", Value = "0", Disabled = true, Selected = true });
+            foreach (var item in AllCategory)
+            {
+                categories.Add(new SelectListItem() { Text = item.CategoryName, Value = item.CategoryID.ToString() });
+            }
+            ViewBag.Category = categories;
+
+            var AllMake = RepoObj1.GetAllMakes();
+            var makes = new List<SelectListItem>();
+            makes.Add(new SelectListItem() { Text = "---Select Model---", Value = "0", Disabled = true, Selected = true });
+            foreach (var item in AllMake)
+            {
+                makes.Add(new SelectListItem() { Text = item.Manufacturer_Name, Value = item.Manufacturer_Id.ToString() });
+            }
+            ViewBag.Make = makes;
+
             return View();
         }
     }

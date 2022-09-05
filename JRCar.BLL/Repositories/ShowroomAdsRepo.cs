@@ -252,65 +252,111 @@ namespace JRCar.BLL.Repositories
             return value?.Substring(0, Math.Min(value.Length, maxLength));
         }
 
-        //public bool UpdateUserAds(ValidateShowroomAds model)
-        //{
-        //    try
-        //    {
-        //        if (model != null)
-        //        {
-        //            tblAddress addrs = new tblAddress()
-        //            {
-        //                ID = model.AddressId.Value,
-        //                State = model.StateID,
-        //                City = model.CityID,
-        //                Area = model.AreaID,
-        //                CompleteAddress = (model.CompleteAddress == null) ? "" : model.CompleteAddress,
-        //            };
-        //            var addrsID = AddressRepoObj.UpdateAddress(addrs);
-        //            if (addrsID > 0)
-        //            {
-        //                tblUserAdd userAds = new tblUserAdd()
-        //                {
-        //                    ID = model.AdID,
-        //                    UserID = model.UserID,
-        //                    Model = model.Model,
-        //                    Year = model.Year,
-        //                    Condition = model.Condition,
-        //                    Title = model.Title,
-        //                    Description = model.Description,
-        //                    Price = model.Price,
-        //                    AddressId = addrsID,
-        //                    Latitude = model.Latitude,
-        //                    Longitude = model.Longitude,
-        //                    CategoryId = model.CategoryId,
-        //                    SubCategoryId = model.SubCategoryId,
-        //                    ManufacturerId = model.ManufacturerId,
-        //                    ManufacturerCarModelID = model.ManufacturerCarModelID
-        //                };
-        //                var cityName = AddressRepoObj.GetStateandCity(model.CityID);
-        //                var user = dbObj.UpdateUserAds(userAds, cityName.Item2);
-        //                if (user)
-        //                {
-        //                    return true;
-        //                }
-        //                else
-        //                {
-        //                    return false;
-        //                }
-        //            }
-        //            else
-        //                return false;
-        //        }
-        //        else
-        //        {
-        //            return false;
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw ex;
-        //    }
-        //}
+        public bool UpdateShowroomAds(ValidateShowroomAds model)
+        {
+            try
+            {
+                if (model != null)
+                {
+                    tblCarFeature carFeature = new tblCarFeature()
+                    {
+                        FuelType = model.FuelType,
+                        AirConditioned = model.AirConditioned,
+                        ABS = model.ABS,
+                        AirBag = model.AirBag,
+                        PowerWindows = model.PowerWindows,
+                        PowerMirrors = model.PowerMirrors,
+                        PowerLocks = model.PowerLocks,
+                        PowerSteering = model.PowerSteering,
+                        ImmobilizerKey = model.ImmobilizerKey,
+                        Radio = model.Radio,
+                        KeyLessEntry = model.KeyLessEntry,
+                        AlloyRims = model.AlloyRims,
+                        CoolBox = model.CoolBox,
+                        CruiseControl = model.CruiseControl,
+                        SunRoof = model.SunRoof,
+                        NavigationSystem = model.NavigationSystem,
+                        CreatedBy = model.tblShowroomID,
+                        RearAcVents = model.RearAcVents,
+                        FrontCam = model.FrontCam,
+                        CassetPlayer = model.CassetPlayer,
+                        DvdPlayer = model.DvdPlayer,
+                        SteeringSwitch = model.SteeringSwitch,
+                        CdPlayer = model.CdPlayer,
+                        ClimateControl = model.ClimateControl,
+                        FrontSpeaker = model.FrontSpeaker,
+                        HeatedSeat = model.HeatedSeat,
+                        RearCamera = model.RearCamera,
+                        RearSeatEntertain = model.RearSeatEntertain,
+                        RearSpeaker = model.RearSpeaker,
+                        BoxUsbAux = model.BoxUsbAux
+                    };
+                    var CarfeatureID = dbObj.UpdateShowroomCarFeatures(carFeature);
+
+                    if (CarfeatureID > 0)
+                    {
+                        tblCarModel carModel = new tblCarModel()
+                        {
+                            Year = model.Year,
+                            BodyType = model.BodyType,
+                            Seater = model.Seater,
+                            Assembly = model.Assembly,
+                            EngineCapacity = model.EngineCapacity,
+                            CarFeatureID = CarfeatureID,
+                            EngineType = model.EngineType,
+                            CreatedBy = model.tblShowroomID
+                        };
+                        var carModelId = dbObj.UpdateShowroomCarModels(carModel);
+
+                        if (carModelId > 0)
+                        {
+                            tblCar car = new tblCar()
+                            {
+                                CarModelID = carModelId,
+                                tblShowroomID = model.tblShowroomID,
+                                RegNo = model.RegNo,
+                                RegLocation = model.RegLocation,
+                                Condition = model.Condition,
+                                MaxSpeed = model.MaxSpeed,
+                                Color = model.Color,
+                                Price = model.Price,
+                                CreatedBy = model.tblShowroomID,
+                                GearType = model.GearType,
+                                CurrentLocation = model.CurrentLocation,
+                                Mileage = model.Mileage,
+                                Title = model.Title,
+                                Description = model.Description,
+                                Transmission = model.Transmission,
+                                AddressId = model.AddressId,
+                                ManufacturerId = model.ManufacturerId,
+                                ManufacturerCarModelID = model.ManufacturerCarModelID,
+                                CategoryId = model.CategoryId,
+                                SubCategoryId = model.SubCategoryId
+                            };
+                            var cityName = AddressRepoObj.GetStateandCity(Convert.ToInt32(model.tblAddress.City));
+                            var CarId = dbObj.UpdateShowroomAds(car, cityName.Item2);
+                            
+                            if (CarId)
+                                return true;
+                            else
+                                return false;
+                        }
+                        else
+                            return false;
+                    }
+                    else
+                        return false;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
 
         public bool InsertShowroomAdsImages(tblCarImage model)
         {

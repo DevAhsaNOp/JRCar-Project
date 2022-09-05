@@ -13,6 +13,8 @@
     <link rel="stylesheet" href="~/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="~/dist/css/adminlte.min.css">
+    <link rel="stylesheet" href="~/plugins/select2/css/select2.min.css">
+    <link rel="stylesheet" href="~/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
     <style>
         input:-webkit-autofill,
         input:-webkit-autofill:hover,
@@ -64,8 +66,8 @@
         }
     </style>
 </head>
-@*@if (User.Identity.IsAuthenticated)
-{*@
+@if (User.Identity.IsAuthenticated)
+{
     <body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
         <div class="wrapper">
 
@@ -101,6 +103,9 @@
         <script src="~/plugins/jquery/jquery.min.js"></script>
         <!-- Bootstrap -->
         <script src="~/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <!-- Select2 -->
+        <script src="~/plugins/select2/js/select2.full.min.js"></script>
+        <script src="~/plugins/select2/js/select2.min.js"></script>
         <!-- overlayScrollbars -->
         <script src="~/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
         <!-- AdminLTE App -->
@@ -120,9 +125,6 @@
         <script src="~/scripts/jquery.validate.min.js"></script>
         <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
         <script src="~/scripts/jquery.unobtrusive-ajax.min.js"></script>
-        <script src="~/scripts/jquery-3.6.0.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-        @*<script src="~/Scripts/bootstrap.min.js"></script>*@
         <script src="~/scripts/jquery.signalR-2.4.3.min.js"></script>
         <script src="~/signalr/hubs"></script>
         @* Add css  *@
@@ -130,6 +132,64 @@
         @* Add jquery code for Get Notification & setup signalr *@
         <script type="text/javascript">
             $(document).ready(function () {
+                $('.select2').select2()
+
+                //Initialize Select2 Elements
+                $('.select2bs4').select2({
+                    theme: 'bootstrap4'
+                })
+
+                $('#CategoryD').show();
+                $('#SubCategoryD').hide();
+                $('#ManufacD').hide();
+                $('#ModelD').hide();
+                $('#ModelYearD').hide();
+                //$('#CondD').hide();
+
+                $("#SubCategoryName").on("change", function () {
+                    var ar = $('#SubCategoryName').select2('data');
+                    var da = ar[0].id
+                    if (da > 0) {
+                        $('#ModelYearD').show();
+                    }
+                });
+
+                $("#Year").on("change", function () {
+                    var ar = $('#Year').select2('data');
+                    var da = ar[0].id
+                    if (da > 0) {
+                        $('#ManufacD').show();
+                    }
+                });
+
+                $("#CategoryName").change(function () {
+                    var CategoryId = $(this).val();
+                    $.ajax({
+                        type: "post",
+                        url: "/Website/GetSubCategoryList?CategoryId=" + CategoryId,
+                        contentType: "html",
+                        success: function (response) {
+                            $('#SubCategoryD').show();
+                            $("#SubCategoryName").empty();
+                            $("#SubCategoryName").append(response);
+                        }
+                    })
+                })
+
+                $("#Manufacturer_Name").change(function () {
+                    var MakeId = $(this).val();
+                    $.ajax({
+                        type: "post",
+                        url: "/Website/GetModelsList?MakeId=" + MakeId,
+                        contentType: "html",
+                        success: function (response) {
+                            $('#ModelD').show();
+                            $("#Manufacturer_CarModelName").empty();
+                            $("#Manufacturer_CarModelName").append(response);
+                        }
+                    })
+                })
+
                 // SignalR js code for start hub and send receive notification
                 var notificationHub = $.connection.notificationHub;
                 $.connection.hub.start().done(function () {
@@ -279,5 +339,5 @@
 
         </script>
     </body>
-@*}*@
+}
 </html>
