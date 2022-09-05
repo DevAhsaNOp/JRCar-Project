@@ -12,7 +12,6 @@
         <EntityTypeShape EntityType="jrcarModel.tblAnnouncement" Width="1.5" PointX="9.75" PointY="17.625" />
         <EntityTypeShape EntityType="jrcarModel.tblBlog" Width="1.5" PointX="7.5" PointY="40.5" />
         <EntityTypeShape EntityType="jrcarModel.tblCarFeature" Width="1.5" PointX="6" PointY="48.625" />
-        <EntityTypeShape EntityType="jrcarModel.tblCarImage" Width="1.5" PointX="12.75" PointY="33.375" />
         <EntityTypeShape EntityType="jrcarModel.tblCar" Width="1.5" PointX="10.5" PointY="29.625" />
         <EntityTypeShape EntityType="jrcarModel.tblCategory" Width="1.5" PointX="6" PointY="15.625" />
         <EntityTypeShape EntityType="jrcarModel.tblCity" Width="1.5" PointX="3.75" PointY="37.5" />
@@ -44,7 +43,6 @@
         <AssociationConnector Association="jrcarModel.FK_dbo_tblAdmins_dbo_tblRoles_tblRoleID" />
         <AssociationConnector Association="jrcarModel.FK_dbo_tblAnnouncements_dbo_tblClients_ClientID" />
         <AssociationConnector Association="jrcarModel.FK_dbo_tblBlogs_dbo_tblShowrooms_Showrooms_ID" />
-        <AssociationConnector Association="jrcarModel.FK_dbo_tblCarImages_dbo_tblCars_CarID" />
         <AssociationConnector Association="jrcarModel.FK_dbo_tblCars_dbo_tblShowrooms_tblShowroomID" />
         <AssociationConnector Association="jrcarModel.FK_dbo_tblFavAdds_dbo_tblCars_CarID" />
         <AssociationConnector Association="jrcarModel.FK_tblCars_tblCategory" />
@@ -81,6 +79,8 @@
         <AssociationConnector Association="jrcarModel.FK_tblAppointments_tblShowrooms" />
         <AssociationConnector Association="jrcarModel.FK_tblAppointments_tblUserAdds" />
         <AssociationConnector Association="jrcarModel.FK_tblAppointments_tblUsers" />
+        <EntityTypeShape EntityType="jrcarModel.tblCarImage" Width="1.5" PointX="12.75" PointY="32.75" />
+        <AssociationConnector Association="jrcarModel.FK_dbo_tblCarImages_dbo_tblCars_CarID" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

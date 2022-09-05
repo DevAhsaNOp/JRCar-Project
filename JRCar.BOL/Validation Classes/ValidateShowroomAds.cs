@@ -40,6 +40,47 @@ namespace JRCar.BOL.Validation_Classes
         [Display(Name = "Price")]
         public string Price { get; set; }
 
+        [Display(Name = "Latitude")]
+        public string Latitude { get; set; }
+
+        [Display(Name = "Longitude")]
+        public string Longitude { get; set; }
+
+        [Required(ErrorMessage = "*")]
+        [Display(Name = "State")]
+        [Range(1, Int32.MaxValue, ErrorMessage = "Must select a State")]
+        public string State { get; set; }
+
+        [Required(ErrorMessage = "*")]
+        [Display(Name = "City")]
+        [Range(1, Int32.MaxValue, ErrorMessage = "Must select a City")]
+        public string City { get; set; }
+
+        [Required(ErrorMessage = "*")]
+        [Display(Name = "Area")]
+        [Range(1, Int32.MaxValue, ErrorMessage = "Must select a Area")]
+        public string Area { get; set; }
+
+        [Required(ErrorMessage = "*")]
+        [Display(Name = "State")]
+        [Range(1, Int32.MaxValue, ErrorMessage = "Must select a State")]
+        public int StateID { get; set; }
+
+        [Required(ErrorMessage = "*")]
+        [Display(Name = "City")]
+        [Range(1, Int32.MaxValue, ErrorMessage = "Must select a City")]
+        public int CityID { get; set; }
+
+        [Required(ErrorMessage = "*")]
+        [Display(Name = "Area")]
+        [Range(1, Int32.MaxValue, ErrorMessage = "Must select a Area")]
+        public int AreaID { get; set; }
+
+        [Display(Name = "Address")]
+        public string CompleteAddress { get; set; }
+
+        public string ShowroomRole { get; set; }
+
         public int tblCarCreatedBy { get; set; }
 
         public string tblCarCreatedOn { get; set; }
@@ -277,7 +318,25 @@ namespace JRCar.BOL.Validation_Classes
 
         public bool CarFeatureIsactive { get; set; }
 
+        public string ShowroomImage { get; set; }
+
+        public string ShowroomName { get; set; }
+
+        public string ShowroomEmail { get; set; }
+
+        public string ShowroomNumber { get; set; }
+
+        public System.DateTime ShowroomCreatedOn { get; set; }
+
+        public string ShowroomURL { get; set; }
+
         public bool CarFeatureIsarchive { get; set; }
+
+        public int tblCarImagesID { get; set; }
+
+        public string CarImage { get; set; }
+
+        public int tblCarImagesCarID { get; set; }
 
         public virtual tblCarFeature tblCarFeature { get; set; }
 
@@ -304,5 +363,6 @@ namespace JRCar.BOL.Validation_Classes
         public virtual tblSubCategory tblSubCategory { get; set; }
 
         public virtual tblCarModel tblCarModel { get; set; }
+
     }
 }

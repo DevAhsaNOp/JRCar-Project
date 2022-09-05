@@ -82,7 +82,6 @@ namespace JRCar.BOL.Validation_Classes
         [Range(1, Int32.MaxValue, ErrorMessage = "Must select a State")]
         public string State { get; set; }
 
-
         [Required(ErrorMessage = "*")]
         [Display(Name = "City")]
         [Range(1, Int32.MaxValue, ErrorMessage = "Must select a City")]
@@ -97,7 +96,6 @@ namespace JRCar.BOL.Validation_Classes
         [Display(Name = "State")]
         [Range(1, Int32.MaxValue, ErrorMessage = "Must select a State")]
         public int StateID { get; set; }
-
 
         [Required(ErrorMessage = "*")]
         [Display(Name = "City")]
