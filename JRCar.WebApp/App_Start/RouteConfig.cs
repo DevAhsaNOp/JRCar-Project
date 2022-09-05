@@ -22,7 +22,7 @@ namespace JRCar.WebApp
             
             routes.MapRoute(
                 name: "EditVehicle",
-                url: "Ads/{action}/{AdID}",
+                url: "Ads/EditVehicle/{AdID}",
                 defaults: new { controller = "Website", action = "EditVehicle", AdID = UrlParameter.Optional }
             );
 

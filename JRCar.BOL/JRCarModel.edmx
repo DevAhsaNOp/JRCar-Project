@@ -72,12 +72,15 @@
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Email" Type="varchar" MaxLength="100" Nullable="false" />
-          <Property Name="CarID" Type="int" Nullable="false" />
+          <Property Name="UserInterestedID" Type="int" />
+          <Property Name="ShowroomInterestedID" Type="int" />
+          <Property Name="UserCarID" Type="int" />
+          <Property Name="ShowroomCarID" Type="int" />
           <Property Name="Number" Type="varchar" MaxLength="11" Nullable="false" />
           <Property Name="Purpose" Type="varchar" MaxLength="150" Nullable="false" />
-          <Property Name="Date" Type="datetime" Nullable="false" />
-          <Property Name="Time" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="Date" Type="date" Nullable="false" />
+          <Property Name="Time" Type="time" Precision="7" Nullable="false" />
+          <Property Name="Isactive" Type="bit" Nullable="false" />
           <Property Name="CreatedBy" Type="int" Nullable="false" />
           <Property Name="CreatedOn" Type="datetime" Nullable="false" />
           <Property Name="UpdatedOn" Type="datetime" />
@@ -472,20 +475,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_dbo_tblAppointments_dbo_tblCars_CarID">
-          <End Role="tblCars" Type="Self.tblCars" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="tblAppointments" Type="Self.tblAppointments" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="tblCars">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="tblAppointments">
-              <PropertyRef Name="CarID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_dbo_tblBlogs_dbo_tblShowrooms_Showrooms_ID">
           <End Role="tblShowrooms" Type="Self.tblShowrooms" Multiplicity="0..1" />
           <End Role="tblBlogs" Type="Self.tblBlogs" Multiplicity="*" />
@@ -727,6 +716,54 @@
             </Principal>
             <Dependent Role="tblAddress">
               <PropertyRef Name="Area" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblAppointments_tblCars">
+          <End Role="tblCars" Type="Self.tblCars" Multiplicity="0..1" />
+          <End Role="tblAppointments" Type="Self.tblAppointments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblCars">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="tblAppointments">
+              <PropertyRef Name="ShowroomCarID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblAppointments_tblShowrooms">
+          <End Role="tblShowrooms" Type="Self.tblShowrooms" Multiplicity="0..1" />
+          <End Role="tblAppointments" Type="Self.tblAppointments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblShowrooms">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="tblAppointments">
+              <PropertyRef Name="ShowroomInterestedID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblAppointments_tblUserAdds">
+          <End Role="tblUserAdds" Type="Self.tblUserAdds" Multiplicity="0..1" />
+          <End Role="tblAppointments" Type="Self.tblAppointments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblUserAdds">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="tblAppointments">
+              <PropertyRef Name="UserCarID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblAppointments_tblUsers">
+          <End Role="tblUsers" Type="Self.tblUsers" Multiplicity="0..1" />
+          <End Role="tblAppointments" Type="Self.tblAppointments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblUsers">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="tblAppointments">
+              <PropertyRef Name="UserInterestedID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1011,10 +1048,6 @@
             <End Role="tblClients" EntitySet="tblClients" />
             <End Role="tblAnnouncements" EntitySet="tblAnnouncements" />
           </AssociationSet>
-          <AssociationSet Name="FK_dbo_tblAppointments_dbo_tblCars_CarID" Association="Self.FK_dbo_tblAppointments_dbo_tblCars_CarID">
-            <End Role="tblCars" EntitySet="tblCars" />
-            <End Role="tblAppointments" EntitySet="tblAppointments" />
-          </AssociationSet>
           <AssociationSet Name="FK_dbo_tblBlogs_dbo_tblShowrooms_Showrooms_ID" Association="Self.FK_dbo_tblBlogs_dbo_tblShowrooms_Showrooms_ID">
             <End Role="tblShowrooms" EntitySet="tblShowrooms" />
             <End Role="tblBlogs" EntitySet="tblBlogs" />
@@ -1086,6 +1119,22 @@
           <AssociationSet Name="FK_tblAddress_tblZone" Association="Self.FK_tblAddress_tblZone">
             <End Role="tblZone" EntitySet="tblZone" />
             <End Role="tblAddress" EntitySet="tblAddress" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblAppointments_tblCars" Association="Self.FK_tblAppointments_tblCars">
+            <End Role="tblCars" EntitySet="tblCars" />
+            <End Role="tblAppointments" EntitySet="tblAppointments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblAppointments_tblShowrooms" Association="Self.FK_tblAppointments_tblShowrooms">
+            <End Role="tblShowrooms" EntitySet="tblShowrooms" />
+            <End Role="tblAppointments" EntitySet="tblAppointments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblAppointments_tblUserAdds" Association="Self.FK_tblAppointments_tblUserAdds">
+            <End Role="tblUserAdds" EntitySet="tblUserAdds" />
+            <End Role="tblAppointments" EntitySet="tblAppointments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblAppointments_tblUsers" Association="Self.FK_tblAppointments_tblUsers">
+            <End Role="tblUsers" EntitySet="tblUsers" />
+            <End Role="tblAppointments" EntitySet="tblAppointments" />
           </AssociationSet>
           <AssociationSet Name="FK_tblCars_tblAddress" Association="Self.FK_tblCars_tblAddress">
             <End Role="tblAddress" EntitySet="tblAddress" />
@@ -1178,7 +1227,6 @@
           <EntitySet Name="tblAddresses" EntityType="jrcarModel.tblAddress" />
           <EntitySet Name="tblAdmins" EntityType="jrcarModel.tblAdmin" />
           <EntitySet Name="tblAnnouncements" EntityType="jrcarModel.tblAnnouncement" />
-          <EntitySet Name="tblAppointments" EntityType="jrcarModel.tblAppointment" />
           <EntitySet Name="tblBlogs" EntityType="jrcarModel.tblBlog" />
           <EntitySet Name="tblCarFeatures" EntityType="jrcarModel.tblCarFeature" />
           <EntitySet Name="tblCarImages" EntityType="jrcarModel.tblCarImage" />
@@ -1235,10 +1283,6 @@
           <AssociationSet Name="FK_dbo_tblAnnouncements_dbo_tblClients_ClientID" Association="jrcarModel.FK_dbo_tblAnnouncements_dbo_tblClients_ClientID">
             <End Role="tblClient" EntitySet="tblClients" />
             <End Role="tblAnnouncement" EntitySet="tblAnnouncements" />
-          </AssociationSet>
-          <AssociationSet Name="FK_dbo_tblAppointments_dbo_tblCars_CarID" Association="jrcarModel.FK_dbo_tblAppointments_dbo_tblCars_CarID">
-            <End Role="tblCar" EntitySet="tblCars" />
-            <End Role="tblAppointment" EntitySet="tblAppointments" />
           </AssociationSet>
           <AssociationSet Name="FK_dbo_tblBlogs_dbo_tblShowrooms_Showrooms_ID" Association="jrcarModel.FK_dbo_tblBlogs_dbo_tblShowrooms_Showrooms_ID">
             <End Role="tblShowroom" EntitySet="tblShowrooms" />
@@ -1369,7 +1413,24 @@
             <End Role="tblCarModel" EntitySet="tblCarModels" />
             <End Role="tblCar" EntitySet="tblCars" />
           </AssociationSet>
-        </EntityContainer>
+          <EntitySet Name="tblAppointments" EntityType="jrcarModel.tblAppointment" />
+          <AssociationSet Name="FK_tblAppointments_tblCars" Association="jrcarModel.FK_tblAppointments_tblCars">
+            <End Role="tblCar" EntitySet="tblCars" />
+            <End Role="tblAppointment" EntitySet="tblAppointments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblAppointments_tblShowrooms" Association="jrcarModel.FK_tblAppointments_tblShowrooms">
+            <End Role="tblShowroom" EntitySet="tblShowrooms" />
+            <End Role="tblAppointment" EntitySet="tblAppointments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblAppointments_tblUserAdds" Association="jrcarModel.FK_tblAppointments_tblUserAdds">
+            <End Role="tblUserAdd" EntitySet="tblUserAdds" />
+            <End Role="tblAppointment" EntitySet="tblAppointments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblAppointments_tblUsers" Association="jrcarModel.FK_tblAppointments_tblUsers">
+            <End Role="tblUser" EntitySet="tblUsers" />
+            <End Role="tblAppointment" EntitySet="tblAppointments" />
+          </AssociationSet>
+          </EntityContainer>
         <EntityType Name="C__MigrationHistory">
           <Key>
             <PropertyRef Name="MigrationId" />
@@ -1438,24 +1499,6 @@
           <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="IsRead" Type="Boolean" />
           <NavigationProperty Name="tblClient" Relationship="jrcarModel.FK_dbo_tblAnnouncements_dbo_tblClients_ClientID" FromRole="tblAnnouncement" ToRole="tblClient" />
-        </EntityType>
-        <EntityType Name="tblAppointment">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Email" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="CarID" Type="Int32" Nullable="false" />
-          <Property Name="Number" Type="String" Nullable="false" MaxLength="11" FixedLength="false" Unicode="false" />
-          <Property Name="Purpose" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
-          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="Time" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Active" Type="Boolean" Nullable="false" />
-          <Property Name="CreatedBy" Type="Int32" Nullable="false" />
-          <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="UpdatedOn" Type="DateTime" Precision="3" />
-          <Property Name="UpdatedBy" Type="Int32" />
-          <NavigationProperty Name="tblCar" Relationship="jrcarModel.FK_dbo_tblAppointments_dbo_tblCars_CarID" FromRole="tblAppointment" ToRole="tblCar" />
         </EntityType>
         <EntityType Name="tblBlog">
           <Key>
@@ -1561,7 +1604,6 @@
           <Property Name="CategoryId" Type="Int32" />
           <Property Name="SubCategoryId" Type="Int32" />
           <NavigationProperty Name="tblAddress" Relationship="jrcarModel.FK_tblCars_tblAddress" FromRole="tblCar" ToRole="tblAddress" />
-          <NavigationProperty Name="tblAppointments" Relationship="jrcarModel.FK_dbo_tblAppointments_dbo_tblCars_CarID" FromRole="tblCar" ToRole="tblAppointment" />
           <NavigationProperty Name="tblCarImages" Relationship="jrcarModel.FK_dbo_tblCarImages_dbo_tblCars_CarID" FromRole="tblCar" ToRole="tblCarImage" />
           <NavigationProperty Name="tblShowroom" Relationship="jrcarModel.FK_dbo_tblCars_dbo_tblShowrooms_tblShowroomID" FromRole="tblCar" ToRole="tblShowroom" />
           <NavigationProperty Name="tblFavAdds" Relationship="jrcarModel.FK_dbo_tblFavAdds_dbo_tblCars_CarID" FromRole="tblCar" ToRole="tblFavAdd" />
@@ -1570,6 +1612,7 @@
           <NavigationProperty Name="tblManufacturer" Relationship="jrcarModel.FK_tblCars_tblManufacturer" FromRole="tblCar" ToRole="tblManufacturer" />
           <NavigationProperty Name="tblSubCategory" Relationship="jrcarModel.FK_tblCars_tblSubCategory" FromRole="tblCar" ToRole="tblSubCategory" />
           <NavigationProperty Name="tblCarModel" Relationship="jrcarModel.FK_dbo_tblCars_dbo_tblCarModels_CarModelID" FromRole="tblCar" ToRole="tblCarModel" />
+          <NavigationProperty Name="tblAppointments" Relationship="jrcarModel.FK_tblAppointments_tblCars" FromRole="tblCar" ToRole="tblAppointment" />
         </EntityType>
         <EntityType Name="tblCategory">
           <Key>
@@ -1736,6 +1779,7 @@
           <NavigationProperty Name="tblNotifications" Relationship="jrcarModel.FK_tblNotification_tblShowrooms" FromRole="tblShowroom" ToRole="tblNotification" />
           <NavigationProperty Name="tblRole" Relationship="jrcarModel.FK_tblShowrooms_tblRoles" FromRole="tblShowroom" ToRole="tblRole" />
           <NavigationProperty Name="tblUnion" Relationship="jrcarModel.FK_tblShowrooms_tblUnions" FromRole="tblShowroom" ToRole="tblUnion" />
+          <NavigationProperty Name="tblAppointments" Relationship="jrcarModel.FK_tblAppointments_tblShowrooms" FromRole="tblShowroom" ToRole="tblAppointment" />
         </EntityType>
         <EntityType Name="tblState">
           <Key>
@@ -1832,6 +1876,7 @@
           <NavigationProperty Name="tblSubCategory" Relationship="jrcarModel.FK_tblUserAdds_tblSubCategory" FromRole="tblUserAdd" ToRole="tblSubCategory" />
           <NavigationProperty Name="tblUserAddImages" Relationship="jrcarModel.FK_dbo_tblUserAddImages_dbo_tblUserAdds_tblUserAddID" FromRole="tblUserAdd" ToRole="tblUserAddImage" />
           <NavigationProperty Name="tblUser" Relationship="jrcarModel.FK_dbo_tblUserAdds_dbo_tblUsers_UserID" FromRole="tblUserAdd" ToRole="tblUser" />
+          <NavigationProperty Name="tblAppointments" Relationship="jrcarModel.FK_tblAppointments_tblUserAdds" FromRole="tblUserAdd" ToRole="tblAppointment" />
         </EntityType>
         <EntityType Name="tblUser">
           <Key>
@@ -1857,6 +1902,7 @@
           <NavigationProperty Name="tblSearchHists" Relationship="jrcarModel.FK_dbo_tblSearchHists_dbo_tblUsers_UserID" FromRole="tblUser" ToRole="tblSearchHist" />
           <NavigationProperty Name="tblTokens" Relationship="jrcarModel.FK_dbo_tblTokens_dbo_tblUsers_UserID" FromRole="tblUser" ToRole="tblToken" />
           <NavigationProperty Name="tblUserAdds" Relationship="jrcarModel.FK_dbo_tblUserAdds_dbo_tblUsers_UserID" FromRole="tblUser" ToRole="tblUserAdd" />
+          <NavigationProperty Name="tblAppointments" Relationship="jrcarModel.FK_tblAppointments_tblUsers" FromRole="tblUser" ToRole="tblAppointment" />
         </EntityType>
         <EntityType Name="tblZone">
           <Key>
@@ -1967,20 +2013,6 @@
             </Principal>
             <Dependent Role="tblAnnouncement">
               <PropertyRef Name="ClientID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_dbo_tblAppointments_dbo_tblCars_CarID">
-          <End Type="jrcarModel.tblCar" Role="tblCar" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="jrcarModel.tblAppointment" Role="tblAppointment" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="tblCar">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="tblAppointment">
-              <PropertyRef Name="CarID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2417,6 +2449,78 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="tblAppointment">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Email" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="UserInterestedID" Type="Int32" />
+          <Property Name="ShowroomInterestedID" Type="Int32" />
+          <Property Name="UserCarID" Type="Int32" />
+          <Property Name="ShowroomCarID" Type="Int32" />
+          <Property Name="Number" Type="String" Nullable="false" MaxLength="11" FixedLength="false" Unicode="false" />
+          <Property Name="Purpose" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Time" Type="Time" Nullable="false" Precision="7" />
+          <Property Name="Isactive" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedBy" Type="Int32" Nullable="false" />
+          <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UpdatedOn" Type="DateTime" Precision="3" />
+          <Property Name="UpdatedBy" Type="Int32" />
+          <NavigationProperty Name="tblCar" Relationship="jrcarModel.FK_tblAppointments_tblCars" FromRole="tblAppointment" ToRole="tblCar" />
+          <NavigationProperty Name="tblShowroom" Relationship="jrcarModel.FK_tblAppointments_tblShowrooms" FromRole="tblAppointment" ToRole="tblShowroom" />
+          <NavigationProperty Name="tblUserAdd" Relationship="jrcarModel.FK_tblAppointments_tblUserAdds" FromRole="tblAppointment" ToRole="tblUserAdd" />
+          <NavigationProperty Name="tblUser" Relationship="jrcarModel.FK_tblAppointments_tblUsers" FromRole="tblAppointment" ToRole="tblUser" />
+        </EntityType>
+        <Association Name="FK_tblAppointments_tblCars">
+          <End Type="jrcarModel.tblCar" Role="tblCar" Multiplicity="0..1" />
+          <End Type="jrcarModel.tblAppointment" Role="tblAppointment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblCar">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="tblAppointment">
+              <PropertyRef Name="ShowroomCarID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblAppointments_tblShowrooms">
+          <End Type="jrcarModel.tblShowroom" Role="tblShowroom" Multiplicity="0..1" />
+          <End Type="jrcarModel.tblAppointment" Role="tblAppointment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblShowroom">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="tblAppointment">
+              <PropertyRef Name="ShowroomInterestedID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblAppointments_tblUserAdds">
+          <End Type="jrcarModel.tblUserAdd" Role="tblUserAdd" Multiplicity="0..1" />
+          <End Type="jrcarModel.tblAppointment" Role="tblAppointment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblUserAdd">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="tblAppointment">
+              <PropertyRef Name="UserCarID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblAppointments_tblUsers">
+          <End Type="jrcarModel.tblUser" Role="tblUser" Multiplicity="0..1" />
+          <End Type="jrcarModel.tblAppointment" Role="tblAppointment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblUser">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="tblAppointment">
+              <PropertyRef Name="UserInterestedID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2484,24 +2588,6 @@
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Title" ColumnName="Title" />
                 <ScalarProperty Name="ClientID" ColumnName="ClientID" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="tblAppointments">
-            <EntityTypeMapping TypeName="jrcarModel.tblAppointment">
-              <MappingFragment StoreEntitySet="tblAppointments">
-                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
-                <ScalarProperty Name="UpdatedOn" ColumnName="UpdatedOn" />
-                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="Active" ColumnName="Active" />
-                <ScalarProperty Name="Time" ColumnName="Time" />
-                <ScalarProperty Name="Date" ColumnName="Date" />
-                <ScalarProperty Name="Purpose" ColumnName="Purpose" />
-                <ScalarProperty Name="Number" ColumnName="Number" />
-                <ScalarProperty Name="CarID" ColumnName="CarID" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -2889,6 +2975,27 @@
                 <ScalarProperty Name="Seater" ColumnName="Seater" />
                 <ScalarProperty Name="BodyType" ColumnName="BodyType" />
                 <ScalarProperty Name="Year" ColumnName="Year" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblAppointments">
+            <EntityTypeMapping TypeName="jrcarModel.tblAppointment">
+              <MappingFragment StoreEntitySet="tblAppointments">
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+                <ScalarProperty Name="UpdatedOn" ColumnName="UpdatedOn" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="Isactive" ColumnName="Isactive" />
+                <ScalarProperty Name="Time" ColumnName="Time" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Purpose" ColumnName="Purpose" />
+                <ScalarProperty Name="Number" ColumnName="Number" />
+                <ScalarProperty Name="ShowroomCarID" ColumnName="ShowroomCarID" />
+                <ScalarProperty Name="UserCarID" ColumnName="UserCarID" />
+                <ScalarProperty Name="ShowroomInterestedID" ColumnName="ShowroomInterestedID" />
+                <ScalarProperty Name="UserInterestedID" ColumnName="UserInterestedID" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>

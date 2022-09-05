@@ -4,13 +4,12 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="d4b3004bd5f1413399f14f09a678d153" Name="Diagram1" ZoomLevel="90" DisplayType="true">
+      <Diagram DiagramId="d4b3004bd5f1413399f14f09a678d153" Name="Diagram1" ZoomLevel="88" DisplayType="true">
         <EntityTypeShape EntityType="jrcarModel.C__MigrationHistory" Width="1.5" PointX="0.75" PointY="0.75" />
         <EntityTypeShape EntityType="jrcarModel.sysdiagram" Width="1.5" PointX="2.75" PointY="0.75" />
         <EntityTypeShape EntityType="jrcarModel.tblAddress" Width="1.5" PointX="6" PointY="35.5" />
         <EntityTypeShape EntityType="jrcarModel.tblAdmin" Width="1.5" PointX="3" PointY="12.875" />
         <EntityTypeShape EntityType="jrcarModel.tblAnnouncement" Width="1.5" PointX="9.75" PointY="17.625" />
-        <EntityTypeShape EntityType="jrcarModel.tblAppointment" Width="1.5" PointX="12.75" PointY="36" />
         <EntityTypeShape EntityType="jrcarModel.tblBlog" Width="1.5" PointX="7.5" PointY="40.5" />
         <EntityTypeShape EntityType="jrcarModel.tblCarFeature" Width="1.5" PointX="6" PointY="48.625" />
         <EntityTypeShape EntityType="jrcarModel.tblCarImage" Width="1.5" PointX="12.75" PointY="33.375" />
@@ -44,7 +43,6 @@
         <AssociationConnector Association="jrcarModel.FK_tblUserAdds_tblAddress" />
         <AssociationConnector Association="jrcarModel.FK_dbo_tblAdmins_dbo_tblRoles_tblRoleID" />
         <AssociationConnector Association="jrcarModel.FK_dbo_tblAnnouncements_dbo_tblClients_ClientID" />
-        <AssociationConnector Association="jrcarModel.FK_dbo_tblAppointments_dbo_tblCars_CarID" />
         <AssociationConnector Association="jrcarModel.FK_dbo_tblBlogs_dbo_tblShowrooms_Showrooms_ID" />
         <AssociationConnector Association="jrcarModel.FK_dbo_tblCarImages_dbo_tblCars_CarID" />
         <AssociationConnector Association="jrcarModel.FK_dbo_tblCars_dbo_tblShowrooms_tblShowroomID" />
@@ -78,7 +76,12 @@
         <EntityTypeShape EntityType="jrcarModel.tblCarModel" Width="1.5" PointX="8.25" PointY="50.625" />
         <AssociationConnector Association="jrcarModel.FK_dbo_tblCarModels_dbo_tblCarFeatures_CarFeatureID" />
         <AssociationConnector Association="jrcarModel.FK_dbo_tblCars_dbo_tblCarModels_CarModelID" />
-      </Diagram>
+        <EntityTypeShape EntityType="jrcarModel.tblAppointment" Width="1.5" PointX="15.75" PointY="26.125" />
+        <AssociationConnector Association="jrcarModel.FK_tblAppointments_tblCars" />
+        <AssociationConnector Association="jrcarModel.FK_tblAppointments_tblShowrooms" />
+        <AssociationConnector Association="jrcarModel.FK_tblAppointments_tblUserAdds" />
+        <AssociationConnector Association="jrcarModel.FK_tblAppointments_tblUsers" />
+        </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>

@@ -18,6 +18,7 @@ namespace JRCar.BOL
         public tblUserAdd()
         {
             this.tblUserAddImages = new HashSet<tblUserAddImage>();
+            this.tblAppointments = new HashSet<tblAppointment>();
         }
     
         public int ID { get; set; }
@@ -49,5 +50,7 @@ namespace JRCar.BOL
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tblUserAddImage> tblUserAddImages { get; set; }
         public virtual tblUser tblUser { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tblAppointment> tblAppointments { get; set; }
     }
 }

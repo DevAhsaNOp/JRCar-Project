@@ -351,26 +351,26 @@ namespace JRCar.WebApp.Controllers
                                 file.SaveAs(Path.Combine(Server.MapPath(name), Guid.NewGuid() + Path.GetExtension(file.FileName)));
                             }
                         }
-                        var reas = UpdateAd(userAds, name);
+                        var reas = UpdateAd(userAds);
                         if (reas)
                         {
-                            return RedirectToRoute("EditVehicle", new { AdID = userAds.AdID });
+                            return RedirectToRoute("EditVehicle", new { userAds.AdID });
                         }
                         else
                         {
-                            return RedirectToRoute("EditVehicle", new { AdID = userAds.AdID });
+                            return RedirectToRoute("EditVehicle", new { userAds.AdID });
                         }
                     }
                     else
                     {
-                        var reas = UpdateAd(userAds, name);
+                        var reas = UpdateAd(userAds);
                         if (reas)
                         {
-                            return RedirectToRoute("EditVehicle", new { AdID = userAds.AdID });
+                            return RedirectToRoute("EditVehicle", new { userAds.AdID });
                         }
                         else
                         {
-                            return RedirectToRoute("EditVehicle", new { AdID = userAds.AdID });
+                            return RedirectToRoute("EditVehicle", new { userAds.AdID });
                         }
                     }
                 }
@@ -386,7 +386,7 @@ namespace JRCar.WebApp.Controllers
             }
         }
 
-        public bool UpdateAd(ValidationUserAds userAds, string name)
+        public bool UpdateAd(ValidationUserAds userAds)
         {
             if (userAds != null)
             {
@@ -395,7 +395,6 @@ namespace JRCar.WebApp.Controllers
                     userAds.Condition = (userAds.Condition == "1") ? "Used" : "New";
                     var area = AddressRepoObj.GetZoneLatLong(userAds.AreaID);
                     userAds.UserID = Convert.ToInt32(Session["Id"]);
-                    userAds.CarImage = name;
                     userAds.AddressId = Convert.ToInt32(Session["AddressID"]);
                     userAds.AdID = Convert.ToInt32(Session["AdID"]);
                     userAds.StateID = userAds.StateID;

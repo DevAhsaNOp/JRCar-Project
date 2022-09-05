@@ -101,6 +101,7 @@ namespace JRCar.DAL.DBLayer
         {
             var reas = _context.tblUserAdds.OrderBy(Ad => Ad.CreatedOn).Where(x => x.Isactive == true).Select(s => new ValidationUserAds()
             {
+                AdID = s.ID,
                 Title = s.Title,
                 Price = s.Price,
                 Year = s.Year,
@@ -118,6 +119,7 @@ namespace JRCar.DAL.DBLayer
         {
             return _context.tblUserAdds.Where(x => x.Isactive == false).Select(s => new ValidationUserAds()
             {
+                AdID = s.ID,
                 Title = s.Title,
                 Price = s.Price,
                 Year = s.Year,
@@ -134,6 +136,7 @@ namespace JRCar.DAL.DBLayer
         {
             return _context.tblUserAdds.Where(x => x.Isactive == true && x.UserID == UserID).Select(s => new ValidationUserAds()
             {
+                AdID = s.ID,
                 Title = s.Title,
                 Isactive = s.Isactive,
                 ExpiryDate = s.ExpiryDate,
@@ -146,6 +149,7 @@ namespace JRCar.DAL.DBLayer
         {
             return _context.tblUserAdds.Where(x => x.Isactive == false && x.UserID == UserID).Select(s => new ValidationUserAds()
             {
+                AdID = s.ID,
                 Title = s.Title,
                 Isactive = s.Isactive,
                 ExpiryDate = s.ExpiryDate,
@@ -158,6 +162,7 @@ namespace JRCar.DAL.DBLayer
         {
             return _context.tblUserAdds.Where(x => x.UserID == UserID).Select(s => new ValidationUserAds()
             {
+                AdID = s.ID,
                 Title = s.Title,
                 Isactive = s.Isactive,
                 ExpiryDate = s.ExpiryDate,
@@ -171,6 +176,7 @@ namespace JRCar.DAL.DBLayer
             var user = _context.tblUserAdds.Where(x => x.ID == AdsId).Select(s => new ValidationUserAds()
             {
                 /*---Car Details---*/
+                AdID = s.ID,
                 Model = s.Model,
                 Year = s.Year,
                 Condition = s.Condition,
@@ -281,6 +287,7 @@ namespace JRCar.DAL.DBLayer
             var user = _context.tblUserAdds.Where(x => x.UserAdsURL == AdsId).Select(s => new ValidationUserAds()
             {
                 /*---Car Details---*/
+                AdID = s.ID,
                 Model = s.Model,
                 Year = s.Year,
                 Condition = s.Condition,
