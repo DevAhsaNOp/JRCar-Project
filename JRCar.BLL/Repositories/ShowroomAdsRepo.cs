@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace JRCar.BLL.Repositories
 {
@@ -138,7 +139,6 @@ namespace JRCar.BLL.Repositories
                 {
                     tblCarFeature carFeature = new tblCarFeature()
                     {
-                        FuelType = model.FuelType,
                         AirConditioned = model.AirConditioned,
                         ABS = model.ABS,
                         AirBag = model.AirBag,
@@ -260,7 +260,6 @@ namespace JRCar.BLL.Repositories
                 {
                     tblCarFeature carFeature = new tblCarFeature()
                     {
-                        FuelType = model.FuelType,
                         AirConditioned = model.AirConditioned,
                         ABS = model.ABS,
                         AirBag = model.AirBag,
@@ -472,6 +471,142 @@ namespace JRCar.BLL.Repositories
         public IEnumerable<tblSubCategory> GetSubCategoriesByCategory(int CategoryId)
         {
             return dbObj.GetSubCategoriesByCategory(CategoryId);
+        }
+        
+        public List<SelectListItem> BodyTypes()
+        {
+            var BodyType = new List<SelectListItem>
+            {
+                new SelectListItem() { Text = "---Select Body Type---", Value = "0", Disabled = true, Selected = true },
+                new SelectListItem() { Text = "Compact hatchback", Value = "Compact hatchback" },
+                new SelectListItem() { Text = "Compact sedan", Value = "Compact sedan" },
+                new SelectListItem() { Text = "Compact SUV", Value = "Compact SUV" },
+                new SelectListItem() { Text = "Convertible", Value = "Convertible" },
+                new SelectListItem() { Text = "Coupe", Value = "Coupe" },
+                new SelectListItem() { Text = "Crossover", Value = "Crossover" },
+                new SelectListItem() { Text = "Double Cabin", Value = "Double Cabin" },
+                new SelectListItem() { Text = "Hatchback", Value = "Hatchback" },
+                new SelectListItem() { Text = "High Roof", Value = "High Roof" },
+                new SelectListItem() { Text = "Micro Van", Value = "Micro Van" },
+                new SelectListItem() { Text = "Mini Van", Value = "Mini Van" },
+                new SelectListItem() { Text = "Mini Vehicles", Value = "Mini Vehicles" },
+                new SelectListItem() { Text = "MPV", Value = "MPV" },
+                new SelectListItem() { Text = "Off Road Vehicles", Value = "Off Road Vehicles" },
+                new SelectListItem() { Text = "Pick Up", Value = "Pick Up" },
+                new SelectListItem() { Text = "Sedan", Value = "Sedan" },
+                new SelectListItem() { Text = "Single Cabin", Value = "Single Cabin" },
+                new SelectListItem() { Text = "Station Wagon", Value = "Station Wagon" },
+                new SelectListItem() { Text = "Subcompact hatchback", Value = "Subcompact hatchback" },
+                new SelectListItem() { Text = "SUV", Value = "SUV" },
+                new SelectListItem() { Text = "Truck", Value = "Truck" },
+                new SelectListItem() { Text = "Van", Value = "Van" }
+            };
+            return BodyType;
+        }
+        
+        public List<SelectListItem> Colors()
+        {
+            var Color = new List<SelectListItem>
+            {
+                new SelectListItem() { Text = "---Select Color---", Value = "0", Disabled = true, Selected = true },
+                new SelectListItem() { Text = "White", Value = "White" },
+                new SelectListItem() { Text = "Silver", Value = "Silver" },
+                new SelectListItem() { Text = "Black", Value = "Black" },
+                new SelectListItem() { Text = "Grey", Value = "Grey" },
+                new SelectListItem() { Text = "Blue", Value = "Blue" },
+                new SelectListItem() { Text = "Green", Value = "Green" },
+                new SelectListItem() { Text = "Red", Value = "Red" },
+                new SelectListItem() { Text = "Gold", Value = "Gold" },
+                new SelectListItem() { Text = "Maroon", Value = "Maroon" },
+                new SelectListItem() { Text = "Beige", Value = "Beige" },
+                new SelectListItem() { Text = "Pink", Value = "Pink" },
+                new SelectListItem() { Text = "Brown", Value = "Brown" },
+                new SelectListItem() { Text = "Burgundy", Value = "Burgundy" },
+                new SelectListItem() { Text = "Yellow", Value = "Yellow" },
+                new SelectListItem() { Text = "Bronze", Value = "Bronze" },
+                new SelectListItem() { Text = "Purple", Value = "Purple" },
+                new SelectListItem() { Text = "Turquoise", Value = "Turquoise" },
+                new SelectListItem() { Text = "Orange", Value = "Orange" },
+                new SelectListItem() { Text = "Indigo", Value = "Indigo" },
+                new SelectListItem() { Text = "Magenta", Value = "Magenta" },
+                new SelectListItem() { Text = "Navy", Value = "Navy" },
+                new SelectListItem() { Text = "Unlisted", Value = "1" }
+            }; 
+            return Color;
+        }
+        
+        public List<SelectListItem> Conditions()
+        {
+            var condition = new List<SelectListItem>
+            {
+                new SelectListItem() { Text = "---Select Condition---", Value = "0", Disabled = true, Selected = true },
+                new SelectListItem() { Text = "Used", Value = "1" },
+                new SelectListItem() { Text = "New", Value = "2" }
+            };
+            return condition;
+        }
+        
+        public List<SelectListItem> Transmissions()
+        {
+            var Transmission = new List<SelectListItem>
+            {
+                new SelectListItem() { Text = "---Select Transmission---", Value = "0", Disabled = true, Selected = true },
+                new SelectListItem() { Text = "Automatic", Value = "1" },
+                new SelectListItem() { Text = "Manual", Value = "2" }
+            };
+            return Transmission;
+        }
+        
+        public List<SelectListItem> Assemblys()
+        {
+            var Assembly = new List<SelectListItem>
+            {
+                new SelectListItem() { Text = "---Select Assembly---", Value = "0", Disabled = true, Selected = true },
+                new SelectListItem() { Text = "Local", Value = "1" },
+                new SelectListItem() { Text = "Imported", Value = "2" }
+            };
+            return Assembly;
+        }
+        
+        public List<SelectListItem> ListOfYears()
+        {
+            var year = new List<SelectListItem>
+            {
+                new SelectListItem() { Text = "---Select Model Year---", Value = "0", Disabled = true, Selected = true }
+            };
+            for (int i = -50; i <= 0; ++i)
+            {
+                year.Add(new SelectListItem() { Text = DateTime.Now.AddYears(i).ToString("yyyy"), Value = DateTime.Now.AddYears(i).ToString("yyyy") });
+            }
+            return year;
+        }
+        
+        public List<SelectListItem> GetAllCategories()
+        {
+            var AllCategory = GetAllCategory();
+            var categories = new List<SelectListItem>
+            {
+                new SelectListItem() { Text = "---Select Category---", Value = "0", Disabled = true, Selected = true }
+            };
+            foreach (var item in AllCategory)
+            {
+                categories.Add(new SelectListItem() { Text = item.CategoryName, Value = item.CategoryID.ToString() });
+            }
+            return categories;
+        }
+        
+        public List<SelectListItem> GetAllMake()
+        {
+            var AllMake = GetAllMakes();
+            var makes = new List<SelectListItem>
+            {
+                new SelectListItem() { Text = "---Select Model---", Value = "0", Disabled = true, Selected = true }
+            };
+            foreach (var item in AllMake)
+            {
+                makes.Add(new SelectListItem() { Text = item.Manufacturer_Name, Value = item.Manufacturer_Id.ToString() });
+            }
+            return makes;
         }
     }
 }

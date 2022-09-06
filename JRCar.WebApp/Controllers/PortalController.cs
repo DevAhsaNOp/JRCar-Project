@@ -4,15 +4,12 @@ using JRCar.BOL.Validation_Classes;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
-using Microsoft.AspNet.Identity;
 using static JRCar.WebApp.Controllers.WebsiteController;
-using System.Security.Claims;
-using System.Threading;
+
 
 namespace JRCar.WebApp.Controllers
 {
@@ -186,7 +183,7 @@ namespace JRCar.WebApp.Controllers
                 TempData["ErrorMsg"] = "Error occured on updating Account!" + ex.Message;
                 return View("UpdateProfile");
             }
-        } 
+        }
         #endregion
 
         #region **Notification For Showroom About New Ads**
@@ -280,97 +277,29 @@ namespace JRCar.WebApp.Controllers
         [Authorize(Roles = "Showroom")]
         public ActionResult PostNewAd()
         {
-            var year = new List<SelectListItem>
-            {
-                new SelectListItem() { Text = "---Select Model Year---", Value = "0", Disabled = true, Selected = true }
-            };
-            for (int i = -50; i <= 0; ++i)
-            {
-                year.Add(new SelectListItem() { Text = DateTime.Now.AddYears(i).ToString("yyyy"), Value = DateTime.Now.AddYears(i).ToString("yyyy") });
-            }
-            ViewBag.Years = year;
+            ViewBag.Years = RepoObj1.ListOfYears();
 
-            var condition = new List<SelectListItem>
-            {
-                new SelectListItem() { Text = "---Select Condition---", Value = "0", Disabled = true, Selected = true },
-                new SelectListItem() { Text = "Used", Value = "1" },
-                new SelectListItem() { Text = "New", Value = "2" }
-            };
-            ViewBag.Conditions = condition;
+            ViewBag.Conditions = RepoObj1.Conditions();
+            
+            ViewBag.Transmissions = RepoObj1.Transmissions();
+            
+            ViewBag.Assemblys = RepoObj1.Assemblys();
+            
+            ViewBag.Colors = RepoObj1.Colors();            
+            
+            ViewBag.BodyTypes = RepoObj1.BodyTypes();
 
-            var Transmission = new List<SelectListItem>
-            {
-                new SelectListItem() { Text = "---Select Transmission---", Value = "0", Disabled = true, Selected = true },
-                new SelectListItem() { Text = "Automatic", Value = "1" },
-                new SelectListItem() { Text = "Manual", Value = "2" }
-            };
-            ViewBag.Transmissions = Transmission;
+            ViewBag.Category = RepoObj1.GetAllCategories();
 
-            var Assembly = new List<SelectListItem>
-            {
-                new SelectListItem() { Text = "---Select Assembly---", Value = "0", Disabled = true, Selected = true },
-                new SelectListItem() { Text = "Automatic", Value = "1" },
-                new SelectListItem() { Text = "Manual", Value = "2" }
-            };
-            ViewBag.Assemblys = Assembly;
-
-            var Color = new List<SelectListItem>
-            {
-                new SelectListItem() { Text = "---Select Color---", Value = "0", Disabled = true, Selected = true },
-                new SelectListItem() { Text = "White", Value = "White" },
-                new SelectListItem() { Text = "Silver", Value = "Silver" },
-                new SelectListItem() { Text = "Black", Value = "Black" },
-                new SelectListItem() { Text = "Grey", Value = "Grey" },
-                new SelectListItem() { Text = "Blue", Value = "Blue" },
-                new SelectListItem() { Text = "Green", Value = "Green" },
-                new SelectListItem() { Text = "Red", Value = "Red" },
-                new SelectListItem() { Text = "Gold", Value = "Gold" },
-                new SelectListItem() { Text = "Maroon", Value = "Maroon" },
-                new SelectListItem() { Text = "Beige", Value = "Beige" },
-                new SelectListItem() { Text = "Pink", Value = "Pink" },
-                new SelectListItem() { Text = "Brown", Value = "Brown" },
-                new SelectListItem() { Text = "Burgundy", Value = "Burgundy" },
-                new SelectListItem() { Text = "Yellow", Value = "Yellow" },
-                new SelectListItem() { Text = "Bronze", Value = "Bronze" },
-                new SelectListItem() { Text = "Purple", Value = "Purple" },
-                new SelectListItem() { Text = "Turquoise", Value = "Turquoise" },
-                new SelectListItem() { Text = "Orange", Value = "Orange" },
-                new SelectListItem() { Text = "Indigo", Value = "Indigo" },
-                new SelectListItem() { Text = "Magenta", Value = "Magenta" },
-                new SelectListItem() { Text = "Navy", Value = "Navy" },
-                new SelectListItem() { Text = "Unlisted", Value = "1" }
-            };
-            ViewBag.Colors = Color;
-
-            var AllCategory = RepoObj1.GetAllCategory();
-            var categories = new List<SelectListItem>
-            {
-                new SelectListItem() { Text = "---Select Category---", Value = "0", Disabled = true, Selected = true }
-            };
-            foreach (var item in AllCategory)
-            {
-                categories.Add(new SelectListItem() { Text = item.CategoryName, Value = item.CategoryID.ToString() });
-            }
-            ViewBag.Category = categories;
-
-            var AllMake = RepoObj1.GetAllMakes();
-            var makes = new List<SelectListItem>
-            {
-                new SelectListItem() { Text = "---Select Model---", Value = "0", Disabled = true, Selected = true }
-            };
-            foreach (var item in AllMake)
-            {
-                makes.Add(new SelectListItem() { Text = item.Manufacturer_Name, Value = item.Manufacturer_Id.ToString() });
-            }
-            ViewBag.Make = makes;
+            ViewBag.Make = RepoObj1.GetAllMake();
 
             return View();
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult PostNewAd(ImageFile objImage,ValidateShowroomAds showroomAds)
+        public ActionResult PostNewAd(ImageFile objImage, ValidateShowroomAds showroomAds)
         {
-            return View();
+            return View("PostNewAd");
         }
     }
 }

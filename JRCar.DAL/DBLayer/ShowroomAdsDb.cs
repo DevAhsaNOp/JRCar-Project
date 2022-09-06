@@ -246,7 +246,6 @@ namespace JRCar.DAL.DBLayer
 
                 /*---Showroom Car Features Details---*/
                 tblCarFeatureID = s.tblCarModel.tblCarFeature.ID,
-                FuelType = s.tblCarModel.tblCarFeature.FuelType,
                 AirConditioned = s.tblCarModel.tblCarFeature.AirConditioned,
                 ABS = s.tblCarModel.tblCarFeature.ABS,
                 AirBag = s.tblCarModel.tblCarFeature.AirBag,
@@ -365,7 +364,6 @@ namespace JRCar.DAL.DBLayer
 
                 /*---Showroom Car Features Details---*/
                 tblCarFeatureID = s.tblCarModel.tblCarFeature.ID,
-                FuelType = s.tblCarModel.tblCarFeature.FuelType,
                 AirConditioned = s.tblCarModel.tblCarFeature.AirConditioned,
                 ABS = s.tblCarModel.tblCarFeature.ABS,
                 AirBag = s.tblCarModel.tblCarFeature.AirBag,
@@ -499,7 +497,6 @@ namespace JRCar.DAL.DBLayer
 
                 /*---Showroom Car Features Details---*/
                 tblCarFeatureID = s.tblCarModel.tblCarFeature.ID,
-                FuelType = s.tblCarModel.tblCarFeature.FuelType,
                 AirConditioned = s.tblCarModel.tblCarFeature.AirConditioned,
                 ABS = s.tblCarModel.tblCarFeature.ABS,
                 AirBag = s.tblCarModel.tblCarFeature.AirBag,

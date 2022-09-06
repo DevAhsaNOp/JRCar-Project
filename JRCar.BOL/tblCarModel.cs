@@ -35,8 +35,8 @@ namespace JRCar.BOL
         public bool Isarchive { get; set; }
         public string EngineType { get; set; }
     
-        public virtual tblCarFeature tblCarFeature { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tblCar> tblCars { get; set; }
+        public virtual tblCarFeature tblCarFeature { get; set; }
     }
 }

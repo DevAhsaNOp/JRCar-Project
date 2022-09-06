@@ -21,7 +21,6 @@ namespace JRCar.BOL
         }
     
         public int ID { get; set; }
-        public string FuelType { get; set; }
         public bool AirConditioned { get; set; }
         public bool ABS { get; set; }
         public bool AirBag { get; set; }

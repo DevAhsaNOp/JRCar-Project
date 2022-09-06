@@ -3364,6 +3364,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
     <Folder Include="Roles\" />
+    <Folder Include="uploads\SWX280DG4Y4S507\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\JRCar.BLL\JRCar.BLL.csproj">

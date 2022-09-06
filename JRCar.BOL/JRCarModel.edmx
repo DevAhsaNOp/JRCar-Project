@@ -110,7 +110,6 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="FuelType" Type="varchar" MaxLength="80" Nullable="false" />
           <Property Name="AirConditioned" Type="bit" Nullable="false" />
           <Property Name="ABS" Type="bit" Nullable="false" />
           <Property Name="AirBag" Type="bit" Nullable="false" />
@@ -1227,7 +1226,6 @@
           <EntitySet Name="tblAdmins" EntityType="jrcarModel.tblAdmin" />
           <EntitySet Name="tblAnnouncements" EntityType="jrcarModel.tblAnnouncement" />
           <EntitySet Name="tblBlogs" EntityType="jrcarModel.tblBlog" />
-          <EntitySet Name="tblCarFeatures" EntityType="jrcarModel.tblCarFeature" />
           <EntitySet Name="tblCars" EntityType="jrcarModel.tblCar" />
           <EntitySet Name="tblCategories" EntityType="jrcarModel.tblCategory" />
           <EntitySet Name="tblCities" EntityType="jrcarModel.tblCity" />
@@ -1399,10 +1397,6 @@
             <End Role="tblUserAdd" EntitySet="tblUserAdds" />
           </AssociationSet>
           <EntitySet Name="tblCarModels" EntityType="jrcarModel.tblCarModel" />
-          <AssociationSet Name="FK_dbo_tblCarModels_dbo_tblCarFeatures_CarFeatureID" Association="jrcarModel.FK_dbo_tblCarModels_dbo_tblCarFeatures_CarFeatureID">
-            <End Role="tblCarFeature" EntitySet="tblCarFeatures" />
-            <End Role="tblCarModel" EntitySet="tblCarModels" />
-          </AssociationSet>
           <AssociationSet Name="FK_dbo_tblCars_dbo_tblCarModels_CarModelID" Association="jrcarModel.FK_dbo_tblCars_dbo_tblCarModels_CarModelID">
             <End Role="tblCarModel" EntitySet="tblCarModels" />
             <End Role="tblCar" EntitySet="tblCars" />
@@ -1428,6 +1422,11 @@
           <AssociationSet Name="FK_dbo_tblCarImages_dbo_tblCars_CarID" Association="jrcarModel.FK_dbo_tblCarImages_dbo_tblCars_CarID">
             <End Role="tblCar" EntitySet="tblCars" />
             <End Role="tblCarImage" EntitySet="tblCarImages" />
+          </AssociationSet>
+          <EntitySet Name="tblCarFeatures" EntityType="jrcarModel.tblCarFeature" />
+          <AssociationSet Name="FK_dbo_tblCarModels_dbo_tblCarFeatures_CarFeatureID" Association="jrcarModel.FK_dbo_tblCarModels_dbo_tblCarFeatures_CarFeatureID">
+            <End Role="tblCarFeature" EntitySet="tblCarFeatures" />
+            <End Role="tblCarModel" EntitySet="tblCarModels" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="C__MigrationHistory">
@@ -1518,48 +1517,6 @@
           <Property Name="Path" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="BlogsURL" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="tblShowroom" Relationship="jrcarModel.FK_dbo_tblBlogs_dbo_tblShowrooms_Showrooms_ID" FromRole="tblBlog" ToRole="tblShowroom" />
-        </EntityType>
-        <EntityType Name="tblCarFeature">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="FuelType" Type="String" Nullable="false" MaxLength="80" FixedLength="false" Unicode="false" />
-          <Property Name="AirConditioned" Type="Boolean" Nullable="false" />
-          <Property Name="ABS" Type="Boolean" Nullable="false" />
-          <Property Name="AirBag" Type="Boolean" Nullable="false" />
-          <Property Name="PowerWindows" Type="Boolean" Nullable="false" />
-          <Property Name="PowerMirrors" Type="Boolean" Nullable="false" />
-          <Property Name="PowerLocks" Type="Boolean" Nullable="false" />
-          <Property Name="PowerSteering" Type="Boolean" Nullable="false" />
-          <Property Name="ImmobilizerKey" Type="Boolean" Nullable="false" />
-          <Property Name="Radio" Type="Boolean" Nullable="false" />
-          <Property Name="KeyLessEntry" Type="Boolean" Nullable="false" />
-          <Property Name="AlloyRims" Type="Boolean" Nullable="false" />
-          <Property Name="CoolBox" Type="Boolean" Nullable="false" />
-          <Property Name="CruiseControl" Type="Boolean" Nullable="false" />
-          <Property Name="SunRoof" Type="Boolean" Nullable="false" />
-          <Property Name="NavigationSystem" Type="Boolean" Nullable="false" />
-          <Property Name="CreatedBy" Type="Int32" Nullable="false" />
-          <Property Name="UpdatedBy" Type="Int32" Nullable="false" />
-          <Property Name="CreatedOn" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="UpdatedOn" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Isactive" Type="Boolean" Nullable="false" />
-          <Property Name="Isarchive" Type="Boolean" Nullable="false" />
-          <Property Name="RearAcVents" Type="Boolean" Nullable="false" />
-          <Property Name="FrontCam" Type="Boolean" Nullable="false" />
-          <Property Name="CassetPlayer" Type="Boolean" Nullable="false" />
-          <Property Name="DvdPlayer" Type="Boolean" Nullable="false" />
-          <Property Name="SteeringSwitch" Type="Boolean" Nullable="false" />
-          <Property Name="CdPlayer" Type="Boolean" Nullable="false" />
-          <Property Name="ClimateControl" Type="Boolean" Nullable="false" />
-          <Property Name="FrontSpeaker" Type="Boolean" Nullable="false" />
-          <Property Name="HeatedSeat" Type="Boolean" Nullable="false" />
-          <Property Name="RearCamera" Type="Boolean" Nullable="false" />
-          <Property Name="RearSeatEntertain" Type="Boolean" Nullable="false" />
-          <Property Name="RearSpeaker" Type="Boolean" Nullable="false" />
-          <Property Name="BoxUsbAux" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="tblCarModels" Relationship="jrcarModel.FK_dbo_tblCarModels_dbo_tblCarFeatures_CarFeatureID" FromRole="tblCarFeature" ToRole="tblCarModel" />
         </EntityType>
         <EntityType Name="tblCar">
           <Key>
@@ -2393,23 +2350,9 @@
           <Property Name="Isactive" Type="Boolean" Nullable="false" />
           <Property Name="Isarchive" Type="Boolean" Nullable="false" />
           <Property Name="EngineType" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="tblCarFeature" Relationship="jrcarModel.FK_dbo_tblCarModels_dbo_tblCarFeatures_CarFeatureID" FromRole="tblCarModel" ToRole="tblCarFeature" />
           <NavigationProperty Name="tblCars" Relationship="jrcarModel.FK_dbo_tblCars_dbo_tblCarModels_CarModelID" FromRole="tblCarModel" ToRole="tblCar" />
+          <NavigationProperty Name="tblCarFeature" Relationship="jrcarModel.FK_dbo_tblCarModels_dbo_tblCarFeatures_CarFeatureID" FromRole="tblCarModel" ToRole="tblCarFeature" />
         </EntityType>
-        <Association Name="FK_dbo_tblCarModels_dbo_tblCarFeatures_CarFeatureID">
-          <End Type="jrcarModel.tblCarFeature" Role="tblCarFeature" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="jrcarModel.tblCarModel" Role="tblCarModel" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="tblCarFeature">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="tblCarModel">
-              <PropertyRef Name="CarFeatureID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_dbo_tblCars_dbo_tblCarModels_CarModelID">
           <End Type="jrcarModel.tblCarModel" Role="tblCarModel" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -2519,6 +2462,61 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="tblCarFeature">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AirConditioned" Type="Boolean" Nullable="false" />
+          <Property Name="ABS" Type="Boolean" Nullable="false" />
+          <Property Name="AirBag" Type="Boolean" Nullable="false" />
+          <Property Name="PowerWindows" Type="Boolean" Nullable="false" />
+          <Property Name="PowerMirrors" Type="Boolean" Nullable="false" />
+          <Property Name="PowerLocks" Type="Boolean" Nullable="false" />
+          <Property Name="PowerSteering" Type="Boolean" Nullable="false" />
+          <Property Name="ImmobilizerKey" Type="Boolean" Nullable="false" />
+          <Property Name="Radio" Type="Boolean" Nullable="false" />
+          <Property Name="KeyLessEntry" Type="Boolean" Nullable="false" />
+          <Property Name="AlloyRims" Type="Boolean" Nullable="false" />
+          <Property Name="CoolBox" Type="Boolean" Nullable="false" />
+          <Property Name="CruiseControl" Type="Boolean" Nullable="false" />
+          <Property Name="SunRoof" Type="Boolean" Nullable="false" />
+          <Property Name="NavigationSystem" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedBy" Type="Int32" Nullable="false" />
+          <Property Name="UpdatedBy" Type="Int32" Nullable="false" />
+          <Property Name="CreatedOn" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="UpdatedOn" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Isactive" Type="Boolean" Nullable="false" />
+          <Property Name="Isarchive" Type="Boolean" Nullable="false" />
+          <Property Name="RearAcVents" Type="Boolean" Nullable="false" />
+          <Property Name="FrontCam" Type="Boolean" Nullable="false" />
+          <Property Name="CassetPlayer" Type="Boolean" Nullable="false" />
+          <Property Name="DvdPlayer" Type="Boolean" Nullable="false" />
+          <Property Name="SteeringSwitch" Type="Boolean" Nullable="false" />
+          <Property Name="CdPlayer" Type="Boolean" Nullable="false" />
+          <Property Name="ClimateControl" Type="Boolean" Nullable="false" />
+          <Property Name="FrontSpeaker" Type="Boolean" Nullable="false" />
+          <Property Name="HeatedSeat" Type="Boolean" Nullable="false" />
+          <Property Name="RearCamera" Type="Boolean" Nullable="false" />
+          <Property Name="RearSeatEntertain" Type="Boolean" Nullable="false" />
+          <Property Name="RearSpeaker" Type="Boolean" Nullable="false" />
+          <Property Name="BoxUsbAux" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="tblCarModels" Relationship="jrcarModel.FK_dbo_tblCarModels_dbo_tblCarFeatures_CarFeatureID" FromRole="tblCarFeature" ToRole="tblCarModel" />
+        </EntityType>
+        <Association Name="FK_dbo_tblCarModels_dbo_tblCarFeatures_CarFeatureID">
+          <End Type="jrcarModel.tblCarFeature" Role="tblCarFeature" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="jrcarModel.tblCarModel" Role="tblCarModel" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblCarFeature">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="tblCarModel">
+              <PropertyRef Name="CarFeatureID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2606,48 +2604,6 @@
                 <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
                 <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
                 <ScalarProperty Name="BlogText" ColumnName="BlogText" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="tblCarFeatures">
-            <EntityTypeMapping TypeName="jrcarModel.tblCarFeature">
-              <MappingFragment StoreEntitySet="tblCarFeatures">
-                <ScalarProperty Name="BoxUsbAux" ColumnName="BoxUsbAux" />
-                <ScalarProperty Name="RearSpeaker" ColumnName="RearSpeaker" />
-                <ScalarProperty Name="RearSeatEntertain" ColumnName="RearSeatEntertain" />
-                <ScalarProperty Name="RearCamera" ColumnName="RearCamera" />
-                <ScalarProperty Name="HeatedSeat" ColumnName="HeatedSeat" />
-                <ScalarProperty Name="FrontSpeaker" ColumnName="FrontSpeaker" />
-                <ScalarProperty Name="ClimateControl" ColumnName="ClimateControl" />
-                <ScalarProperty Name="CdPlayer" ColumnName="CdPlayer" />
-                <ScalarProperty Name="SteeringSwitch" ColumnName="SteeringSwitch" />
-                <ScalarProperty Name="DvdPlayer" ColumnName="DvdPlayer" />
-                <ScalarProperty Name="CassetPlayer" ColumnName="CassetPlayer" />
-                <ScalarProperty Name="FrontCam" ColumnName="FrontCam" />
-                <ScalarProperty Name="RearAcVents" ColumnName="RearAcVents" />
-                <ScalarProperty Name="Isarchive" ColumnName="Isarchive" />
-                <ScalarProperty Name="Isactive" ColumnName="Isactive" />
-                <ScalarProperty Name="UpdatedOn" ColumnName="UpdatedOn" />
-                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
-                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="NavigationSystem" ColumnName="NavigationSystem" />
-                <ScalarProperty Name="SunRoof" ColumnName="SunRoof" />
-                <ScalarProperty Name="CruiseControl" ColumnName="CruiseControl" />
-                <ScalarProperty Name="CoolBox" ColumnName="CoolBox" />
-                <ScalarProperty Name="AlloyRims" ColumnName="AlloyRims" />
-                <ScalarProperty Name="KeyLessEntry" ColumnName="KeyLessEntry" />
-                <ScalarProperty Name="Radio" ColumnName="Radio" />
-                <ScalarProperty Name="ImmobilizerKey" ColumnName="ImmobilizerKey" />
-                <ScalarProperty Name="PowerSteering" ColumnName="PowerSteering" />
-                <ScalarProperty Name="PowerLocks" ColumnName="PowerLocks" />
-                <ScalarProperty Name="PowerMirrors" ColumnName="PowerMirrors" />
-                <ScalarProperty Name="PowerWindows" ColumnName="PowerWindows" />
-                <ScalarProperty Name="AirBag" ColumnName="AirBag" />
-                <ScalarProperty Name="ABS" ColumnName="ABS" />
-                <ScalarProperty Name="AirConditioned" ColumnName="AirConditioned" />
-                <ScalarProperty Name="FuelType" ColumnName="FuelType" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -2993,6 +2949,47 @@
               <MappingFragment StoreEntitySet="tblCarImages">
                 <ScalarProperty Name="CarID" ColumnName="CarID" />
                 <ScalarProperty Name="Image" ColumnName="Image" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblCarFeatures">
+            <EntityTypeMapping TypeName="jrcarModel.tblCarFeature">
+              <MappingFragment StoreEntitySet="tblCarFeatures">
+                <ScalarProperty Name="BoxUsbAux" ColumnName="BoxUsbAux" />
+                <ScalarProperty Name="RearSpeaker" ColumnName="RearSpeaker" />
+                <ScalarProperty Name="RearSeatEntertain" ColumnName="RearSeatEntertain" />
+                <ScalarProperty Name="RearCamera" ColumnName="RearCamera" />
+                <ScalarProperty Name="HeatedSeat" ColumnName="HeatedSeat" />
+                <ScalarProperty Name="FrontSpeaker" ColumnName="FrontSpeaker" />
+                <ScalarProperty Name="ClimateControl" ColumnName="ClimateControl" />
+                <ScalarProperty Name="CdPlayer" ColumnName="CdPlayer" />
+                <ScalarProperty Name="SteeringSwitch" ColumnName="SteeringSwitch" />
+                <ScalarProperty Name="DvdPlayer" ColumnName="DvdPlayer" />
+                <ScalarProperty Name="CassetPlayer" ColumnName="CassetPlayer" />
+                <ScalarProperty Name="FrontCam" ColumnName="FrontCam" />
+                <ScalarProperty Name="RearAcVents" ColumnName="RearAcVents" />
+                <ScalarProperty Name="Isarchive" ColumnName="Isarchive" />
+                <ScalarProperty Name="Isactive" ColumnName="Isactive" />
+                <ScalarProperty Name="UpdatedOn" ColumnName="UpdatedOn" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="NavigationSystem" ColumnName="NavigationSystem" />
+                <ScalarProperty Name="SunRoof" ColumnName="SunRoof" />
+                <ScalarProperty Name="CruiseControl" ColumnName="CruiseControl" />
+                <ScalarProperty Name="CoolBox" ColumnName="CoolBox" />
+                <ScalarProperty Name="AlloyRims" ColumnName="AlloyRims" />
+                <ScalarProperty Name="KeyLessEntry" ColumnName="KeyLessEntry" />
+                <ScalarProperty Name="Radio" ColumnName="Radio" />
+                <ScalarProperty Name="ImmobilizerKey" ColumnName="ImmobilizerKey" />
+                <ScalarProperty Name="PowerSteering" ColumnName="PowerSteering" />
+                <ScalarProperty Name="PowerLocks" ColumnName="PowerLocks" />
+                <ScalarProperty Name="PowerMirrors" ColumnName="PowerMirrors" />
+                <ScalarProperty Name="PowerWindows" ColumnName="PowerWindows" />
+                <ScalarProperty Name="AirBag" ColumnName="AirBag" />
+                <ScalarProperty Name="ABS" ColumnName="ABS" />
+                <ScalarProperty Name="AirConditioned" ColumnName="AirConditioned" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
