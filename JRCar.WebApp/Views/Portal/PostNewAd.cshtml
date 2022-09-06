@@ -57,12 +57,11 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-10 col-sm-12 col-lg-10">
-                    <div class="card card-primary">
-                        <div class="card-header">
-                            
-                        </div>
-                        @using (Html.BeginForm("UpdateProfile", "Portal", FormMethod.Post, new { enctype = "multipart/form-data" }))
-                        {
+                    @using (Html.BeginForm("PostNewAd", "Portal", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    {
+                        <div class="card card-primary">
+                            <div class="card-header">
+                            </div>
                             <div class="card-body">
                                 <h6 class="bg-gradient-blue p-1 text-center"><b>Note: </b>Insert the correct Information</h6>
                                 <h4 class="text-left"><b>Car Information</b></h4>
@@ -73,39 +72,177 @@
                                             @Html.ValidationMessageFor(model => model.CategoryName, "", new { @class = "text-danger" })
                                             @Html.DropDownListFor(model => model.CategoryName, (IEnumerable<SelectListItem>)ViewBag.Category, htmlAttributes: new { @class = "form-control select2bs4" })
                                         </div>
+                                    </div>
+                                    <div class="col-md-6 col-lg-6 col-sm-12">
                                         <div class="form-group" id="SubCategoryD">
                                             <label for="exampleInputBorder">Sub Category </label>
                                             @Html.ValidationMessageFor(model => model.SubCategoryName, "", new { @class = "text-danger" })
                                             @Html.DropDownListFor(model => model.SubCategoryName, new SelectList(""), htmlAttributes: new { @class = "form-control select2bs4" })
                                         </div>
-                                        <div class="form-group" id="ModelYearD">
-                                            <label for="exampleInputBorder">Model Year </label>
-                                            @Html.ValidationMessageFor(model => model.Year, "", new { @class = "text-danger" })
-                                            @Html.DropDownListFor(model => model.Year, (IEnumerable<SelectListItem>)ViewBag.Years, htmlAttributes: new { @class = "form-control select2bs4" })
-                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 col-lg-6 col-sm-12">
                                         <div class="form-group" id="ManufacD">
                                             <label for="exampleInputBorder">Make </label>
                                             @Html.ValidationMessageFor(model => model.Manufacturer_Name, "", new { @class = "text-danger" })
                                             @Html.DropDownListFor(model => model.Manufacturer_Name, (IEnumerable<SelectListItem>)ViewBag.Make, htmlAttributes: new { @class = "form-control select2bs4" })
                                         </div>
+                                    </div>
+                                    <div class="col-md-6 col-lg-6 col-sm-12">
                                         <div class="form-group" id="ModelD">
                                             <label for="exampleInputBorder">Model </label>
                                             @Html.ValidationMessageFor(model => model.Manufacturer_CarModelName, "", new { @class = "text-danger" })
                                             @Html.DropDownListFor(model => model.Manufacturer_CarModelName, new SelectList(""), htmlAttributes: new { @class = "form-control select2bs4" })
                                         </div>
-                                        @*<div class="form-group">
-                                            <label for="exampleInputBorderWidth2">Email</label>
-                                            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
-                                            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { placeholder = "Enter your Email", @class = "form-control form-control-border border-width-2" } })
-                                        </div>*@
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 col-lg-6 col-sm-12">
+                                        <div class="form-group" id="ColorD">
+                                            <label for="exampleInputBorderWidth2">Exterior Color</label>
+                                            @Html.ValidationMessageFor(model => model.Color, "", new { @class = "text-danger" })
+                                            @Html.DropDownListFor(model => model.Color, (IEnumerable<SelectListItem>)ViewBag.Colors, htmlAttributes: new { @class = "form-control select2bs4" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-lg-6 col-sm-12">
+                                        <div class="form-group" id="CondD">
+                                            <label for="exampleInputBorder">Condition </label>
+                                            @Html.ValidationMessageFor(model => model.Condition, "", new { @class = "text-danger" })
+                                            @Html.DropDownListFor(model => model.Condition, (IEnumerable<SelectListItem>)ViewBag.Conditions, htmlAttributes: new { @class = "form-control select2bs4" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 col-lg-6 col-sm-12">
+                                        <div class="form-group">
+                                            <label for="exampleInputBorderWidth2">Registered No</label>
+                                            @Html.ValidationMessageFor(model => model.RegNo, "", new { @class = "text-danger" })
+                                            @Html.EditorFor(model => model.RegNo, new { htmlAttributes = new { placeholder = "Enter Car Registered No", @class = "form-control form-control-border border-width-2" } })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-lg-6 col-sm-12">
+                                        <div class="form-group" id="ModelYearD">
+                                            <label for="exampleInputBorder">Model Year </label>
+                                            @Html.ValidationMessageFor(model => model.Year, "", new { @class = "text-danger" })
+                                            @Html.DropDownListFor(model => model.Year, (IEnumerable<SelectListItem>)ViewBag.Years, htmlAttributes: new { @class = "form-control select2bs4" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 col-lg-6 col-sm-12">
+                                        <div class="form-group">
+                                            <label for="exampleInputBorderWidth2">Registered Location</label>
+                                            @Html.ValidationMessageFor(model => model.RegLocation, "", new { @class = "text-danger" })
+                                            @Html.EditorFor(model => model.RegLocation, new { htmlAttributes = new { placeholder = "Enter Car Registered Location", @class = "form-control form-control-border border-width-2" } })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-lg-6 col-sm-12">
+                                        <div class="form-group">
+                                            <label for="exampleInputBorderWidth2">Mileage (Km)</label>
+                                            @Html.ValidationMessageFor(model => model.Mileage, "", new { @class = "text-danger" })
+                                            @Html.EditorFor(model => model.Mileage, new { htmlAttributes = new { placeholder = "Enter Car Mileage", @class = "form-control form-control-border border-width-2", oninput = "this.value = this.value.replace(/[^0-9]/g, '').replace(/(\\..*)\\./g, '$1');" } })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 col-lg-6 col-sm-12">
+                                        <div class="form-group">
+                                            <label for="exampleInputBorderWidth2">Price (Rs.)</label>
+                                            @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
+                                            @Html.EditorFor(model => model.Price, new { htmlAttributes = new { placeholder = "Enter Car Price", @class = "form-control form-control-border border-width-2", oninput = "this.value = this.value.replace(/[^0-9]/g, '').replace(/(\\..*)\\./g, '$1');" } })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-lg-6 col-sm-12">
+                                        <div class="form-group">
+                                            <label for="exampleInputBorderWidth2">Ad Title</label>
+                                            @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+                                            @Html.EditorFor(model => model.Title, new { htmlAttributes = new { placeholder = "Enter Car Ad Title", @class = "form-control form-control-border border-width-2" } })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label for="exampleInputBorderWidth2">Ad Description</label>
+                                            @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                                            @Html.TextAreaFor(model => model.Description, htmlAttributes: new { placeholder = "Enter Car Ad Description", @class = "form-control", @rows = "4" })
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="card-footer">
-                                <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                        <div class="card card-primary">
+                            <div class="card-header">
                             </div>
-                        }
-                    </div>
+                            <div class="card-body">
+                                <h4 class="text-left"><b>Upload Car Photos</b></h4>
+                                <div class="row">
+                                    <div class="col-12">
+                                            <div class="input-images-1" style="padding-top: .5rem;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card card-primary">
+                            <div class="card-header">
+                            </div>
+                            <div class="card-body">
+                                <h4 class="text-left"><b>Additional Information</b></h4>
+                                <div class="row">
+                                    <div class="col-md-6 col-lg-6 col-sm-12">
+                                        <div class="form-group">
+                                            <label for="exampleInputBorderWidth2">Max Speed(Km/h)</label>
+                                            @Html.ValidationMessageFor(model => model.MaxSpeed, "", new { @class = "text-danger" })
+                                            @Html.EditorFor(model => model.MaxSpeed, new { htmlAttributes = new { placeholder = "Enter Car Max Speed", @class = "form-control form-control-border border-width-2", oninput = "this.value = this.value.replace(/[^0-9]/g, '').replace(/(\\..*)\\./g, '$1');" } })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-lg-6 col-sm-12">
+                                        <div class="form-group">
+                                            <label for="exampleInputBorderWidth2">Gear Type</label>
+                                            @Html.ValidationMessageFor(model => model.GearType, "", new { @class = "text-danger" })
+                                            @Html.EditorFor(model => model.GearType, new { htmlAttributes = new { placeholder = "Enter Car Gear Type", @class = "form-control form-control-border border-width-2" } })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 col-lg-6 col-sm-12">
+                                        <div class="form-group">
+                                            <label for="exampleInputBorderWidth2">Engine Capacity (cc)</label>
+                                            @Html.ValidationMessageFor(model => model.EngineCapacity, "", new { @class = "text-danger" })
+                                            @Html.EditorFor(model => model.EngineCapacity, new { htmlAttributes = new { placeholder = "Enter Car Engine Capacity", @class = "form-control form-control-border border-width-2", oninput = "this.value = this.value.replace(/[^0-9]/g, '').replace(/(\\..*)\\./g, '$1');" } })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-lg-6 col-sm-12">
+                                        <div class="form-group">
+                                            <label for="exampleInputBorder">Transmission </label>
+                                            @Html.ValidationMessageFor(model => model.Transmission, "", new { @class = "text-danger" })
+                                            @Html.DropDownListFor(model => model.Transmission, (IEnumerable<SelectListItem>)ViewBag.Transmissions, htmlAttributes: new { @class = "form-control select2bs4" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 col-lg-6 col-sm-12">
+                                        <div class="form-group">
+                                            <label for="exampleInputBorderWidth2">Body Type</label>
+                                            @Html.ValidationMessageFor(model => model.BodyType, "", new { @class = "text-danger" })
+                                            @Html.EditorFor(model => model.BodyType, new { htmlAttributes = new { placeholder = "Enter Car Body Type", @class = "form-control form-control-border border-width-2" } })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-lg-6 col-sm-12">
+                                        <div class="form-group">
+                                            <label for="exampleInputBorder">Assembly </label>
+                                            @Html.ValidationMessageFor(model => model.Assembly, "", new { @class = "text-danger" })
+                                            @Html.DropDownListFor(model => model.Assembly, (IEnumerable<SelectListItem>)ViewBag.Assemblys, htmlAttributes: new { @class = "form-control select2bs4" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer" style="padding-left: 0px;">
+                                    <button type="submit" class="btn btn-primary" id="postad">Submit & Continue</button>
+                                </div>
+                            </div>
+                        </div>
+                    }
                 </div>
             </div>
         </div>

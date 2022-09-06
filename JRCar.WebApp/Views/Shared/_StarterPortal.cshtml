@@ -11,6 +11,8 @@
     <link rel="stylesheet" href="~/plugins/fontawesome-free/css/all.min.css">
     <!-- overlayScrollbars -->
     <link rel="stylesheet" href="~/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+    <!-- Image Uploader -->
+    <link type="text/css" rel="stylesheet" href="~/dist/image-uploader.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="~/dist/css/adminlte.min.css">
     <link rel="stylesheet" href="~/plugins/select2/css/select2.min.css">
@@ -68,276 +70,323 @@
 </head>
 @if (User.Identity.IsAuthenticated)
 {
-    <body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
-        <div class="wrapper">
+<body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
+    <div class="wrapper">
 
-            <!-- Preloader -->
-            <div class="preloader flex-column justify-content-center align-items-center">
-                <img class="animation__wobble" src="~/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
-            </div>
-
-            <!-- Navbar -->
-            @Html.Partial("_HeaderPortal")
-            <!-- /.navbar -->
-            <!-- Main Sidebar Container -->
-            @Html.Partial("_SidebarPortal")
-            <!-- /. main-sidebar-container -->
-            <!-- Content Wrapper. Contains page content -->
-            <div class="content-wrapper">
-                @RenderBody()
-            </div>
-            <!-- /.content-wrapper -->
-            <!-- Control Sidebar -->
-            <aside class="control-sidebar control-sidebar-dark">
-                <!-- Control sidebar content goes here -->
-            </aside>
-            <!-- /.control-sidebar -->
-            <!-- Main Footer -->
-            @Html.Partial("_FooterPortal")
-            <!-- /. main-footer -->
-
+        <!-- Preloader -->
+        <div class="preloader flex-column justify-content-center align-items-center">
+            <img class="animation__wobble" src="~/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
         </div>
-        <!-- ./wrapper -->
-        <!-- REQUIRED SCRIPTS -->
-        <!-- jQuery -->
-        <script src="~/plugins/jquery/jquery.min.js"></script>
-        <!-- Bootstrap -->
-        <script src="~/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-        <!-- Select2 -->
-        <script src="~/plugins/select2/js/select2.full.min.js"></script>
-        <script src="~/plugins/select2/js/select2.min.js"></script>
-        <!-- overlayScrollbars -->
-        <script src="~/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
-        <!-- AdminLTE App -->
-        <script src="~/dist/js/adminlte.js"></script>
-        <!-- PAGE PLUGINS -->
-        <!-- jQuery Mapael -->
-        <script src="~/plugins/jquery-mousewheel/jquery.mousewheel.js"></script>
-        <script src="~/plugins/raphael/raphael.min.js"></script>
-        <script src="~/plugins/jquery-mapael/jquery.mapael.min.js"></script>
-        <script src="~/plugins/jquery-mapael/maps/usa_states.min.js"></script>
-        <!-- ChartJS -->
-        <script src="~/plugins/chart.js/Chart.min.js"></script>
-        <!-- AdminLTE for demo purposes -->
-        <script src="~/dist/js/demo.js"></script>
-        <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-        <script src="~/dist/js/pages/dashboard2.js"></script>
-        <script src="~/scripts/jquery.validate.min.js"></script>
-        <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
-        <script src="~/scripts/jquery.unobtrusive-ajax.min.js"></script>
-        <script src="~/scripts/jquery.signalR-2.4.3.min.js"></script>
-        <script src="~/signalr/hubs"></script>
-        @* Add css  *@
-        @*<link href="~/Content/bootstrap.min.css" rel="stylesheet" />*@
-        @* Add jquery code for Get Notification & setup signalr *@
-        <script type="text/javascript">
-            $(document).ready(function () {
-                $('.select2').select2()
 
-                //Initialize Select2 Elements
-                $('.select2bs4').select2({
-                    theme: 'bootstrap4'
-                })
+        <!-- Navbar -->
+        @Html.Partial("_HeaderPortal")
+        <!-- /.navbar -->
+        <!-- Main Sidebar Container -->
+        @Html.Partial("_SidebarPortal")
+        <!-- /. main-sidebar-container -->
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+            @RenderBody()
+        </div>
+        <!-- /.content-wrapper -->
+        <!-- Control Sidebar -->
+        <aside class="control-sidebar control-sidebar-dark">
+            <!-- Control sidebar content goes here -->
+        </aside>
+        <!-- /.control-sidebar -->
+        <!-- Main Footer -->
+        @Html.Partial("_FooterPortal")
+        <!-- /. main-footer -->
 
-                $('#CategoryD').show();
-                $('#SubCategoryD').hide();
-                $('#ManufacD').hide();
-                $('#ModelD').hide();
-                $('#ModelYearD').hide();
-                //$('#CondD').hide();
+    </div>
+    <!-- ./wrapper -->
+    <!-- REQUIRED SCRIPTS -->
+    <!-- jQuery -->
+    <script src="~/plugins/jquery/jquery.min.js"></script>
+    <!-- Bootstrap -->
+    <script src="~/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- Select2 -->
+    <script src="~/plugins/select2/js/select2.full.min.js"></script>
+    <script src="~/plugins/select2/js/select2.min.js"></script>
+    <!-- overlayScrollbars -->
+    <script src="~/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="~/dist/js/adminlte.js"></script>
+    <!-- PAGE PLUGINS -->
+    <!-- jQuery Mapael -->
+    <script src="~/plugins/jquery-mousewheel/jquery.mousewheel.js"></script>
+    <script src="~/plugins/raphael/raphael.min.js"></script>
+    <script src="~/plugins/jquery-mapael/jquery.mapael.min.js"></script>
+    <script src="~/plugins/jquery-mapael/maps/usa_states.min.js"></script>
+    <!-- ChartJS -->
+    <script src="~/plugins/chart.js/Chart.min.js"></script>
+    <!-- AdminLTE for demo purposes -->
+    <script src="~/dist/js/demo.js"></script>
+    <!-- Image Uploader -->
+    <script type="text/javascript" src="~/dist/image-uploader.min.js"></script>
+    <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+    <script src="~/dist/js/pages/dashboard2.js"></script>
+    <script src="~/scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/scripts/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/scripts/jquery.signalR-2.4.3.min.js"></script>
+    <script src="~/signalr/hubs"></script>
+    @* Add css  *@
+    @*<link href="~/Content/bootstrap.min.css" rel="stylesheet" />*@
+    @* Add jquery code for Get Notification & setup signalr *@
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.select2').select2()
 
-                $("#SubCategoryName").on("change", function () {
-                    var ar = $('#SubCategoryName').select2('data');
-                    var da = ar[0].id
-                    if (da > 0) {
-                        $('#ModelYearD').show();
-                    }
-                });
+            //Initialize Select2 Elements
+            $('.select2bs4').select2({
+                theme: 'bootstrap4'
+            })
 
-                $("#Year").on("change", function () {
-                    var ar = $('#Year').select2('data');
-                    var da = ar[0].id
-                    if (da > 0) {
-                        $('#ManufacD').show();
-                    }
-                });
+            $('.input-images-1').imageUploader();
 
-                $("#CategoryName").change(function () {
-                    var CategoryId = $(this).val();
-                    $.ajax({
-                        type: "post",
-                        url: "/Website/GetSubCategoryList?CategoryId=" + CategoryId,
-                        contentType: "html",
-                        success: function (response) {
-                            $('#SubCategoryD').show();
-                            $("#SubCategoryName").empty();
-                            $("#SubCategoryName").append(response);
-                        }
-                    })
-                })
+            $('#CategoryD').show();
+            $('#SubCategoryD').hide();
+            $('#ManufacD').hide();
+            $('#ModelD').hide();
+            $('#ModelYearD').hide();
+            $('#CondD').hide();
 
-                $("#Manufacturer_Name").change(function () {
-                    var MakeId = $(this).val();
-                    $.ajax({
-                        type: "post",
-                        url: "/Website/GetModelsList?MakeId=" + MakeId,
-                        contentType: "html",
-                        success: function (response) {
-                            $('#ModelD').show();
-                            $("#Manufacturer_CarModelName").empty();
-                            $("#Manufacturer_CarModelName").append(response);
-                        }
-                    })
-                })
-
-                // SignalR js code for start hub and send receive notification
-                var notificationHub = $.connection.notificationHub;
-                $.connection.hub.start().done(function () {
-                    console.log('Notification hub started');
-                });
-
-                //SignalR method for push server message to client
-                notificationHub.client.DisplayNoti = function (message) {
-                    if (message && message.toLowerCase() == "added") {
-                        console.log('Hey Count');
-                        updateNotificationCount();
-                    }
+            $("#SubCategoryName").on("change", function () {
+                var ar = $('#SubCategoryName').select2('data');
+                var da = ar[0].id
+                if (da > 0) {
+                    $('#ManufacD').show();
                 }
-
-
-                updateNotification();
-                GetCount();
-                updateNotificationCount();
-                $('a.noti').click(function (e) {
-                    e.stopPropagation();
-                    var count = 0;
-                    count = parseInt($('span.count').html()) || 0;
-                    console.log('a.noti outer' + count);
-
-                    //Only load notification if not already loaded
-                    if (count > 0) {
-                        updateNotification();
-                        sessionStorage.setItem("count", 0);
-                        console.log('a.noti inner if' + count);
-                        $('.noti-content').show();
-                        updateNotificationRead();
-                    }
-                    else if ($('.noti-content').css('display') == 'block') {
-                        $('.noti-content').hide();
-                    }
-                    else if ($('.noti-content').css('display') == 'none') {
-                        $('.noti-content').show();
-                        updateNotificationRead();
-                    }
-                    $('span.count', this).html('');
-                })
-
-                // Hide notifications
-                $('html').click(function () {
-                    $('.noti-content').hide();
-                })
-
-                //$('a.noti').click(function () {
-                //    if ($('.noti-content').css('display') == 'block') {
-                //        console.log('Here');
-                //        $('.noti-content').hide();
-                //    }
-                //})
-
-
             });
 
-            function GetCount() {
-                var count = sessionStorage.getItem("count");
+            //$("#Year").on("change", function () {
+            //    var ar = $('#Year').select2('data');
+            //    var da = ar[0].id
+            //    if (da > 0) {
+            //        $('#ManufacD').show();
+            //    }
+            //});
+
+            $("#Color").on("change", function () {
+                var ar = $('#Color').select2('data');
+                var da = ar[0].id
+                if (da != null) {
+                    $('#CondD').show();
+                }
+            });
+
+            $("#Manufacturer_CarModelName").on("change", function () {
+                var ar = $('#Manufacturer_CarModelName').select2('data');
+                var da = ar[0].id
+                if (da != null) {
+                    $('#ModelYearD').show();
+                }
+            });
+
+            $("#CategoryName").change(function () {
+                var CategoryId = $(this).val();
+                $.ajax({
+                    type: "post",
+                    url: "/Website/GetSubCategoryList?CategoryId=" + CategoryId,
+                    contentType: "html",
+                    success: function (response) {
+                        $('#SubCategoryD').show();
+                        $("#SubCategoryName").empty();
+                        $("#SubCategoryName").append(response);
+                    }
+                })
+            })
+
+            $("#Manufacturer_Name").change(function () {
+                var MakeId = $(this).val();
+                $.ajax({
+                    type: "post",
+                    url: "/Website/GetModelsList?MakeId=" + MakeId,
+                    contentType: "html",
+                    success: function (response) {
+                        $('#ModelD').show();
+                        $("#Manufacturer_CarModelName").empty();
+                        $("#Manufacturer_CarModelName").append(response);
+                    }
+                })
+            })
+
+            $('#postad').on("click", function () {
+                var a = $(".uploaded")[0].children.length;
+                if (a < 5) {
+                    //alert("Minimum 5 images you need to upload");
+                    var element = document.getElementsByClassName("image-uploader");
+                    for (item of element) {
+                        item.style.border = "1px solid #f16060";
+                    }
+                    $('html, body').animate({
+                        scrollTop: $("#images-not").offset().top
+                    }, 100);
+                    return false;
+                }
+            });
+
+            setInterval(function myfunction() {
+                var IsClassPresent = $("body").find('.uploaded').length;
+                if (IsClassPresent > 0) {
+                    var a = $(".uploaded")[0].children.length;
+                    if (a >= 5) {
+                        var element = document.getElementsByClassName("image-uploader");
+                        for (item of element) {
+                            item.style.border = "1px solid #ededed";
+                        }
+                    }
+                }
+            }, 1);
+
+            // SignalR js code for start hub and send receive notification
+            var notificationHub = $.connection.notificationHub;
+            $.connection.hub.start().done(function () {
+                console.log('Notification hub started');
+            });
+
+            //SignalR method for push server message to client
+            notificationHub.client.DisplayNoti = function (message) {
+                if (message && message.toLowerCase() == "added") {
+                    console.log('Hey Count');
+                    updateNotificationCount();
+                }
+            }
+
+            updateNotification();
+            GetCount();
+            updateNotificationCount();
+            $('a.noti').click(function (e) {
+                e.stopPropagation();
+                var count = 0;
+                count = parseInt($('span.count').html()) || 0;
                 console.log('a.noti outer' + count);
 
+                //Only load notification if not already loaded
                 if (count > 0) {
-                    $('span.count').html(count);
+                    updateNotification();
+                    sessionStorage.setItem("count", 0);
+                    console.log('a.noti inner if' + count);
+                    $('.noti-content').show();
+                    updateNotificationRead();
                 }
-                else {
-                    $('span.count', this).html('');
+                else if ($('.noti-content').css('display') == 'block') {
+                    $('.noti-content').hide();
                 }
-            }
-
-            // Update notification
-            function updateNotification() {
-                $('#notiContent').empty();
-                $('#notiContent').append($('<li>Loading...</li>'));
-                $.ajax({
-                    type: 'GET',
-                    url: '/Portal/GetNotificationsList',
-                    success: function (response) {
-                        $('#notiContent').empty();
-                        console.log(response);
-                        if (response.length == 0) {
-                            $('#notiContent').append($('<a href="#" class="dropdown-item"><i class="fas fa-envelope mr-2"></i> No Notification Available <span class="float-right text-muted text-sm"> 3 mins</span></a>'));
-                        }
-                        $.each(response, function (index, value) {
-                            $('#notiContent').append($('<a href="#" class="dropdown-item"> <i class="fas fa-envelope mr-2"></i> ' + value.Title + ' <span class="float-right text-muted text-sm"> 3 mins</span></a>'));
-                            //$('#notiContent').append($('<li>New Ad Alert: ' + value.Title + ' is less than (' + value.Description + ') </li>'));
-                        });
-                    },
-                    error: function (error) {
-                        console.log(error);
-                    }
-                })
-            }
-
-            // Update notification count
-            function updateNotificationCount() {
-                var count = 0;
-                $.ajax({
-                    type: 'GET',
-                    url: '/Portal/GetNotificationsListCount',
-                    success: function (response) {
-                        console.log('GetNotificationsListCount:: ' + response);
-                        count = response;
-                        if (count > 0) {
-                            $('span.count').html(count);
-                        }
-                        else {
-                            $('span.count').html('');
-                        }
-                        console.log('updateNotificationCount' + count);
-                        sessionStorage.setItem("count", count);
-                    },
-                    error: function (error) {
-                        console.log(error);
-                    }
-                })
-            }
-
-            // Notifications Change to Read When NotiFication Icon Press
-            function updateNotificationRead() {
-                $.ajax({
-                    type: 'GET',
-                    url: '/Portal/ChangeNotificationToAsRead',
-                    success: function (response) {
-                        console.log('GetNotificationsListRead:: ' + response);
-                        sessionStorage.setItem("count", 0);
-                    },
-                    error: function (error) {
-                        console.log(error);
-                    }
-                })
-            }
-
-            var loadProfile = function (event) {
-                var files = event.target.files;
-                for (var i = 0; i < files.length; i++) {
-                    $("#dynamicImage").attr("src", URL.createObjectURL(event.target.files[i]));
+                else if ($('.noti-content').css('display') == 'none') {
+                    $('.noti-content').show();
+                    updateNotificationRead();
                 }
-            }
+                $('span.count', this).html('');
+            })
 
-            $(document).ready(function () {
-                $('#choose-file').change(function () {
-                    var i = $(this).prev('label').clone();
-                    var file = $('#choose-file')[0].files[0].name;
-                    $(this).prev('label').text(file);
-                });
+            // Hide notifications
+            $('html').click(function () {
+                $('.noti-content').hide();
+            })
+
+            //$('a.noti').click(function () {
+            //    if ($('.noti-content').css('display') == 'block') {
+            //        console.log('Here');
+            //        $('.noti-content').hide();
+            //    }
+            //})
+
+
+        });
+
+        function GetCount() {
+            var count = sessionStorage.getItem("count");
+            console.log('a.noti outer' + count);
+
+            if (count > 0) {
+                $('span.count').html(count);
+            }
+            else {
+                $('span.count', this).html('');
+            }
+        }
+
+        // Update notification
+        function updateNotification() {
+            $('#notiContent').empty();
+            $('#notiContent').append($('<li>Loading...</li>'));
+            $.ajax({
+                type: 'GET',
+                url: '/Portal/GetNotificationsList',
+                success: function (response) {
+                    $('#notiContent').empty();
+                    console.log(response);
+                    if (response.length == 0) {
+                        $('#notiContent').append($('<a href="#" class="dropdown-item"><i class="fas fa-envelope mr-2"></i> No Notification Available <span class="float-right text-muted text-sm"> 3 mins</span></a>'));
+                    }
+                    $.each(response, function (index, value) {
+                        $('#notiContent').append($('<a href="#" class="dropdown-item"> <i class="fas fa-envelope mr-2"></i> ' + value.Title + ' <span class="float-right text-muted text-sm"> 3 mins</span></a>'));
+                        //$('#notiContent').append($('<li>New Ad Alert: ' + value.Title + ' is less than (' + value.Description + ') </li>'));
+                    });
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            })
+        }
+
+        // Update notification count
+        function updateNotificationCount() {
+            var count = 0;
+            $.ajax({
+                type: 'GET',
+                url: '/Portal/GetNotificationsListCount',
+                success: function (response) {
+                    console.log('GetNotificationsListCount:: ' + response);
+                    count = response;
+                    if (count > 0) {
+                        $('span.count').html(count);
+                    }
+                    else {
+                        $('span.count').html('');
+                    }
+                    console.log('updateNotificationCount' + count);
+                    sessionStorage.setItem("count", count);
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            })
+        }
+
+        // Notifications Change to Read When NotiFication Icon Press
+        function updateNotificationRead() {
+            $.ajax({
+                type: 'GET',
+                url: '/Portal/ChangeNotificationToAsRead',
+                success: function (response) {
+                    console.log('GetNotificationsListRead:: ' + response);
+                    sessionStorage.setItem("count", 0);
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            })
+        }
+
+        var loadProfile = function (event) {
+            var files = event.target.files;
+            for (var i = 0; i < files.length; i++) {
+                $("#dynamicImage").attr("src", URL.createObjectURL(event.target.files[i]));
+            }
+        }
+
+        $(document).ready(function () {
+            $('#choose-file').change(function () {
+                var i = $(this).prev('label').clone();
+                var file = $('#choose-file')[0].files[0].name;
+                $(this).prev('label').text(file);
             });
+        });
 
-        </script>
-    </body>
+    </script>
+</body>
 }
 </html>

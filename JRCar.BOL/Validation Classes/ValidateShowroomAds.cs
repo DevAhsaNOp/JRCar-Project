@@ -38,6 +38,7 @@ namespace JRCar.BOL.Validation_Classes
 
         [Required(ErrorMessage = "*")]
         [Display(Name = "Price")]
+        [Range(100000, 100000000, ErrorMessage = "Please enter correct Price")]
         public string Price { get; set; }
 
         [Display(Name = "Latitude")]
@@ -103,6 +104,7 @@ namespace JRCar.BOL.Validation_Classes
 
         [Required(ErrorMessage = "*")]
         [Display(Name = "Mileage")]
+        [Range(1, 1000000, ErrorMessage = "Please enter correct Mileage")]
         public string Mileage { get; set; }
 
         [Required(ErrorMessage = "*")]
