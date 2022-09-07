@@ -17,11 +17,13 @@ namespace JRCar.WebApp.Controllers
     {
         private UserRepo RepoObj;
         private ShowroomAdsRepo RepoObj1;
+        private AddressAutofillRepo AddressRepoObj;
 
         public PortalController()
         {
             RepoObj = new UserRepo();
             RepoObj1 = new ShowroomAdsRepo();
+            AddressRepoObj = new AddressAutofillRepo();
         }
 
         public ActionResult Index()
@@ -280,13 +282,13 @@ namespace JRCar.WebApp.Controllers
             ViewBag.Years = RepoObj1.ListOfYears();
 
             ViewBag.Conditions = RepoObj1.Conditions();
-            
+
             ViewBag.Transmissions = RepoObj1.Transmissions();
-            
+
             ViewBag.Assemblys = RepoObj1.Assemblys();
-            
-            ViewBag.Colors = RepoObj1.Colors();            
-            
+
+            ViewBag.Colors = RepoObj1.Colors();
+
             ViewBag.BodyTypes = RepoObj1.BodyTypes();
 
             ViewBag.Category = RepoObj1.GetAllCategories();
@@ -299,7 +301,154 @@ namespace JRCar.WebApp.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult PostNewAd(ImageFile objImage, ValidateShowroomAds showroomAds)
         {
-            return RedirectToAction("PostNewAd");
+            try
+            {
+                if (User.Identity.IsAuthenticated)
+                {
+                    var name = string.Format("~/uploads/{0}{1}", RandomString(), DateTime.Now.Millisecond);
+                    string createFolder = Server.MapPath(name);
+                    if (!Directory.Exists(createFolder))
+                    {
+                        Directory.CreateDirectory(createFolder);
+                        foreach (var file in objImage.files)
+                        {
+                            if (file != null && file.ContentLength > 0)
+                            {
+                                file.SaveAs(Path.Combine(Server.MapPath(name), Guid.NewGuid() + Path.GetExtension(file.FileName)));
+                            }
+                        }
+                        if (showroomAds != null)
+                        {
+                            var ShowroomID = Convert.ToInt32(Session["Id"]);
+                            showroomAds.Condition = (showroomAds.Condition == "1") ? "Used" : "New";
+                            var showroom = RepoObj.GetShowRoomByID(ShowroomID);
+                            showroomAds.tblShowroomID = Convert.ToInt32(Session["Id"]);
+                            showroomAds.CarImage = name;
+                            showroomAds.CurrentLocation = showroom.ShopNumber + " " + showroom.tblAddress.CompleteAddress;
+
+                            var AdsPublish = RepoObj1.InsertShowroomAds(showroomAds);
+                            if (AdsPublish)
+                            {
+                                TempData["SuccessMsg"] = "Ad Publish Successfully!";
+                                return RedirectToAction("PostNewAd");
+                            }
+                            else
+                            {
+                                TempData["ErrorMsg"] = "Error on Ads Publishing please try again!";
+                                return RedirectToAction("PostNewAd");
+                            }
+                        }
+                        else
+                        {
+                            ViewBag.Error = "Error please try again!";
+                            return View("PostNewAd");
+                        }
+                    }
+                    else
+                    {
+                        ViewBag.Error = "Error on uploading Image!";
+                        return View("PostNewAd");
+                    }
+                }
+                else
+                {
+                    var err = (int)HttpStatusCode.BadRequest;
+                    return Json(new { error = err + " Bad Request Error " + "Invalid Request!!" });
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        [AcceptVerbs(HttpVerbs.Get)]
+        [Authorize(Roles = "Showroom")]
+        public ActionResult EditAd(int AdID)
+        {
+            ViewBag.Years = RepoObj1.ListOfYears();
+
+            ViewBag.Conditions = RepoObj1.Conditions();
+
+            ViewBag.Transmissions = RepoObj1.Transmissions();
+
+            ViewBag.Assemblys = RepoObj1.Assemblys();
+
+            ViewBag.Colors = RepoObj1.Colors();
+
+            ViewBag.BodyTypes = RepoObj1.BodyTypes();
+
+            ViewBag.Category = RepoObj1.GetAllCategories();
+
+            ViewBag.Make = RepoObj1.GetAllMake();
+
+            var reas = RepoObj1.GetShowroomAdsDetailOnlyForUpdate(AdID);
+
+            return View(reas);
+        }
+
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult EditAd(ImageFile objImage, ValidateShowroomAds showroomAds)
+        {
+            try
+            {
+                if (User.Identity.IsAuthenticated)
+                {
+                    var name = string.Format("~/uploads/{0}{1}", RandomString(), DateTime.Now.Millisecond);
+                    string createFolder = Server.MapPath(name);
+                    if (!Directory.Exists(createFolder))
+                    {
+                        Directory.CreateDirectory(createFolder);
+                        foreach (var file in objImage.files)
+                        {
+                            if (file != null && file.ContentLength > 0)
+                            {
+                                file.SaveAs(Path.Combine(Server.MapPath(name), Guid.NewGuid() + Path.GetExtension(file.FileName)));
+                            }
+                        }
+                        if (showroomAds != null)
+                        {
+                            var ShowroomID = Convert.ToInt32(Session["Id"]);
+                            showroomAds.Condition = (showroomAds.Condition == "1") ? "Used" : "New";
+                            var showroom = RepoObj.GetShowRoomByID(ShowroomID);
+                            showroomAds.tblShowroomID = Convert.ToInt32(Session["Id"]);
+                            showroomAds.CarImage = name;
+                            showroomAds.CurrentLocation = showroom.ShopNumber + " " + showroom.tblAddress.CompleteAddress;
+
+                            var AdsPublish = RepoObj1.InsertShowroomAds(showroomAds);
+                            if (AdsPublish)
+                            {
+                                TempData["SuccessMsg"] = "Ad Publish Successfully!";
+                                return RedirectToAction("PostNewAd");
+                            }
+                            else
+                            {
+                                TempData["ErrorMsg"] = "Error on Ads Publishing please try again!";
+                                return RedirectToAction("PostNewAd");
+                            }
+                        }
+                        else
+                        {
+                            ViewBag.Error = "Error please try again!";
+                            return View("PostNewAd");
+                        }
+                    }
+                    else
+                    {
+                        ViewBag.Error = "Error on uploading Image!";
+                        return View("PostNewAd");
+                    }
+                }
+                else
+                {
+                    var err = (int)HttpStatusCode.BadRequest;
+                    return Json(new { error = err + " Bad Request Error " + "Invalid Request!!" });
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }

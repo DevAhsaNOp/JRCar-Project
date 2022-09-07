@@ -1,7 +1,7 @@
 ﻿@model JRCar.BOL.Validation_Classes.ValidateShowroomAds
 
 @{
-    ViewBag.Title = "PostNewAd";
+    ViewBag.Title = "EditAd";
     Layout = "~/Views/Shared/_StarterPortal.cshtml";
 }
 <style>
@@ -57,7 +57,7 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-10 col-sm-12 col-lg-10">
-                    @using (Html.BeginForm("PostNewAd", "Portal", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    @using (Html.BeginForm("EditAd", "Portal", FormMethod.Post, new { enctype = "multipart/form-data" }))
                     {
                         <div class="card card-primary">
                             <div class="card-header">

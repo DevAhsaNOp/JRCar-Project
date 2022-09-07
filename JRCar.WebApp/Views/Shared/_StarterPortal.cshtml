@@ -164,21 +164,13 @@
             $('#ModelYearD').hide();
             $('#CondD').hide();
 
-            $("#SubCategoryName").on("change", function () {
-                var ar = $('#SubCategoryName').select2('data');
+            $("#SubCategoryId").on("change", function () {
+                var ar = $('#SubCategoryId').select2('data');
                 var da = ar[0].id
                 if (da > 0) {
                     $('#ManufacD').show();
                 }
             });
-
-            //$("#Year").on("change", function () {
-            //    var ar = $('#Year').select2('data');
-            //    var da = ar[0].id
-            //    if (da > 0) {
-            //        $('#ManufacD').show();
-            //    }
-            //});
 
             $("#Color").on("change", function () {
                 var ar = $('#Color').select2('data');
@@ -188,15 +180,15 @@
                 }
             });
 
-            $("#Manufacturer_CarModelName").on("change", function () {
-                var ar = $('#Manufacturer_CarModelName').select2('data');
+            $("#ManufacturerCarModelID").on("change", function () {
+                var ar = $('#ManufacturerCarModelID').select2('data');
                 var da = ar[0].id
                 if (da != null) {
                     $('#ModelYearD').show();
                 }
             });
 
-            $("#CategoryName").change(function () {
+            $("#CategoryId").change(function () {
                 var CategoryId = $(this).val();
                 $.ajax({
                     type: "post",
@@ -204,13 +196,13 @@
                     contentType: "html",
                     success: function (response) {
                         $('#SubCategoryD').show();
-                        $("#SubCategoryName").empty();
-                        $("#SubCategoryName").append(response);
+                        $("#SubCategoryId").empty();
+                        $("#SubCategoryId").append(response);
                     }
                 })
             })
 
-            $("#Manufacturer_Name").change(function () {
+            $("#ManufacturerId").change(function () {
                 var MakeId = $(this).val();
                 $.ajax({
                     type: "post",
@@ -218,8 +210,8 @@
                     contentType: "html",
                     success: function (response) {
                         $('#ModelD').show();
-                        $("#Manufacturer_CarModelName").empty();
-                        $("#Manufacturer_CarModelName").append(response);
+                        $("#ManufacturerCarModelID").empty();
+                        $("#ManufacturerCarModelID").append(response);
                     }
                 })
             })

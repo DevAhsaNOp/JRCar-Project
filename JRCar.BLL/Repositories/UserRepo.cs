@@ -299,6 +299,11 @@ namespace JRCar.BLL.Repositories
                 return false;
         }
 
+        public tblShowroom GetShowRoomByID(int modelId)
+        {
+            return dbObj.GetShowRoomByID(modelId);
+        }
+
         public ValidateUser GetUserDetailById(int Id)
         {
             try

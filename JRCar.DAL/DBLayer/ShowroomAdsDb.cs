@@ -560,13 +560,13 @@ namespace JRCar.DAL.DBLayer
                 return null;
         }
 
-        public int InsertShowroomAds(tblCar model, string city)
+        public int InsertShowroomAds(tblCar model, string Year, string city)
         {
             try
             {
                 if (model != null)
                 {
-                    model.CarsURL = ShowroomAdsURLGenerate(model.Title, model.tblCarModel.Year, city);
+                    model.CarsURL = ShowroomAdsURLGenerate(model.Title, Year, city);
                     if (model.CarsURL != null)
                     {
                         model.Isactive = true;

@@ -187,6 +187,8 @@ namespace JRCar.BLL.Repositories
                         var carModelId = dbObj.InsertShowroomCarModels(carModel);
                         if (carModelId > 0)
                         {
+                            UserRepo userRepo = new UserRepo();
+                            var showroom = userRepo.GetShowRoomByID(model.tblShowroomID);
                             tblCar car = new tblCar()
                             {
                                 CarModelID = carModelId,
@@ -204,14 +206,14 @@ namespace JRCar.BLL.Repositories
                                 Title = model.Title,
                                 Description = model.Description,
                                 Transmission = model.Transmission,
-                                AddressId = model.AddressId,
+                                AddressId = showroom.AddressId,
                                 ManufacturerId = model.ManufacturerId,
                                 ManufacturerCarModelID = model.ManufacturerCarModelID,
                                 CategoryId = model.CategoryId,
                                 SubCategoryId = model.SubCategoryId
                             };
-                            var cityName = AddressRepoObj.GetStateandCity(Convert.ToInt32(model.tblAddress.City));
-                            var CarId = dbObj.InsertShowroomAds(car, cityName.Item2);
+                            var cityName = AddressRepoObj.GetStateandCity(Convert.ToInt32(showroom.tblAddress.City));
+                            var CarId = dbObj.InsertShowroomAds(car, model.Year, cityName.Item2);
                             if (CarId > 0)
                             {
                                 tblCarImage carImage = new tblCarImage()
@@ -551,8 +553,8 @@ namespace JRCar.BLL.Repositories
             var Transmission = new List<SelectListItem>
             {
                 new SelectListItem() { Text = "---Select Transmission---", Value = "0", Disabled = true, Selected = true },
-                new SelectListItem() { Text = "Automatic", Value = "1" },
-                new SelectListItem() { Text = "Manual", Value = "2" }
+                new SelectListItem() { Text = "Automatic", Value = "Automatic" },
+                new SelectListItem() { Text = "Manual", Value = "Manual" }
             };
             return Transmission;
         }
@@ -562,8 +564,8 @@ namespace JRCar.BLL.Repositories
             var Assembly = new List<SelectListItem>
             {
                 new SelectListItem() { Text = "---Select Assembly---", Value = "0", Disabled = true, Selected = true },
-                new SelectListItem() { Text = "Local", Value = "1" },
-                new SelectListItem() { Text = "Imported", Value = "2" }
+                new SelectListItem() { Text = "Local", Value = "Local" },
+                new SelectListItem() { Text = "Imported", Value = "Imported" }
             };
             return Assembly;
         }

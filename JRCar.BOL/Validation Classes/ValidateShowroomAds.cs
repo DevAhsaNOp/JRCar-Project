@@ -123,12 +123,24 @@ namespace JRCar.BOL.Validation_Classes
 
         public string CarsURL { get; set; }
 
+        [Required(ErrorMessage = "*")]
+        [Display(Name = "Make")]
+        [Range(1, Int32.MaxValue, ErrorMessage = "Must select a Make")]
         public int? ManufacturerId { get; set; }
 
+        [Required(ErrorMessage = "*")]
+        [Display(Name = "Model")]
+        [Range(1, Int32.MaxValue, ErrorMessage = "Must select a Model")]
         public int? ManufacturerCarModelID { get; set; }
 
+        [Required(ErrorMessage = "*")]
+        [Display(Name = "Category")]
+        [Range(1, Int32.MaxValue, ErrorMessage = "Must select a Category")]
         public int? CategoryId { get; set; }
 
+        [Required(ErrorMessage = "*")]
+        [Display(Name = "Sub Category")]
+        [Range(1, Int32.MaxValue, ErrorMessage = "Must select a SubCategory")]
         public int? SubCategoryId { get; set; }
 
         [Required(ErrorMessage = "*")]
@@ -147,7 +159,7 @@ namespace JRCar.BOL.Validation_Classes
         public string CategoryName { get; set; }
         
         [Required(ErrorMessage = "*")]
-        [Display(Name = "Category")]
+        [Display(Name = "Sub Category")]
         [Range(1, Int32.MaxValue, ErrorMessage = "Must select a SubCategory")]
         public string SubCategoryName { get; set; }
 
