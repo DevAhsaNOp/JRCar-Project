@@ -299,7 +299,7 @@ namespace JRCar.WebApp.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult PostNewAd(ImageFile objImage, ValidateShowroomAds showroomAds)
         {
-            return View("PostNewAd");
+            return RedirectToAction("PostNewAd");
         }
     }
 }
