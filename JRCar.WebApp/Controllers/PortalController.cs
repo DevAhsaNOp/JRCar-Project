@@ -277,6 +277,7 @@ namespace JRCar.WebApp.Controllers
 
         [AcceptVerbs(HttpVerbs.Get)]
         [Authorize(Roles = "Showroom")]
+        [Route("Showroom/PostNewAd")]
         public ActionResult PostNewAd()
         {
             ViewBag.Years = RepoObj1.ListOfYears();
@@ -299,6 +300,8 @@ namespace JRCar.WebApp.Controllers
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
+        [Authorize(Roles = "Showroom")]
+        [Route("Showroom/PostNewAd")]
         public ActionResult PostNewAd(ImageFile objImage, ValidateShowroomAds showroomAds)
         {
             try
@@ -362,8 +365,16 @@ namespace JRCar.WebApp.Controllers
             }
         }
 
+        [HttpPost]
+        public ActionResult SetSession(string[] RemovedImages)
+        {
+            Session["DeletedFiles"] = RemovedImages;
+            return Json("Request!!", JsonRequestBehavior.AllowGet);
+        }
+
         [AcceptVerbs(HttpVerbs.Get)]
         [Authorize(Roles = "Showroom")]
+        [Route("ShowroomAd/EditAd/{AdID}")]
         public ActionResult EditAd(int AdID)
         {
             ViewBag.Years = RepoObj1.ListOfYears();
@@ -381,13 +392,28 @@ namespace JRCar.WebApp.Controllers
             ViewBag.Category = RepoObj1.GetAllCategories();
 
             ViewBag.Make = RepoObj1.GetAllMake();
-
+            
             var reas = RepoObj1.GetShowroomAdsDetailOnlyForUpdate(AdID);
 
+            ViewBag.SubCategory = RepoObj1.GetSubCategoriesByCategoryForDropdown(reas.CategoryId.Value);
+
+            ViewBag.CarModel = RepoObj1.GetModelsByMakeForDropdown(reas.ManufacturerId.Value);
+
+            string path = Server.MapPath("" + reas.CarImage + "");
+            string[] FolderName = reas.CarImage.Split('/');
+            string[] imageFiles = Directory.GetFiles(path);
+            List<string> images = new List<string>();
+            foreach (var item in imageFiles)
+            {
+                images.Add(FolderName[2] + "/" + Path.GetFileName(item));
+            }
+            ViewBag.Images = images;
+            
             return View(reas);
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
+        [Route("ShowroomAd/EditAd")]
         public ActionResult EditAd(ImageFile objImage, ValidateShowroomAds showroomAds)
         {
             try
@@ -418,25 +444,25 @@ namespace JRCar.WebApp.Controllers
                             var AdsPublish = RepoObj1.InsertShowroomAds(showroomAds);
                             if (AdsPublish)
                             {
-                                TempData["SuccessMsg"] = "Ad Publish Successfully!";
-                                return RedirectToAction("PostNewAd");
+                                TempData["SuccessMsg"] = "Ad Updated Successfully!";
+                                return RedirectToAction("EditAd");
                             }
                             else
                             {
-                                TempData["ErrorMsg"] = "Error on Ads Publishing please try again!";
-                                return RedirectToAction("PostNewAd");
+                                TempData["ErrorMsg"] = "Error on Ads Updating please try again!";
+                                return RedirectToAction("EditAd");
                             }
                         }
                         else
                         {
                             ViewBag.Error = "Error please try again!";
-                            return View("PostNewAd");
+                            return View("EditAd");
                         }
                     }
                     else
                     {
                         ViewBag.Error = "Error on uploading Image!";
-                        return View("PostNewAd");
+                        return View("EditAd");
                     }
                 }
                 else

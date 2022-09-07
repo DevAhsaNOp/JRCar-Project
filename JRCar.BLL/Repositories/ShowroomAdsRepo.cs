@@ -475,6 +475,33 @@ namespace JRCar.BLL.Repositories
             return dbObj.GetSubCategoriesByCategory(CategoryId);
         }
         
+        public List<SelectListItem> GetSubCategoriesByCategoryForDropdown(int CategoryId)
+        {
+            var AllSubCategory = GetSubCategoriesByCategory(CategoryId);
+            List<SelectListItem> Subcategories = new List<SelectListItem>();
+            Subcategories.Add(new SelectListItem() { Text = "---Select SubCategory---", Value = "0", Disabled = true, Selected = true });
+            foreach (var item in AllSubCategory)
+            {
+                Subcategories.Add(new SelectListItem() { Text = item.SubCategoryName, Value = item.SubCategoryId.ToString() });
+            }
+            return Subcategories;
+        }
+        
+        public List<SelectListItem> GetModelsByMakeForDropdown(int ManufacturerId)
+        {
+            var AllCarModels = GetModelsByMake(ManufacturerId);
+            var Carmodels = new List<SelectListItem>();
+            Carmodels.Add(new SelectListItem() { Text = "---Select Car Model---", Value = "0", Disabled = true });
+            foreach (var item in AllCarModels)
+            {
+                //if (item.ManufacturerCarModel_Id == ManufacturerCarModelID)
+                //    Carmodels.Add(new SelectListItem() { Text = item.Manufacturer_CarModelName, Value = item.ManufacturerCarModel_Id.ToString(), Selected = true });
+                //else
+                    Carmodels.Add(new SelectListItem() { Text = item.Manufacturer_CarModelName, Value = item.ManufacturerCarModel_Id.ToString() });
+            }
+            return Carmodels;
+        }
+        
         public List<SelectListItem> BodyTypes()
         {
             var BodyType = new List<SelectListItem>

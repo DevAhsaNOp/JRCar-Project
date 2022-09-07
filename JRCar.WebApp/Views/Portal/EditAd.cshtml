@@ -13,6 +13,25 @@
     .select2-container {
         width: inherit !important;
     }
+
+    .image-uploader .uploaded .uploaded-image .delete-image {
+        display: block !important;
+    }
+
+    .image-uploader .uploaded .uploaded-image .delete-image1 {
+        display: block !important;
+        cursor: pointer;
+        position: absolute;
+        top: 0.2rem;
+        right: 0.2rem;
+        border-radius: 50%;
+        color: white;
+        padding: 0.3rem;
+        line-height: 1;
+        background-color: rgba(34, 34, 34,0.8);
+        -webkit-appearance: none;
+        border: none;
+    }
 </style>
 @if (User.Identity.IsAuthenticated)
 {
@@ -67,46 +86,46 @@
                                 <h4 class="text-left"><b>Car Information</b></h4>
                                 <div class="row">
                                     <div class="col-md-6 col-lg-6 col-sm-12">
-                                        <div class="form-group" id="CategoryD">
+                                        <div class="form-group" id="ECategoryD">
                                             <label for="exampleInputBorder">Category </label>
                                             @Html.ValidationMessageFor(model => model.CategoryId, "", new { @class = "text-danger" })
                                             @Html.DropDownListFor(model => model.CategoryId, (IEnumerable<SelectListItem>)ViewBag.Category, htmlAttributes: new { @class = "form-control select2bs4" })
                                         </div>
                                     </div>
                                     <div class="col-md-6 col-lg-6 col-sm-12">
-                                        <div class="form-group" id="SubCategoryD">
+                                        <div class="form-group" id="ESubCategoryD">
                                             <label for="exampleInputBorder">Sub Category </label>
                                             @Html.ValidationMessageFor(model => model.SubCategoryId, "", new { @class = "text-danger" })
-                                            @Html.DropDownListFor(model => model.SubCategoryId, new SelectList(""), htmlAttributes: new { @class = "form-control select2bs4" })
+                                            @Html.DropDownListFor(model => model.SubCategoryId, (IEnumerable<SelectListItem>)ViewBag.SubCategory, htmlAttributes: new { @class = "form-control select2bs4" })
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6 col-lg-6 col-sm-12">
-                                        <div class="form-group" id="ManufacD">
+                                        <div class="form-group" id="EManufacD">
                                             <label for="exampleInputBorder">Make </label>
                                             @Html.ValidationMessageFor(model => model.ManufacturerId, "", new { @class = "text-danger" })
                                             @Html.DropDownListFor(model => model.ManufacturerId, (IEnumerable<SelectListItem>)ViewBag.Make, htmlAttributes: new { @class = "form-control select2bs4" })
                                         </div>
                                     </div>
                                     <div class="col-md-6 col-lg-6 col-sm-12">
-                                        <div class="form-group" id="ModelD">
+                                        <div class="form-group" id="EModelD">
                                             <label for="exampleInputBorder">Model </label>
                                             @Html.ValidationMessageFor(model => model.ManufacturerCarModelID, "", new { @class = "text-danger" })
-                                            @Html.DropDownListFor(model => model.ManufacturerCarModelID, new SelectList(""), htmlAttributes: new { @class = "form-control select2bs4" })
+                                            @Html.DropDownListFor(model => model.ManufacturerCarModelID, (IEnumerable<SelectListItem>)ViewBag.CarModel, htmlAttributes: new { @class = "form-control select2bs4" })
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6 col-lg-6 col-sm-12">
-                                        <div class="form-group" id="ColorD">
+                                        <div class="form-group" id="EColorD">
                                             <label for="exampleInputBorderWidth2">Exterior Color</label>
                                             @Html.ValidationMessageFor(model => model.Color, "", new { @class = "text-danger" })
                                             @Html.DropDownListFor(model => model.Color, (IEnumerable<SelectListItem>)ViewBag.Colors, htmlAttributes: new { @class = "form-control select2bs4" })
                                         </div>
                                     </div>
                                     <div class="col-md-6 col-lg-6 col-sm-12">
-                                        <div class="form-group" id="CondD">
+                                        <div class="form-group" id="ECondD">
                                             <label for="exampleInputBorder">Condition </label>
                                             @Html.ValidationMessageFor(model => model.Condition, "", new { @class = "text-danger" })
                                             @Html.DropDownListFor(model => model.Condition, (IEnumerable<SelectListItem>)ViewBag.Conditions, htmlAttributes: new { @class = "form-control select2bs4" })
@@ -122,7 +141,7 @@
                                         </div>
                                     </div>
                                     <div class="col-md-6 col-lg-6 col-sm-12">
-                                        <div class="form-group" id="ModelYearD">
+                                        <div class="form-group" id="EModelYearD">
                                             <label for="exampleInputBorder">Model Year </label>
                                             @Html.ValidationMessageFor(model => model.Year, "", new { @class = "text-danger" })
                                             @Html.DropDownListFor(model => model.Year, (IEnumerable<SelectListItem>)ViewBag.Years, htmlAttributes: new { @class = "form-control select2bs4" })
@@ -172,14 +191,39 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="card card-primary">
+                        <div class="card card-primary" id="images-not">
                             <div class="card-header">
                             </div>
                             <div class="card-body">
                                 <h4 class="text-left"><b>Upload Car Photos</b></h4>
                                 <div class="row">
                                     <div class="col-12">
-                                        <div class="input-images-1" style="padding-top: .5rem;"></div>
+                                        <div class="input-images-1" style="padding-top: .5rem;">
+                                            @*<div class="image-uploader has-files" style="border:none !important">
+                                                <input type="file" required="required" accept=".jpg,.jpeg,.png,.gif,.svg" multiple="multiple">
+                                                <div class="uploaded" id="previous-images">
+                                                    @{
+                                                        var i = 0;
+                                                    }
+                                                    @foreach (var item in ViewBag.Images)
+                                                    {
+                                                        <div class="uploaded-image" data-index="@i">
+                                                            <img src="~/uploads/@item">
+                                                            <button type="button" class="delete-image1">
+                                                                <i class="iui-close"></i>
+                                                            </button>
+                                                        </div>
+                                                        i++;
+                                                    }
+                                                </div>
+                                                <div class="upload-text">
+                                                    <i class="iui-cloud-upload"></i><span>
+                                                        Drag &amp; Drop files here or click to
+                                                        browse
+                                                    </span>
+                                                </div>
+                                            </div>*@
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -541,7 +585,7 @@
                                     </div>
                                 </div>
                                 <div class="card-footer" style="padding-left: 0px;">
-                                    <button type="submit" class="btn btn-primary" id="postad">Submit & Continue</button>
+                                    <button type="submit" class="btn btn-primary" id="Epostad">Submit & Continue</button>
                                 </div>
                             </div>
                         </div>

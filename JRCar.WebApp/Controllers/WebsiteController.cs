@@ -193,6 +193,7 @@ namespace JRCar.WebApp.Controllers
                 images.Add(FolderName[2] + "/" + Path.GetFileName(item));
             }
             ViewBag.Images = images;
+
             return View(reas);
         }
 
@@ -225,6 +226,7 @@ namespace JRCar.WebApp.Controllers
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
+        [Authorize(Roles = "User")]
         [Route("Ads/PostNewVehicle")]
         public ActionResult PostNewVehicles(ImageFile objImage, ValidationUserAds userAds)
         {
@@ -415,7 +417,7 @@ namespace JRCar.WebApp.Controllers
                     }
                     else
                     {
-                        TempData["ErrorMsg"] = "Error on Ads Publishing please try again!";
+                        TempData["ErrorMsg"] = "Error on Ads Updating please try again!";
                         return false;
                     }
                 }

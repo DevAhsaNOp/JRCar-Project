@@ -70,71 +70,71 @@
 </head>
 @if (User.Identity.IsAuthenticated)
 {
-<body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
-    <div class="wrapper">
+    <body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
+        <div class="wrapper">
 
-        <!-- Preloader -->
-        <div class="preloader flex-column justify-content-center align-items-center">
-            <img class="animation__wobble" src="~/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
+            <!-- Preloader -->
+            <div class="preloader flex-column justify-content-center align-items-center">
+                <img class="animation__wobble" src="~/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
+            </div>
+
+            <!-- Navbar -->
+            @Html.Partial("_HeaderPortal")
+            <!-- /.navbar -->
+            <!-- Main Sidebar Container -->
+            @Html.Partial("_SidebarPortal")
+            <!-- /. main-sidebar-container -->
+            <!-- Content Wrapper. Contains page content -->
+            <div class="content-wrapper">
+                @RenderBody()
+            </div>
+            <!-- /.content-wrapper -->
+            <!-- Control Sidebar -->
+            <aside class="control-sidebar control-sidebar-dark">
+                <!-- Control sidebar content goes here -->
+            </aside>
+            <!-- /.control-sidebar -->
+            <!-- Main Footer -->
+            @Html.Partial("_FooterPortal")
+            <!-- /. main-footer -->
+
         </div>
-
-        <!-- Navbar -->
-        @Html.Partial("_HeaderPortal")
-        <!-- /.navbar -->
-        <!-- Main Sidebar Container -->
-        @Html.Partial("_SidebarPortal")
-        <!-- /. main-sidebar-container -->
-        <!-- Content Wrapper. Contains page content -->
-        <div class="content-wrapper">
-            @RenderBody()
-        </div>
-        <!-- /.content-wrapper -->
-        <!-- Control Sidebar -->
-        <aside class="control-sidebar control-sidebar-dark">
-            <!-- Control sidebar content goes here -->
-        </aside>
-        <!-- /.control-sidebar -->
-        <!-- Main Footer -->
-        @Html.Partial("_FooterPortal")
-        <!-- /. main-footer -->
-
-    </div>
-    <!-- ./wrapper -->
-    <!-- REQUIRED SCRIPTS -->
-    <!-- jQuery -->
-    <script src="~/plugins/jquery/jquery.min.js"></script>
-    <!-- Bootstrap -->
-    <script src="~/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <!-- Select2 -->
-    <script src="~/plugins/select2/js/select2.full.min.js"></script>
-    <script src="~/plugins/select2/js/select2.min.js"></script>
-    <!-- overlayScrollbars -->
-    <script src="~/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
-    <!-- AdminLTE App -->
-    <script src="~/dist/js/adminlte.js"></script>
-    <!-- PAGE PLUGINS -->
-    <!-- jQuery Mapael -->
-    <script src="~/plugins/jquery-mousewheel/jquery.mousewheel.js"></script>
-    <script src="~/plugins/raphael/raphael.min.js"></script>
-    <script src="~/plugins/jquery-mapael/jquery.mapael.min.js"></script>
-    <script src="~/plugins/jquery-mapael/maps/usa_states.min.js"></script>
-    <!-- ChartJS -->
-    <script src="~/plugins/chart.js/Chart.min.js"></script>
-    <!-- AdminLTE for demo purposes -->
-    <script src="~/dist/js/demo.js"></script>
-    <!-- Image Uploader -->
-    <script type="text/javascript" src="~/dist/image-uploader.min.js"></script>
-    <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-    <script src="~/dist/js/pages/dashboard2.js"></script>
-    <script src="~/scripts/jquery.validate.min.js"></script>
-    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
-    <script src="~/scripts/jquery.unobtrusive-ajax.min.js"></script>
-    <script src="~/scripts/jquery.signalR-2.4.3.min.js"></script>
-    <script src="~/signalr/hubs"></script>
-    @* Add css  *@
-    @*<link href="~/Content/bootstrap.min.css" rel="stylesheet" />*@
-    @* Add jquery code for Get Notification & setup signalr *@
-    <script type="text/javascript">
+        <!-- ./wrapper -->
+        <!-- REQUIRED SCRIPTS -->
+        <!-- jQuery -->
+        <script src="~/plugins/jquery/jquery.min.js"></script>
+        <!-- Bootstrap -->
+        <script src="~/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <!-- Select2 -->
+        <script src="~/plugins/select2/js/select2.full.min.js"></script>
+        <script src="~/plugins/select2/js/select2.min.js"></script>
+        <!-- overlayScrollbars -->
+        <script src="~/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+        <!-- AdminLTE App -->
+        <script src="~/dist/js/adminlte.js"></script>
+        <!-- PAGE PLUGINS -->
+        <!-- jQuery Mapael -->
+        <script src="~/plugins/jquery-mousewheel/jquery.mousewheel.js"></script>
+        <script src="~/plugins/raphael/raphael.min.js"></script>
+        <script src="~/plugins/jquery-mapael/jquery.mapael.min.js"></script>
+        <script src="~/plugins/jquery-mapael/maps/usa_states.min.js"></script>
+        <!-- ChartJS -->
+        <script src="~/plugins/chart.js/Chart.min.js"></script>
+        <!-- AdminLTE for demo purposes -->
+        <script src="~/dist/js/demo.js"></script>
+        <!-- Image Uploader -->
+        <script type="text/javascript" src="~/dist/image-uploader.min.js"></script>
+        <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+        <script src="~/dist/js/pages/dashboard2.js"></script>
+        <script src="~/scripts/jquery.validate.min.js"></script>
+        <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+        <script src="~/scripts/jquery.unobtrusive-ajax.min.js"></script>
+        <script src="~/scripts/jquery.signalR-2.4.3.min.js"></script>
+        <script src="~/signalr/hubs"></script>
+        @* Add css  *@
+        @*<link href="~/Content/bootstrap.min.css" rel="stylesheet" />*@
+        @* Add jquery code for Get Notification & setup signalr *@
+        <script type="text/javascript">
         $(document).ready(function () {
             $('.select2').select2()
 
@@ -231,10 +231,60 @@
                 }
             });
 
+            $('#Epostad').on("click", function () {
+                var a = 0;
+                var vale = ($(".uploaded")[1] == undefined) ? 0 : $(".uploaded")[1].children.length;
+                a = $(".uploaded")[0].children.length + vale;
+                if (a < 5) {
+                    //alert("Minimum 5 images you need to upload");
+                    var element = document.getElementsByClassName("image-uploader");
+                    for (item of element) {
+                        item.style.border = "2px solid #f16060";
+                    }
+                    $('html, body').animate({
+                        scrollTop: $("#images-not").offset().top
+                    }, 100);
+                    return false;
+                }
+                else {
+                    ImageChangeData();
+                }
+            });
+
+            function ImageChangeData() {
+                var previousRemoved = JSON.parse(sessionStorage.getItem("DeletedFiles"));
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("SetSession", "Portal")",
+                    data: JSON.stringify({ RemovedImages: previousRemoved }),
+                    contentType: "application/json; charset=utf-8",
+                    success: function () {
+                        console.log('ok');
+                    }
+                });
+            }
+
+            $('.delete-image1').on("click", function () {
+                var previousRemoved = JSON.parse(sessionStorage.getItem("DeletedFiles"));
+                var newValue = $(this).parent().closest('.uploaded-image').find("img")[0].attributes[0].textContent;
+                $(this).parent().closest('.uploaded-image').remove();
+                deletedFilesLst = [];
+                if (previousRemoved != null) {
+                    previousRemoved.push(newValue);
+                    sessionStorage.setItem('DeletedFiles', JSON.stringify(previousRemoved));
+                }
+                else {
+                    deletedFilesLst.push(newValue);
+                    sessionStorage.setItem('DeletedFiles', JSON.stringify(deletedFilesLst));
+                }
+            });
+
             setInterval(function myfunction() {
                 var IsClassPresent = $("body").find('.uploaded').length;
                 if (IsClassPresent > 0) {
-                    var a = $(".uploaded")[0].children.length;
+                    var a = 0;
+                    var vale = ($(".uploaded")[1] == undefined) ? 0 : $(".uploaded")[1].children.length;
+                    a = $(".uploaded")[0].children.length + vale;
                     if (a >= 5) {
                         var element = document.getElementsByClassName("image-uploader");
                         for (item of element) {
@@ -390,7 +440,7 @@
             });
         });
 
-    </script>
-</body>
+        </script>
+    </body>
 }
 </html>
