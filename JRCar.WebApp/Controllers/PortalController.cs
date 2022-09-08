@@ -9,7 +9,10 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
 using static JRCar.WebApp.Controllers.WebsiteController;
-
+using System.Collections;
+using System.Linq;
+using JRCar.DAL.DBLayer;
+using System.Xml.Linq;
 
 namespace JRCar.WebApp.Controllers
 {
@@ -392,12 +395,17 @@ namespace JRCar.WebApp.Controllers
             ViewBag.Category = RepoObj1.GetAllCategories();
 
             ViewBag.Make = RepoObj1.GetAllMake();
-            
+
             var reas = RepoObj1.GetShowroomAdsDetailOnlyForUpdate(AdID);
 
             ViewBag.SubCategory = RepoObj1.GetSubCategoriesByCategoryForDropdown(reas.CategoryId.Value);
 
             ViewBag.CarModel = RepoObj1.GetModelsByMakeForDropdown(reas.ManufacturerId.Value);
+
+            Session["AdID"] = reas.tblCarID;
+            Session["AddressID"] = reas.AddressId;
+            Session["CarFeatureID"] = reas.CarFeatureID;
+            Session["CarModelID"] = reas.CarModelID;
 
             string path = Server.MapPath("" + reas.CarImage + "");
             string[] FolderName = reas.CarImage.Split('/');
@@ -408,7 +416,7 @@ namespace JRCar.WebApp.Controllers
                 images.Add(FolderName[2] + "/" + Path.GetFileName(item));
             }
             ViewBag.Images = images;
-            
+
             return View(reas);
         }
 
@@ -418,13 +426,37 @@ namespace JRCar.WebApp.Controllers
         {
             try
             {
+                string[] FolderName = null;
+                string[] arr = null;
+                var name = string.Empty;
+                var createFolder = string.Empty;
+                var valerr = Session["DeletedFiles"];
+                if (valerr != null)
+                {
+                    arr = ((IEnumerable)valerr).Cast<object>()
+                             .Select(x => x.ToString())
+                             .ToArray();
+                }
+
                 if (User.Identity.IsAuthenticated)
                 {
-                    var name = string.Format("~/uploads/{0}{1}", RandomString(), DateTime.Now.Millisecond);
-                    string createFolder = Server.MapPath(name);
-                    if (!Directory.Exists(createFolder))
+                    if (arr != null && valerr != null)
                     {
-                        Directory.CreateDirectory(createFolder);
+                        FolderName = arr[0].Split('/');
+                        foreach (var item in arr)
+                        {
+                            string path = Server.MapPath("~" + item);
+                            FileInfo Afile = new FileInfo(path);
+                            if (Afile.Exists)//check Afile exsit or not  
+                            {
+                                Afile.Delete();
+                            }
+                        }
+                        name = string.Format("~/uploads/{0}", FolderName[2]);
+                        createFolder = Server.MapPath(name);
+                    }
+                    if (Directory.Exists(createFolder))
+                    {
                         foreach (var file in objImage.files)
                         {
                             if (file != null && file.ContentLength > 0)
@@ -432,37 +464,29 @@ namespace JRCar.WebApp.Controllers
                                 file.SaveAs(Path.Combine(Server.MapPath(name), Guid.NewGuid() + Path.GetExtension(file.FileName)));
                             }
                         }
-                        if (showroomAds != null)
+                        var reas = UpdateAd(showroomAds);
+                        var AdID = showroomAds.tblCarID;
+                        if (reas)
                         {
-                            var ShowroomID = Convert.ToInt32(Session["Id"]);
-                            showroomAds.Condition = (showroomAds.Condition == "1") ? "Used" : "New";
-                            var showroom = RepoObj.GetShowRoomByID(ShowroomID);
-                            showroomAds.tblShowroomID = Convert.ToInt32(Session["Id"]);
-                            showroomAds.CarImage = name;
-                            showroomAds.CurrentLocation = showroom.ShopNumber + " " + showroom.tblAddress.CompleteAddress;
-
-                            var AdsPublish = RepoObj1.InsertShowroomAds(showroomAds);
-                            if (AdsPublish)
-                            {
-                                TempData["SuccessMsg"] = "Ad Updated Successfully!";
-                                return RedirectToAction("EditAd");
-                            }
-                            else
-                            {
-                                TempData["ErrorMsg"] = "Error on Ads Updating please try again!";
-                                return RedirectToAction("EditAd");
-                            }
+                            return RedirectToRoute("EditAd", new { AdID });
                         }
                         else
                         {
-                            ViewBag.Error = "Error please try again!";
-                            return View("EditAd");
+                            return RedirectToRoute("EditAd", new { AdID });
                         }
                     }
                     else
                     {
-                        ViewBag.Error = "Error on uploading Image!";
-                        return View("EditAd");
+                        var reas = UpdateAd(showroomAds);
+                        var AdID = showroomAds.tblCarID;
+                        if (reas)
+                        {
+                            return RedirectToRoute("EditAd", new { AdID });
+                        }
+                        else
+                        {
+                            return RedirectToRoute("EditAd", new { AdID });
+                        }
                     }
                 }
                 else
@@ -474,6 +498,38 @@ namespace JRCar.WebApp.Controllers
             catch (Exception ex)
             {
                 throw ex;
+            }
+        }
+
+        public bool UpdateAd(ValidateShowroomAds showroomAds)
+        {
+            if (showroomAds != null)
+            {
+                var ShowroomID = Convert.ToInt32(Session["Id"]);
+                showroomAds.tblCarID = Convert.ToInt32(Session["AdID"]);
+                showroomAds.AddressId = Convert.ToInt32(Session["AddressID"]);
+                showroomAds.CarFeatureID = Convert.ToInt32(Session["CarFeatureID"]);
+                showroomAds.CarModelID = Convert.ToInt32(Session["CarModelID"]);
+                showroomAds.Condition = (showroomAds.Condition == "1") ? "Used" : "New";
+                var showroom = RepoObj.GetShowRoomByID(ShowroomID);
+                showroomAds.tblShowroomID = ShowroomID;
+                showroomAds.CurrentLocation = showroom.ShopNumber + " " + showroom.tblAddress.CompleteAddress;
+                var AdsPublish = RepoObj1.UpdateShowroomAds(showroomAds);
+                if (AdsPublish)
+                {
+                    TempData["SuccessMsg"] = "Ad Update Successfully!";
+                    return true;
+                }
+                else
+                {
+                    TempData["ErrorMsg"] = "Error on Ads Updating please try again!";
+                    return false;
+                }
+            }
+            else
+            {
+                ViewBag.Error = "Error please try again!";
+                return false;
             }
         }
     }

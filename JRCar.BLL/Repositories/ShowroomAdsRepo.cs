@@ -262,6 +262,7 @@ namespace JRCar.BLL.Repositories
                 {
                     tblCarFeature carFeature = new tblCarFeature()
                     {
+                        ID = model.CarFeatureID,
                         AirConditioned = model.AirConditioned,
                         ABS = model.ABS,
                         AirBag = model.AirBag,
@@ -290,7 +291,8 @@ namespace JRCar.BLL.Repositories
                         RearCamera = model.RearCamera,
                         RearSeatEntertain = model.RearSeatEntertain,
                         RearSpeaker = model.RearSpeaker,
-                        BoxUsbAux = model.BoxUsbAux
+                        BoxUsbAux = model.BoxUsbAux,
+                        UpdatedBy = model.tblShowroomID,
                     };
                     var CarfeatureID = dbObj.UpdateShowroomCarFeatures(carFeature);
 
@@ -298,6 +300,7 @@ namespace JRCar.BLL.Repositories
                     {
                         tblCarModel carModel = new tblCarModel()
                         {
+                            ID = model.CarModelID,
                             Year = model.Year,
                             BodyType = model.BodyType,
                             Seater = model.Seater,
@@ -305,14 +308,17 @@ namespace JRCar.BLL.Repositories
                             EngineCapacity = model.EngineCapacity,
                             CarFeatureID = CarfeatureID,
                             EngineType = model.EngineType,
-                            CreatedBy = model.tblShowroomID
+                            UpdatedBy = model.tblShowroomID,
                         };
                         var carModelId = dbObj.UpdateShowroomCarModels(carModel);
 
                         if (carModelId > 0)
                         {
+                            UserRepo userRepo = new UserRepo();
+                            var showroom = userRepo.GetShowRoomByID(model.tblShowroomID);
                             tblCar car = new tblCar()
                             {
+                                ID = model.tblCarID,
                                 CarModelID = carModelId,
                                 tblShowroomID = model.tblShowroomID,
                                 RegNo = model.RegNo,
@@ -332,9 +338,11 @@ namespace JRCar.BLL.Repositories
                                 ManufacturerId = model.ManufacturerId,
                                 ManufacturerCarModelID = model.ManufacturerCarModelID,
                                 CategoryId = model.CategoryId,
-                                SubCategoryId = model.SubCategoryId
+                                SubCategoryId = model.SubCategoryId,
+                                UpdatedBy = model.tblShowroomID,
+                                tblCarModel = carModel
                             };
-                            var cityName = AddressRepoObj.GetStateandCity(Convert.ToInt32(model.tblAddress.City));
+                            var cityName = AddressRepoObj.GetStateandCity(Convert.ToInt32(showroom.tblAddress.City));
                             var CarId = dbObj.UpdateShowroomAds(car, cityName.Item2);
                             
                             if (CarId)

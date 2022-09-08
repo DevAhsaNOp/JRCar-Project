@@ -232,8 +232,10 @@
             });
 
             $('#Epostad').on("click", function () {
+                document.getElementById("files").removeAttribute("required");
                 var a = 0;
                 var vale = ($(".uploaded")[1] == undefined) ? 0 : $(".uploaded")[1].children.length;
+                var previousRemoved = JSON.parse(sessionStorage.getItem("DeletedFiles"));
                 a = $(".uploaded")[0].children.length + vale;
                 if (a < 5) {
                     //alert("Minimum 5 images you need to upload");
@@ -246,7 +248,7 @@
                     }, 100);
                     return false;
                 }
-                else {
+                else if(previousRemoved != null){
                     ImageChangeData();
                 }
             });
