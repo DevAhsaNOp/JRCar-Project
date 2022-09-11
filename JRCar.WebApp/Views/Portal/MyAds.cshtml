@@ -32,6 +32,14 @@
         margin-right: 5px !important;
     }
 
+    .btnView {
+        background: #2bacf7;
+        color: white;
+        box-shadow: 0px 2px 7px 2px #92d4fb;
+        border-radius: 5px;
+        margin-right: 5px !important;
+    }
+
     .btnDel {
         color: #f9f9f9;
         background: #f91e33;
@@ -120,6 +128,11 @@
                                                 <a href="@Url.RouteUrl("EditAd",new { AdID = item.tblCarID })">
                                                     <button class="btnAction btnEdit">
                                                         <i class="far fa-edit"></i>
+                                                    </button>
+                                                </a>
+                                                <a href="@Url.Action("CarAds","Portal",new { AdID = item.CarsURL })" target="_blank">
+                                                    <button class="btnAction btnView">
+                                                        <i class="far fa-eye"></i>
                                                     </button>
                                                 </a>
                                                 <button class="btnAction btnDel">

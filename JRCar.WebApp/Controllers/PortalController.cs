@@ -278,6 +278,7 @@ namespace JRCar.WebApp.Controllers
 
         #endregion
 
+        #region **Post and Edit Ad**
         [AcceptVerbs(HttpVerbs.Get)]
         [Authorize(Roles = "Showroom")]
         [Route("Showroom/PostNewAd")]
@@ -532,7 +533,9 @@ namespace JRCar.WebApp.Controllers
                 return false;
             }
         }
+        #endregion
 
+        #region **Showroom Ads**
         [AcceptVerbs(HttpVerbs.Get)]
         [Authorize(Roles = "Showroom")]
         [Route("ShowroomAd/MyAds")]
@@ -554,5 +557,33 @@ namespace JRCar.WebApp.Controllers
             Session["showroomrows"] = rows;
             return PartialView("_LoadVehicle", reas);
         }
+        #endregion
+
+        #region **Showroom Ads Details**
+        [AcceptVerbs(HttpVerbs.Get)]
+        [Route("Ads/{AdID}")]
+        public ActionResult CarAds(string AdID)
+        {
+            var carDetail = RepoObj1.GetShowroomAdsDetail(AdID);
+            if (carDetail == null)
+            {
+                TempData["ErrorMsg"] = "Car you trying to view is not exists!";
+                return RedirectToAction("MyAds");
+            }
+            else
+            {
+                string path = Server.MapPath("" + carDetail.CarImage + "");
+                string[] FolderName = carDetail.CarImage.Split('/');
+                string[] imageFiles = Directory.GetFiles(path);
+                List<string> images = new List<string>();
+                foreach (var item in imageFiles)
+                {
+                    images.Add(FolderName[2] + "/" + Path.GetFileName(item));
+                }
+                ViewBag.Images = images;
+                return View(carDetail);
+            }
+        } 
+        #endregion
     }
 }

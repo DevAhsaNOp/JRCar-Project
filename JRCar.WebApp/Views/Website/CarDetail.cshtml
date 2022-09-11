@@ -689,7 +689,7 @@
             var amount = document.getElementById("RPrice").textContent.replace(/\D/g, "");
             console.log(amount);
             var settings = {
-                "url": "https://api.exchangerate.host/convert?from=PKR&to=USD&amount=" + amount + "&date=" + getTodayDateStr(),
+                "url": "http://api.exchangerate.host/convert?from=PKR&to=USD&amount=" + amount + "&date=" + getTodayDateStr(),
                 "method": "GET",
                 "timeout": 0,
             };
