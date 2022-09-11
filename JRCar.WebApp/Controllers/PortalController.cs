@@ -532,5 +532,27 @@ namespace JRCar.WebApp.Controllers
                 return false;
             }
         }
+
+        [AcceptVerbs(HttpVerbs.Get)]
+        [Authorize(Roles = "Showroom")]
+        [Route("ShowroomAd/MyAds")]
+        public ActionResult MyAds()
+        {
+            var id = Convert.ToInt32(Session["Id"]);
+            //int rows = 2;
+            //Session["showroomrows"] = rows.Take(rows);
+            var reas = RepoObj1.GetAllShowroomAds(id);
+            return View(reas);
+        }
+
+        [Authorize(Roles = "Showroom")]
+        public ActionResult ShowroomLoadVehicle()
+        {
+            var id = Convert.ToInt32(Session["Id"]);
+            var rows = Convert.ToInt32(Session["showroomrows"]) + 2;
+            var reas = RepoObj1.GetAllShowroomAds(id).Take(rows);
+            Session["showroomrows"] = rows;
+            return PartialView("_LoadVehicle", reas);
+        }
     }
 }

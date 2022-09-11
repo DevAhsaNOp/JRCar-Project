@@ -134,9 +134,9 @@ namespace JRCar.DAL.DBLayer
             }).ToList();
         }
 
-        public IEnumerable<ValidateShowroomAds> GetAllShowroomActiveAds(int ShowroomAdID)
+        public IEnumerable<ValidateShowroomAds> GetAllShowroomActiveAds(int ShowroomID)
         {
-            return _context.tblCars.Where(x => x.Isactive == true && x.ID == ShowroomAdID).Select(s => new ValidateShowroomAds()
+            return _context.tblCars.Where(x => x.Isactive == true && x.tblShowroomID == ShowroomID).Select(s => new ValidateShowroomAds()
             {
                 tblCarID = s.ID,
                 Title = s.Title,
@@ -153,9 +153,9 @@ namespace JRCar.DAL.DBLayer
             }).ToList();
         }
 
-        public IEnumerable<ValidateShowroomAds> GetAllShowroomInActiveAds(int ShowroomAdID)
+        public IEnumerable<ValidateShowroomAds> GetAllShowroomInActiveAds(int ShowroomID)
         {
-            return _context.tblCars.Where(x => x.Isactive == false && x.ID == ShowroomAdID).Select(s => new ValidateShowroomAds()
+            return _context.tblCars.Where(x => x.Isactive == false && x.tblShowroomID == ShowroomID).Select(s => new ValidateShowroomAds()
             {
                 tblCarID = s.ID,
                 Title = s.Title,
@@ -174,7 +174,7 @@ namespace JRCar.DAL.DBLayer
 
         public IEnumerable<ValidateShowroomAds> GetAllShowroomAds(int ShowroomAdID)
         {
-            return _context.tblCars.Where(x => x.ID == ShowroomAdID).Select(s => new ValidateShowroomAds()
+            return _context.tblCars.Where(x => x.tblShowroomID == ShowroomAdID).Select(s => new ValidateShowroomAds()
             {
                 tblCarID = s.ID,
                 Title = s.Title,

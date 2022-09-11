@@ -86,7 +86,7 @@
                                         {
                                             <a class="cs-bgcolor btn-form" style="margin-right:10px !important;" href="@Url.Action("SignIn","Account")"><i class="icon-login"></i> Sign In </a>
                                         }
-                                        else
+                                        else if(Session["Role"].ToString() == "User")
                                         {
                                             <a href="#"><i class="icon-user2"></i> @Session["Name"] <i class="icon-chevron-down2"></i></a>
                                             <div class="cs-user-dropdown">
@@ -194,7 +194,7 @@
                                 {
                                     <a class="cs-bgcolor btn-form mr-2" style="margin-right:10px !important;" href="@Url.Action("SignIn","Account")"><i class="icon-login"></i> Sign In</a>
                                 }
-                                else
+                                else if (Session["Role"].ToString() == "User")
                                 {
                                     <a href="#"><i class="icon-user2"></i> @Session["Name"] <i class="icon-chevron-down2"></i></a>
                                     <div class="cs-user-dropdown">

@@ -1,0 +1,144 @@
+﻿@model IEnumerable<JRCar.BOL.Validation_Classes.ValidateShowroomAds>
+
+@{
+    ViewBag.Title = "My Ads";
+    Layout = "~/Views/Shared/_StarterPortal.cshtml";
+}
+<style>
+    .table-bordered td, .table-bordered th, .table-bordered {
+        border: none !important;
+    }
+
+    .table td, .table th {
+        padding: 0.75rem;
+        vertical-align: baseline;
+    }
+
+    #StatusA .badge {
+        padding: 0.25em 1.8em !important;
+        font-size: 14px !important;
+    }
+
+    .btnAction {
+        border: none !important;
+        font-size: 18px !important;
+    }
+
+    .btnEdit {
+        background: #f79c2b;
+        color: white;
+        box-shadow: 0px 2px 7px 2px #f79c2b42;
+        border-radius: 5px;
+        margin-right: 5px !important;
+    }
+
+    .btnDel {
+        color: #f9f9f9;
+        background: #f91e33;
+        box-shadow: 0px 2px 7px 2px #f91e335c;
+        border-radius: 5px;
+    }
+</style>
+
+@if (User.Identity.IsAuthenticated)
+{
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>DataTables</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">My Ads</li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">DataTable with default features</h3>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <table id="example1" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Title</th>
+                                        <th>Price</th>
+                                        <th>Make Model</th>
+                                        <th>Ad Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        @*<tr onclick="window.location = '@Url.RouteUrl("Product", new { SeName = @product.SeName })';">*@
+                                        <tr>
+                                            <td>
+                                                @if (item.CarImage != null)
+                                                {
+                                                    string path = Server.MapPath("" + item.CarImage + "");
+                                                    string[] FolderName = item.CarImage.Split('/');
+                                                    string[] imageFiles = Directory.GetFiles(path);
+                                                    List<string> images = new List<string>();
+                                                    foreach (var jha in imageFiles)
+                                                    {
+                                                        images.Add(FolderName[2] + "/" + Path.GetFileName(jha));
+                                                    }
+                                                    <img src="~/uploads/@images[0]" alt="Ad Image" style=" height:60px !important; width:80px !important;" />
+                                                }
+                                                &nbsp;&nbsp;<b style="text-transform:capitalize;">@item.Title.ToLower()</b>
+                                            </td>
+                                            <td>
+                                                Rs. @item.Price
+                                            </td>
+                                            <td>
+                                                @item.Manufacturer_Name @item.Manufacturer_CarModelName
+                                            </td>
+                                            <td id="StatusA">
+                                                @if (item.tblCarIsactive)
+                                                {
+                                                    <span class="badge badge-success"> Active </span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge badge-danger"> In active </span>
+                                                }
+                                            </td>
+                                            <td>
+                                                <a href="@Url.RouteUrl("EditAd",new { AdID = item.tblCarID })">
+                                                    <button class="btnAction btnEdit">
+                                                        <i class="far fa-edit"></i>
+                                                    </button>
+                                                </a>
+                                                <button class="btnAction btnDel">
+                                                    <i class="fas fa-trash-alt"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script>
+        document.getElementById('ShowroomAdNav').classList.add('active')
+        document.getElementById('MyAdsPage').classList.add('active')
+    </script>
+}
