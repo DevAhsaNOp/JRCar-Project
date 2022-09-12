@@ -40,7 +40,7 @@ namespace JRCar.WebApp.Controllers
         #region **Post & Edit Vehicle**
         [AcceptVerbs(HttpVerbs.Get)]
         [Authorize(Roles = "User")]
-        [Route("Ads/PostNewVehicle")]
+        [Route("Ad/PostNewVehicle")]
         public ActionResult PostNewVehicles()
         {
             var AllStates = AddressRepoObj.GetAllState();
@@ -227,7 +227,7 @@ namespace JRCar.WebApp.Controllers
 
         [AcceptVerbs(HttpVerbs.Post)]
         [Authorize(Roles = "User")]
-        [Route("Ads/PostNewVehicle")]
+        [Route("Ad/PostNewVehicle")]
         public ActionResult PostNewVehicles(ImageFile objImage, ValidationUserAds userAds)
         {
             try
@@ -310,7 +310,7 @@ namespace JRCar.WebApp.Controllers
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
-        [Route("Ads/EditVehicle")]
+        [Route("EditVehicle")]
         public ActionResult EditVehicle(ImageFile objImage, ValidationUserAds userAds)
         {
             try
@@ -515,17 +515,26 @@ namespace JRCar.WebApp.Controllers
         #region **Search Page**
         [AcceptVerbs(HttpVerbs.Get)]
         [Route("Ads")]
-        public ActionResult AllVehicles(string searchTerm, int? minimumPrice, int? maximumPrice, int? sortBy, int? page, int? StateId, int?[] CityId, int?[] ZoneId)
+        public ActionResult AllVehicles(string searchTerm, int? minimumPrice, int? maximumPrice, int? sortBy, int? page, int?[] MakeId, int?[] ModelId)
         {
-            ValidationUserAds adsView = new ValidationUserAds();
-            var AllStates = AddressRepoObj.GetAllState();
-            var states = new List<SelectListItem>();
-            foreach (var item in AllStates)
+            //ValidationUserAds adsView = new ValidationUserAds();
+            //var AllStates = AddressRepoObj.GetAllState();
+            //var states = new List<SelectListItem>();
+            //foreach (var item in AllStates)
+            //{
+            //    states.Add(new SelectListItem() { Text = item.StateName, Value = item.StateId.ToString() });
+            //}
+
+            //ViewBag.State = AllStates;
+            ShowroomAdsRepo AdsRepo = new ShowroomAdsRepo();
+            var AllMakes = AdsRepo.GetAllMakes(); AddressRepoObj.GetAllState();
+            var makes = new List<SelectListItem>();
+            foreach (var item in AllMakes)
             {
-                states.Add(new SelectListItem() { Text = item.StateName, Value = item.StateId.ToString() });
+                makes.Add(new SelectListItem() { Text = item.Manufacturer_Name, Value = item.Manufacturer_Id.ToString() });
             }
 
-            ViewBag.State = AllStates;
+            ViewBag.Make = AllMakes; 
 
             sortBy = sortBy.HasValue ? sortBy.Value : 1;
             ViewBag.MaximumPrice = RepoObj1.GetAllActiveAds().Select(x => Convert.ToInt32(x.Price)).Max();
@@ -536,8 +545,8 @@ namespace JRCar.WebApp.Controllers
             /***Number of Records you want per Page***/
             int pagesize = 2, pageindex = 1;
             pageindex = page.HasValue ? Convert.ToInt32(page) : 1;
-            var list = RepoObj1.GetAllActiveAdsFilter(searchTerm, minimumPrice, maximumPrice, sortBy, StateId, CityId, ZoneId);
-            IPagedList<ValidationUserAds> reas = list.ToPagedList(pageindex, pagesize);
+            var list = AdsRepo.GetAllActiveAdsFilter(searchTerm, minimumPrice, maximumPrice, sortBy, MakeId, ModelId);
+            IPagedList<ValidateShowroomAds> reas = list.ToPagedList(pageindex, pagesize);
             return View(reas);
         }
 
@@ -546,6 +555,13 @@ namespace JRCar.WebApp.Controllers
             var city = AddressRepoObj.GetCitiesByState(StateId);
             ViewBag.City = new SelectList(city, "CityId", "CityName");
             return PartialView("DisplayCityCheckBox");
+        }
+
+        public ActionResult GetModelListCheckBox(int MakeId)
+        {
+            var carModels = RepoObj1.GetModelsByMake(MakeId);
+            ViewBag.carModelsChk = new SelectList(carModels, "ManufacturerCarModel_Id", "Manufacturer_CarModelName");
+            return PartialView("DisplayModelsCheckBox");
         }
 
         public ActionResult GetZoneListCheckBox(int[] CityId)
@@ -567,21 +583,22 @@ namespace JRCar.WebApp.Controllers
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult GetAds(string searchTerm, int? minimumPrice, int? maximumPrice, int? sortBy, int? page, int? StateId, int?[] CityId, int?[] ZoneId)
+        public ActionResult GetAds(string searchTerm, int? minimumPrice, int? maximumPrice, int? sortBy, int? page, int?[] MakeId, int?[] ModelId)
         {
             AdsViewModel adsView = new AdsViewModel();
+            ShowroomAdsRepo AdsRepo = new ShowroomAdsRepo();
             adsView.SearchTerm = searchTerm;
             sortBy = sortBy.HasValue ? sortBy.Value : 1;
-            adsView.MaximumPrice = Convert.ToInt32(RepoObj1.GetAllActiveAdsFilter(searchTerm, minimumPrice, maximumPrice, sortBy, StateId, CityId, ZoneId).Max(x => x.Price));
+            adsView.MaximumPrice = Convert.ToInt32(AdsRepo.GetAllActiveAdsFilter(searchTerm, minimumPrice, maximumPrice, sortBy, MakeId, ModelId).Max(x => x.Price));
             ViewBag.SortBy = (sortBy.HasValue ? sortBy.Value : 1);
-            ViewBag.MaximumPrice = (maximumPrice.HasValue ? maximumPrice.Value : RepoObj1.GetAllActiveAds().Select(x => Convert.ToInt32(x.Price)).Max());
-            ViewBag.MinimumPrice = (minimumPrice.HasValue ? minimumPrice.Value : RepoObj1.GetAllActiveAds().Select(x => Convert.ToInt32(x.Price)).Min());
+            ViewBag.MaximumPrice = (maximumPrice.HasValue ? maximumPrice.Value : AdsRepo.GetAllActiveAds().Select(x => Convert.ToInt32(x.Price)).Max());
+            ViewBag.MinimumPrice = (minimumPrice.HasValue ? minimumPrice.Value : AdsRepo.GetAllActiveAds().Select(x => Convert.ToInt32(x.Price)).Min());
 
             /***Number of Records you want per Page***/
             int pagesize = 2, pageindex = 1;
             pageindex = page.HasValue ? Convert.ToInt32(page) : 1;
-            var list = RepoObj1.GetAllActiveAdsFilter(searchTerm, minimumPrice, maximumPrice, sortBy, StateId, CityId, ZoneId);
-            IPagedList<ValidationUserAds> reas = list.ToPagedList(pageindex, pagesize);
+            var list = AdsRepo.GetAllActiveAdsFilter(searchTerm, minimumPrice, maximumPrice, sortBy, MakeId, ModelId);
+            IPagedList<ValidateShowroomAds> reas = list.ToPagedList(pageindex, pagesize);
             return PartialView("_LoadAdsOn", reas);
         }
         #endregion

@@ -3356,6 +3356,7 @@
     <Content Include="Views\Portal\EditAd.cshtml" />
     <Content Include="Views\Portal\MyAds.cshtml" />
     <Content Include="Views\Portal\CarAds.cshtml" />
+    <Content Include="Views\Shared\DisplayModelsCheckBox.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

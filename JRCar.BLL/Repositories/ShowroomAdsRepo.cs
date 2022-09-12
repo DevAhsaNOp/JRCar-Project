@@ -23,9 +23,9 @@ namespace JRCar.BLL.Repositories
             dbObjNoti = new NotificationRepo();
         }
 
-        public IEnumerable<ValidateShowroomAds> GetAllActiveAdsFilter(string searchTerm, int? minimumPrice, int? maximumPrice, int? sortBy, int? StateId, int?[] CityId, int?[] ZoneId)
+        public IEnumerable<ValidateShowroomAds> GetAllActiveAdsFilter(string searchTerm, int? minimumPrice, int? maximumPrice, int? sortBy, int?[] MakeId, int?[] ModelId)
         {
-            return dbObj.GetAllActiveAdsFilter(searchTerm, minimumPrice, maximumPrice, sortBy, StateId, CityId, ZoneId);
+            return dbObj.GetAllActiveAdsFilter(searchTerm, minimumPrice, maximumPrice, sortBy, MakeId, ModelId);
         }
 
         public IEnumerable<ValidateShowroomAds> GetAllActiveAds()
@@ -278,7 +278,6 @@ namespace JRCar.BLL.Repositories
                         CruiseControl = model.CruiseControl,
                         SunRoof = model.SunRoof,
                         NavigationSystem = model.NavigationSystem,
-                        CreatedBy = model.tblShowroomID,
                         RearAcVents = model.RearAcVents,
                         FrontCam = model.FrontCam,
                         CassetPlayer = model.CassetPlayer,
@@ -293,6 +292,8 @@ namespace JRCar.BLL.Repositories
                         RearSpeaker = model.RearSpeaker,
                         BoxUsbAux = model.BoxUsbAux,
                         UpdatedBy = model.tblShowroomID,
+                        CreatedOn = GetShowroomAdsDetailOnlyForUpdate(model.tblCarID).CarFeatureCreatedOn,
+                        CreatedBy = GetShowroomAdsDetailOnlyForUpdate(model.tblCarID).CarFeatureCreatedBy,
                     };
                     var CarfeatureID = dbObj.UpdateShowroomCarFeatures(carFeature);
 
@@ -309,6 +310,8 @@ namespace JRCar.BLL.Repositories
                             CarFeatureID = CarfeatureID,
                             EngineType = model.EngineType,
                             UpdatedBy = model.tblShowroomID,
+                            CreatedOn = GetShowroomAdsDetailOnlyForUpdate(model.tblCarID).CarModelCreatedOn,
+                            CreatedBy = GetShowroomAdsDetailOnlyForUpdate(model.tblCarID).CarModelCreatedBy
                         };
                         var carModelId = dbObj.UpdateShowroomCarModels(carModel);
 

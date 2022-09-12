@@ -18,7 +18,7 @@ namespace JRCar.DAL.DBLayer
             _context = new jrcarEntities();
         }
 
-        public IEnumerable<ValidateShowroomAds> GetAllActiveAdsFilter(string searchTerm, int? minimumPrice, int? maximumPrice, int? sortBy, int? StateId, int?[] CityId, int?[] ZoneId)
+        public IEnumerable<ValidateShowroomAds> GetAllActiveAdsFilter(string searchTerm, int? minimumPrice, int? maximumPrice, int? sortBy, int?[] MakeId, int?[] ModelId)
         {
             var reas = _context.tblCars.Where(x => x.Isactive == true).Select(s => new ValidateShowroomAds()
             {
@@ -27,6 +27,8 @@ namespace JRCar.DAL.DBLayer
                 Year = s.tblCarModel.Year,
                 Manufacturer_Name = s.tblManufacturer.Manufacturer_Name,
                 Manufacturer_CarModelName = s.tblManfacturerCarModel.Manufacturer_CarModelName,
+                ManufacturerId = s.tblManufacturer.Manufacturer_Id,
+                ManufacturerCarModelID = s.tblManfacturerCarModel.ManufacturerCarModel_Id,
                 Condition = s.Condition,
                 tblCarCreatedOn = s.CreatedOn,
                 CurrentLocation = s.CurrentLocation,
@@ -64,31 +66,27 @@ namespace JRCar.DAL.DBLayer
                         break;
                 }
             }
-            if (StateId > 0 && CityId == null && ZoneId == null)
-            {
-                reas = reas.Where(x => x.tblAddress.State == StateId).ToList();
-            }
-            if (StateId > 0 && CityId != null && ZoneId == null)
+            if (MakeId != null && ModelId == null)
             {
                 List<ValidateShowroomAds> AdsList = new List<ValidateShowroomAds>();
-                foreach (var item in CityId)
+                foreach (var item in MakeId)
                 {
                     var val = item;
-                    var ads = reas.Where(x => x.tblAddress.City == item).ToList();
+                    var ads = reas.Where(x => x.ManufacturerId == item).ToList();
                     AdsList.AddRange(ads);
                 }
                 reas = AdsList;
             }
-            if (StateId > 0 && CityId != null && ZoneId != null)
+            if (MakeId != null && ModelId != null)
             {
                 List<ValidateShowroomAds> AdsList = new List<ValidateShowroomAds>();
-                foreach (var cities in CityId)
+                foreach (var makes in MakeId)
                 {
-                    var val = cities;
-                    foreach (var zones in ZoneId)
+                    var val = makes;
+                    foreach (var models in ModelId)
                     {
-                        var val1 = cities;
-                        var ads = reas.Where(x => x.tblAddress.City == cities && x.tblAddress.Area == zones).ToList();
+                        var val1 = makes;
+                        var ads = reas.Where(x => x.ManufacturerId == makes && x.ManufacturerCarModelID == models).ToList();
                         AdsList.AddRange(ads);
                     }
                 }
@@ -654,10 +652,7 @@ namespace JRCar.DAL.DBLayer
                 {
                     model.Isactive = true;
                     model.Isarchive = false;
-                    model.CreatedOn = GetShowroomAdsDetail(model.ID).CarModelCreatedOn;
-                    model.CreatedBy = GetShowroomAdsDetail(model.ID).CarModelCreatedBy;
                     model.UpdatedOn = DateTime.Now.ToString();
-                    model.UpdatedBy = model.UpdatedBy;
                     _context.Entry(model).State = System.Data.Entity.EntityState.Modified;
                     Save();
                     return model.ID;
@@ -679,10 +674,7 @@ namespace JRCar.DAL.DBLayer
                 {
                     model.Isactive = true;
                     model.Isarchive = false;
-                    model.CreatedOn = GetShowroomAdsDetail(model.ID).CarFeatureCreatedOn;
-                    model.CreatedBy = GetShowroomAdsDetail(model.ID).CarFeatureCreatedBy;
                     model.UpdatedOn = DateTime.Now.ToString();
-                    model.UpdatedBy = model.UpdatedBy;
                     _context.Entry(model).State = System.Data.Entity.EntityState.Modified;
                     Save();
                     return model.ID;

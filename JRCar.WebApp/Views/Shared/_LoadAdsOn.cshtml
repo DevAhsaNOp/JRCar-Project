@@ -1,6 +1,5 @@
 ﻿@using PagedList.Mvc
-@model  PagedList.IPagedList<JRCar.BOL.Validation_Classes.ValidationUserAds>
-
+@model  PagedList.IPagedList<JRCar.BOL.Validation_Classes.ValidateShowroomAds>
 
 
 @foreach (var item in Model.Select((value, i) => new { i, value }))
@@ -62,19 +61,19 @@
             </div>
             <div class="auto-text">
                 <div class="post-title">
-                    <h4><a href="@Url.Action("CarDetail","Website",new { AdID = item.value.AdURL })">@item.value.Title</a></h4>
-                    <h6><a href="@Url.Action("CarDetail","Website",new { AdID = item.value.AdURL })">@item.value.Title</a></h6>
+                    <h4><a href="@Url.Action("CarAds","Portal",new { AdID = item.value.CarsURL })" target="_blank">@item.value.Title</a></h4>
+                    <h6><a href="@Url.Action("CarAds","Portal",new { AdID = item.value.CarsURL })" target="_blank">@item.value.Title</a></h6>
                     <div class="auto-price" style="margin-bottom:10px !important"><span class="cs-color">PKR @string.Format("{0:n0}", Convert.ToDecimal(item.value.Price))</span></div>
                 </div>
-                <p style="font-weight:600 !important">Location: @item.value.City</p>
+                <p style="font-weight:600 !important">Location: @item.value.CurrentLocation</p>
                 <ul class="auto-info-detail">
                     <li>Year<span style="font-size: 14px !important;line-height: 26px !important">@item.value.Year</span></li>
-                    <li>Model<span style="font-size: 14px !important;line-height: 26px !important">@item.value.Model</span></li>
+                    <li>Model<span style="font-size: 14px !important;line-height: 26px !important">@item.value.Manufacturer_CarModelName</span></li>
                     <li>Condition<span style="font-size: 14px !important;line-height: 26px !important">@item.value.Condition</span></li>
-                    @if (item.value.CreatedOn != null)
+                    @if (item.value.tblCarCreatedOn != null)
                     {
                         int years, weeks, months;
-                        var Tdays = Convert.ToInt32((0 - (item.value.CreatedOn.Date - DateTime.Today.Date).TotalDays));
+                        var Tdays = Convert.ToInt32((0 - (Convert.ToDateTime(item.value.tblCarCreatedOn).Date - DateTime.Today.Date).TotalDays));
                         years = (Tdays / 365);
                         months = Convert.ToInt32((Tdays / 30.4368499));
                         weeks = (Tdays % 365) / 7;
@@ -118,7 +117,7 @@
                     }
                 </ul>
                 <a href="#" class="short-list cs-color" style="margin-right: 14px !important;"><i class="icon-heart-o"></i>ShortList</a>
-                <a href="@Url.Action("CarDetail","Website",new { AdID = item.value.AdURL })" class="View-btn" style="display:inline-block !important;">View Detail<i class=" icon-arrow-long-right"></i></a>
+                <a href="@Url.Action("CarAds","Portal",new { AdID = item.value.CarsURL })" target="_blank" class="View-btn" style="display:inline-block !important;">View Detail<i class=" icon-arrow-long-right"></i></a>
             </div>
         </div>
     </div>

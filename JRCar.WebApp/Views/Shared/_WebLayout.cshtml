@@ -764,24 +764,36 @@
             document.getElementById('Latitude').value = lat;
             document.getElementById('Longitude').value = long;
             console.log(locateed);
+
             $.ajax({
-                url: 'http://api.positionstack.com/v1/reverse',
-                data: {
-                    access_key: '999ca5b65057c71dce4658b5ce195980',
-                    query: locateed,
-                    limit: 2
+                type: "GET",
+                url: 'http://api.positionstack.com/v1/reverse?access_key=999ca5b65057c71dce4658b5ce195980&query=' + lat + '%' + long + '&limit=2',
+                success: function (data) {
+                    console.log(data.data);
+                    data.data.forEach(function (arrayItem) {
+                        var x = arrayItem.number;
+                        var label = arrayItem.label;
+                        if (x != null) {
+                            console.log("Address: " + label);
+                            document.getElementById('Address').value = label;
+                        }
+                    });
                 }
-            }).done(function (data) {
-                console.log(data.data);
-                data.data.forEach(function (arrayItem) {
-                    var x = arrayItem.number;
-                    var label = arrayItem.label;
-                    if (x != null) {
-                        console.log("Address: " + label);
-                        document.getElementById('Address').value = label;
-                    }
-                });
             });
+
+            //$.ajax({
+            //    url: 'http://api.positionstack.com/v1/reverse?access_key=999ca5b65057c71dce4658b5ce195980&query=' + lat + '%' + long + '&limit=2',
+            //}).done(function (data) {
+            //    console.log(data.data);
+            //    data.data.forEach(function (arrayItem) {
+            //        var x = arrayItem.number;
+            //        var label = arrayItem.label;
+            //        if (x != null) {
+            //            console.log("Address: " + label);
+            //            document.getElementById('Address').value = label;
+            //        }
+            //    });
+            //});
         }
     </script>
 </body>
