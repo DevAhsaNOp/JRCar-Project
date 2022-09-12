@@ -11,6 +11,11 @@
         cursor: pointer !important;
     }
 
+    #headingfive a {
+        font: 700 Normal 12px/20px "Raleway", sans-serif !important;
+        letter-spacing: 0px !important;
+    }
+
     #MakeRadio {
         list-style: none !important;
         display: flex;
@@ -77,7 +82,7 @@
                     <div class="panel panel-default">
                         <div class="panel-heading" role="tab" id="headingfive">
                             <a class="collapsed" role="button" data-toggle="collapse" href="#collapsefive" aria-expanded="false" aria-controls="collapsefive">
-                                SELECT State
+                                SELECT MAKE
                             </a>
                         </div>
                         <div id="collapsefive" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingfive">
@@ -443,19 +448,30 @@
     function FormVAds() {
         var search = $('#searchTerm_TxtBox').val();
 
-        //var ZoneNameListVal = null;
-        //ZoneNameListVal = [];
-        //var CityListVal = null;
-        //CityListVal = [];
-        //var state = $("input[name='StateRR']:checked").val();
+        /*
+         * Uncomment this lines only if you need to filter the Ads According to State, City and Area
+        var ZoneNameListVal = null;
+        ZoneNameListVal = [];
+        var CityListVal = null;
+        CityListVal = [];
+        var state = $("input[name='StateRR']:checked").val();
 
-        //$("input[name='CityListChkBox']:checked").each(function () {
-        //    CityListVal.push($(this).attr('value'));
-        //});
+        $("input[name='CityListChkBox']:checked").each(function () {
+            CityListVal.push($(this).attr('value'));
+        });
 
-        //$("input[name='ZoneListChkBox']:checked").each(function () {
-        //    ZoneNameListVal.push($(this).attr('value'));
-        //});
+        $("input[name='ZoneListChkBox']:checked").each(function () {
+            ZoneNameListVal.push($(this).attr('value'));
+        });
+        */
+
+        var makeId = $("input[name = 'MakeRR']:checked").val();
+        var ModelNameListVal = null;
+        ModelNameListVal = [];
+
+        $("input[name='ModelListChkBox']:checked").each(function () {
+            ModelNameListVal.push($(this).attr('value'));
+        });
 
         console.log(search);
         $("#divLoader").show();
@@ -467,7 +483,7 @@
         $.ajax({
             type: 'POST',
             url: "@Url.Action("GetAds", "Website")",
-            data: JSON.stringify({ searchTerm: search, StateId: state, CityId: CityListVal, ZoneId: ZoneNameListVal, maximumPrice: maximum, minimumPrice: minimum }),
+            data: JSON.stringify({ searchTerm: search, MakeId: makeId, ModelId: ModelNameListVal, maximumPrice: maximum, minimumPrice: minimum }),
             contentType: "application/json; charset=utf-8",
             success: function (response) {
                 //console.log(response);
@@ -514,7 +530,7 @@
     })
 
     /**
-     * Uncomment this Script only if you need to fiter the Ads According to State, City and Area
+     * Uncomment this Script only if you need to filter the Ads According to State, City and Area
     $("input[name = 'StateRR']").change(function () {
         var StatId = $(this).val();
         var SortBy = $("#SortByVehicle").find(':selected').val();

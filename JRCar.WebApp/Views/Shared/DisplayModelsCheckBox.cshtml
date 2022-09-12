@@ -1,6 +1,13 @@
 ﻿@model JRCar.BOL.tblManfacturerCarModel
 
-    <style>
+<style>
+    #CheckBOxModels {
+        max-height: 155px !important;
+    }
+
+        #CheckBOxModels li {
+            padding: 0px !important;
+        }
 
         #CheckBOxModels::-webkit-scrollbar {
             width: 6px;
@@ -21,85 +28,85 @@
                 background: #D00000;
                 border-radius: 10px;
             }
-    </style>
+</style>
 
-    @if (ViewBag.carModelsChk != null)
-    {
-        <ul class="cs-checkbox-list mCustomScrollbar" id="CheckBOxModels" data-mcs-theme="dark" style="overflow: auto;">
-            @foreach (var item in ViewBag.carModelsChk)
-            {
-                <li>
-                    <div class="ChcBoxLst checkbox">
-                        <input type="checkbox" id="ModelListChkBox_@item.Value" name="ModelListChkBox" value="@item.Value" class="chkModelclass" style="margin: 0 !important;" />
-                        <label for="ModelListChkBox_@item.Value" id="LblModelListChkBox_@item.Value" style="margin: 0 !important;">@item.Text</label>
-                    </div>
-                </li>
-            }
-        </ul>
-    }
+@if (ViewBag.carModelsChk != null)
+{
+    <ul class="cs-checkbox-list mCustomScrollbar" id="CheckBOxModels" data-mcs-theme="dark" style="overflow: auto;">
+        @foreach (var item in ViewBag.carModelsChk)
+        {
+            <li>
+                <div class="ChcBoxLst checkbox">
+                    <input type="checkbox" id="ModelListChkBox_@item.Value" name="ModelListChkBox" value="@item.Value" class="chkModelclass" style="margin: 0 !important;" />
+                    <label for="ModelListChkBox_@item.Value" id="LblModelListChkBox_@item.Value" style="margin: 0 !important;">@item.Text</label>
+                </div>
+            </li>
+        }
+    </ul>
+}
 
-    <script>
+<script>
 
-        $('.chkModelclass').click(function () {
-            //CSSSetting(this);
-            PostModel();
+    $('.chkModelclass').click(function () {
+        //CSSSetting(this);
+        PostModel();
+    });
+
+    function PostModel() {
+        var ModelNameListVal = null;
+        ModelNameListVal = [];
+
+        $("input[name='ModelListChkBox']:checked").each(function () {
+            ModelNameListVal.push($(this).attr('value'));
         });
 
-        function PostModel() {
-            var ModelNameListVal = null;
-            ModelNameListVal = [];
+        sessionStorage.setItem('Checked', ModelNameListVal);
 
-            $("input[name='ModelListChkBox']:checked").each(function () {
-                ModelNameListVal.push($(this).attr('value'));
+        if (ModelNameListVal.length > 0) {
+            $("#divLoader").show();
+            var SortBy = $("#SortByVehicle").find(':selected').val();
+            var search = $('#searchTerm_TxtBox').val();
+            var priceRange = $("#price").val();
+            var makeId = $("input[name = 'MakeRR']:checked").val();
+            console.log(priceRange);
+            var myArr = priceRange.split`,`.map(x => +x);
+            var minimum = myArr[0];
+            var maximum = myArr[1];
+            $.ajax({
+                type: "post",
+                url: "/Website/GetAds",
+                data: { searchTerm: search, sortBy: SortBy, MakeId: makeId, ModelId: ModelNameListVal, maximumPrice: maximum, minimumPrice: minimum },
+                datatype: "json",
+                traditional: true,
+                success: function (data) {
+                    $("#divLoader").hide();
+                    $("#VehicleAdsLst").html(data);
+                }
             });
-
-            sessionStorage.setItem('Checked', ModelNameListVal);
-
-            if (ModelNameListVal.length > 0) {
-                $("#divLoader").show();
-                var SortBy = $("#SortByVehicle").find(':selected').val();
-                var search = $('#searchTerm_TxtBox').val();
-                var priceRange = $("#price").val();
-                var makeId = $("input[name = 'MakeRR']").val();
-                console.log(priceRange);
-                var myArr = priceRange.split`,`.map(x => +x);
-                var minimum = myArr[0];
-                var maximum = myArr[1];
-                $.ajax({
-                    type: "post",
-                    url: "/Website/GetAds",
-                    data: { searchTerm: search, sortBy: SortBy, MakeId: makeId, ModelId: ModelNameListVal, maximumPrice: maximum, minimumPrice: minimum },
-                    datatype: "json",
-                    traditional: true,
-                    success: function (data) {
-                        $("#divLoader").hide();
-                        $("#VehicleAdsLst").html(data);
-                    }
-                });
-            }
-            else {
-                var makeId = $("input[name = 'MakeRR']").val();
-                $("#divLoader").show();
-                var SortBy = $("#SortByVehicle").find(':selected').val();
-                var search = $('#searchTerm_TxtBox').val();
-                var priceRange = $("#price").val();
-                console.log(priceRange);
-                var myArr = priceRange.split`,`.map(x => +x);
-                var minimum = myArr[0];
-                var maximum = myArr[1];
-
-                $.ajax({
-                    type: "post",
-                    url: "/Website/GetAds",
-                    data: { searchTerm: search, sortBy: SortBy, MakeId: makeId, maximumPrice: maximum, minimumPrice: minimum },
-                    datatype: "json",
-                    traditional: true,
-                    success: function (response) {
-                        $("#divLoader").hide();
-                        $("#VehicleAdsLst").html(response);
-                    }
-                });
-            }
         }
+        else {
+            var makeId = $("input[name = 'MakeRR']:checked").val();
+            $("#divLoader").show();
+            var SortBy = $("#SortByVehicle").find(':selected').val();
+            var search = $('#searchTerm_TxtBox').val();
+            var priceRange = $("#price").val();
+            console.log(priceRange);
+            var myArr = priceRange.split`,`.map(x => +x);
+            var minimum = myArr[0];
+            var maximum = myArr[1];
 
-    </script>
+            $.ajax({
+                type: "post",
+                url: "/Website/GetAds",
+                data: { searchTerm: search, sortBy: SortBy, MakeId: makeId, maximumPrice: maximum, minimumPrice: minimum },
+                datatype: "json",
+                traditional: true,
+                success: function (response) {
+                    $("#divLoader").hide();
+                    $("#VehicleAdsLst").html(response);
+                }
+            });
+        }
+    }
+
+</script>

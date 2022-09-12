@@ -277,6 +277,8 @@
                 var maximum = myArr[1];
                 var SortBy = $("#SortByVehicle").find(':selected').val();
                 var search = $('#searchTerm_TxtBox').val();
+                /*
+                 * Uncomment this lines only if you need to filter the Ads According to State, City and Area
                 var ZoneNameListVal = null;
                 ZoneNameListVal = [];
                 var CityListVal = null;
@@ -290,13 +292,22 @@
                 $("input[name='ZoneListChkBox']:checked").each(function () {
                     ZoneNameListVal.push($(this).attr('value'));
                 });
+                */
+
+                var makeId = $("input[name = 'MakeRR']:checked").val();
+                var ModelNameListVal = null;
+                ModelNameListVal = [];
+
+                $("input[name='ModelListChkBox']:checked").each(function () {
+                    ModelNameListVal.push($(this).attr('value'));
+                });
 
                 console.log("Search Term Val:" + search);
                 $("#divLoader").show();
                 $.ajax({
                     type: "POST",
                     url: "@Url.Action("GetAds", "Website")",
-                    data: JSON.stringify({ searchTerm: search, sortBy: SortBy, StateId: state, CityId: CityListVal, ZoneId: ZoneNameListVal, maximumPrice: maximum, minimumPrice: minimum }),
+                    data: JSON.stringify({ searchTerm: search, sortBy: SortBy, MakeId: makeId, ModelId: ModelNameListVal, maximumPrice: maximum, minimumPrice: minimum }),
                     contentType: "application/json; charset=utf-8",
                     success: function (response) {
                         $("#divLoader").hide();
@@ -314,15 +325,18 @@
             $('#SortByVehicle').change(function () {
                 var SelectedOption = $(this).find(':selected').val();
                 var search = $('#searchTerm_TxtBox').val();
-                var ZoneNameListVal = null;
-                ZoneNameListVal = [];
-                var CityListVal = null;
-                CityListVal = [];
                 var priceRange = $("#price").val();
                 console.log(priceRange);
                 var myArr = priceRange.split`,`.map(x => +x);
                 var minimum = myArr[0];
                 var maximum = myArr[1];
+
+                /*
+                * Uncomment this lines only if you need to filter the Ads According to State, City and Area
+                var ZoneNameListVal = null;
+                ZoneNameListVal = [];
+                var CityListVal = null;
+                CityListVal = [];
                 var state = $("input[name='StateRR']:checked").val();
 
                 $("input[name='CityListChkBox']:checked").each(function () {
@@ -332,14 +346,22 @@
                 $("input[name='ZoneListChkBox']:checked").each(function () {
                     ZoneNameListVal.push($(this).attr('value'));
                 });
+                */
 
+                var makeId = $("input[name = 'MakeRR']:checked").val();
+                var ModelNameListVal = null;
+                ModelNameListVal = [];
+
+                $("input[name='ModelListChkBox']:checked").each(function () {
+                    ModelNameListVal.push($(this).attr('value'));
+                });
                 console.log("Selected Val:" + SelectedOption);
                 console.log("Search Term Val:" + search);
                 $("#divLoader").show();
                 $.ajax({
                     type: "POST",
                     url: "@Url.Action("GetAds", "Website")",
-                    data: JSON.stringify({ searchTerm: search, sortBy: SelectedOption, StateId: state, CityId: CityListVal, ZoneId: ZoneNameListVal, maximumPrice: maximum, minimumPrice: minimum }),
+                    data: JSON.stringify({ searchTerm: search, sortBy: SelectedOption, MakeId: makeId, ModelId: ModelNameListVal, maximumPrice: maximum, minimumPrice: minimum }),
                     contentType: "application/json; charset=utf-8",
                     success: function (response) {
                         $("#divLoader").hide();
@@ -360,6 +382,9 @@
                 var SortBy = $("#SortByVehicle").find(':selected').val();
                 console.log("SortBY Val from pager:" + SortBy);
                 var search = $('#searchTerm_TxtBox').val();
+
+                /*
+                 * Uncomment this lines only if you need to filter the Ads According to State, City and Area
                 var ZoneNameListVal = null;
                 ZoneNameListVal = [];
                 var CityListVal = null;
@@ -373,12 +398,21 @@
                 $("input[name='ZoneListChkBox']:checked").each(function () {
                     ZoneNameListVal.push($(this).attr('value'));
                 });
+                */
+
+                var makeId = $("input[name = 'MakeRR']:checked").val();
+                var ModelNameListVal = null;
+                ModelNameListVal = [];
+
+                $("input[name='ModelListChkBox']:checked").each(function () {
+                    ModelNameListVal.push($(this).attr('value'));
+                });
                 console.log(search);
                 console.log("Attr: " + $(this).attr("href"));
                 $.ajax({
                     url: $(this).attr("href"),
                     type: 'POST',
-                    data: JSON.stringify({ sortBy: SortBy, page: pageno, searchTerm: search, StateId: state, CityId: CityListVal, ZoneId: ZoneNameListVal, maximumPrice: maximum, minimumPrice: minimum }),
+                    data: JSON.stringify({ sortBy: SortBy, page: pageno, searchTerm: search, MakeId: makeId, ModelId: ModelNameListVal, maximumPrice: maximum, minimumPrice: minimum }),
                     contentType: "application/json; charset=utf-8",
                     success: function (resp) {
                         $("#divLoader").hide();
@@ -780,20 +814,6 @@
                     });
                 }
             });
-
-            //$.ajax({
-            //    url: 'http://api.positionstack.com/v1/reverse?access_key=999ca5b65057c71dce4658b5ce195980&query=' + lat + '%' + long + '&limit=2',
-            //}).done(function (data) {
-            //    console.log(data.data);
-            //    data.data.forEach(function (arrayItem) {
-            //        var x = arrayItem.number;
-            //        var label = arrayItem.label;
-            //        if (x != null) {
-            //            console.log("Address: " + label);
-            //            document.getElementById('Address').value = label;
-            //        }
-            //    });
-            //});
         }
     </script>
 </body>
