@@ -6,17 +6,17 @@
     Layout = "~/Views/Shared/_WebLayout.cshtml";
 }
 <style>
-    #MakeRadio:hover {
+    .MakeRadio:hover, .ConditionRadio:hover {
         color: #d00000 !important;
         cursor: pointer !important;
     }
 
-    #headingfive a {
+    #headingNine a {
         font: 700 Normal 12px/20px "Raleway", sans-serif !important;
         letter-spacing: 0px !important;
     }
 
-    #MakeRadio {
+    .MakeRadio, .ConditionRadio {
         list-style: none !important;
         display: flex;
         align-items: center;
@@ -24,52 +24,36 @@
         padding-bottom: 10px;
     }
 
-    #collapsefive {
+    #collapseNine {
         overflow: auto;
         height: 155px;
     }
 
-    #collapsefive::-webkit-scrollbar {
-        width: 6px;
-        height: 80px;
-    }
+        #collapseNine::-webkit-scrollbar {
+            width: 6px;
+            height: 80px;
+        }
 
-    #collapsefive::-webkit-scrollbar-track {
-        border-radius: 10px;
-        background-color: #e9e9e9;
-    }
+        #collapseNine::-webkit-scrollbar-track {
+            border-radius: 10px;
+            background-color: #e9e9e9;
+        }
 
-    #collapsefive::-webkit-scrollbar-thumb {
-        background-color: #c6c6c6;
-        border-radius: 10px;
-    }
-
-        #collapsefive::-webkit-scrollbar-thumb:hover {
-            background: #D00000;
+        #collapseNine::-webkit-scrollbar-thumb {
+            background-color: #c6c6c6;
             border-radius: 10px;
         }
+
+            #collapseNine::-webkit-scrollbar-thumb:hover {
+                background: #D00000;
+                border-radius: 10px;
+            }
 </style>
 <div class="page-section">
     <div class="container">
         <div class="row">
             <aside class="section-sidebar col-lg-3 col-md-3 col-sm-12 col-xs-12">
                 <div class="cs-listing-filters">
-                    <div class="cs-search">
-                        <form class="search-form">
-                            <div class="loction-search">
-                                <input type="text" placeholder="Select Location" />
-                                <a href="#"><i class="icon-hair-cross cs-color"></i></a>
-                            </div>
-                            <div class="select-input">
-                                <select data-placeholder="Select Make" tabindex="1" class="chosen-select">
-                                    <option>Select make</option>
-                                    <option>Select make</option>
-                                    <option>Select make</option>
-                                    <option>Select make</option>
-                                </select>
-                            </div>
-                        </form>
-                    </div>
                     <div class="main-search" style="margin-bottom:15px !important;">
                         <div class="search-input">
                             <input type="text" placeholder="Search by Keyword" name="searchTerm" id="searchTerm_TxtBox">
@@ -80,12 +64,12 @@
                         </div>
                     </div>
                     <div class="panel panel-default">
-                        <div class="panel-heading" role="tab" id="headingfive">
-                            <a class="collapsed" role="button" data-toggle="collapse" href="#collapsefive" aria-expanded="false" aria-controls="collapsefive">
+                        <div class="panel-heading" role="tab" id="headingNine">
+                            <a class="collapsed" role="button" data-toggle="collapse" href="#collapseNine" aria-expanded="false" aria-controls="collapseNine">
                                 SELECT MAKE
                             </a>
                         </div>
-                        <div id="collapsefive" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingfive">
+                        <div id="collapseNine" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingNine">
                             <div class="panel-body">
                                 <div class="cs-select-transmission">
                                     <form>
@@ -101,7 +85,7 @@
                                             *@
                                             @foreach (var item in ViewBag.Make)
                                             {
-                                                <li id="MakeRadio">
+                                                <li class="MakeRadio">
                                                     <input type="radio" style="margin-top: 0px !important;" name="MakeRR" id="R_@item.Manufacturer_Id" value="@item.Manufacturer_Id" />
                                                     <label for="R_@item.Manufacturer_Id" style="text-transform:uppercase;font-size:12px;font-weight:bold;line-height: 12px;margin-bottom: 0px;">@item.Manufacturer_Name</label>
                                                 </li>
@@ -131,6 +115,31 @@
                             </div>
                         </div>
                     *@
+                    <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="headingsix">
+                            <a class="collapsed" role="button" data-toggle="collapse" href="#collapsesix" aria-expanded="false" aria-controls="collapsesix">
+                                SELECT CONDITION
+                            </a>
+                        </div>
+                        <div id="collapsesix" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingsix">
+                            <div class="panel-body">
+                                <div class="cs-select-transmission">
+                                    <form>
+                                        <ul>
+                                            <li class="ConditionRadio">
+                                                <input type="radio" style="margin-top: 0px !important;" name="ConditionRR" id="R_1" value="1" />
+                                                <label for="R_1" style="text-transform:uppercase;font-size:12px;font-weight:bold;line-height: 12px;margin-bottom: 0px;">Used</label>
+                                            </li>
+                                            <li class="ConditionRadio">
+                                                <input type="radio" style="margin-top: 0px !important;" name="ConditionRR" id="R_2" value="2" />
+                                                <label for="R_2" style="text-transform:uppercase;font-size:12px;font-weight:bold;line-height: 12px;margin-bottom: 0px;">New</label>
+                                            </li>
+                                        </ul>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
                         <div class="panel panel-default">
                             <div class="panel-heading" role="tab" id="headingOne">
@@ -142,20 +151,28 @@
                                 <div class="panel-body">
                                     <div class="cs-model-year">
                                         <div class="cs-select-filed">
-                                            <select data-placeholder="Recent Added" class="chosen-select-no-single" tabindex="5">
-                                                <option>2003</option>
-                                                <option>2004</option>
-                                                <option>2005</option>
-                                                <option>2006</option>
+                                            <select data-placeholder="Recent Added" class="chosen-select-no-single" id="StartYear" tabindex="5">
+                                                @foreach (var item in ViewBag.CARYears)
+                                                {
+                                                    <option>@item</option>
+                                                }
                                             </select>
                                         </div>
                                         <span>to</span>
                                         <div class="cs-select-filed">
-                                            <select data-placeholder="Recent Added" class="chosen-select-no-single" tabindex="5">
-                                                <option>2006</option>
-                                                <option>2005</option>
-                                                <option>2004</option>
-                                                <option>2003</option>
+                                            <select data-placeholder="Recent Added" class="chosen-select-no-single" id="EndYear" tabindex="5">
+                                                @foreach (var item in ViewBag.CARYears)
+                                                {
+                                                    var todayyear = DateTime.Now.Year;
+                                                    if (true)
+                                                    {
+                                                        <option selected="selected">@item</option>
+                                                    }
+                                                    else
+                                                    {
+                                                        <option>@item</option>
+                                                    }
+                                                }
                                             </select>
                                         </div>
                                     </div>
@@ -245,8 +262,8 @@
                                         <form>
                                             <input id="price" type="text" class="span2" value="3000" data-slider-min="@ViewBag.MinimumPrice" data-slider-max="@ViewBag.MaximumPrice" data-slider-step="5" data-slider-value="[@ViewBag.MinimumPrice,@ViewBag.MaximumPrice]" />
                                             <div class="selector-value">
-                                                <span>$@ViewBag.MinimumPrice</span>
-                                                <span class="pull-right">$@ViewBag.MaximumPrice</span>
+                                                <span>Rs @ViewBag.MinimumPrice</span>
+                                                <span class="pull-right">Rs @ViewBag.MaximumPrice</span>
                                             </div>
                                         </form>
                                     </div>
@@ -326,60 +343,25 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="panel panel-default">
-                            <div class="panel-heading" role="tab" id="headingfive">
-                                <a class="collapsed" role="button" data-toggle="collapse" href="#collapsefive" aria-expanded="false" aria-controls="collapsefive">
-                                    Transmission
-                                </a>
-                            </div>
-                            <div id="collapsefive" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingfive">
-                                <div class="panel-body">
-                                    <div class="cs-select-transmission">
-                                        <form>
-                                            <ul class="cs-checkbox-list">
-                                                <li>
-                                                    <div class="checkbox">
-                                                        <input id="checkbox24" type="checkbox" value="Speed">
-                                                        <label for="checkbox24">Brand New</label>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <div class="checkbox">
-                                                        <input id="checkbox25" type="checkbox" value="Speed">
-                                                        <label for="checkbox25">Slightly Used</label>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <div class="checkbox">
-                                                        <input id="checkbox26" type="checkbox" value="Speed">
-                                                        <label for="checkbox26">Used</label>
-                                                    </div>
-                                                </li>
-                                            </ul>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                         @*<div class="panel panel-default">
-                                <div class="panel-heading" role="tab" id="headingsix">
-                                    <a class="collapsed" role="button" data-toggle="collapse" href="#collapsesix" aria-expanded="false" aria-controls="collapsesix">
-                                        Engine Capacity(cc)
-                                    </a>
-                                </div>
-                                <div id="collapsesix" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingsix">
-                                    <div class="panel-body">
-                                        <div class="cs-engine-capacity">
-                                            <form>
-                                                <input id="engine" type="text" class="span2" value="3000" data-slider-min="10" data-slider-max="1000" data-slider-step="5" data-slider-value="[600,200]" />
-                                                <div class="selector-value">
-                                                    <span>800CC</span>
-                                                    <span class="pull-right">5500CC</span>
-                                                </div>
-                                            </form>
+                                    <div class="panel-heading" role="tab" id="headingsix">
+                                        <a class="collapsed" role="button" data-toggle="collapse" href="#collapsesix" aria-expanded="false" aria-controls="collapsesix">
+                                            Engine Capacity(cc)
+                                        </a>
+                                    </div>
+                                    <div id="collapsesix" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingsix">
+                                        <div class="panel-body">
+                                            <div class="cs-engine-capacity">
+                                                <form>
+                                                    <input id="engine" type="text" class="span2" value="3000" data-slider-min="10" data-slider-max="1000" data-slider-step="5" data-slider-value="[600,200]" />
+                                                    <div class="selector-value">
+                                                        <span>800CC</span>
+                                                        <span class="pull-right">5500CC</span>
+                                                    </div>
+                                                </form>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
                             </div>*@
                     </div>
                 </div>
@@ -472,7 +454,10 @@
         $("input[name='ModelListChkBox']:checked").each(function () {
             ModelNameListVal.push($(this).attr('value'));
         });
-
+        var startYear = $("#StartYear").find(':selected').val();
+        var endYear = $("#EndYear").find(':selected').val();
+        var condi = $("input[name = 'ConditionRR']:checked").val();
+        var SortBy = $("#SortByVehicle").find(':selected').val();
         console.log(search);
         $("#divLoader").show();
         var priceRange = $("#price").val();
@@ -480,10 +465,13 @@
         var myArr = priceRange.split`,`.map(x => +x);
         var minimum = myArr[0];
         var maximum = myArr[1];
+        var maxYear = (endYear >= startYear) ? endYear : startYear;
+        var miniYear = (endYear <= startYear) ? endYear : startYear;
+
         $.ajax({
             type: 'POST',
             url: "@Url.Action("GetAds", "Website")",
-            data: JSON.stringify({ searchTerm: search, MakeId: makeId, ModelId: ModelNameListVal, maximumPrice: maximum, minimumPrice: minimum }),
+            data: JSON.stringify({ searchTerm: search, MakeId: makeId, ModelId: ModelNameListVal, maximumPrice: maximum, minimumPrice: minimum, sortBy: SortBy, Condition: condi, StartYear: miniYear, EndYear: maxYear }),
             contentType: "application/json; charset=utf-8",
             success: function (response) {
                 //console.log(response);
@@ -492,6 +480,39 @@
             }
         });
     }
+
+    $("#StartYear, #EndYear").change(function () {
+        var makeId = $("input[name = 'MakeRR']:checked").val();
+        var SortBy = $("#SortByVehicle").find(':selected').val();
+        var search = $('#searchTerm_TxtBox').val();
+        var priceRange = $("#price").val();
+        var myArr = priceRange.split`,`.map(x => +x);
+        var minimum = myArr[0];
+        var maximum = myArr[1];
+        var condi = $("input[name = 'ConditionRR']:checked").val();
+        var startYear = $("#StartYear").find(':selected').val();
+        var endYear = $("#EndYear").find(':selected').val();
+        var ModelNameListVal = null;
+        ModelNameListVal = [];
+        var maxYear = (endYear >= startYear) ? endYear : startYear;
+        var miniYear = (endYear <= startYear) ? endYear : startYear;
+
+        $("input[name='ModelListChkBox']:checked").each(function () {
+            ModelNameListVal.push($(this).attr('value'));
+        });
+        $("#divLoader").show();
+        $.ajax({
+            type: "post",
+            url: "/Website/GetAds",
+            data: { MakeId: makeId, ModelId: ModelNameListVal, searchTerm: search, sortBy: SortBy, maximumPrice: maximum, minimumPrice: minimum, Condition: condi, StartYear: miniYear, EndYear: maxYear },
+            datatype: "json",
+            traditional: true,
+            success: function (response) {
+                $("#divLoader").hide();
+                $("#VehicleAdsLst").html(response);
+            }
+        });
+    })
 
     $("input[name = 'MakeRR']").change(function () {
         var makeId = $(this).val();
@@ -502,6 +523,12 @@
         var myArr = priceRange.split`,`.map(x => +x);
         var minimum = myArr[0];
         var maximum = myArr[1];
+        var condi = $("input[name = 'ConditionRR']:checked").val();
+        var startYear = $("#StartYear").find(':selected').val();
+        var endYear = $("#EndYear").find(':selected').val();
+        var maxYear = (endYear >= startYear) ? endYear : startYear;
+        var miniYear = (endYear <= startYear) ? endYear : startYear;
+
         console.log(makeId);
         $.ajax({
             type: "GET",
@@ -516,7 +543,7 @@
                     $.ajax({
                         type: "post",
                         url: "/Website/GetAds",
-                        data: { MakeId: makeId, searchTerm: search, sortBy: SortBy, maximumPrice: maximum, minimumPrice: minimum },
+                        data: { MakeId: makeId, searchTerm: search, sortBy: SortBy, maximumPrice: maximum, minimumPrice: minimum, Condition: condi, StartYear: miniYear, EndYear: maxYear },
                         datatype: "json",
                         traditional: true,
                         success: function (response) {
@@ -527,6 +554,40 @@
                 }
             }
         })
+    })
+
+    $("input[name = 'ConditionRR']").change(function () {
+        var condi = $(this).val();
+        var SortBy = $("#SortByVehicle").find(':selected').val();
+        var search = $('#searchTerm_TxtBox').val();
+        var priceRange = $("#price").val();
+        var myArr = priceRange.split`,`.map(x => +x);
+        var minimum = myArr[0];
+        var maximum = myArr[1];
+        var startYear = $("#StartYear").find(':selected').val();
+        var endYear = $("#EndYear").find(':selected').val();
+        var makeId = $("input[name = 'MakeRR']:checked").val();
+        var ModelNameListVal = null;
+        ModelNameListVal = [];
+
+        $("input[name='ModelListChkBox']:checked").each(function () {
+            ModelNameListVal.push($(this).attr('value'));
+        });
+        var maxYear = (endYear >= startYear) ? endYear : startYear;
+        var miniYear = (endYear <= startYear) ? endYear : startYear;
+
+        $("#divLoader").show();
+        $.ajax({
+            type: "post",
+            url: "/Website/GetAds",
+            data: { searchTerm: search, MakeId: makeId, ModelId: ModelNameListVal, maximumPrice: maximum, minimumPrice: minimum, Condition: condi, sortBy: SortBy, StartYear: miniYear, EndYear: maxYear },
+            datatype: "json",
+            traditional: true,
+            success: function (response) {
+                $("#divLoader").hide();
+                $("#VehicleAdsLst").html(response);
+            }
+        });
     })
 
     /**

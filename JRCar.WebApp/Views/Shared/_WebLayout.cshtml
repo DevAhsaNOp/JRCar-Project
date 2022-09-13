@@ -268,6 +268,16 @@
             //$('#StateD').hide();
             //$('#CityD').hide();
             //$('#AreaD').hide();
+            //function checkforText(requiredText) {
+            //    $("#EndYear_chosen .chosen-drop .chosen-results li").each((id, elem) => {
+            //        if (elem.innerText == requiredText) {
+            //            elem.className += " result-selected";
+            //        }
+            //    });
+            //}
+
+            //var TodayYear = new Date().getFullYear();
+            //checkforText(TodayYear);
 
             function PriceChangeData() {
                 var priceRange = $("#price").val();
@@ -301,13 +311,18 @@
                 $("input[name='ModelListChkBox']:checked").each(function () {
                     ModelNameListVal.push($(this).attr('value'));
                 });
+                var condi = $("input[name = 'ConditionRR']:checked").val();
+                var startYear = $("#StartYear").find(':selected').val();
+                var endYear = $("#EndYear").find(':selected').val();
+                var maxYear = (endYear >= startYear) ? endYear : startYear;
+                var miniYear = (endYear <= startYear) ? endYear : startYear;
 
                 console.log("Search Term Val:" + search);
                 $("#divLoader").show();
                 $.ajax({
                     type: "POST",
                     url: "@Url.Action("GetAds", "Website")",
-                    data: JSON.stringify({ searchTerm: search, sortBy: SortBy, MakeId: makeId, ModelId: ModelNameListVal, maximumPrice: maximum, minimumPrice: minimum }),
+                    data: JSON.stringify({ searchTerm: search, sortBy: SortBy, MakeId: makeId, ModelId: ModelNameListVal, maximumPrice: maximum, minimumPrice: minimum, Condition: condi, StartYear: miniYear, EndYear: maxYear }),
                     contentType: "application/json; charset=utf-8",
                     success: function (response) {
                         $("#divLoader").hide();
@@ -357,11 +372,17 @@
                 });
                 console.log("Selected Val:" + SelectedOption);
                 console.log("Search Term Val:" + search);
+                var condi = $("input[name = 'ConditionRR']:checked").val();
+                var startYear = $("#StartYear").find(':selected').val();
+                var endYear = $("#EndYear").find(':selected').val();
+                var maxYear = (endYear >= startYear) ? endYear : startYear;
+                var miniYear = (endYear <= startYear) ? endYear : startYear;
+
                 $("#divLoader").show();
                 $.ajax({
                     type: "POST",
                     url: "@Url.Action("GetAds", "Website")",
-                    data: JSON.stringify({ searchTerm: search, sortBy: SelectedOption, MakeId: makeId, ModelId: ModelNameListVal, maximumPrice: maximum, minimumPrice: minimum }),
+                    data: JSON.stringify({ searchTerm: search, sortBy: SelectedOption, MakeId: makeId, ModelId: ModelNameListVal, maximumPrice: maximum, minimumPrice: minimum, Condition: condi, StartYear: miniYear, EndYear: maxYear }),
                     contentType: "application/json; charset=utf-8",
                     success: function (response) {
                         $("#divLoader").hide();
@@ -382,7 +403,8 @@
                 var SortBy = $("#SortByVehicle").find(':selected').val();
                 console.log("SortBY Val from pager:" + SortBy);
                 var search = $('#searchTerm_TxtBox').val();
-
+                var startYear = $("#StartYear").find(':selected').val();
+                var endYear = $("#EndYear").find(':selected').val();
                 /*
                  * Uncomment this lines only if you need to filter the Ads According to State, City and Area
                 var ZoneNameListVal = null;
@@ -407,12 +429,16 @@
                 $("input[name='ModelListChkBox']:checked").each(function () {
                     ModelNameListVal.push($(this).attr('value'));
                 });
+                var condi = $("input[name = 'ConditionRR']:checked").val();
+                var maxYear = (endYear >= startYear) ? endYear : startYear;
+                var miniYear = (endYear <= startYear) ? endYear : startYear;
+
                 console.log(search);
                 console.log("Attr: " + $(this).attr("href"));
                 $.ajax({
                     url: $(this).attr("href"),
                     type: 'POST',
-                    data: JSON.stringify({ sortBy: SortBy, page: pageno, searchTerm: search, MakeId: makeId, ModelId: ModelNameListVal, maximumPrice: maximum, minimumPrice: minimum }),
+                    data: JSON.stringify({ sortBy: SortBy, page: pageno, searchTerm: search, MakeId: makeId, ModelId: ModelNameListVal, maximumPrice: maximum, minimumPrice: minimum, Condition: condi, StartYear: miniYear, EndYear: maxYear }),
                     contentType: "application/json; charset=utf-8",
                     success: function (resp) {
                         $("#divLoader").hide();

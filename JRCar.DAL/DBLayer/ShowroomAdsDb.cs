@@ -18,7 +18,7 @@ namespace JRCar.DAL.DBLayer
             _context = new jrcarEntities();
         }
 
-        public IEnumerable<ValidateShowroomAds> GetAllActiveAdsFilter(string searchTerm, int? minimumPrice, int? maximumPrice, int? sortBy, int?[] MakeId, int?[] ModelId)
+        public IEnumerable<ValidateShowroomAds> GetAllActiveAdsFilter(string searchTerm, int? minimumPrice, int? maximumPrice, int? sortBy, int? Condition, int? StartYear, int? EndYear, int?[] MakeId, int?[] ModelId)
         {
             var reas = _context.tblCars.Where(x => x.Isactive == true).Select(s => new ValidateShowroomAds()
             {
@@ -47,6 +47,18 @@ namespace JRCar.DAL.DBLayer
             if (minimumPrice.HasValue)
             {
                 reas = reas.Where(x => Convert.ToInt32(x.Price) >= minimumPrice.Value).ToList();
+            }
+            if (Condition == 1)
+            {
+                reas = reas.Where(x => x.Condition.Contains("Used")).ToList();
+            }
+            if (Condition == 2)
+            {
+                reas = reas.Where(x => x.Condition.Contains("New")).ToList();
+            }
+            if (StartYear.HasValue && EndYear.HasValue)
+            {
+                reas = reas.Where(x => Convert.ToInt32(x.Year) >= StartYear && Convert.ToInt32(x.Year) <= EndYear).ToList();
             }
             if (sortBy.HasValue)
             {

@@ -23,9 +23,9 @@ namespace JRCar.BLL.Repositories
             dbObjNoti = new NotificationRepo();
         }
 
-        public IEnumerable<ValidateShowroomAds> GetAllActiveAdsFilter(string searchTerm, int? minimumPrice, int? maximumPrice, int? sortBy, int?[] MakeId, int?[] ModelId)
+        public IEnumerable<ValidateShowroomAds> GetAllActiveAdsFilter(string searchTerm, int? minimumPrice, int? maximumPrice, int? sortBy, int? Condition, int? StartYear, int? EndYear, int?[] MakeId, int?[] ModelId)
         {
-            return dbObj.GetAllActiveAdsFilter(searchTerm, minimumPrice, maximumPrice, sortBy, MakeId, ModelId);
+            return dbObj.GetAllActiveAdsFilter(searchTerm, minimumPrice, maximumPrice, sortBy, Condition, StartYear, EndYear, MakeId, ModelId);
         }
 
         public IEnumerable<ValidateShowroomAds> GetAllActiveAds()
@@ -592,7 +592,10 @@ namespace JRCar.BLL.Repositories
             {
                 new SelectListItem() { Text = "---Select Transmission---", Value = "0", Disabled = true, Selected = true },
                 new SelectListItem() { Text = "Automatic", Value = "Automatic" },
-                new SelectListItem() { Text = "Manual", Value = "Manual" }
+                new SelectListItem() { Text = "Manual", Value = "Manual" },
+                new SelectListItem() { Text = "CVT Transmission", Value = "CVT Transmission" },
+                new SelectListItem() { Text = "Semi-Automatic", Value = "Semi-Automatic" },
+                new SelectListItem() { Text = "Dual-Clutch", Value = "Dual-Clutch" }
             };
             return Transmission;
         }

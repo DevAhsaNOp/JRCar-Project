@@ -60,8 +60,7 @@
             ModelNameListVal.push($(this).attr('value'));
         });
 
-        sessionStorage.setItem('Checked', ModelNameListVal);
-
+        var condi = $("input[name = 'ConditionRR']:checked").val();
         if (ModelNameListVal.length > 0) {
             $("#divLoader").show();
             var SortBy = $("#SortByVehicle").find(':selected').val();
@@ -72,10 +71,15 @@
             var myArr = priceRange.split`,`.map(x => +x);
             var minimum = myArr[0];
             var maximum = myArr[1];
+            var startYear = $("#StartYear").find(':selected').val();
+            var endYear = $("#EndYear").find(':selected').val();
+            var maxYear = (endYear >= startYear) ? endYear : startYear;
+            var miniYear = (endYear <= startYear) ? endYear : startYear;
+
             $.ajax({
                 type: "post",
                 url: "/Website/GetAds",
-                data: { searchTerm: search, sortBy: SortBy, MakeId: makeId, ModelId: ModelNameListVal, maximumPrice: maximum, minimumPrice: minimum },
+                data: { searchTerm: search, sortBy: SortBy, MakeId: makeId, ModelId: ModelNameListVal, maximumPrice: maximum, minimumPrice: minimum, Condition: condi, StartYear: miniYear, EndYear: maxYear },
                 datatype: "json",
                 traditional: true,
                 success: function (data) {
@@ -94,11 +98,16 @@
             var myArr = priceRange.split`,`.map(x => +x);
             var minimum = myArr[0];
             var maximum = myArr[1];
+            var condi = $("input[name = 'ConditionRR']:checked").val();
+            var startYear = $("#StartYear").find(':selected').val();
+            var endYear = $("#EndYear").find(':selected').val();
+            var maxYear = (endYear >= startYear) ? endYear : startYear;
+            var miniYear = (endYear <= startYear) ? endYear : startYear;
 
             $.ajax({
                 type: "post",
                 url: "/Website/GetAds",
-                data: { searchTerm: search, sortBy: SortBy, MakeId: makeId, maximumPrice: maximum, minimumPrice: minimum },
+                data: { searchTerm: search, sortBy: SortBy, MakeId: makeId, maximumPrice: maximum, minimumPrice: minimum, Condition: condi, StartYear: miniYear, EndYear: maxYear },
                 datatype: "json",
                 traditional: true,
                 success: function (response) {
