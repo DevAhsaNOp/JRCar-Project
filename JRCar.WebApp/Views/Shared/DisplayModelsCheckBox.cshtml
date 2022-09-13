@@ -1,7 +1,7 @@
 ﻿@model JRCar.BOL.tblManfacturerCarModel
 
 <style>
-    #CheckBOxModels {
+/*    #CheckBOxModels {
         max-height: 155px !important;
     }
 
@@ -27,28 +27,25 @@
             #CheckBOxModels::-webkit-scrollbar-thumb:hover {
                 background: #D00000;
                 border-radius: 10px;
-            }
+            }*/
 </style>
 
 @if (ViewBag.carModelsChk != null)
 {
-    <ul class="cs-checkbox-list mCustomScrollbar" id="CheckBOxModels" data-mcs-theme="dark" style="overflow: auto;">
-        @foreach (var item in ViewBag.carModelsChk)
-        {
-            <li>
-                <div class="ChcBoxLst checkbox">
-                    <input type="checkbox" id="ModelListChkBox_@item.Value" name="ModelListChkBox" value="@item.Value" class="chkModelclass" style="margin: 0 !important;" />
-                    <label for="ModelListChkBox_@item.Value" id="LblModelListChkBox_@item.Value" style="margin: 0 !important;">@item.Text</label>
-                </div>
-            </li>
-        }
-    </ul>
+    @*<ul class="cs-checkbox-list mCustomScrollbar" id="CheckBOxModels" data-mcs-theme="dark" style="overflow: auto;">*@
+    foreach (var item in ViewBag.carModelsChk)
+    {
+        <li style="padding: 0px !important;">
+            <input type="checkbox" id="ModelListChkBox_@item.Value" name="ModelListChkBox" value="@item.Value" class="chkModelclass" style="margin: 0 !important;" />
+            <label for="ModelListChkBox_@item.Value" id="LblModelListChkBox_@item.Value" style="margin: 0 !important; font-size: 12px !important; padding-left: 20px;">@item.Text</label>
+        </li>
+    }
+    @*</ul>*@
 }
 
 <script>
 
     $('.chkModelclass').click(function () {
-        //CSSSetting(this);
         PostModel();
     });
 
@@ -75,11 +72,23 @@
             var endYear = $("#EndYear").find(':selected').val();
             var maxYear = (endYear >= startYear) ? endYear : startYear;
             var miniYear = (endYear <= startYear) ? endYear : startYear;
+            var ColorNameListVal = null;
+            ColorNameListVal = [];
+
+            $("input[name='ColorListChkBox']:checked").each(function () {
+                ColorNameListVal.push($(this).attr('value'));
+            });
+            var TransNameListVal = null;
+            TransNameListVal = [];
+
+            $("input[name='TransListChkBox']:checked").each(function () {
+                TransNameListVal.push($(this).attr('value'));
+            });
 
             $.ajax({
                 type: "post",
                 url: "/Website/GetAds",
-                data: { searchTerm: search, sortBy: SortBy, MakeId: makeId, ModelId: ModelNameListVal, maximumPrice: maximum, minimumPrice: minimum, Condition: condi, StartYear: miniYear, EndYear: maxYear },
+                data: { searchTerm: search, sortBy: SortBy, MakeId: makeId, ModelId: ModelNameListVal, maximumPrice: maximum, minimumPrice: minimum, Condition: condi, StartYear: miniYear, EndYear: maxYear, ColorSelected: ColorNameListVal, TransSelected: TransNameListVal },
                 datatype: "json",
                 traditional: true,
                 success: function (data) {
@@ -103,11 +112,23 @@
             var endYear = $("#EndYear").find(':selected').val();
             var maxYear = (endYear >= startYear) ? endYear : startYear;
             var miniYear = (endYear <= startYear) ? endYear : startYear;
+            var ColorNameListVal = null;
+            ColorNameListVal = [];
+
+            $("input[name='ColorListChkBox']:checked").each(function () {
+                ColorNameListVal.push($(this).attr('value'));
+            });
+            var TransNameListVal = null;
+            TransNameListVal = [];
+
+            $("input[name='TransListChkBox']:checked").each(function () {
+                TransNameListVal.push($(this).attr('value'));
+            });
 
             $.ajax({
                 type: "post",
                 url: "/Website/GetAds",
-                data: { searchTerm: search, sortBy: SortBy, MakeId: makeId, maximumPrice: maximum, minimumPrice: minimum, Condition: condi, StartYear: miniYear, EndYear: maxYear },
+                data: { searchTerm: search, sortBy: SortBy, MakeId: makeId, maximumPrice: maximum, minimumPrice: minimum, Condition: condi, StartYear: miniYear, EndYear: maxYear, ColorSelected: ColorNameListVal, TransSelected: TransNameListVal },
                 datatype: "json",
                 traditional: true,
                 success: function (response) {

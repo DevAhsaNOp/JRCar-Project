@@ -18,7 +18,7 @@ namespace JRCar.DAL.DBLayer
             _context = new jrcarEntities();
         }
 
-        public IEnumerable<ValidateShowroomAds> GetAllActiveAdsFilter(string searchTerm, int? minimumPrice, int? maximumPrice, int? sortBy, int? Condition, int? StartYear, int? EndYear, int?[] MakeId, int?[] ModelId)
+        public IEnumerable<ValidateShowroomAds> GetAllActiveAdsFilter(string searchTerm, int? minimumPrice, int? maximumPrice, int? sortBy, int? Condition, int? StartYear, int? EndYear, int?[] MakeId, int?[] ModelId, string[] ColorSelected, string[] TransSelected)
         {
             var reas = _context.tblCars.Where(x => x.Isactive == true).Select(s => new ValidateShowroomAds()
             {
@@ -35,6 +35,8 @@ namespace JRCar.DAL.DBLayer
                 tblAddress = s.tblAddress,
                 CarsURL = s.CarsURL,
                 CarImage = s.tblCarImages.Select(a => a.Image).FirstOrDefault(),
+                Color = s.Color,
+                Transmission = s.Transmission,
             }).ToList();
             if (!string.IsNullOrEmpty(searchTerm))
             {
@@ -55,6 +57,28 @@ namespace JRCar.DAL.DBLayer
             if (Condition == 2)
             {
                 reas = reas.Where(x => x.Condition.Contains("New")).ToList();
+            }
+            if (ColorSelected != null)
+            {
+                List<ValidateShowroomAds> AdsList = new List<ValidateShowroomAds>();
+                foreach (var item in ColorSelected)
+                {
+                    var val = item;
+                    var ads = reas.Where(x => x.Color.ToLower().Contains(item.ToLower())).ToList();
+                    AdsList.AddRange(ads);
+                }
+                reas = AdsList;
+            }
+            if (TransSelected != null)
+            {
+                List<ValidateShowroomAds> AdsList = new List<ValidateShowroomAds>();
+                foreach (var item in TransSelected)
+                {
+                    var val = item;
+                    var ads = reas.Where(x => x.Transmission.ToLower().Contains(item.ToLower())).ToList();
+                    AdsList.AddRange(ads);
+                }
+                reas = AdsList;
             }
             if (StartYear.HasValue && EndYear.HasValue)
             {

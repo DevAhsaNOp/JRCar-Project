@@ -23,9 +23,9 @@ namespace JRCar.BLL.Repositories
             dbObjNoti = new NotificationRepo();
         }
 
-        public IEnumerable<ValidateShowroomAds> GetAllActiveAdsFilter(string searchTerm, int? minimumPrice, int? maximumPrice, int? sortBy, int? Condition, int? StartYear, int? EndYear, int?[] MakeId, int?[] ModelId)
+        public IEnumerable<ValidateShowroomAds> GetAllActiveAdsFilter(string searchTerm, int? minimumPrice, int? maximumPrice, int? sortBy, int? Condition, int? StartYear, int? EndYear, int?[] MakeId, int?[] ModelId, string[] ColorSelected, string[] TransSelected)
         {
-            return dbObj.GetAllActiveAdsFilter(searchTerm, minimumPrice, maximumPrice, sortBy, Condition, StartYear, EndYear, MakeId, ModelId);
+            return dbObj.GetAllActiveAdsFilter(searchTerm, minimumPrice, maximumPrice, sortBy, Condition, StartYear, EndYear, MakeId, ModelId, ColorSelected, TransSelected);
         }
 
         public IEnumerable<ValidateShowroomAds> GetAllActiveAds()

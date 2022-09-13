@@ -515,7 +515,7 @@ namespace JRCar.WebApp.Controllers
         #region **Search Page**
         [AcceptVerbs(HttpVerbs.Get)]
         [Route("Ads")]
-        public ActionResult AllVehicles(string searchTerm, int? minimumPrice, int? maximumPrice, int? sortBy, int? Condition, int? StartYear, int? EndYear, int? page, int?[] MakeId, int?[] ModelId)
+        public ActionResult AllVehicles(string searchTerm, int? minimumPrice, int? maximumPrice, int? sortBy, int? Condition, int? StartYear, int? EndYear, int? page, int?[] MakeId, int?[] ModelId, string[] ColorSelected, string[] TransSelected)
         {
             //ValidationUserAds adsView = new ValidationUserAds();
             //var AllStates = AddressRepoObj.GetAllState();
@@ -533,6 +533,44 @@ namespace JRCar.WebApp.Controllers
                 year.Add(DateTime.Now.AddYears(i).ToString("yyyy"));
             }
             ViewBag.CARYears = year;
+
+            var Color = new List<SelectListItem>
+            {
+                new SelectListItem() { Text = "White", Value = "White" },
+                new SelectListItem() { Text = "Silver", Value = "Silver" },
+                new SelectListItem() { Text = "Black", Value = "Black" },
+                new SelectListItem() { Text = "Grey", Value = "Grey" },
+                new SelectListItem() { Text = "Blue", Value = "Blue" },
+                new SelectListItem() { Text = "Green", Value = "Green" },
+                new SelectListItem() { Text = "Red", Value = "Red" },
+                new SelectListItem() { Text = "Gold", Value = "Gold" },
+                new SelectListItem() { Text = "Maroon", Value = "Maroon" },
+                new SelectListItem() { Text = "Beige", Value = "Beige" },
+                new SelectListItem() { Text = "Pink", Value = "Pink" },
+                new SelectListItem() { Text = "Brown", Value = "Brown" },
+                new SelectListItem() { Text = "Burgundy", Value = "Burgundy" },
+                new SelectListItem() { Text = "Yellow", Value = "Yellow" },
+                new SelectListItem() { Text = "Bronze", Value = "Bronze" },
+                new SelectListItem() { Text = "Purple", Value = "Purple" },
+                new SelectListItem() { Text = "Turquoise", Value = "Turquoise" },
+                new SelectListItem() { Text = "Orange", Value = "Orange" },
+                new SelectListItem() { Text = "Indigo", Value = "Indigo" },
+                new SelectListItem() { Text = "Magenta", Value = "Magenta" },
+                new SelectListItem() { Text = "Navy", Value = "Navy" },
+                new SelectListItem() { Text = "Unlisted", Value = "Unlisted" }
+            };
+            ViewBag.CarColors = Color;
+
+            var Transm = new List<SelectListItem>
+            {
+                new SelectListItem() { Text = "Automatic", Value = "Automatic" },
+                new SelectListItem() { Text = "Manual", Value = "Manual" },
+                new SelectListItem() { Text = "CVT Transmission", Value = "CVT Transmission" },
+                new SelectListItem() { Text = "Semi Automatic", Value = "Semi Automatic" },
+                new SelectListItem() { Text = "Dual Clutch", Value = "Dual Clutch" }
+            };
+            ViewBag.Trans = Transm;
+
 
             ShowroomAdsRepo AdsRepo = new ShowroomAdsRepo();
             var AllMakes = AdsRepo.GetAllMakes(); AddressRepoObj.GetAllState();
@@ -553,7 +591,7 @@ namespace JRCar.WebApp.Controllers
             /***Number of Records you want per Page***/
             int pagesize = 2, pageindex = 1;
             pageindex = page.HasValue ? Convert.ToInt32(page) : 1;
-            var list = AdsRepo.GetAllActiveAdsFilter(searchTerm, minimumPrice, maximumPrice, sortBy, Condition, StartYear, EndYear, MakeId, ModelId);
+            var list = AdsRepo.GetAllActiveAdsFilter(searchTerm, minimumPrice, maximumPrice, sortBy, Condition, StartYear, EndYear, MakeId, ModelId, ColorSelected, TransSelected);
             IPagedList<ValidateShowroomAds> reas = list.ToPagedList(pageindex, pagesize);
             return View(reas);
         }
@@ -591,13 +629,13 @@ namespace JRCar.WebApp.Controllers
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult GetAds(string searchTerm, int? minimumPrice, int? maximumPrice, int? sortBy, int? Condition, int? StartYear, int? EndYear, int? page, int?[] MakeId, int?[] ModelId)
+        public ActionResult GetAds(string searchTerm, int? minimumPrice, int? maximumPrice, int? sortBy, int? Condition, int? StartYear, int? EndYear, int? page, int?[] MakeId, int?[] ModelId, string[] ColorSelected, string[] TransSelected)
         {
             AdsViewModel adsView = new AdsViewModel();
             ShowroomAdsRepo AdsRepo = new ShowroomAdsRepo();
             adsView.SearchTerm = searchTerm;
             sortBy = sortBy.HasValue ? sortBy.Value : 1;
-            adsView.MaximumPrice = Convert.ToInt32(AdsRepo.GetAllActiveAdsFilter(searchTerm, minimumPrice, maximumPrice, sortBy, Condition, StartYear, EndYear, MakeId, ModelId).Max(x => x.Price));
+            adsView.MaximumPrice = Convert.ToInt32(AdsRepo.GetAllActiveAdsFilter(searchTerm, minimumPrice, maximumPrice, sortBy, Condition, StartYear, EndYear, MakeId, ModelId, ColorSelected, TransSelected).Max(x => x.Price));
             ViewBag.SortBy = (sortBy.HasValue ? sortBy.Value : 1);
             ViewBag.MaximumPrice = (maximumPrice.HasValue ? maximumPrice.Value : AdsRepo.GetAllActiveAds().Select(x => Convert.ToInt32(x.Price)).Max());
             ViewBag.MinimumPrice = (minimumPrice.HasValue ? minimumPrice.Value : AdsRepo.GetAllActiveAds().Select(x => Convert.ToInt32(x.Price)).Min());
@@ -605,7 +643,7 @@ namespace JRCar.WebApp.Controllers
             /***Number of Records you want per Page***/
             int pagesize = 2, pageindex = 1;
             pageindex = page.HasValue ? Convert.ToInt32(page) : 1;
-            var list = AdsRepo.GetAllActiveAdsFilter(searchTerm, minimumPrice, maximumPrice, sortBy, Condition, StartYear, EndYear, MakeId, ModelId);
+            var list = AdsRepo.GetAllActiveAdsFilter(searchTerm, minimumPrice, maximumPrice, sortBy, Condition, StartYear, EndYear, MakeId, ModelId, ColorSelected, TransSelected);
             IPagedList<ValidateShowroomAds> reas = list.ToPagedList(pageindex, pagesize);
             return PartialView("_LoadAdsOn", reas);
         }
