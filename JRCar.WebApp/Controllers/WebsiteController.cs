@@ -34,7 +34,9 @@ namespace JRCar.WebApp.Controllers
 
         public ActionResult Index()
         {
-            return View();
+            ShowroomAdsRepo adsRepo = new ShowroomAdsRepo();
+            var reas = adsRepo.GetAllActiveAdsForTabs();
+            return View(reas);
         }
 
         #region **Post & Edit Vehicle**

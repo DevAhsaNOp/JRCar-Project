@@ -33,6 +33,11 @@ namespace JRCar.BLL.Repositories
             return dbObj.GetAllActiveAds();
         }
 
+        public IEnumerable<ValidateShowroomAds> GetAllActiveAdsForTabs()
+        {
+            return dbObj.GetAllActiveAdsForTabs();
+        }
+
         public IEnumerable<ValidateShowroomAds> GetAllInActiveAds()
         {
             return dbObj.GetAllInActiveAds();

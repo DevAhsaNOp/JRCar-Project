@@ -150,6 +150,27 @@ namespace JRCar.DAL.DBLayer
             return reas;
         }
 
+        public IEnumerable<ValidateShowroomAds> GetAllActiveAdsForTabs()
+        {
+            var reas = _context.tblCars.OrderBy(Ad => Ad.CreatedOn).Where(x => x.Isactive == true).Select(s => new ValidateShowroomAds()
+            {
+                tblCarID = s.ID,
+                Title = s.Title,
+                Price = s.Price,
+                Year = s.tblCarModel.Year,
+                Manufacturer_Name = s.tblManufacturer.Manufacturer_Name,
+                Manufacturer_CarModelName = s.tblManfacturerCarModel.Manufacturer_CarModelName,
+                Condition = s.Condition,
+                tblCarCreatedOn = s.CreatedOn,
+                CurrentLocation = s.CurrentLocation,
+                CarsURL = s.CarsURL,
+                CarImage = s.tblCarImages.Select(a => a.Image).FirstOrDefault(),
+                ShowroomName = s.tblShowroom.FullName,
+                ShowroomURL = s.tblShowroom.ShowroomURL
+            }).ToList();
+            return reas;
+        }
+
         public IEnumerable<ValidateShowroomAds> GetAllInActiveAds()
         {
             return _context.tblCars.Where(x => x.Isactive == false).Select(s => new ValidateShowroomAds()
