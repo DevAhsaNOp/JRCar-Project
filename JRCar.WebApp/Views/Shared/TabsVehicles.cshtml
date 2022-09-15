@@ -17,19 +17,16 @@
                             images.Add(FolderName[2] + "/" + Path.GetFileName(jha));
                         }
                         <figure>
-                            <img src="~/uploads/@images[0]" alt="Ad Image" style=" width:-webkit-fill-available !important;" />
+                            <img src="~/uploads/@images[0]" alt="Ad Image" style="width:-webkit-fill-available !important; height: 150px !important;" />
                             @*<figcaption> <span class="auto-featured">Featured</span> </figcaption>*@
                         </figure>
                     }
-                    @*<figure>
-                            <img src="~/Files/extra-images/listing-Grid-img1.jpg" alt="#" />
-                        </figure>*@
                 </div>
                 <div class="auto-text">
                     <span class="cs-categories"><a href="#">@item.ShowroomName</a></span>
                     <div class="post-title" style="padding: 0px !important">
                         <h6 style="width:100% !important; margin: 0px !important;"><a href="@Url.Action("CarAds","Portal",new { AdID = item.CarsURL })">@item.Title</a></h6>
-                        <div class="auto-price" style="margin-bottom:5px !important;"><span class="cs-color" id="RPrice">Rs @item.Price</span> <em id="DollarPrice"></em></div>
+                        <div class="auto-price" style="margin-bottom:5px !important;"><span class="cs-color RPrice">Rs @item.Price</span> <em class="DollarPrice"></em></div>
                     </div>
                     <ul class="auto-info-detail" style="display:block !important;">
                         <li style="padding:0px 0.7em 0 0;">Year<span style="font-size: 14px !important;line-height: 26px !important">@item.Year</span></li>
@@ -37,28 +34,28 @@
                         <li style="padding: 0 0.7em;">Condition<span style="font-size: 14px !important;line-height: 26px !important">@item.Condition</span></li>
                     </ul>
                     @*<div class="btn-list">
-                            <a href="javascript:void(0)" class="btn btn-danger collapsed" data-toggle="collapse" data-target="#list-view"></a>
-                            <div id="list-view" class="collapse">
-                                <ul>
-                                    <li>30/36 est. mpg 18</li>
-                                    <li>Black front grille with chrome accent</li>
-                                    <li>Cruise control</li>
-                                    <li>Remote keyless entry system</li>
-                                    <li>Tilt 3-spoke steering wheel with audio controls</li>
-                                    <li>15-in. alloy wheels</li>
-                                </ul>
+                                <a href="javascript:void(0)" class="btn btn-danger collapsed" data-toggle="collapse" data-target="#list-view"></a>
+                                <div id="list-view" class="collapse">
+                                    <ul>
+                                        <li>30/36 est. mpg 18</li>
+                                        <li>Black front grille with chrome accent</li>
+                                        <li>Cruise control</li>
+                                        <li>Remote keyless entry system</li>
+                                        <li>Tilt 3-spoke steering wheel with audio controls</li>
+                                        <li>15-in. alloy wheels</li>
+                                    </ul>
+                                </div>
                             </div>
+                        <div class="cs-checkbox">
+                            <input type="checkbox" name="list" value="check-listn" id="check-list">
+                            <label for="check-list">Compare</label>
                         </div>*@
-                    <div class="cs-checkbox">
-                        <input type="checkbox" name="list" value="check-listn" id="check-list">
-                        <label for="check-list">Compare</label>
-                    </div>
-                    <a href="@Url.Action("CarAds","Portal",new { AdID = item.CarsURL })" class="View-btn">View Detail<i class=" icon-arrow-long-right"></i></a>
+                    <a href="@Url.Action("CarAds","Portal",new { AdID = item.CarsURL })" class="View-btn" style="float:left !important;">View Detail<i class=" icon-arrow-long-right"></i></a>
                 </div>
             </div>
         </div>
         <script>
-            const currentTimezoneOffset = 8; // UTC+8:00 timezone, change it
+            var currentTimezoneOffset = 8; // UTC+8:00 timezone, change it
 
             Date.prototype.yyyymmdd = function () {
                 return [
@@ -69,25 +66,31 @@
             };
 
             function getTodayDateStr() {
-                const d = new Date();
+                var d = new Date();
                 // console.log(d);
-                const d2 = new Date(d.getTime() + (d.getTimezoneOffset() + currentTimezoneOffset * 60) * 60 * 1000);
+                var d2 = new Date(d.getTime() + (d.getTimezoneOffset() + currentTimezoneOffset * 60) * 60 * 1000);
                 // console.log(d2, d2.yyyymmdd());
                 return d2.yyyymmdd();
             }
 
-            var amount = document.getElementById("RPrice").textContent.replace(/\D/g, "");
-            console.log(amount);
-            var settings = {
-                "url": "http://api.exchangerate.host/convert?from=PKR&to=USD&amount=" + amount + "&date=" + getTodayDateStr(),
-                "method": "GET",
-                "timeout": 0,
-            };
+            var list = document.getElementsByClassName("RPrice");
 
-            $.ajax(settings).done(function (response) {
-                console.log(response);
-                document.getElementById("DollarPrice").textContent = "$" + response.result.toFixed(2);
-            });
+            for (var i = 0; i < list.length; i++) {
+                var amount = list[i].textContent.replace(/\D/g, "");
+
+                var settings = {
+                    "url": "http://api.exchangerate.host/convert?from=PKR&to=USD&amount=" + amount + "&date=" + getTodayDateStr(),
+                    "method": "GET",
+                    "timeout": 0,
+                };
+
+                $.ajax(settings).done(function (response) {
+                    var dd = document.getElementsByClassName("DollarPrice");
+                    for (var i = 0; i < dd.length; i++) {
+                        dd[i].textContent = "$" + response.result.toFixed(2);
+                    }
+                });
+            }
         </script>
     }
 </div>

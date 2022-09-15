@@ -13,33 +13,31 @@
         </ul>
     </div>
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-        <div class="cs-user-section-title">
+        <div class="cs-user-section-title" style="margin-bottom: 10px !important">
             <h4>Posted vehicles</h4>
-            <ul>
-                <li>
-                    <a href="#" class="cs-active-btn">Active</a>
-                    <ul><li><a href="#">Expired</a></li> <li><a href="#">Removed</a></li></ul>
-                </li>
-            </ul>
+            @*<ul>
+                    <li>
+                        <a href="#" class="cs-active-btn">Active</a>
+                        <ul><li><a href="#">Removed</a></li></ul>
+                    </li>
+                </ul>*@
         </div>
     </div>
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-        <div class="cs-user-section-title">
-            @if (TempData["SuccessMsg"] != null)
-            {
-                <div class="alert alert-info alert-dismissable">
-                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                    <i class="icon-info-with-circle"></i><span>@Html.Raw(TempData["SuccessMsg"])</span>
-                </div>
-            }
-            @if (TempData["ErrorMsg"] != null)
-            {
-                <div class="alert alert-danger alert-dismissable">
-                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                    <i class="icon-blocked"></i><span>@Html.Raw(TempData["ErrorMsg"])</span>
-                </div>
-            }
-        </div>
+        @if (TempData["SuccessMsg"] != null)
+        {
+            <div class="alert alert-info alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <i class="icon-info-with-circle"></i><span>@Html.Raw(TempData["SuccessMsg"])</span>
+            </div>
+        }
+        @if (TempData["ErrorMsg"] != null)
+        {
+            <div class="alert alert-danger alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <i class="icon-blocked"></i><span>@Html.Raw(TempData["ErrorMsg"])</span>
+            </div>
+        }
     </div>
     <ul class="cs-featurelisted-car">
         @foreach (var item in Model)
