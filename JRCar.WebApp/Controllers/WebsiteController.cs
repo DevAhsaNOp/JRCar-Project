@@ -24,9 +24,11 @@ namespace JRCar.WebApp.Controllers
         private UserRepo RepoObj;
         private UserAdsRepo RepoObj1;
         private AddressAutofillRepo AddressRepoObj;
+        private ShowroomAdsRepo adsRepo;
 
         public WebsiteController()
         {
+            adsRepo = new ShowroomAdsRepo();
             RepoObj = new UserRepo();
             RepoObj1 = new UserAdsRepo();
             AddressRepoObj = new AddressAutofillRepo();
@@ -34,7 +36,6 @@ namespace JRCar.WebApp.Controllers
 
         public ActionResult Index()
         {
-            ShowroomAdsRepo adsRepo = new ShowroomAdsRepo();
             var reas = adsRepo.GetAllActiveAdsForTabs();
             return View(reas);
         }
@@ -443,7 +444,31 @@ namespace JRCar.WebApp.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Shortlisted(ValidationUserAds userAds)
         {
+
             return View();
+        }
+
+        [AcceptVerbs(HttpVerbs.Get)]
+        public ActionResult ShowroomProfile(string AdId)
+        {
+            if (AdId != null)
+            {
+                var reas = adsRepo.ShowroomProfileView(AdId);
+                if (reas == null)
+                {
+                    TempData["ErrorMsg"] = "Showroom you trying to view is not exists!";
+                    return RedirectToAction("AllVehicles");
+
+                }
+                else
+                {
+                    return View(reas);
+                }
+            }
+            else
+            {
+                return View();
+            }
         }
 
         #region **Car Detail**
@@ -455,7 +480,7 @@ namespace JRCar.WebApp.Controllers
             if (carDetail == null)
             {
                 TempData["ErrorMsg"] = "Car you trying to view is not exists!";
-                return RedirectToAction("Myvehicles");
+                return RedirectToAction("AllVehicles");
             }
             else
             {

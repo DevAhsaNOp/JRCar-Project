@@ -259,6 +259,7 @@ namespace JRCar.BLL.Repositories
                     ShowroomData.Image = model.Image;
                     ShowroomData.CNIC = model.CNIC;
                     ShowroomData.UpdatedBy = model.UpdatedBy;
+                    ShowroomData.Description = model.ShowroomDescription;
                     dbObj.UpdateShowroom(ShowroomData);
                     return true;
                 }

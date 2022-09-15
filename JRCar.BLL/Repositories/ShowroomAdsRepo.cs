@@ -54,6 +54,17 @@ namespace JRCar.BLL.Repositories
                 return null;
         }
 
+        public ValidateShowroomAds ShowroomProfileView(string AdId)
+        {
+            if (AdId != null)
+            {
+                var reas = dbObj.ShowroomProfileView(AdId);
+                return reas;
+            }
+            else
+                return null;
+        }
+
         public ValidateShowroomAds GetShowroomAdsDetailOnlyForUpdate(int AdId)
         {
             if (AdId > 0)

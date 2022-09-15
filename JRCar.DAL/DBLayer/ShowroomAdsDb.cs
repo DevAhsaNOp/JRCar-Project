@@ -364,6 +364,28 @@ namespace JRCar.DAL.DBLayer
                 return null;
         }
 
+        public ValidateShowroomAds ShowroomProfileView(string AdId)
+        {
+            if (AdId != null)
+            {
+                var reas = _context.tblShowrooms.Where(x => x.ShowroomURL.ToLower().Contains(AdId.ToLower())).Select(s => new ValidateShowroomAds()
+                {
+                    tblShowroomID = s.ID,
+                    ShowroomName = s.FullName,
+                    ShowroomEmail = s.Email,
+                    ShowroomNumber = s.Contact,
+                    CurrentLocation = s.ShopNumber + " " + s.tblAddress.CompleteAddress,
+                    Latitude = s.Latitude,
+                    Longitude = s.Longitude,
+                    Description = s.Description,
+                    tblCars = s.tblCars
+                }).FirstOrDefault();
+                return reas;
+            }
+            else
+                return null;
+        }
+
         public ValidateShowroomAds GetShowroomAdsDetailOnlyForUpdate(int AdId)
         {
             var user = _context.tblCars.Where(x => x.ID == AdId).Select(s => new ValidateShowroomAds()

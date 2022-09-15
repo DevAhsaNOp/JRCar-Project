@@ -45,6 +45,11 @@ namespace JRCar.BOL.Validation_Classes
         [Required(ErrorMessage = "*")]
         [Display(Name = "Image")]
         public string Image { get; set; }
+
+        [Required(ErrorMessage = "*")]
+        [Display(Name = "Showroom Description")]
+        public string ShowroomDescription { get; set; }
+
         public bool Active { get; set; }
         public int CreatedBy { get; set; }
         public System.DateTime CreatedOn { get; set; }
