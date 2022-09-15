@@ -473,6 +473,28 @@ namespace JRCar.WebApp.Controllers
         }
         #endregion
 
+        #region **User Car Removed**
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult CarRemoved(int AdID)
+        {
+            var carDetail = RepoObj1.InActiveUserAds(AdID);
+            if (carDetail)
+            {
+                TempData["SuccessMsg"] = "Ad Removed Successfully!";
+                var id = Convert.ToInt32(Session["Id"]);
+                var reas = RepoObj1.GetAllUserAds(id);
+                return PartialView("_LoadVehicle", reas);
+            }
+            else
+            {
+                TempData["ErrorMsg"] = "Something went wrong. Please try again!";
+                var id = Convert.ToInt32(Session["Id"]);
+                var reas = RepoObj1.GetAllUserAds(id);
+                return PartialView("_LoadVehicle", reas);
+            }
+        }
+        #endregion
+
         #region **User Vehicle**
         [AcceptVerbs(HttpVerbs.Get)]
         [Authorize(Roles = "User")]
