@@ -448,12 +448,14 @@ namespace JRCar.WebApp.Controllers
             return View();
         }
 
+        #region **Car Dealer Profile**
         [AcceptVerbs(HttpVerbs.Get)]
-        public ActionResult ShowroomProfile(string AdId)
+        [Route("CarDealer/{Show}")]
+        public ActionResult ShowroomProfile(string Show)
         {
-            if (AdId != null)
+            if (Show != null)
             {
-                var reas = adsRepo.ShowroomProfileView(AdId);
+                var reas = adsRepo.ShowroomProfileView(Show);
                 if (reas == null)
                 {
                     TempData["ErrorMsg"] = "Showroom you trying to view is not exists!";
@@ -469,7 +471,8 @@ namespace JRCar.WebApp.Controllers
             {
                 return View();
             }
-        }
+        } 
+        #endregion
 
         #region **Car Detail**
         [AcceptVerbs(HttpVerbs.Get)]

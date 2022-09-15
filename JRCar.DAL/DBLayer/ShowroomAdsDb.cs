@@ -374,10 +374,12 @@ namespace JRCar.DAL.DBLayer
                     ShowroomName = s.FullName,
                     ShowroomEmail = s.Email,
                     ShowroomNumber = s.Contact,
-                    CurrentLocation = s.ShopNumber + " " + s.tblAddress.CompleteAddress,
+                    CurrentLocation = s.ShopNumber,
+                    ShowroomImage = s.Image,
                     Latitude = s.Latitude,
                     Longitude = s.Longitude,
                     Description = s.Description,
+                    tblAddress = s.tblAddress,
                     tblCars = s.tblCars
                 }).FirstOrDefault();
                 return reas;

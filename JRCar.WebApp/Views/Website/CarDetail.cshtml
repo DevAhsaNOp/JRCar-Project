@@ -102,7 +102,7 @@
                                                 <span><i class="icon-building-o"></i> @Html.DisplayFor(model => model.State)</span>
                                                 <address id="ELocated"><i class="icon-location"></i>@Html.DisplayFor(model => model.Area), @Html.DisplayFor(model => model.City)</address>
                                             </div>
-                                            <div class="auto-price"><span class="cs-color" id="RPrice">Rs @Html.DisplayFor(model => model.Price)</span> <em id="DollarPrice"></em></div>
+                                            <div class="auto-price"><span class="cs-color" id="RPrice">Rs @string.Format("{0:n0}", Convert.ToDecimal(Model.Price))</span> <em id="DollarPrice"></em></div>
                                         </div>
                                     </div>
                                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -151,12 +151,12 @@
                                                     </li>
                                                     <li class="col-lg-1 col-md-1 col-sm-6 col-xs-6" style="text-align: left !important">
                                                         @*<div class="cs-media">
-                                                            <figure><i class="icon-gas20 cs-color"></i></figure>
-                                                        </div>
-                                                        <div class="auto-text">
-                                                            <span>Fuel Type</span>
-                                                            <strong>Hybrid</strong>
-                                                        </div>*@
+                                                                <figure><i class="icon-gas20 cs-color"></i></figure>
+                                                            </div>
+                                                            <div class="auto-text">
+                                                                <span>Fuel Type</span>
+                                                                <strong>Hybrid</strong>
+                                                            </div>*@
                                                     </li>
                                                 </ul>
                                                 <p class="more-text" style="text-align:left !important">
@@ -661,7 +661,7 @@
     <script src="~/scripts/jquery.unobtrusive-ajax.min.js"></script>
     <!-- Put all Functions in functions.js -->
     <script src="~/Files/scripts/functions.js"></script>
-    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB8fdkR1Jhqr932rD0XtkiiJS85LLHEplc&sensor=false"></script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB3x0O6BzuvZIQIoypSGe4uAcocdABrL2I&sensor=false"></script>
     <script>
         $(document).ready(function () {
             setInterval(function () {
