@@ -794,7 +794,7 @@
 .wp-automobile .cs-register{ margin-bottom:30px;}
 .wp-automobile .cs-register .cs-field-holder{ margin-bottom:20px;}
 .wp-automobile .cs-register .cs-field-holder label{font-size:14px; line-height:20px; margin:0 0 10px 0; padding:0; color:#666; font-family: 'Lato', sans-serif;text-transform: none; letter-spacing:1px;}
-.wp-automobile .cs-register .cs-field-holder input[type=text]{border: 1px solid #c4c4c4;border-radius: 2px; box-shadow: none; box-sizing: border-box; color: #999;font-size: 14px;height: 44px;   line-height: 16px;padding: 10px 12px;width: 100%;}
+.wp-automobile .cs-register .cs-field-holder input[type=text]{border: 1px solid #c4c4c4;border-radius: 2px; box-shadow: none; box-sizing: border-box; color: #2e2e2e !important;font-size: 14px;height: 44px;   line-height: 16px;padding: 10px 12px;width: 100%;}
 .wp-automobile .cs-register .cs-field-holder .cs-btn-submit { display:inline-block; color: #fff;-webkit-transition: all 0.3s;-moz-transition: all 0.3s;-o-transition: all 0.3s;transition: all 0.3s;position: relative;z-index: 1;}
 .wp-automobile .cs-register .cs-field-holder .cs-btn-submit input[type=submit] {-webkit-transition: all 0.3s;-moz-transition: all 0.3s;-o-transition: all 0.3s;transition: all 0.3s;height: 43px;width: auto;font-size: 13px;line-height: 16px;padding: 10px 25px;border-radius: 3px;text-align: center;color: #fff !important;border: 0;text-transform: uppercase;font-weight: 700;background: none;cursor: pointer;position: relative;z-index: 5; letter-spacing:1px;}
 .wp-automobile .cs-register .cs-field-holder .cs-btn-submit input[type=submit] {text-decoration: none;display: inline-block;}
