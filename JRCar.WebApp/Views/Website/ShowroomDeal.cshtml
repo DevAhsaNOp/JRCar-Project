@@ -1,0 +1,146 @@
+﻿@using PagedList.Mvc
+@model  PagedList.IPagedList<JRCar.BOL.tblShowroom>
+
+@{
+    ViewBag.Title = "ShowroomDeal";
+    Layout = "~/Views/Shared/_WebLayout.cshtml";
+}
+<style>
+    .wp-automobile .cs-agent-listing .cs-media {
+        width: fit-content !important;
+    }
+
+    .cs-agent-filtration .main-search .search-input:before {
+        content: "\ec4e";
+        position: absolute;
+        left: 16px;
+        top: 11px;
+        font-size: 14px;
+        font-family: "icomoon";
+        z-index: 1;
+        color: #7c6b6b !important;
+    }
+</style>
+<div class="page-section">
+    <div class="container">
+        <div class="row">
+            <div class="section-fullwidth col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="row">
+                    <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                            <div class="cs-agent-filters">
+                                <span class="cs-filters-title">refine car delaers</span>
+                                <div class="row">
+                                    <form>
+                                        <div class="cs-agent-filtration">
+                                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                <div class="main-search" style="margin-bottom:15px !important;">
+                                                    <div class="search-input">
+                                                        <input type="text" placeholder="Search by Keyword" name="searchTerm" id="searchTerm_TxtBox">
+                                                        <a href="#" onclick="SearchDealer()">
+                                                            <i class="icon-search2" style="left: 90% !important;">
+                                                            </i>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                <div class="cs-select-dropdown">
+                                                    <label>Dealer Type</label>
+                                                    <select data-placeholder="recent added" class="chosen-select-deselect" tabindex="5">
+                                                        <option>cheverlate</option>
+                                                        <option>cheverlate</option>
+                                                        <option>cheverlate</option>
+                                                        <option>cheverlate</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                <div class="cs-search-btn">
+                                                    <input type="submit" value="refine search" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <div class="cs-agent-map loader">
+                                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3619.423078384661!2d67.0448685143715!3d24.88354645046156!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3eb33e595bbc701f%3A0xf8901035f404169!2sJamshed%20Rd%2C%20Jamshed%20Quarters%20Karachi%2C%20Karachi%20City%2C%20Sindh%2C%20Pakistan!5e0!3m2!1sen!2s!4v1663310583368!5m2!1sen!2s" height="355" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                                </div>
+                            </div>
+                            @*<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <div class="cs-ag-search">
+                                    <ul class="filter-list">
+                                        <li><a href="#">A</a></li>
+                                        <li><a href="#">B</a></li>
+                                        <li><a href="#">C</a></li>
+                                        <li><a href="#">D</a></li>
+                                        <li><a href="#">E</a></li>
+                                        <li><a href="#">F</a></li>
+                                        <li><a href="#">G</a></li>
+                                        <li><a href="#">H</a></li>
+                                        <li><a href="#">I</a></li>
+                                        <li><a href="#">J</a></li>
+                                        <li><a href="#">K</a></li>
+                                        <li><a href="#">L</a></li>
+                                        <li><a href="#">M</a></li>
+                                        <li><a href="#">N</a></li>
+                                        <li><a href="#">O</a></li>
+                                        <li><a href="#">P</a></li>
+                                        <li><a href="#">Q</a></li>
+                                        <li><a href="#">R</a></li>
+                                        <li><a href="#">S</a></li>
+                                        <li><a href="#">T</a></li>
+                                        <li><a href="#">U</a></li>
+                                        <li><a href="#">V</a></li>
+                                        <li><a href="#">W</a></li>
+                                        <li><a href="#">X</a></li>
+                                        <li><a href="#">Y</a></li>
+                                        <li><a href="#">Z</a></li>
+                                        <li><a href="#">0-9</a></li>
+                                    </ul>
+                                </div>
+                            </div>*@
+                            <div id="cardeal">
+                                @Html.Partial("_cardealers", Model)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="page-section" style="background:#19171a;">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="cs-ad" style="text-align:center; padding:55px 0 32px;">
+                    <div class="cs-media">
+                        <figure>
+                            <img src="~/Files/extra-images/cs-ad-img.jpg" alt="" />
+                        </figure>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function SearchDealer() {
+        //var pg = $('.pagination .active')[0].innerText;
+        var search = $('#searchTerm_TxtBox').val();
+        $.ajax({
+            url: "@Url.Action("Dealer","Website")",
+            type: 'GET',
+            data: { searchedDealer: search },
+            contentType: "application/json; charset=utf-8",
+            success: function (resp) {
+                $("#cardeal").html(resp);
+            }
+        });
+    }
+</script>

@@ -39,6 +39,11 @@ namespace JRCar.BLL.Repositories
             }
         }
 
+        public IEnumerable<tblShowroom> GetAllShowRoom()
+        {
+            return dbObj.GetAllShowRoom();
+        }
+
         public IEnumerable<tblUser> GetAllUsers()
         {
             return dbObj.GetAllUsers();

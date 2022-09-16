@@ -22,6 +22,7 @@ namespace JRCar.DAL.DBLayer
         {
             var reas = _context.tblCars.Where(x => x.Isactive == true).Select(s => new ValidateShowroomAds()
             {
+                tblCarID = s.ID,
                 Title = s.Title,
                 Price = s.Price,
                 Year = s.tblCarModel.Year,

@@ -266,7 +266,7 @@
 
                                             for (var i = 0; i < list.length; i++) {
                                                 var amount = list[i].textContent.replace(/\D/g, "");
-
+                                                console.log(amount)
                                                 var settings = {
                                                     "url": "http://api.exchangerate.host/convert?from=PKR&to=USD&amount=" + amount + "&date=" + getTodayDateStr(),
                                                     "method": "GET",
@@ -275,6 +275,7 @@
 
                                                 $.ajax(settings).done(function (response) {
                                                     var dd = document.getElementsByClassName("DollarPrice");
+                                                    console.log(dd)
                                                     for (var i = 0; i < dd.length; i++) {
                                                         dd[i].textContent = "$" + response.result.toFixed(2);
                                                     }

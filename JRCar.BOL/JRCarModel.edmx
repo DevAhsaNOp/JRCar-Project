@@ -255,6 +255,8 @@
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CarID" Type="int" Nullable="false" />
           <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="Isactive" Type="bit" />
+          <Property Name="Isarchived" Type="bit" />
         </EntityType>
         <EntityType Name="tblManfacturerCarModel">
           <Key>
@@ -1233,7 +1235,6 @@
           <EntitySet Name="tblClients" EntityType="jrcarModel.tblClient" />
           <EntitySet Name="tblContactUs" EntityType="jrcarModel.tblContactU" />
           <EntitySet Name="tblCountries" EntityType="jrcarModel.tblCountry" />
-          <EntitySet Name="tblFavAdds" EntityType="jrcarModel.tblFavAdd" />
           <EntitySet Name="tblManfacturerCarModels" EntityType="jrcarModel.tblManfacturerCarModel" />
           <EntitySet Name="tblManufacturers" EntityType="jrcarModel.tblManufacturer" />
           <EntitySet Name="tblNotifications" EntityType="jrcarModel.tblNotification" />
@@ -1289,10 +1290,6 @@
             <End Role="tblShowroom" EntitySet="tblShowrooms" />
             <End Role="tblCar" EntitySet="tblCars" />
           </AssociationSet>
-          <AssociationSet Name="FK_dbo_tblFavAdds_dbo_tblCars_CarID" Association="jrcarModel.FK_dbo_tblFavAdds_dbo_tblCars_CarID">
-            <End Role="tblCar" EntitySet="tblCars" />
-            <End Role="tblFavAdd" EntitySet="tblFavAdds" />
-          </AssociationSet>
           <AssociationSet Name="FK_tblCars_tblCategory" Association="jrcarModel.FK_tblCars_tblCategory">
             <End Role="tblCategory" EntitySet="tblCategories" />
             <End Role="tblCar" EntitySet="tblCars" />
@@ -1336,10 +1333,6 @@
           <AssociationSet Name="FK_tblState_tblCountry" Association="jrcarModel.FK_tblState_tblCountry">
             <End Role="tblCountry" EntitySet="tblCountries" />
             <End Role="tblState" EntitySet="tblStates" />
-          </AssociationSet>
-          <AssociationSet Name="FK_dbo_tblFavAdds_dbo_tblUsers_UserID" Association="jrcarModel.FK_dbo_tblFavAdds_dbo_tblUsers_UserID">
-            <End Role="tblUser" EntitySet="tblUsers" />
-            <End Role="tblFavAdd" EntitySet="tblFavAdds" />
           </AssociationSet>
           <AssociationSet Name="FK_tblManfacturerCarModel_tblManufacturer" Association="jrcarModel.FK_tblManfacturerCarModel_tblManufacturer">
             <End Role="tblManufacturer" EntitySet="tblManufacturers" />
@@ -1428,6 +1421,15 @@
           <AssociationSet Name="FK_dbo_tblCarModels_dbo_tblCarFeatures_CarFeatureID" Association="jrcarModel.FK_dbo_tblCarModels_dbo_tblCarFeatures_CarFeatureID">
             <End Role="tblCarFeature" EntitySet="tblCarFeatures" />
             <End Role="tblCarModel" EntitySet="tblCarModels" />
+          </AssociationSet>
+          <EntitySet Name="tblFavAdds" EntityType="jrcarModel.tblFavAdd" />
+          <AssociationSet Name="FK_dbo_tblFavAdds_dbo_tblCars_CarID" Association="jrcarModel.FK_dbo_tblFavAdds_dbo_tblCars_CarID">
+            <End Role="tblCar" EntitySet="tblCars" />
+            <End Role="tblFavAdd" EntitySet="tblFavAdds" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_tblFavAdds_dbo_tblUsers_UserID" Association="jrcarModel.FK_dbo_tblFavAdds_dbo_tblUsers_UserID">
+            <End Role="tblUser" EntitySet="tblUsers" />
+            <End Role="tblFavAdd" EntitySet="tblFavAdds" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="C__MigrationHistory">
@@ -1552,7 +1554,6 @@
           <Property Name="SubCategoryId" Type="Int32" />
           <NavigationProperty Name="tblAddress" Relationship="jrcarModel.FK_tblCars_tblAddress" FromRole="tblCar" ToRole="tblAddress" />
           <NavigationProperty Name="tblShowroom" Relationship="jrcarModel.FK_dbo_tblCars_dbo_tblShowrooms_tblShowroomID" FromRole="tblCar" ToRole="tblShowroom" />
-          <NavigationProperty Name="tblFavAdds" Relationship="jrcarModel.FK_dbo_tblFavAdds_dbo_tblCars_CarID" FromRole="tblCar" ToRole="tblFavAdd" />
           <NavigationProperty Name="tblCategory" Relationship="jrcarModel.FK_tblCars_tblCategory" FromRole="tblCar" ToRole="tblCategory" />
           <NavigationProperty Name="tblManfacturerCarModel" Relationship="jrcarModel.FK_tblCars_tblManfacturerCarModel" FromRole="tblCar" ToRole="tblManfacturerCarModel" />
           <NavigationProperty Name="tblManufacturer" Relationship="jrcarModel.FK_tblCars_tblManufacturer" FromRole="tblCar" ToRole="tblManufacturer" />
@@ -1560,6 +1561,7 @@
           <NavigationProperty Name="tblCarModel" Relationship="jrcarModel.FK_dbo_tblCars_dbo_tblCarModels_CarModelID" FromRole="tblCar" ToRole="tblCarModel" />
           <NavigationProperty Name="tblAppointments" Relationship="jrcarModel.FK_tblAppointments_tblCars" FromRole="tblCar" ToRole="tblAppointment" />
           <NavigationProperty Name="tblCarImages" Relationship="jrcarModel.FK_dbo_tblCarImages_dbo_tblCars_CarID" FromRole="tblCar" ToRole="tblCarImage" />
+          <NavigationProperty Name="tblFavAdds" Relationship="jrcarModel.FK_dbo_tblFavAdds_dbo_tblCars_CarID" FromRole="tblCar" ToRole="tblFavAdd" />
         </EntityType>
         <EntityType Name="tblCategory">
           <Key>
@@ -1614,16 +1616,6 @@
           <Property Name="CountryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="CountryName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="tblStates" Relationship="jrcarModel.FK_tblState_tblCountry" FromRole="tblCountry" ToRole="tblState" />
-        </EntityType>
-        <EntityType Name="tblFavAdd">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="CarID" Type="Int32" Nullable="false" />
-          <Property Name="UserID" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="tblCar" Relationship="jrcarModel.FK_dbo_tblFavAdds_dbo_tblCars_CarID" FromRole="tblFavAdd" ToRole="tblCar" />
-          <NavigationProperty Name="tblUser" Relationship="jrcarModel.FK_dbo_tblFavAdds_dbo_tblUsers_UserID" FromRole="tblFavAdd" ToRole="tblUser" />
         </EntityType>
         <EntityType Name="tblManfacturerCarModel">
           <Key>
@@ -1844,13 +1836,13 @@
           <Property Name="UpdatedBy" Type="Int32" />
           <Property Name="tblRoleID" Type="Int32" Nullable="false" />
           <Property Name="OTP" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="tblFavAdds" Relationship="jrcarModel.FK_dbo_tblFavAdds_dbo_tblUsers_UserID" FromRole="tblUser" ToRole="tblFavAdd" />
           <NavigationProperty Name="tblNotifications" Relationship="jrcarModel.FK_tblNotification_tblUsers" FromRole="tblUser" ToRole="tblNotification" />
           <NavigationProperty Name="tblRole" Relationship="jrcarModel.FK_dbo_tblUsers_dbo_tblRoles_tblRoleID" FromRole="tblUser" ToRole="tblRole" />
           <NavigationProperty Name="tblSearchHists" Relationship="jrcarModel.FK_dbo_tblSearchHists_dbo_tblUsers_UserID" FromRole="tblUser" ToRole="tblSearchHist" />
           <NavigationProperty Name="tblTokens" Relationship="jrcarModel.FK_dbo_tblTokens_dbo_tblUsers_UserID" FromRole="tblUser" ToRole="tblToken" />
           <NavigationProperty Name="tblUserAdds" Relationship="jrcarModel.FK_dbo_tblUserAdds_dbo_tblUsers_UserID" FromRole="tblUser" ToRole="tblUserAdd" />
           <NavigationProperty Name="tblAppointments" Relationship="jrcarModel.FK_tblAppointments_tblUsers" FromRole="tblUser" ToRole="tblAppointment" />
+          <NavigationProperty Name="tblFavAdds" Relationship="jrcarModel.FK_dbo_tblFavAdds_dbo_tblUsers_UserID" FromRole="tblUser" ToRole="tblFavAdd" />
         </EntityType>
         <EntityType Name="tblZone">
           <Key>
@@ -1990,20 +1982,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_dbo_tblFavAdds_dbo_tblCars_CarID">
-          <End Type="jrcarModel.tblCar" Role="tblCar" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="jrcarModel.tblFavAdd" Role="tblFavAdd" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="tblCar">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="tblFavAdd">
-              <PropertyRef Name="CarID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_tblCars_tblCategory">
           <End Type="jrcarModel.tblCategory" Role="tblCategory" Multiplicity="0..1" />
           <End Type="jrcarModel.tblCar" Role="tblCar" Multiplicity="*" />
@@ -2137,20 +2115,6 @@
             </Principal>
             <Dependent Role="tblState">
               <PropertyRef Name="CountryID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_dbo_tblFavAdds_dbo_tblUsers_UserID">
-          <End Type="jrcarModel.tblUser" Role="tblUser" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="jrcarModel.tblFavAdd" Role="tblFavAdd" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="tblUser">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="tblFavAdd">
-              <PropertyRef Name="UserID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2519,6 +2483,46 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="tblFavAdd">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CarID" Type="Int32" Nullable="false" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="Isactive" Type="Boolean" />
+          <Property Name="Isarchived" Type="Boolean" />
+          <NavigationProperty Name="tblCar" Relationship="jrcarModel.FK_dbo_tblFavAdds_dbo_tblCars_CarID" FromRole="tblFavAdd" ToRole="tblCar" />
+          <NavigationProperty Name="tblUser" Relationship="jrcarModel.FK_dbo_tblFavAdds_dbo_tblUsers_UserID" FromRole="tblFavAdd" ToRole="tblUser" />
+        </EntityType>
+        <Association Name="FK_dbo_tblFavAdds_dbo_tblCars_CarID">
+          <End Type="jrcarModel.tblCar" Role="tblCar" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="jrcarModel.tblFavAdd" Role="tblFavAdd" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblCar">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="tblFavAdd">
+              <PropertyRef Name="CarID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_tblFavAdds_dbo_tblUsers_UserID">
+          <End Type="jrcarModel.tblUser" Role="tblUser" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="jrcarModel.tblFavAdd" Role="tblFavAdd" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblUser">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="tblFavAdd">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2689,15 +2693,6 @@
               <MappingFragment StoreEntitySet="tblCountry">
                 <ScalarProperty Name="CountryName" ColumnName="CountryName" />
                 <ScalarProperty Name="CountryId" ColumnName="CountryId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="tblFavAdds">
-            <EntityTypeMapping TypeName="jrcarModel.tblFavAdd">
-              <MappingFragment StoreEntitySet="tblFavAdds">
-                <ScalarProperty Name="UserID" ColumnName="UserID" />
-                <ScalarProperty Name="CarID" ColumnName="CarID" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -2993,6 +2988,17 @@
                 <ScalarProperty Name="AirBag" ColumnName="AirBag" />
                 <ScalarProperty Name="ABS" ColumnName="ABS" />
                 <ScalarProperty Name="AirConditioned" ColumnName="AirConditioned" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblFavAdds">
+            <EntityTypeMapping TypeName="jrcarModel.tblFavAdd">
+              <MappingFragment StoreEntitySet="tblFavAdds">
+                <ScalarProperty Name="Isarchived" ColumnName="Isarchived" />
+                <ScalarProperty Name="Isactive" ColumnName="Isactive" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="CarID" ColumnName="CarID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>

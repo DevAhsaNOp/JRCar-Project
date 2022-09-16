@@ -144,18 +144,25 @@
     </div>
     <script>
         function RemoveAd(Adid) {
-            $("#Adloader").show();
-            $.ajax({
-                type: "POST",
-                url: "@Url.Action("CarRemoved", "Website")",
-                data: JSON.stringify({ AdID: Adid }),
-                contentType: "application/json; charset=utf-8",
-                success: function (response) {
+            if (Adid > 0) {
+                if (confirm("Are you sure to delete your Ad?")) {
                     $("#Adloader").show();
-                    $("#DivUpdate").empty();
-                    $("#DivUpdate").append(response);
+                    $.ajax({
+                        type: "POST",
+                        url: "@Url.Action("CarRemoved", "Website")",
+                        data: JSON.stringify({ AdID: Adid }),
+                        contentType: "application/json; charset=utf-8",
+                        success: function (response) {
+                            $("#Adloader").show();
+                            $("#DivUpdate").empty();
+                            $("#DivUpdate").append(response);
+                        }
+                    });
                 }
-            });
+            }
+            else {
+                alert('Something went wrong please try again later!');
+            }
         }
     </script>
 }

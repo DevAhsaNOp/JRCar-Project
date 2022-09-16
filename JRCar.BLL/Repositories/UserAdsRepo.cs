@@ -367,6 +367,52 @@ namespace JRCar.BLL.Repositories
             }
         }
 
+        public bool CarShortlistedActive(int CarID, int UserID)
+        {
+            if (CarID > 0 && UserID > 0)
+            {
+                tblFavAdd favAdd = new tblFavAdd()
+                {
+                    CarID = CarID,
+                    UserID = UserID,
+                    Isactive = true,
+                    Isarchived = false                    
+                };
+                var reas = dbObj.CarShortlistedActive(favAdd);
+                return reas;
+            }
+            else
+                return false;
+        }
+        public bool CarShortlistedInActive(int CarID, int UserID)
+        {
+            if (CarID > 0 && UserID > 0)
+            {
+                tblFavAdd favAdd = new tblFavAdd()
+                {
+                    CarID = CarID,
+                    UserID = UserID,
+                    Isactive = true,
+                    Isarchived = false
+                };
+                var reas = dbObj.CarShortlistedInActive(favAdd);
+                return reas;
+            }
+            else
+                return false;
+        }
+
+        public IEnumerable<tblFavAdd> AllCarShortlisted(int UserID)
+        {
+            var user = dbObj.AllCarShortlisted(UserID);
+            if (user != null)
+            {
+                return user;
+            }
+            else
+                return null;
+        }
+
         public IEnumerable<tblManufacturer> GetAllMakes()
         {
             return dbObj.GetAllMakes();

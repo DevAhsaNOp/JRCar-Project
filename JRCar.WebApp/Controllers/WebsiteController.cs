@@ -435,22 +435,24 @@ namespace JRCar.WebApp.Controllers
 
         #endregion
 
-        [AcceptVerbs(HttpVerbs.Get)]
-        public ActionResult Shortlisted()
-        {
-            return View();
-        }
-
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult Shortlisted(ValidationUserAds userAds)
+        public ActionResult Shortlisted(int CarID)
         {
-
-            return View();
+            var UserID = Convert.ToInt32(Session["Id"]);
+            var reas = RepoObj1.CarShortlistedActive(CarID, UserID);
+            if (reas)
+            {
+                return Json("Ad has been shortlisted!", JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json("An error occured please try again later!", JsonRequestBehavior.AllowGet);
+            }
         }
 
         #region **Car Dealer Profile**
         [AcceptVerbs(HttpVerbs.Get)]
-        [Route("CarDealer/{Show}")]
+        [Route("cardealer/{Show}")]
         public ActionResult ShowroomProfile(string Show)
         {
             if (Show != null)
@@ -471,6 +473,37 @@ namespace JRCar.WebApp.Controllers
             {
                 return View();
             }
+        }
+
+        [AcceptVerbs(HttpVerbs.Get)]
+        [Route("cardealer")]
+        public ActionResult ShowroomDeal()
+        {
+            int? page = 1;
+            int pagesize = 1, pageindex = 1;
+            pageindex = page.HasValue ? Convert.ToInt32(page) : 1;
+            var list = RepoObj.GetAllShowRoom();
+            IPagedList<tblShowroom> reas = list.ToPagedList(pageindex, pagesize);
+            return View(reas);
+        }
+
+        [AcceptVerbs(HttpVerbs.Get)]
+        public ActionResult Dealer(int? page, string searchedDealer)
+        {
+            IEnumerable<tblShowroom> list;
+            int pagesize = 1, pageindex = 1;
+            pageindex = page.HasValue ? Convert.ToInt32(page) : 1;
+            if (searchedDealer != null)
+            {
+                ViewBag.search = searchedDealer;
+                list = RepoObj.GetAllShowRoom().Where(s => s.FullName.ToLower().Contains(searchedDealer.ToLower())).ToList();
+            }
+            else
+            {
+                list = RepoObj.GetAllShowRoom();
+            }
+            IPagedList<tblShowroom> reas = list.ToPagedList(pageindex, pagesize);
+            return PartialView("_cardealers", reas);
         } 
         #endregion
 

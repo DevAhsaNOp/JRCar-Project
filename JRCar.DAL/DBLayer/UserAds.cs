@@ -282,6 +282,40 @@ namespace JRCar.DAL.DBLayer
                 return null;
         }
 
+        public bool CarShortlistedActive(tblFavAdd favAdd)
+        {
+            if (favAdd != null)
+            {
+                _context.tblFavAdds.Add(favAdd);
+                Save();
+                return true;
+            }
+            else
+                return false;
+        }
+        public bool CarShortlistedInActive(tblFavAdd favAdd)
+        {
+            if (favAdd != null)
+            {
+                _context.Entry(favAdd).State = System.Data.Entity.EntityState.Modified;
+                Save();
+                return true;
+            }
+            else
+                return false;
+        }
+
+        public IEnumerable<tblFavAdd> AllCarShortlisted(int UserID)
+        {
+            var user = _context.tblFavAdds.Where(x => x.ID == UserID).ToList();
+            if (user != null)
+            {
+                return user;
+            }
+            else
+                return null;
+        }
+
         public ValidationUserAds GetUserAdsDetail(string AdsId)
         {
             var user = _context.tblUserAdds.Where(x => x.UserAdsURL == AdsId).Select(s => new ValidationUserAds()

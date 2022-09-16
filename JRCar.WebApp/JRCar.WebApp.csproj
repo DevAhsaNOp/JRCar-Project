@@ -3530,6 +3530,8 @@
     <Content Include="Views\Shared\DisplayModelsCheckBox.cshtml" />
     <Content Include="Views\Shared\TabsVehicles.cshtml" />
     <Content Include="Views\Website\ShowroomProfile.cshtml" />
+    <Content Include="Views\Website\ShowroomDeal.cshtml" />
+    <Content Include="Views\Shared\_cardealers.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -1,0 +1,35 @@
+﻿@using PagedList.Mvc
+@model  PagedList.IPagedList<JRCar.BOL.tblShowroom>
+
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <div class="row" id="dealer_grid">
+        @foreach (var item in Model)
+        {
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="cs-agent-listing">
+                    <div class="cs-media">
+                        <figure>
+                            <a href="@Url.Action("ShowroomProfile","Website",new { Show = item.ShowroomURL })"><img src="@Url.Content(item.Image)" alt="Dealer Image" width="118" /></a>
+                        </figure>
+                    </div>
+                    <div class="cs-text">
+                        <div class="cs-post-title">
+                            <h6><a href="@Url.Action("ShowroomProfile","Website",new { Show = item.ShowroomURL })">@item.FullName</a></h6>
+                            <span class="cs-color">(@item.tblCars.Count CARS)</span>
+                        </div>
+                        <address>@item.ShopNumber @item.tblAddress.tblZone.ZoneName, @item.tblAddress.tblCity.CityName </address>
+                        <a href="tel:@item.Contact" class="contact-btn"><i class="icon-phone5"></i>Contact now</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <nav style=" text-align: center !important;" id="pagenav">
+        Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+        <div id="ContentPager">
+            @Html.PagedListPager(Model, page => Url.Action("Dealer", "Website", new { page = page, searchedDealer = ViewBag.search }), PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(PagedListRenderOptions.ClassicPlusFirstAndLast, new AjaxOptions() { HttpMethod = "GET", UpdateTargetId = "cardeal" }))
+        </div>
+    </nav>
+</div>

@@ -5,6 +5,9 @@
     ViewBag.Title = "Vehicles Ads";
     Layout = "~/Views/Shared/_WebLayout.cshtml";
 }
+<link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/css/toastr.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/js/toastr.js"></script>
+
 <style>
 
     .wp-automobile .cs-listing-filters .main-search .search-input:before {
@@ -119,8 +122,7 @@
                             <div class="panel-body">
                                 <div class="cs-select-transmission">
                                     <form>
-                                        <ul id="ModelList" class="cs-checkbox-list mCustomScrollbar" data-mcs-theme="dark" style="overflow: auto;">
-                                        </ul>
+                                        <ul id="ModelList" class="cs-checkbox-list mCustomScrollbar" data-mcs-theme="dark" style="overflow: auto;"></ul>
                                     </form>
                                 </div>
                             </div>
@@ -356,6 +358,75 @@
 
 <script>
     $("#ModelCheckLst").hide();
+
+    $(document).on("click", "#ContentPager a[href]", function () {
+        $("#divLoader").show();
+        var priceRange = $("#price").val();
+        console.log(priceRange);
+        var myArr = priceRange.split`,`.map(x => +x);
+        var minimum = myArr[0];
+        var maximum = myArr[1];
+        var pageno = $(this).text();
+        console.log("Page No:" + pageno);
+        var SortBy = $("#SortByVehicle").find(':selected').val();
+        console.log("SortBY Val from pager:" + SortBy);
+        var search = $('#searchTerm_TxtBox').val();
+        var startYear = $("#StartYear").find(':selected').val();
+        var endYear = $("#EndYear").find(':selected').val();
+        /*
+         * Uncomment this lines only if you need to filter the Ads According to State, City and Area
+        var ZoneNameListVal = null;
+        ZoneNameListVal = [];
+        var CityListVal = null;
+        CityListVal = [];
+        var state = $("input[name='StateRR']:checked").val();
+
+        $("input[name='CityListChkBox']:checked").each(function () {
+            CityListVal.push($(this).attr('value'));
+        });
+
+        $("input[name='ZoneListChkBox']:checked").each(function () {
+            ZoneNameListVal.push($(this).attr('value'));
+        });
+        */
+
+        var makeId = $("input[name = 'MakeRR']:checked").val();
+        var ModelNameListVal = null;
+        ModelNameListVal = [];
+
+        $("input[name='ModelListChkBox']:checked").each(function () {
+            ModelNameListVal.push($(this).attr('value'));
+        });
+        var condi = $("input[name = 'ConditionRR']:checked").val();
+        var maxYear = (endYear >= startYear) ? endYear : startYear;
+        var miniYear = (endYear <= startYear) ? endYear : startYear;
+        var ColorNameListVal = null;
+        ColorNameListVal = [];
+
+        $("input[name='ColorListChkBox']:checked").each(function () {
+            ColorNameListVal.push($(this).attr('value'));
+        });
+        var TransNameListVal = null;
+        TransNameListVal = [];
+
+        $("input[name='TransListChkBox']:checked").each(function () {
+            TransNameListVal.push($(this).attr('value'));
+        });
+
+        console.log(search);
+        console.log("Attr: " + $(this).attr("href"));
+        $.ajax({
+            url: $(this).attr("href"),
+            type: 'POST',
+            data: JSON.stringify({ sortBy: SortBy, page: pageno, searchTerm: search, MakeId: makeId, ModelId: ModelNameListVal, maximumPrice: maximum, minimumPrice: minimum, Condition: condi, StartYear: miniYear, EndYear: maxYear, ColorSelected: ColorNameListVal, TransSelected: TransNameListVal }),
+            contentType: "application/json; charset=utf-8",
+            success: function (resp) {
+                $("#divLoader").hide();
+                $("#VehicleAdsLst").html(resp);
+            }
+        });
+        return false;
+    });
 
     function FormVAds() {
         var search = $('#searchTerm_TxtBox').val();
