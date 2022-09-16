@@ -435,7 +435,39 @@ namespace JRCar.WebApp.Controllers
 
         #endregion
 
+        #region **User Car Shortlist**
+        [AcceptVerbs(HttpVerbs.Get)]
+        [Authorize(Roles = "User")]
+        [Route("carshortlist")]
+        public ActionResult Shortlisted()
+        {
+            var UserID = Convert.ToInt32(Session["Id"]);
+            if (UserID > 0)
+            {
+                int rows = 1;
+                Session["Shortrows"] = rows;
+                var reas = RepoObj1.AllCarShortlisted(UserID).Take(rows);
+                return View(reas);
+            }
+            else
+            {
+                return Json("An error occured please try again later!", JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [Authorize(Roles = "User")]
+        public ActionResult LoadShortlist()
+        {
+            var id = Convert.ToInt32(Session["Id"]);
+            var rows = Convert.ToInt32(Session["Shortrows"]) + 1;
+            var reas = RepoObj1.AllCarShortlisted(id).Take(rows);
+            Session["Shortrows"] = rows;
+            return PartialView("_LoadShortlist", reas);
+        }
+
         [AcceptVerbs(HttpVerbs.Post)]
+        [Authorize(Roles = "User")]
+        [Route("carshortlist")]
         public ActionResult Shortlisted(int CarID)
         {
             var UserID = Convert.ToInt32(Session["Id"]);
@@ -446,9 +478,30 @@ namespace JRCar.WebApp.Controllers
             }
             else
             {
-                return Json("An error occured please try again later!", JsonRequestBehavior.AllowGet);
+                return Json(null, JsonRequestBehavior.AllowGet);
             }
-        }
+        } 
+        
+        [AcceptVerbs(HttpVerbs.Post)]
+        [Authorize(Roles = "User")]
+        public ActionResult DelShortlisted(int CarID)
+        {
+            var UserID = Convert.ToInt32(Session["Id"]);
+            var reas = RepoObj1.CarShortlistedInActive(CarID);
+            if (reas)
+            {
+                var rows = Convert.ToInt32(Session["Shortrows"]);
+                rows = (rows == 1) ? 1 : rows - 1;
+                var data = RepoObj1.AllCarShortlisted(UserID).Take(rows);
+                Session["Shortrows"] = rows;
+                return PartialView("_LoadShortlist", data);
+            }
+            else
+            {
+                return Json(null, JsonRequestBehavior.AllowGet);
+            }
+        } 
+        #endregion
 
         #region **Car Dealer Profile**
         [AcceptVerbs(HttpVerbs.Get)]
@@ -536,6 +589,7 @@ namespace JRCar.WebApp.Controllers
 
         #region **User Car Removed**
         [AcceptVerbs(HttpVerbs.Post)]
+        [Authorize(Roles = "User")]
         public ActionResult CarRemoved(int AdID)
         {
             var carDetail = RepoObj1.InActiveUserAds(AdID);

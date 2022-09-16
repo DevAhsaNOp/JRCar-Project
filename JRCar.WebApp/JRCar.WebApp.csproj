@@ -3532,6 +3532,8 @@
     <Content Include="Views\Website\ShowroomProfile.cshtml" />
     <Content Include="Views\Website\ShowroomDeal.cshtml" />
     <Content Include="Views\Shared\_cardealers.cshtml" />
+    <Content Include="Views\Website\Shortlisted.cshtml" />
+    <Content Include="Views\Shared\_LoadShortlist.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -384,16 +384,13 @@ namespace JRCar.BLL.Repositories
             else
                 return false;
         }
-        public bool CarShortlistedInActive(int CarID, int UserID)
+        public bool CarShortlistedInActive(int favAdID)
         {
-            if (CarID > 0 && UserID > 0)
+            if (favAdID > 0 )
             {
                 tblFavAdd favAdd = new tblFavAdd()
                 {
-                    CarID = CarID,
-                    UserID = UserID,
-                    Isactive = true,
-                    Isarchived = false
+                    ID = favAdID,
                 };
                 var reas = dbObj.CarShortlistedInActive(favAdd);
                 return reas;

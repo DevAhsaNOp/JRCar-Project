@@ -1,0 +1,194 @@
+﻿@model  IEnumerable<JRCar.BOL.tblFavAdd>
+@{
+    ViewBag.Title = "Shortlisted";
+    Layout = "~/Views/Shared/_WebLayout.cshtml";
+}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/css/toastr.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/js/toastr.js"></script>
+
+@if (User.Identity.IsAuthenticated)
+{
+    <div class="page-section" style="background:url(~/Files/extra-images/user-bg-img.jpg) no-repeat;background-size:cover;min-height:175px;margin-top:-30px;margin-bottom:-129px;"></div>
+    <div class="page-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="cs-user-account-holder" id="DivUpdate">
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <ul class="cs-user-accounts-list">
+                                    <li><a href="@Url.Action("Myvehicles","Website")">My vehicles</a></li>
+                                    <li class="active"><a href="@Url.Action("Shortlisted","Website")">Shortlisted</a></li>
+                                    <li>
+                                        <a href="@Url.Action("ProfileSettings","Website")">Profile Settings</a>
+                                    </li>
+                                    <li><a href="@Url.Action("PostNewVehicles","Website")">Post a vehicles</a></li>
+                                    <li><a href="@Url.Action("Logout", "Account")">Sign Out</a></li>
+                                </ul>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <div class="cs-user-section-title">
+                                    <h4>Shortlisted vehicles</h4>
+                                </div>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                @if (TempData["SuccessMsg"] != null)
+                                {
+                                    <div class="alert alert-info alert-dismissable">
+                                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                        <i class="icon-info-with-circle"></i><span>@Html.Raw(TempData["SuccessMsg"])</span>
+                                    </div>
+                                }
+                                @if (TempData["ErrorMsg"] != null)
+                                {
+                                    <div class="alert alert-danger alert-dismissable">
+                                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                        <i class="icon-blocked"></i><span>@Html.Raw(TempData["ErrorMsg"])</span>
+                                    </div>
+                                }
+                            </div>
+                            <ul class="cs-shortlisted-car">
+                                @foreach (var item in Model)
+                                {
+                                    <li class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <div class="cs-media">
+                                            @{
+                                                var img = item.tblCar.tblCarImages.Select(s => s.Image).FirstOrDefault();
+                                                if (img != null)
+                                                {
+                                                    string path = Server.MapPath("" + img + "");
+                                                    string[] FolderName = img.Split('/');
+                                                    string[] imageFiles = Directory.GetFiles(path);
+                                                    List<string> images = new List<string>();
+                                                    foreach (var jha in imageFiles)
+                                                    {
+                                                        images.Add(FolderName[2] + "/" + Path.GetFileName(jha));
+                                                    }
+                                                    <figure><a href="#"><img src="~/uploads/@images[0]" alt="Ad Image" style=" width:111px !important;" /></a></figure>
+                                                }
+                                            }
+                                        </div>
+                                        <div class="cs-text">
+                                            <address><i class=" icon-map2"></i>@item.tblCar.CurrentLocation, @item.tblCar.tblAddress.tblCity.CityName</address>
+                                            <h6><a href="@Url.Action("CarDetail","Website",new { AdID = item.tblCar.CarsURL })">@item.tblCar.Title</a></h6>
+                                            <div class="cs-price">
+                                                <span class="cs-color">$@item.tblCar.Price</span>
+                                                <em>MSRP $32,000</em>
+                                            </div>
+                                            <a href="javascript:void(0)" data-toggle="tooltip" data-placement="top" title="Remove" class="cs-remove-btn cs-bgcolor" onclick="RemoveShortlistAd(@item.ID)">Remove</a>
+                                        </div>
+                                    </li>
+                                }
+                            </ul>
+                            <div class="cs-load-more">
+                                <div id="loader" style="display: none!important;">
+                                    <img src="~/Content/Spinner-1s-200px.gif" alt="Please Wait......" width="100" height="100" />
+                                </div>
+                                @Ajax.ActionLink("Load more", "LoadShortlist", "Website", new AjaxOptions()
+                                {
+                                    HttpMethod = "POST",
+                                    InsertionMode = InsertionMode.ReplaceWith,
+                                    UpdateTargetId = "DivUpdate",
+                                    LoadingElementId = "loader"
+                                }, new { @class = "loadmore-btn" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="page-section" style="background:#19171a;">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="cs-ad" style="text-align:center; padding:55px 0 32px;">
+                        <div class="cs-media">
+                            <figure>
+                                <img src="~/Files/extra-images/cs-ad-img.jpg" alt="" />
+                            </figure>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function RemoveShortlistAd(ID) {
+        var userAuthorized = @User.Identity.IsAuthenticated.ToString().ToLower();
+        if (userAuthorized) {
+            console.log(userAuthorized);
+            $("#loader").show();
+            $.ajax({
+                url: "@Url.Action("DelShortlisted", "Website")",
+                type: 'POST',
+                data: JSON.stringify({ CarID: ID }),
+                contentType: "application/json; charset=utf-8",
+                success: function (resp) {
+                    $("#loader").show();
+                    if (resp != null) {
+                        toastr.options = {
+                            "closeButton": true,
+                            "debug": true,
+                            "newestOnTop": false,
+                            "progressBar": true,
+                            "positionClass": "toast-top-right",
+                            "preventDuplicates": false,
+                            "showDuration": "300",
+                            "hideDuration": "10000",
+                            "timeOut": "3000",
+                            "extendedTimeOut": "1000",
+                            "showEasing": "swing",
+                            "hideEasing": "linear",
+                            "showMethod": "fadeIn",
+                            "hideMethod": "fadeOut"
+                        }
+                        toastr["success"]("Ad has been removed from shortlist!", "Removed");
+                        $("#DivUpdate").replaceWith(resp);
+                    }
+                    else {
+                        toastr.options = {
+                            "closeButton": true,
+                            "debug": true,
+                            "newestOnTop": false,
+                            "progressBar": true,
+                            "positionClass": "toast-top-right",
+                            "preventDuplicates": false,
+                            "showDuration": "300",
+                            "hideDuration": "10000",
+                            "timeOut": "3000",
+                            "extendedTimeOut": "1000",
+                            "showEasing": "swing",
+                            "hideEasing": "linear",
+                            "showMethod": "fadeIn",
+                            "hideMethod": "fadeOut"
+                        }
+                        toastr["error"]("An error occured in shortlist!", "Error");
+                    }
+                }
+            });
+        }
+        else {
+            console.log(userAuthorized);
+            toastr.options = {
+                "closeButton": true,
+                "debug": true,
+                "newestOnTop": false,
+                "progressBar": true,
+                "positionClass": "toast-top-right",
+                "preventDuplicates": false,
+                "showDuration": "300",
+                "hideDuration": "10000",
+                "timeOut": "3000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            }
+            toastr["error"]("SignIn to remove from shortlist!", "Error");
+        }
+    }
+    </script>
+}

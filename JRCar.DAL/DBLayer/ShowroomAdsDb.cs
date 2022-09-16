@@ -38,6 +38,7 @@ namespace JRCar.DAL.DBLayer
                 CarImage = s.tblCarImages.Select(a => a.Image).FirstOrDefault(),
                 Color = s.Color,
                 Transmission = s.Transmission,
+                tblFavAdds = s.tblFavAdds,
             }).ToList();
             if (!string.IsNullOrEmpty(searchTerm))
             {

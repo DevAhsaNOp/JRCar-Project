@@ -116,7 +116,24 @@
                         }
                     }
                 </ul>
-                <a href="#" class="short-list cs-color btnShortList" onclick="ShortlistAd(@item.value.tblCarID)" style="margin-right: 14px !important;"><i class="icon-heart-o"></i>ShortList</a>
+                @{
+                    if (Convert.ToInt32(Session["Id"]) > 0)
+                    {
+                        var IsShortlist = item.value.tblFavAdds.Where(x => x.CarID == item.value.tblCarID && x.UserID == Convert.ToInt32(Session["Id"])).FirstOrDefault();
+                        if (IsShortlist != null)
+                        {
+                            <a href="javascript:void(0)" class="short-list cs-color btnShortList" style="margin-right: 14px !important; display: inline-flex; flex-direction: row; align-items: center;"><i class="icon-check-circle"></i>ShortListed</a>
+                        }
+                        else
+                        {
+                            <a href="javascript:void(0)" class="short-list cs-color btnShortList" onclick="ShortlistAd(@item.value.tblCarID)" style="margin-right: 14px !important;"><i class="icon-heart-o"></i>ShortList</a>
+                        }
+                    }
+                    else
+                    {
+                        <a href="javascript:void(0)" class="short-list cs-color btnShortList" onclick="ShortlistAd(@item.value.tblCarID)" style="margin-right: 14px !important;"><i class="icon-heart-o"></i>ShortList</a>
+                    }
+                }
                 <a href="@Url.Action("CarAds","Portal",new { AdID = item.value.CarsURL })" target="_blank" class="View-btn" style="display:inline-block !important;">View Detail<i class=" icon-arrow-long-right"></i></a>
             </div>
         </div>
@@ -162,6 +179,75 @@
                         "hideMethod": "fadeOut"
                     }
                     toastr["success"](resp, "Added");
+                    if (resp != null) {
+                        $("#divLoader").show();
+                        var priceRange = $("#price").val();
+                        console.log(priceRange);
+                        var myArr = priceRange.split`,`.map(x => +x);
+                        var minimum = myArr[0];
+                        var maximum = myArr[1];
+                        var pageno = $('.pagination .active')[0].innerText;
+                        console.log("Page No:" + pageno);
+                        var SortBy = $("#SortByVehicle").find(':selected').val();
+                        console.log("SortBY Val from pager:" + SortBy);
+                        var search = $('#searchTerm_TxtBox').val();
+                        var startYear = $("#StartYear").find(':selected').val();
+                        var endYear = $("#EndYear").find(':selected').val();
+
+                        var makeId = $("input[name = 'MakeRR']:checked").val();
+                        var ModelNameListVal = null;
+                        ModelNameListVal = [];
+
+                        $("input[name='ModelListChkBox']:checked").each(function () {
+                            ModelNameListVal.push($(this).attr('value'));
+                        });
+                        var condi = $("input[name = 'ConditionRR']:checked").val();
+                        var maxYear = (endYear >= startYear) ? endYear : startYear;
+                        var miniYear = (endYear <= startYear) ? endYear : startYear;
+                        var ColorNameListVal = null;
+                        ColorNameListVal = [];
+
+                        $("input[name='ColorListChkBox']:checked").each(function () {
+                            ColorNameListVal.push($(this).attr('value'));
+                        });
+                        var TransNameListVal = null;
+                        TransNameListVal = [];
+
+                        $("input[name='TransListChkBox']:checked").each(function () {
+                            TransNameListVal.push($(this).attr('value'));
+                        });
+
+                        console.log(search);
+                        $.ajax({
+                            url: "@Url.Action("GetAds", "Website")",
+                            type: 'POST',
+                            data: JSON.stringify({ sortBy: SortBy, page: pageno, searchTerm: search, MakeId: makeId, ModelId: ModelNameListVal, maximumPrice: maximum, minimumPrice: minimum, Condition: condi, StartYear: miniYear, EndYear: maxYear, ColorSelected: ColorNameListVal, TransSelected: TransNameListVal }),
+                            contentType: "application/json; charset=utf-8",
+                            success: function (resp) {
+                                $("#divLoader").hide();
+                                $("#VehicleAdsLst").html(resp);
+                            }
+                        });
+                    }
+                    else {
+                        toastr.options = {
+                            "closeButton": true,
+                            "debug": true,
+                            "newestOnTop": false,
+                            "progressBar": true,
+                            "positionClass": "toast-top-right",
+                            "preventDuplicates": false,
+                            "showDuration": "300",
+                            "hideDuration": "10000",
+                            "timeOut": "2000",
+                            "extendedTimeOut": "1000",
+                            "showEasing": "swing",
+                            "hideEasing": "linear",
+                            "showMethod": "fadeIn",
+                            "hideMethod": "fadeOut"
+                        }
+                        toastr["error"]("An error occured please try again later!", "Error");
+                    }
                 }
             });
         }
@@ -196,3 +282,4 @@
         $('[data-toggle="popover"]').popover()
     })
 </script>
+

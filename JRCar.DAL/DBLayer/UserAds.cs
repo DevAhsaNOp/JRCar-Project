@@ -293,11 +293,15 @@ namespace JRCar.DAL.DBLayer
             else
                 return false;
         }
+
         public bool CarShortlistedInActive(tblFavAdd favAdd)
         {
             if (favAdd != null)
             {
-                _context.Entry(favAdd).State = System.Data.Entity.EntityState.Modified;
+                var favAddData = _context.tblFavAdds.Where(x => x.ID == favAdd.ID).FirstOrDefault();
+                favAddData.Isactive = false;
+                favAddData.Isarchived = true;
+                _context.Entry(favAddData).State = System.Data.Entity.EntityState.Modified;
                 Save();
                 return true;
             }
@@ -307,7 +311,7 @@ namespace JRCar.DAL.DBLayer
 
         public IEnumerable<tblFavAdd> AllCarShortlisted(int UserID)
         {
-            var user = _context.tblFavAdds.Where(x => x.ID == UserID).ToList();
+            var user = _context.tblFavAdds.Where(x => x.UserID == UserID && x.Isactive == true).ToList();
             if (user != null)
             {
                 return user;

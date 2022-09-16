@@ -4,7 +4,7 @@
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <ul class="cs-user-accounts-list">
             <li class="active"><a href="@Url.Action("Myvehicles","Website")">My vehicles</a></li>
-            <li><a href="user-car-shortlist.html">Shortlisted</a></li>
+            <li><a href="@Url.Action("Shortlisted","Website")">My vehicles</a></li>
             <li>
                 <a href="@Url.Action("ProfileSettings","Website")">Profile Settings</a>
             </li>
@@ -106,7 +106,7 @@
             @Ajax.ActionLink("Load more", "LoadVehicle", "Website", new AjaxOptions()
             {
                 HttpMethod = "POST",
-                InsertionMode = InsertionMode.Replace,
+                InsertionMode = InsertionMode.ReplaceWith,
                 UpdateTargetId = "DivUpdate",
                 LoadingElementId = "loader"
             }, new { @class = "loadmore-btn" })
