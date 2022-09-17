@@ -569,7 +569,7 @@ namespace JRCar.WebApp.Controllers
             var carDetail = RepoObj1.GetUserAdsDetail(AdID);
             var UserID = Convert.ToInt32(Session["Id"]);
             var IsUserCar = carDetail.UserID;
-            if (carDetail == null || UserID != IsUserCar)
+            if ((carDetail == null || UserID != IsUserCar) && (RepoObj.IsShowroom(UserID) == false))
             {
                 TempData["ErrorMsg"] = "Car you trying to view is not exists!";
                 return RedirectToAction("AllVehicles");

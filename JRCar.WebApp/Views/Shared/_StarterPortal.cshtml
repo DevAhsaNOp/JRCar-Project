@@ -413,7 +413,8 @@
                         $('#notiContent').append($('<a href="#" class="dropdown-item"><i class="fas fa-envelope mr-2"></i> No Notification Available <span class="float-right text-muted text-sm"> 3 mins</span></a>'));
                     }
                     $.each(response, function (index, value) {
-                        $('#notiContent').append($('<a href="#" class="dropdown-item"> <i class="fas fa-envelope mr-2"></i> ' + value.Title + ' <span class="float-right text-muted text-sm"> 3 mins</span></a>'));
+/*                        <a href="#" class="dropdown-item"> <i class="fas fa-envelope mr-2"></i> Corolla <span class="float-right text-muted text-sm"><a href="/Ad/Corolla-2016-for-sale-in-Karachi-098153170922656532">View Ad</a> </span></a>*/
+                        $('#notiContent').append($('<span href="#" class="dropdown-item"> <i class="fas fa-envelope mr-2"></i>' + value.Title + ' <span class="float-right text-muted text-sm"> <a href="/Ad/'+value.AdURL+'">View Ad</a></span></span>'));
                         //$('#notiContent').append($('<li>New Ad Alert: ' + value.Title + ' is less than (' + value.Description + ') </li>'));
                     });
                 },

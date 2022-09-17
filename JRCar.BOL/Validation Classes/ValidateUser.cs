@@ -42,6 +42,8 @@ namespace JRCar.BOL.Validation_Classes
             "characters in length and At least one uppercase, lowercase English letter and one digit and special character.</li></ul>")]
         public string Password { get; set; }
 
+        public string ShowroomURL { get; set; }
+
         [Required(ErrorMessage = "*")]
         [Display(Name = "Image")]
         public string Image { get; set; }

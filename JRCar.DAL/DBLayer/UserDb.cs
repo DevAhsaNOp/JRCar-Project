@@ -313,7 +313,8 @@ namespace JRCar.DAL.DBLayer
                 Password = s.Password,
                 CNIC = s.CNIC,
                 tblRoleID = s.RoleId,
-                ShowroomDescription = s.Description
+                ShowroomDescription = s.Description,
+                ShowroomURL = s.ShowroomURL
             }).FirstOrDefault();
 
             if (user != null)

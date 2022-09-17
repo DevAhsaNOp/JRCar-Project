@@ -44,6 +44,21 @@ namespace JRCar.BLL.Repositories
             return dbObj.GetAllShowRoom();
         }
 
+        public bool IsShowroom(int UserID)
+        {
+            if (UserID > 0)
+            {
+                var reas = GetShowRoomByID(UserID);
+                if (reas != null)
+                {
+                    return true;
+                }
+                return false;
+            }
+            else
+                return false;
+        }
+
         public IEnumerable<tblUser> GetAllUsers()
         {
             return dbObj.GetAllUsers();

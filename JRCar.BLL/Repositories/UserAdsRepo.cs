@@ -48,7 +48,7 @@ namespace JRCar.BLL.Repositories
             else
                 return null;
         }
-
+        
         public ValidationUserAds GetUserAdsDetailOnlyForUpdate(int AdId)
         {
             if (AdId > 0)
