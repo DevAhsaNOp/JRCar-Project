@@ -218,7 +218,7 @@
                                                 <div class="post-title">
                                                     <h4 style="margin-bottom: 5px;"><a href="@Url.Action("CarAds","Portal",new { AdID = item.CarsURL })" target="_blank">@item.Title</a></h4>
                                                     <div class="auto-price" style="margin-bottom: 10px;"><span class="cs-color RPrice">Rs @string.Format("{0:n0}", Convert.ToDecimal(item.Price))</span> <em class="DollarPrice"></em></div>
-                                                    <a href="#"><img alt="Showroom Image" src="@Url.Content(Model.ShowroomImage)" width="70" style="padding:0px !important"></a>
+                                                    <a href="#"><img alt="Showroom Image" src="@Url.Content(Model.ShowroomImage)" width="70" style="padding:5px !important"></a>
                                                 </div>
                                                 <ul class="auto-info-detail" style="margin-bottom: 5px;">
                                                     <li>Year<span>@item.tblCarModel.Year</span></li>

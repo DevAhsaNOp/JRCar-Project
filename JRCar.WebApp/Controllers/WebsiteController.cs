@@ -725,8 +725,8 @@ namespace JRCar.WebApp.Controllers
             ViewBag.Make = AllMakes;
 
             sortBy = sortBy.HasValue ? sortBy.Value : 1;
-            ViewBag.MaximumPrice = RepoObj1.GetAllActiveAds().Select(x => Convert.ToInt32(x.Price)).Max();
-            ViewBag.MinimumPrice = RepoObj1.GetAllActiveAds().Select(x => Convert.ToInt32(x.Price)).Min();
+            ViewBag.MaximumPrice = adsRepo.GetAllActiveAds().Select(x => Convert.ToInt32(x.Price)).Max();
+            ViewBag.MinimumPrice = adsRepo.GetAllActiveAds().Select(x => Convert.ToInt32(x.Price)).Min();
 
             ViewBag.SortBy = (sortBy.HasValue ? sortBy.Value : 1);
 
@@ -779,8 +779,8 @@ namespace JRCar.WebApp.Controllers
             sortBy = sortBy.HasValue ? sortBy.Value : 1;
             adsView.MaximumPrice = Convert.ToInt32(AdsRepo.GetAllActiveAdsFilter(searchTerm, minimumPrice, maximumPrice, sortBy, Condition, StartYear, EndYear, MakeId, ModelId, ColorSelected, TransSelected).Max(x => x.Price));
             ViewBag.SortBy = (sortBy.HasValue ? sortBy.Value : 1);
-            ViewBag.MaximumPrice = (maximumPrice.HasValue ? maximumPrice.Value : AdsRepo.GetAllActiveAds().Select(x => Convert.ToInt32(x.Price)).Max());
-            ViewBag.MinimumPrice = (minimumPrice.HasValue ? minimumPrice.Value : AdsRepo.GetAllActiveAds().Select(x => Convert.ToInt32(x.Price)).Min());
+            ViewBag.MaximumPrice = (maximumPrice ?? AdsRepo.GetAllActiveAds().Select(x => Convert.ToInt32(x.Price)).Max());
+            ViewBag.MinimumPrice = (minimumPrice ?? AdsRepo.GetAllActiveAds().Select(x => Convert.ToInt32(x.Price)).Min());
 
             /***Number of Records you want per Page***/
             int pagesize = 2, pageindex = 1;
