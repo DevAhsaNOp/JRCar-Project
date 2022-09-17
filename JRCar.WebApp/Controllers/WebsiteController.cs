@@ -563,10 +563,13 @@ namespace JRCar.WebApp.Controllers
         #region **Car Detail**
         [AcceptVerbs(HttpVerbs.Get)]
         [Route("Ad/{AdID}")]
+        [Authorize(Roles ="User,Showroom")]
         public ActionResult CarDetail(string AdID)
         {
             var carDetail = RepoObj1.GetUserAdsDetail(AdID);
-            if (carDetail == null)
+            var UserID = Convert.ToInt32(Session["Id"]);
+            var IsUserCar = carDetail.UserID;
+            if (carDetail == null || UserID != IsUserCar)
             {
                 TempData["ErrorMsg"] = "Car you trying to view is not exists!";
                 return RedirectToAction("AllVehicles");

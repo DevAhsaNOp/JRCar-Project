@@ -345,6 +345,7 @@ namespace JRCar.DAL.DBLayer
 
                 /*---User Details---*/
                 UserImage = s.tblUser.Image,
+                UserID = s.UserID,
                 UserName = s.tblUser.Name,
                 Email = s.tblUser.Email,
                 UserRole = s.tblUser.tblRole.Role,
