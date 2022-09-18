@@ -88,6 +88,8 @@ namespace JRCar.BOL.Validation_Classes
 
         public string tblCarUpdatedOn { get; set; }
 
+        public string CarIsActive { get; set; }
+
         public int? tblCarUpdatedBy { get; set; }
 
         public bool tblCarIsactive { get; set; }

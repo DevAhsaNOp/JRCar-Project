@@ -248,6 +248,35 @@ namespace JRCar.DAL.DBLayer
             }).ToList();
         }
 
+        public IEnumerable<ValidateShowroomAds> GetAllShowroomAdsForReport(int ShowroomAdID)
+        {
+            return _context.tblCars.Where(x => x.tblShowroomID == ShowroomAdID).Select(s => new ValidateShowroomAds()
+            {
+                tblCarID = s.ID,
+                Title = s.Title,
+                Price = s.Price,
+                Year = s.tblCarModel.Year,
+                Manufacturer_Name = s.tblManufacturer.Manufacturer_Name,
+                Manufacturer_CarModelName = s.tblManfacturerCarModel.Manufacturer_CarModelName,
+                Condition = s.Condition,
+                CarIsActive = ((s.Isactive == true) ? "Active" : "Inactive"),
+                tblCarCreatedOn = s.CreatedOn,
+                CurrentLocation = s.CurrentLocation,
+                CarsURL = s.CarsURL,
+                RegNo = s.RegNo,
+                RegLocation = s.RegLocation,
+                Color = s.Color,
+                MaxSpeed = s.MaxSpeed,
+                GearType = s.GearType,
+                Description = s.Description,
+                Transmission = s.Transmission,
+                Mileage = s.Mileage,
+                ShowroomName = s.tblShowroom.FullName,
+                ShowroomImage = s.tblShowroom.Image,
+                CarImage = s.tblCarImages.Select(a => a.Image).FirstOrDefault(),
+            }).ToList();
+        }
+
         public ValidateShowroomAds GetShowroomAdsDetail(int AdsId)
         {
             var Showroom = _context.tblCars.Where(x => x.ID == AdsId).Select(s => new ValidateShowroomAds()

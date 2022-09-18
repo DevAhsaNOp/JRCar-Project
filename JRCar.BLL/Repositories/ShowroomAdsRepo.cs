@@ -147,6 +147,22 @@ namespace JRCar.BLL.Repositories
                 return null;
         }
 
+        public IEnumerable<ValidateShowroomAds> GetAllShowroomAdsForReport(int UserID)
+        {
+            if (UserID > 0)
+            {
+                var reas = dbObj.GetAllShowroomAdsForReport(UserID);
+                if (reas != null)
+                {
+                    return reas;
+                }
+                else
+                    return null;
+            }
+            else
+                return null;
+        }
+
         public bool InsertShowroomAds(ValidateShowroomAds model)
         {
             try
