@@ -23,7 +23,7 @@ namespace JRCar.WebApp.Controllers
 
         public JsonResult IsEmailExist(string SignUpEmail)
         {
-            return Json(!RepoObj.IsEmailExist(SignUpEmail),JsonRequestBehavior.AllowGet);   
+            return Json(!RepoObj.IsEmailExist(SignUpEmail), JsonRequestBehavior.AllowGet);
         }
 
         [AcceptVerbs(HttpVerbs.Get)]
@@ -41,6 +41,9 @@ namespace JRCar.WebApp.Controllers
         }
 
         #region **Account Configuration**
+
+        #region **User SignUp**
+
         [AcceptVerbs(HttpVerbs.Get)]
         public ActionResult SignUp()
         {
@@ -83,6 +86,10 @@ namespace JRCar.WebApp.Controllers
                 return RedirectToAction("SignUp");
             }
         }
+
+        #endregion
+
+        #region **Showroom SignUp**
 
         [AcceptVerbs(HttpVerbs.Get)]
         public ActionResult ShowroomSignUp()
@@ -134,6 +141,10 @@ namespace JRCar.WebApp.Controllers
             }
         }
 
+        #endregion
+
+        #region **SignIn For Everyone**
+
         [AcceptVerbs(HttpVerbs.Get)]
         public ActionResult SignIn()
         {
@@ -181,7 +192,10 @@ namespace JRCar.WebApp.Controllers
                 TempData["ErrorMsg"] = "Error occured on login Account!" + ex.Message;
                 return RedirectToAction("SignIn");
             }
-        } 
+        }
+
+        #endregion
+
         #endregion
 
         #region **Password Configuration**
@@ -249,7 +263,8 @@ namespace JRCar.WebApp.Controllers
             {
                 var Email = @TempData["Email"].ToString();
                 user.Email = Email;
-                var IsSuccess = RepoObj.UpdateUser(user);
+                var Role = RepoObj.GetUserRole(Email).Role;
+                var IsSuccess = RepoObj.UpdateUser(user, Role);
                 if (IsSuccess)
                 {
                     TempData["SuccessMsg"] = "<b>Hurry!</b> your Password is Reset...";
@@ -266,7 +281,7 @@ namespace JRCar.WebApp.Controllers
                 TempData["ErrorMsg"] = "Error occured on Account!" + ex.Message;
                 return RedirectToAction("ResetPass");
             }
-        } 
+        }
         #endregion
 
         [Authorize(Roles = "Admin,Union")]

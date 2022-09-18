@@ -260,6 +260,7 @@ namespace JRCar.DAL.DBLayer
                 Manufacturer_CarModelName = s.tblManfacturerCarModel.Manufacturer_CarModelName,
                 Condition = s.Condition,
                 CarIsActive = ((s.Isactive == true) ? "Active" : "Inactive"),
+                tblCarIsactive = s.Isactive,
                 tblCarCreatedOn = s.CreatedOn,
                 CurrentLocation = s.CurrentLocation,
                 CarsURL = s.CarsURL,

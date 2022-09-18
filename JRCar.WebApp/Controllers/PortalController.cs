@@ -14,6 +14,8 @@ using System.Linq;
 using JRCar.DAL.DBLayer;
 using System.Xml.Linq;
 using Microsoft.Reporting.WebForms;
+using System.Data;
+using ClosedXML.Excel;
 
 namespace JRCar.WebApp.Controllers
 {
@@ -34,6 +36,8 @@ namespace JRCar.WebApp.Controllers
         {
             return View();
         }
+
+        #region **Showroom Action Methods**
 
         #region **Showroom Reporting**
         [Authorize(Roles = "Showroom")]
@@ -56,7 +60,65 @@ namespace JRCar.WebApp.Controllers
             localReport.ReportPath = Server.MapPath("~/Reports/ShowroomCars.rdlc");
             byte[] bytes = localReport.Render("PDF");
             return File(bytes, "application/pdf", filename);
-        } 
+        }
+
+        public FileResult DownloadExcel()
+        {
+            var id = Convert.ToInt32(Session["Id"]);
+            var reas = RepoObj1.GetAllShowroomAdsForReport(id);
+            var date = DateTime.Now.ToString("dd/MMM/yyyy");
+            DataTable dataTable = new DataTable("ShowroomCars");
+            dataTable.Columns.Add("Title", typeof(string));
+            dataTable.Columns.Add("Description", typeof(string));
+            dataTable.Columns.Add("Manufacturer_Name", typeof(string));
+            dataTable.Columns.Add("Manufacturer_CarModelName", typeof(string));
+            dataTable.Columns.Add("Year", typeof(string));
+            dataTable.Columns.Add("Condition", typeof(string));
+            dataTable.Columns.Add("RegNo", typeof(string));
+            dataTable.Columns.Add("RegLocation", typeof(string));
+            dataTable.Columns.Add("Color", typeof(string));
+            dataTable.Columns.Add("MaxSpeed", typeof(string));
+            dataTable.Columns.Add("GearType", typeof(string));
+            dataTable.Columns.Add("Transmission", typeof(string));
+            dataTable.Columns.Add("Mileage", typeof(string));
+            dataTable.Columns.Add("Price", typeof(string));
+            dataTable.Columns.Add("CarIsActive", typeof(string));
+
+            foreach (var item in reas)
+            {
+                DataRow row = dataTable.NewRow();
+                row["Title"] = item.Title;
+                row["Description"] = item.Description;
+                row["Manufacturer_Name"] = item.Manufacturer_Name;
+                row["Manufacturer_CarModelName"] = item.Manufacturer_CarModelName;
+                row["Year"] = item.Year;
+                row["Condition"] = item.Condition;
+                row["RegNo"] = item.RegNo;
+                row["RegLocation"] = item.RegLocation;
+                row["Color"] = item.Color;
+                row["MaxSpeed"] = item.MaxSpeed;
+                row["GearType"] = item.GearType;
+                row["Transmission"] = item.Transmission;
+                row["Mileage"] = item.Mileage;
+                row["Price"] = item.Price;
+                row["CarIsActive"] = item.CarIsActive;
+
+                dataTable.Rows.Add(row);
+            }
+
+            string filename = reas.FirstOrDefault().ShowroomName + "_" + date + "_" + "report";
+
+            using (XLWorkbook wb = new XLWorkbook())
+            {
+                wb.Worksheets.Add(dataTable);
+                using (MemoryStream stream = new MemoryStream())
+                {
+                    wb.SaveAs(stream);
+                    return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", filename + ".xlsx");
+                }
+            }
+
+        }
         #endregion
 
         #region **Any Profile Update**
@@ -65,7 +127,8 @@ namespace JRCar.WebApp.Controllers
         public ActionResult UpdateProfile()
         {
             var id = Convert.ToInt32(Session["Id"]);
-            var reas = RepoObj.GetUserDetailById(id);
+            var Role = Session["Role"].ToString();
+            var reas = RepoObj.GetUserDetailById(id, Role);
             return View(reas);
         }
 
@@ -91,7 +154,8 @@ namespace JRCar.WebApp.Controllers
                             {
                                 user.ID = (int)Session["Id"];
                                 user.UpdatedBy = (int)Session["Id"];
-                                var IsUpdated = RepoObj.UpdateUser(user);
+                                var Role = Session["Role"].ToString();
+                                var IsUpdated = RepoObj.UpdateUser(user, role);
                                 string oldImgPath = Request.MapPath(Session["Image"].ToString());
                                 if (IsUpdated)
                                 {
@@ -103,7 +167,7 @@ namespace JRCar.WebApp.Controllers
                                         Session["Image"] = user.Image;
                                         if (role == "Admin" || role == "Union" || role == "Showroom")
                                         {
-                                            return View("UpdateProfile");
+                                            return RedirectToAction("UpdateProfile");
                                         }
                                         else if (role == "User")
                                         {
@@ -121,7 +185,7 @@ namespace JRCar.WebApp.Controllers
                                     if (role == "Admin" || role == "Union" || role == "Showroom")
                                     {
                                         TempData["ErrorMsg"] = "Error occured on login Account!";
-                                        return View("UpdateProfile");
+                                        return RedirectToAction("UpdateProfile");
                                     }
                                     else if (role == "User")
                                     {
@@ -162,18 +226,21 @@ namespace JRCar.WebApp.Controllers
                         var role = Session["Role"].ToString();
                         user.tblRoleName = role;
                         user.UpdatedBy = (int)Session["Id"];
-                        var IsUpdated = RepoObj.UpdateUser(user);
+                        var IsUpdated = RepoObj.UpdateUser(user, role);
                         if (IsUpdated)
                         {
                             TempData["SuccessMsg"] = "Account Updated Successfully!";
-                            FormsAuthentication.SetAuthCookie(user.Email, false);
-                            if (role == "Admin" || role == "Union" || role == "Showroom")
+                            if (User.Identity.IsAuthenticated)
                             {
-                                return View("UpdateProfile");
-                            }
-                            else if (role == "User")
-                            {
-                                return RedirectToAction("ProfileSettings", "Website");
+                                FormsAuthentication.SetAuthCookie(user.Email, false);
+                                if (role == "Admin" || role == "Union" || role == "Showroom")
+                                {
+                                    return RedirectToAction("UpdateProfile");
+                                }
+                                else if (role == "User")
+                                {
+                                    return RedirectToAction("ProfileSettings", "Website");
+                                }
                             }
                             else
                             {
@@ -186,7 +253,7 @@ namespace JRCar.WebApp.Controllers
                             if (role == "Admin" || role == "Union" || role == "Showroom")
                             {
                                 TempData["ErrorMsg"] = "Error occured on login Account!";
-                                return View("UpdateProfile");
+                                return RedirectToAction("UpdateProfile");
                             }
                             else if (role == "User")
                             {
@@ -211,7 +278,7 @@ namespace JRCar.WebApp.Controllers
             catch (Exception ex)
             {
                 TempData["ErrorMsg"] = "Error occured on updating Account!" + ex.Message;
-                return View("UpdateProfile");
+                return RedirectToAction("UpdateProfile");
             }
         }
         #endregion
@@ -303,7 +370,7 @@ namespace JRCar.WebApp.Controllers
 
         #endregion
 
-        #region **Post and Edit Ad**
+        #region **Showroom Post and Edit Ad**
         [AcceptVerbs(HttpVerbs.Get)]
         [Authorize(Roles = "Showroom")]
         [Route("Showroom/PostNewAd")]
@@ -608,7 +675,13 @@ namespace JRCar.WebApp.Controllers
                 ViewBag.Images = images;
                 return View(carDetail);
             }
-        } 
+        }
+        #endregion
+
+        #endregion
+
+        #region **Unions Action Methods**
+
         #endregion
     }
 }

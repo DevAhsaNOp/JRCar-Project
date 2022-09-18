@@ -224,7 +224,7 @@ namespace JRCar.BLL.Repositories
             }
         }
 
-        public bool UpdateUser(ValidateUser model)
+        public bool UpdateUser(ValidateUser model,string Role)
         {
             if (model != null)
             {
@@ -233,7 +233,7 @@ namespace JRCar.BLL.Repositories
                 var UnionData = dbObj.GetUnionByID(model.ID);
                 var UserData = dbObj.GetUserByID(model.ID);
                 var reas1 = dbObj.GetUserDetail(model.Email);
-                if (admin != null)
+                if (admin != null && admin.tblRole.Role.ToLower().Contains(Role.ToLower()))
                 {
                     admin.Name = model.Name;
                     admin.Email = model.Email;
@@ -245,7 +245,7 @@ namespace JRCar.BLL.Repositories
                     dbObj.UpdateAdmin(admin);
                     return true;
                 }
-                else if (UserData != null)
+                else if (UserData != null && UserData.tblRole.Role.ToLower().Contains(Role.ToLower()))
                 {
                     UserData.Name = model.Name;
                     UserData.Email = model.Email;
@@ -257,7 +257,7 @@ namespace JRCar.BLL.Repositories
                     dbObj.UpdateUser(UserData);
                     return true;
                 }
-                else if (UnionData != null)
+                else if (UnionData != null && UnionData.tblRole.Role.ToLower().Contains(Role.ToLower()))
                 {
                     UnionData.Name = model.Name;
                     UnionData.Email = model.Email;
@@ -269,7 +269,7 @@ namespace JRCar.BLL.Repositories
                     dbObj.UpdateUnion(UnionData);
                     return true;
                 }
-                else if (ShowroomData != null)
+                else if (ShowroomData != null && ShowroomData.tblRole.Role.ToLower().Contains(Role.ToLower()))
                 {
                     ShowroomData.FullName = model.Name;
                     ShowroomData.Email = model.Email;
@@ -325,11 +325,11 @@ namespace JRCar.BLL.Repositories
             return dbObj.GetShowRoomByID(modelId);
         }
 
-        public ValidateUser GetUserDetailById(int Id)
+        public ValidateUser GetUserDetailById(int Id, string Role)
         {
             try
             {
-                var reas = dbObj.GetUserDetailById(Id);
+                var reas = dbObj.GetUserDetailById(Id, Role);
                 if (reas != null)
                 {
                     reas.Password = EncDec.Decrypt(reas.Password);

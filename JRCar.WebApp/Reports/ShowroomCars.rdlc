@@ -1072,7 +1072,7 @@
         <Top>0.42016cm</Top>
         <Left>0.3175cm</Left>
         <Height>1.2cm</Height>
-        <Width>37.76833cm</Width>
+        <Width>37.76834cm</Width>
         <Style>
           <Border>
             <Style>None</Style>
@@ -1116,7 +1116,7 @@
             </Paragraph>
           </Paragraphs>
           <rd:DefaultName>Textbox31</rd:DefaultName>
-          <Top>0.17583in</Top>
+          <Top>0.30083in</Top>
           <Left>5.55743in</Left>
           <Height>0.44792in</Height>
           <Width>4.17431in</Width>
@@ -1237,7 +1237,7 @@
         <BackgroundColor>WhiteSmoke</BackgroundColor>
       </Style>
     </PageFooter>
-    <PageHeight>21in</PageHeight>
+    <PageHeight>18.6in</PageHeight>
     <PageWidth>15.15984in</PageWidth>
     <ColumnSpacing>0.05118in</ColumnSpacing>
     <Style />

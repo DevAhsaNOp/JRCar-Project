@@ -643,7 +643,8 @@ namespace JRCar.WebApp.Controllers
         public ActionResult ProfileSettings()
         {
             var id = Convert.ToInt32(Session["Id"]);
-            var reas = RepoObj.GetUserDetailById(id);
+            var Role = Session["Role"].ToString();
+            var reas = RepoObj.GetUserDetailById(id, Role);
             return View(reas);
         }
 

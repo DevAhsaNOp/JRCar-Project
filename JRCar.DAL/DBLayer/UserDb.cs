@@ -264,9 +264,9 @@ namespace JRCar.DAL.DBLayer
                 return null;
         }
 
-        public ValidateUser GetUserDetailById(int Id)
+        public ValidateUser GetUserDetailById(int Id, string Role)
         {
-            var user = _context.tblUsers.Where(x => x.ID == Id).Select(s => new ValidateUser()
+            var user = _context.tblUsers.Where(x => x.ID == Id && x.tblRole.Role.ToLower().Contains(Role.ToLower())).Select(s => new ValidateUser()
             {
                 ID = s.ID,
                 Name = s.Name,
@@ -278,7 +278,7 @@ namespace JRCar.DAL.DBLayer
                 tblRoleID = s.tblRoleID
             }).FirstOrDefault();
 
-            var admin = _context.tblAdmins.Where(x => x.ID == Id).Select(s => new ValidateUser()
+            var admin = _context.tblAdmins.Where(x => x.ID == Id && x.tblRole.Role.ToLower().Contains(Role.ToLower())).Select(s => new ValidateUser()
             {
                 ID = s.ID,
                 Name = s.Name,
@@ -290,7 +290,7 @@ namespace JRCar.DAL.DBLayer
                 tblRoleID = s.tblRoleID
             }).FirstOrDefault();
 
-            var union = _context.tblUnions.Where(x => x.ID == Id).Select(s => new ValidateUser()
+            var union = _context.tblUnions.Where(x => x.ID == Id && x.tblRole.Role.ToLower().Contains(Role.ToLower())).Select(s => new ValidateUser()
             {
                 ID = s.ID,
                 Name = s.Name,
@@ -302,7 +302,7 @@ namespace JRCar.DAL.DBLayer
                 tblRoleID = s.tblRoleID
             }).FirstOrDefault();
             
-            var showroom = _context.tblShowrooms.Where(x => x.ID == Id).Select(s => new ValidateUser()
+            var showroom = _context.tblShowrooms.Where(x => x.ID == Id && x.tblRole.Role.ToLower().Contains(Role.ToLower())).Select(s => new ValidateUser()
             {
                 ID = s.ID,
                 Name = s.FullName,
