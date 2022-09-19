@@ -42,7 +42,7 @@
                 <li class="nav-item">
                     <a href="@Url.Action("UpdateProfile","Portal")" class="nav-link" id="ShopProfilePage">
                         <i class="fas fa-user-edit nav-icon"></i>
-                        <p>SHOP PROFILE</p>
+                        <p>PROFILE SETTING</p>
                     </a>
                 </li>
                 <li class="nav-item">
@@ -63,41 +63,141 @@
                         <p>SETTINGS</p>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a href="@Url.Action("ShowroomReport","Portal")" class="nav-link" id="ReportsPage">
-                        <i class="fas fa-chart-area nav-icon"></i>
-                        <p>REPORTS</p>
-                    </a>
-                </li>
-                <li class="nav-item menu-open">
-                    <a href="#" class="nav-link" id="ShowroomAdNav">
-                        <i class="nav-icon fas fa-ad"></i>
-                        <p>
-                            SHOWROOM AD
-                            <i class="right fas fa-angle-left"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="@Url.Action("PostNewAd","Portal")" class="nav-link" id="PostNewAdPage">
-                                <i class="far fa-circle nav-icon text-bold text-info"></i>
-                                <p>POST NEW AD</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="@Url.Action("MyAds","Portal")" class="nav-link" id="MyAdsPage">
-                                <i class="far fa-circle nav-icon text-bold text-green"></i>
-                                <p>MY ADS</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link" id="ShortlistedPage">
-                                <i class="far fa-circle nav-icon text-bold text-teal"></i>
-                                <p>SHORTLISTED</p>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
+                
+                @if (User.IsInRole("Admin") || User.IsInRole("Union"))
+                {
+                    <li class="nav-item menu-open">
+                        <a href="#" class="nav-link" id="UsersNav">
+                            <i class="nav-icon fas fa-ad"></i>
+                            <p>
+                                Manage User
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="@Url.Action("AddUser","Portal")" class="nav-link" id="AddUserPage">
+                                    <i class="far fa-circle nav-icon text-bold text-blue"></i>
+                                    <p>Add User</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link" id="UserManagePage">
+                                    <i class="far fa-circle nav-icon text-bold text-teal"></i>
+                                    <p>Edit Users</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item menu-open">
+                        <a href="#" class="nav-link" id="ShowroomsNav">
+                            <i class="nav-icon fas fa-ad"></i>
+                            <p>
+                                Manage Showroom
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="@Url.Action("ShowroomReport","Portal")" class="nav-link" id="AddShowroomPage">
+                                    <i class="far fa-circle nav-icon text-bold text-blue"></i>
+                                    <p>Add Showroom</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link" id="ShowroomManagePage">
+                                    <i class="far fa-circle nav-icon text-bold text-teal"></i>
+                                    <p>Edit Showrooms</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item menu-open">
+                        <a href="#" class="nav-link" id="AdssNav">
+                            <i class="nav-icon fas fa-ad"></i>
+                            <p>
+                                Manage Ads
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="@Url.Action("ShowroomReport","Portal")" class="nav-link" id="MngShowroomAdsPage">
+                                    <i class="far fa-circle nav-icon text-bold text-blue"></i>
+                                    <p>Manage Showroom Ads</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link" id="MngUserAdsPage">
+                                    <i class="far fa-circle nav-icon text-bold text-green"></i>
+                                    <p>Manage User Ads</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                }
+
+                @if (User.IsInRole("Showroom"))
+                {
+                    <li class="nav-item menu-open">
+                        <a href="#" class="nav-link" id="ReportsNav">
+                            <i class="nav-icon fas fa-ad"></i>
+                            <p>
+                                REPORTS
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="@Url.Action("ShowroomReport","Portal")" class="nav-link" id="InvReportsPage">
+                                    <i class="fas fa-chart-area nav-icon"></i>
+                                    <p>CAR REPORT</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link" id="TransactionReportPage">
+                                    <i class="far fa-circle nav-icon text-bold text-green"></i>
+                                    <p>TRANSACTION REPORT</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link" id="Page">
+                                    <i class="far fa-circle nav-icon text-bold text-teal"></i>
+                                    <p>SHORTLISTED</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item menu-open">
+                        <a href="#" class="nav-link" id="ShowroomAdNav">
+                            <i class="nav-icon fas fa-ad"></i>
+                            <p>
+                                SHOWROOM AD
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="@Url.Action("PostNewAd","Portal")" class="nav-link" id="PostNewAdPage">
+                                    <i class="far fa-circle nav-icon text-bold text-info"></i>
+                                    <p>POST NEW AD</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="@Url.Action("MyAds","Portal")" class="nav-link" id="MyAdsPage">
+                                    <i class="far fa-circle nav-icon text-bold text-green"></i>
+                                    <p>MY ADS</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link" id="ShortlistedPage">
+                                    <i class="far fa-circle nav-icon text-bold text-teal"></i>
+                                    <p>SHORTLISTED</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                }
             </ul>
         </nav>
         <!-- /.sidebar-menu -->

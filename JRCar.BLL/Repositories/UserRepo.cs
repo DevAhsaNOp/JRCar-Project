@@ -38,6 +38,22 @@ namespace JRCar.BLL.Repositories
                 return false;
             }
         }
+        
+        public bool IsUpdateEmailExist(string Email, string CurrentEmail) 
+        {
+            if (Email != null && Email != CurrentEmail)
+            {
+                var reas = dbObj.IsEmailExist(Email);
+                if (reas)
+                    return true;
+                else
+                    return false;
+            }
+            else
+            {
+                return false;
+            }
+        }
 
         public IEnumerable<tblShowroom> GetAllShowRoom()
         {

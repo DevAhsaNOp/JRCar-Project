@@ -16,6 +16,7 @@ using System.Xml.Linq;
 using Microsoft.Reporting.WebForms;
 using System.Data;
 using ClosedXML.Excel;
+using System.Text.RegularExpressions;
 
 namespace JRCar.WebApp.Controllers
 {
@@ -154,11 +155,13 @@ namespace JRCar.WebApp.Controllers
                             {
                                 user.ID = (int)Session["Id"];
                                 user.UpdatedBy = (int)Session["Id"];
+                                user.Email = user.SignUpUpdateEmail;
                                 var Role = Session["Role"].ToString();
                                 var IsUpdated = RepoObj.UpdateUser(user, role);
                                 string oldImgPath = Request.MapPath(Session["Image"].ToString());
                                 if (IsUpdated)
                                 {
+                                    Session["Name"] = Regex.Replace(user.Name.ToUpper().Split()[0], @"[^0-9a-zA-Z\ ]+", "");
                                     file.SaveAs(path);
                                     if (System.IO.File.Exists(oldImgPath))
                                     {
@@ -225,8 +228,10 @@ namespace JRCar.WebApp.Controllers
                         user.ID = (int)Session["Id"];
                         var role = Session["Role"].ToString();
                         user.tblRoleName = role;
+                        user.Email = user.SignUpUpdateEmail;
                         user.UpdatedBy = (int)Session["Id"];
                         var IsUpdated = RepoObj.UpdateUser(user, role);
+                        Session["Name"] = Regex.Replace(user.Name.ToUpper().Split()[0], @"[^0-9a-zA-Z\ ]+", "");
                         if (IsUpdated)
                         {
                             TempData["SuccessMsg"] = "Account Updated Successfully!";
@@ -681,6 +686,19 @@ namespace JRCar.WebApp.Controllers
         #endregion
 
         #region **Unions Action Methods**
+
+        #region **Manage User**
+
+        [AcceptVerbs(HttpVerbs.Get)]
+        [Authorize(Roles = "Admin,Union")]
+        public ActionResult AddUser()
+        {
+            Session["ImageAvatar"] = "~/Images/user.png";
+            Session["UnionUserSignUp"] = "1";
+            return View();
+        }
+
+        #endregion
 
         #endregion
     }

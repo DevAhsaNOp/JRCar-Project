@@ -27,20 +27,23 @@
             </div>
         </div><!-- /.container-fluid -->
     </section>
-    <section class="content">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-10 col-sm-12 col-lg-10">
-                    <div class="alert alert-info" role="alert" style="display: flex !important; align-items: center !important; justify-content: space-between !important;">
-                        <span>View Showroom Profile as viewer</span>
-                        <a href="@Url.Action("ShowroomProfile","Website",new { Show = Model.ShowroomURL })" target="_blank">
-                            <button type="button" class="btn btn-light">View</button>
-                        </a>
+    if (User.IsInRole("Showroom"))
+    {
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-10 col-sm-12 col-lg-10">
+                        <div class="alert alert-info" role="alert" style="display: flex !important; align-items: center !important; justify-content: space-between !important;">
+                            <span>View Showroom Profile as viewer</span>
+                            <a href="@Url.Action("ShowroomProfile","Website",new { Show = Model.ShowroomURL })" target="_blank">
+                                <input type="button" class="btn btn-light" value="View" />
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
+    }
     <section class="content">
         <div class="container-fluid">
             <div class="row">
@@ -100,8 +103,8 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputBorderWidth2">Email</label>
-                                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
-                                    @Html.EditorFor(model => model.Email, new { htmlAttributes = new { placeholder = "Enter your Email", @class = "form-control form-control-border border-width-2" } })
+                                    @Html.ValidationMessageFor(model => model.SignUpUpdateEmail, "", new { @class = "text-danger" })
+                                    @Html.EditorFor(model => model.SignUpUpdateEmail, new { htmlAttributes = new { placeholder = "Enter your Email", @class = "form-control form-control-border border-width-2" } })
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputBorderWidth2">Number</label>

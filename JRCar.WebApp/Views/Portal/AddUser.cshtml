@@ -1,0 +1,123 @@
+﻿@model JRCar.BOL.Validation_Classes.ValidateUser
+
+@{
+    ViewBag.Title = "Add New User Profile";
+    Layout = "~/Views/Shared/_StarterPortal.cshtml";
+}
+
+<style>
+    #Password-error ul {
+        padding-left: 0px;
+    }
+</style>
+
+@if (User.Identity.IsAuthenticated)
+{
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Add New User Profile</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">Add New User</li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-10 col-sm-12 col-lg-10">
+                    @if (TempData["SuccessMsg"] != null)
+                    {
+                        <div class="alert alert-info alert-dismissable">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                            <i class="icon-info-with-circle"></i><span>@Html.Raw(TempData["SuccessMsg"])</span>
+                        </div>
+                    }
+                    @if (TempData["ErrorMsg"] != null)
+                    {
+                        <div class="alert alert-danger alert-dismissable">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                            <i class="icon-blocked"></i><span>@Html.Raw(TempData["ErrorMsg"])</span>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <!-- left column -->
+                <div class="col-md-10 col-sm-12 col-lg-10">
+                    <!-- general form elements -->
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <h3 class="card-title">Add New User Profile</h3>
+                        </div>
+                        @using (Html.BeginForm("SignUp", "Account", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                        {
+                            <!-- /.card-header -->
+                            <div class="card-body">
+                                <h6 class="bg-gradient-blue p-1 text-center"><b>Note: </b>Insert the correct Information</h6>
+                                <div class="form-group" style=" display: flex; flex-direction: column-reverse; align-items: center;">
+                                    <label for="choose-file" class="custom-file-upload" id="choose-file-label">
+                                        Change Avatar
+                                    </label>
+                                    <input name="file" type="file" id="choose-file" required="required"
+                                           accept="image/png,image/jpg,image/jpeg" onchange="loadProfile(event)" style="display: none !important;" />
+                                    @Html.ValidationMessageFor(model => model.Image, "", new { @class = "text-danger" })
+                                    @if (Session["ImageAvatar"] != null)
+                                    {
+                                        <img id="dynamicImage" src="@Url.Content(Session["ImageAvatar"].ToString())" alt="Profile Image" width="120" height="120" style="border-radius: 50%;" />
+                                    }
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputBorder">User Name</label>
+                                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                                    @Html.EditorFor(model => model.Name, new { htmlAttributes = new { placeholder = "Enter User's Name", @class = "form-control form-control-border border-width-2" } })
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputBorderWidth2">Email Address</label>
+                                    @Html.ValidationMessageFor(model => model.SignUpEmail, "", new { @class = "text-danger" })
+                                    @Html.EditorFor(model => model.SignUpEmail, new { htmlAttributes = new { placeholder = "Enter User's Email", @class = "form-control form-control-border border-width-2" } })
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputBorderWidth2">Phone Number</label>
+                                    @Html.ValidationMessageFor(model => model.Number, "", new { @class = "text-danger" })
+                                    @Html.EditorFor(model => model.Number, new { htmlAttributes = new { placeholder = "Enter User's Number", @class = "form-control form-control-border border-width-2" } })
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputBorderWidth2">Address</label>
+                                    @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+                                    @Html.EditorFor(model => model.Address, new { htmlAttributes = new { placeholder = "Enter User's Address", @class = "form-control form-control-border border-width-2" } })
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputBorderWidth2">Password</label>
+                                    @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                                    @Html.EditorFor(model => model.Password, new { htmlAttributes = new { placeholder = "Enter User's Password", @class = "form-control form-control-border border-width-2", @type = "password" } })
+                                </div>
+                            </div>
+                            <!-- /.card-body -->
+                            <div class="card-footer">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        }
+                    </div>
+                    <!-- /.card -->
+                </div>
+                <!--/.col (left) -->
+            </div>
+            <!-- /.row -->
+        </div><!-- /.container-fluid -->
+    </section>
+    <script>
+        document.getElementById('UsersNav').classList.add('active')
+        document.getElementById('AddUserPage').classList.add('active')    
+    </script>
+}

@@ -26,6 +26,12 @@ namespace JRCar.BOL.Validation_Classes
         [RegularExpression("^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$", ErrorMessage = "Invalid Email Address")]
         [Remote("IsEmailExist", "Account", ErrorMessage = "Email is already registered!")]
         public string SignUpEmail { get; set; }
+        
+        [Required(ErrorMessage = "*")]
+        [Display(Name = "Email")]
+        [RegularExpression("^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$", ErrorMessage = "Invalid Email Address")]
+        [Remote("IsUpdateEmailExist", "Account", ErrorMessage = "Email is already registered!")]
+        public string SignUpUpdateEmail { get; set; }
 
         [Required(ErrorMessage = "*")]
         [Display(Name = "Phone Number")]

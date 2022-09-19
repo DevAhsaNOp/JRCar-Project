@@ -682,6 +682,7 @@
     <Content Include="Images\2259211451.jpg" />
     <Content Include="Images\2259494211.jpg" />
     <Content Include="Images\bg-1.jpg" />
+    <Content Include="Images\user.png" />
     <Content Include="js\bootstrap.min.js" />
     <Content Include="js\jquery.min.js" />
     <Content Include="js\main.js" />
@@ -3590,6 +3591,7 @@
     <Content Include="Views\Website\Shortlisted.cshtml" />
     <Content Include="Views\Shared\_LoadShortlist.cshtml" />
     <Content Include="Views\Portal\ShowroomReport.cshtml" />
+    <Content Include="Views\Portal\AddUser.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

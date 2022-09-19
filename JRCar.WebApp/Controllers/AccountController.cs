@@ -25,6 +25,12 @@ namespace JRCar.WebApp.Controllers
         {
             return Json(!RepoObj.IsEmailExist(SignUpEmail), JsonRequestBehavior.AllowGet);
         }
+        
+        public JsonResult IsUpdateEmailExist(string SignUpEmail)
+        {
+            var UserCurrentEmail = Session["Email"].ToString();
+            return Json(!RepoObj.IsUpdateEmailExist(SignUpEmail, UserCurrentEmail), JsonRequestBehavior.AllowGet);
+        }
 
         [AcceptVerbs(HttpVerbs.Get)]
         [Authorize(Roles = "Admin,Showroom,Union")]
@@ -55,30 +61,107 @@ namespace JRCar.WebApp.Controllers
         {
             try
             {
-                string filename = Path.GetFileName(file.FileName);
-                string _filename = DateTime.Now.ToString("yymmssfff") + filename;
-                string extension = Path.GetExtension(file.FileName);
-                string path = Path.Combine(Server.MapPath("~/Images/"), _filename);
-                user.Image = "~/Images/" + _filename;
-
-                if (extension.ToLower() == ".jpg" || extension.ToLower() == ".jpeg" || extension.ToLower() == ".png")
+                if (file == null)
                 {
-                    if (file.ContentLength <= 10000000)
+                    user.Image = Session["ImageAvatar"].ToString();
+                    user.Email = user.SignUpEmail;
+                    RepoObj.InsertUser(user);
+                    TempData["SuccessMsg"] = "Account Created Successfully!";
+                    ModelState.Clear();
+                    if (Session["UnionUserSignUp"] != null)
                     {
-                        user.Email = user.SignUpEmail;
-                        RepoObj.InsertUser(user);
-                        file.SaveAs(path);
-                        TempData["SuccessMsg"] = "Account Created Successfully!";
-                        ModelState.Clear();
-                        return RedirectToAction("SignIn");
+                        if (Session["UnionUserSignUp"].ToString() == "1")
+                        {
+                            return RedirectToAction("AddUser", "Portal");
+                        }
+                        else
+                        {
+                            TempData["ErrorMsg"] = "Error occured on creating Account!";
+                            return RedirectToAction("AddUser", "Portal");
+                        }
                     }
                     else
                     {
-                        TempData["ErrorMsg"] = "Image size is very large";
-                        return RedirectToAction("SignUp");
+                        return RedirectToAction("SignIn");
                     }
                 }
-                return View();
+                else
+                {
+                    string filename = Path.GetFileName(file.FileName);
+                    string _filename = DateTime.Now.ToString("yymmssfff") + filename;
+                    string extension = Path.GetExtension(file.FileName);
+                    string path = Path.Combine(Server.MapPath("~/Images/"), _filename);
+                    user.Image = "~/Images/" + _filename;
+
+                    if (extension.ToLower() == ".jpg" || extension.ToLower() == ".jpeg" || extension.ToLower() == ".png")
+                    {
+                        if (file.ContentLength <= 10000000)
+                        {
+                            user.Email = user.SignUpEmail;
+                            RepoObj.InsertUser(user);
+                            file.SaveAs(path);
+                            TempData["SuccessMsg"] = "Account Created Successfully!";
+                            ModelState.Clear();
+                            if (Session["UnionUserSignUp"] != null)
+                            {
+                                if (Session["UnionUserSignUp"].ToString() == "1")
+                                {
+                                    return RedirectToAction("AddUser", "Portal");
+                                }
+                                else
+                                {
+                                    TempData["ErrorMsg"] = "Error occured on creating Account!";
+                                    return RedirectToAction("AddUser", "Portal");
+                                }
+                            }
+                            else
+                            {
+                                return RedirectToAction("SignIn");
+                            }
+                        }
+                        else
+                        {
+                            if (Session["UnionUserSignUp"] != null)
+                            {
+                                if (Session["UnionUserSignUp"].ToString() == "1")
+                                {
+                                    TempData["ErrorMsg"] = "Image size is very large";
+                                    return RedirectToAction("AddUser", "Portal");
+                                }
+                                else
+                                {
+                                    TempData["ErrorMsg"] = "Image size is very large";
+                                    return RedirectToAction("AddUser", "Portal");
+                                }
+                            }
+                            else
+                            {
+                                TempData["ErrorMsg"] = "Image size is very large";
+                                return RedirectToAction("SignUp");
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (Session["UnionUserSignUp"] != null)
+                        {
+                            if (Session["UnionUserSignUp"].ToString() == "1")
+                            {
+                                TempData["ErrorMsg"] = "Error occured on creating Account!";
+                                return RedirectToAction("AddUser", "Portal");
+                            }
+                            else
+                            {
+                                TempData["ErrorMsg"] = "Error occured on creating Account!";
+                                return RedirectToAction("AddUser", "Portal");
+                            }
+                        }
+                        else
+                        {
+                            return RedirectToAction("SignUp");
+                        }
+                    }
+                }
             }
             catch (Exception ex)
             {
