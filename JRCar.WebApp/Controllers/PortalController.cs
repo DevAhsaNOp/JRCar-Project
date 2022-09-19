@@ -17,6 +17,8 @@ using Microsoft.Reporting.WebForms;
 using System.Data;
 using ClosedXML.Excel;
 using System.Text.RegularExpressions;
+using Microsoft.ReportingServices.ReportProcessing.ReportObjectModel;
+using System.Web.Helpers;
 
 namespace JRCar.WebApp.Controllers
 {
@@ -122,7 +124,7 @@ namespace JRCar.WebApp.Controllers
         }
         #endregion
 
-        #region **Any Profile Update**
+        #region **Any Account Profile Update**
         [AcceptVerbs(HttpVerbs.Get)]
         [Authorize(Roles = "Admin,Showroom,Union")]
         public ActionResult UpdateProfile()
@@ -696,6 +698,349 @@ namespace JRCar.WebApp.Controllers
             Session["ImageAvatar"] = "~/Images/user.png";
             Session["UnionUserSignUp"] = "1";
             return View();
+        }
+
+        [AcceptVerbs(HttpVerbs.Get)]
+        [Authorize(Roles = "Admin,Union")]
+        public ActionResult ListOfUser()
+        {
+            var reas = RepoObj.GetAllUsers();
+            return View(reas);
+        }
+
+        [AcceptVerbs(HttpVerbs.Get)]
+        [Authorize(Roles = "Admin,Union")]
+        public ActionResult UserEdit(int UserID)
+        {
+            ViewBag.UserStatus = RepoObj1.UserStatus();
+            var id = UserID;
+            var Role = RepoObj.GetAllUsers().Where(x => x.ID == UserID).FirstOrDefault().tblRole.Role;
+            var Email = RepoObj.GetAllUsers().Where(x => x.ID == UserID).FirstOrDefault().Email;
+            var reas = RepoObj.GetUserDetailById(id, Role);
+            Session["CurrentUserAvatar"] = reas.Image;
+            Session["UserEditID"] = id;
+            Session["UserEditEmail"] = Email;
+            return View(reas);
+        }
+
+        [AcceptVerbs(HttpVerbs.Post)]
+        [Authorize(Roles = "Admin,Union")]
+        public ActionResult UserEdit(HttpPostedFileBase file, ValidateUser user)
+        {
+            try
+            {
+                if (User.Identity.IsAuthenticated)
+                {
+                    if (file != null)
+                    {
+                        string filename = Path.GetFileName(file.FileName);
+                        string _filename = DateTime.Now.ToString("yymmssfff") + filename;
+                        string extension = Path.GetExtension(file.FileName);
+                        string path = Path.Combine(Server.MapPath("~/Images/"), _filename);
+                        user.Image = "~/Images/" + _filename;
+                        if (extension.ToLower() == ".jpg" || extension.ToLower() == ".jpeg" || extension.ToLower() == ".png")
+                        {
+                            var role = RepoObj.GetUserRole(user.SignUpUpdateEmail).Role;
+                            user.tblRoleName = role;
+                            if (file.ContentLength <= 10000000)
+                            {
+                                user.ID = (int)Session["UserEditID"];
+                                user.UpdatedBy = (int)Session["Id"];
+                                user.Email = user.SignUpUpdateEmail;
+                                var IsUpdated = RepoObj.UpdateUser(user, role);
+                                string oldImgPath = Request.MapPath(Session["Image"].ToString());
+                                if (IsUpdated)
+                                {
+                                    Session["Name"] = Regex.Replace(user.Name.ToUpper().Split()[0], @"[^0-9a-zA-Z\ ]+", "");
+                                    file.SaveAs(path);
+                                    if (System.IO.File.Exists(oldImgPath))
+                                    {
+                                        if (Path.GetFileNameWithoutExtension(oldImgPath) == "user")
+                                        {
+                                        }
+                                        else
+                                        {
+                                            System.IO.File.Delete(oldImgPath);
+                                        }
+                                        Session["CurrentUserAvatar"] = user.Image;
+                                        TempData["SuccessMsg"] = "Account Updated Successfully!";
+                                        Session["UserEditEmail"] = null;
+                                        if (user.Active == "1")
+                                        {
+                                            return RedirectToAction("UserEdit", new { UserID = user.ID });
+                                        }
+                                        else
+                                        {
+                                            var IsInactive = RepoObj.InActiveModel(user.ID, role);
+                                            return RedirectToAction("UserEdit", new { UserID = user.ID });
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    TempData["ErrorMsg"] = "Error occured on updating Account!";
+                                    return RedirectToAction("UserEdit", new { UserID = user.ID });
+                                }
+                            }
+                            else
+                            {
+                                TempData["ErrorMsg"] = "Image size is very large";
+                                return RedirectToAction("UserEdit", new { UserID = user.ID });
+                            }
+                        }
+                        else
+                        {
+                            TempData["ErrorMsg"] = "Image is not in correct format kindly choose jpg/jpeg/png files";
+                            return RedirectToAction("UserEdit", new { UserID = user.ID });
+                        }
+                    }
+                    else
+                    {
+                        user.Image = Session["CurrentUserAvatar"].ToString();
+                        user.ID = (int)Session["UserEditID"];
+                        var role = RepoObj.GetUserRole(user.SignUpUpdateEmail).Role;
+                        user.tblRoleName = role;
+                        user.Email = user.SignUpUpdateEmail;
+                        user.UpdatedBy = (int)Session["Id"];
+                        var IsUpdated = RepoObj.UpdateUser(user, role);
+                        Session["Name"] = Regex.Replace(user.Name.ToUpper().Split()[0], @"[^0-9a-zA-Z\ ]+", "");
+                        if (IsUpdated)
+                        {
+                            TempData["SuccessMsg"] = "Account Updated Successfully!";
+                            Session["UserEditEmail"] = null;
+                            if (user.Active == "1")
+                            {
+                                return RedirectToAction("UserEdit", new { UserID = user.ID });
+                            }
+                            else
+                            {
+                                var IsInactive = RepoObj.InActiveModel(user.ID, role);
+                                return RedirectToAction("UserEdit", new { UserID = user.ID });
+                            }
+                        }
+                        else
+                        {
+                            TempData["ErrorMsg"] = "Error occured on updating Account!";
+                            return RedirectToAction("UserEdit", new { UserID = user.ID });
+                        }
+                    }
+                    return RedirectToAction("UserEdit", new { UserID = user.ID });
+                }
+                else
+                {
+                    var err = (int)HttpStatusCode.BadRequest;
+                    return Json(new { error = err + " Bad Request Error " + "Invalid Request!!" });
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMsg"] = "Error occured on updating Account!" + ex.Message;
+                return RedirectToAction("UserEdit", new { UserID = user.ID });
+            }
+        }
+
+        [AcceptVerbs(HttpVerbs.Post)]
+        [Authorize(Roles = "Admin,Union")]
+        public JsonResult UserInActive(int ID)
+        {
+            if (ID > 0)
+            {
+                var role = "User";
+                var IsInactive = RepoObj.InActiveModel(ID, role);
+                if (IsInactive)
+                {
+                    TempData["SuccessMsg"] = "Account Deactivated Successfully!";
+                    return Json("True",JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    TempData["SuccessMsg"] = "Error Occured On Account Deactivation!";
+                    return Json("False", JsonRequestBehavior.AllowGet);
+                }
+            }
+            else
+            {
+                TempData["SuccessMsg"] = "Error Occured On Account Deactivation!";
+                return Json("False", JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        #endregion        
+        
+        #region **Manage Showroom**
+
+        [AcceptVerbs(HttpVerbs.Get)]
+        [Authorize(Roles = "Admin,Union")]
+        public ActionResult AddShowroom()
+        {
+            Session["ImageAvatar"] = "~/Images/user.png";
+            Session["UnionShowroomSignUp"] = "1";
+            return View();
+        }
+
+        [AcceptVerbs(HttpVerbs.Get)]
+        [Authorize(Roles = "Admin,Union")]
+        public ActionResult ListOfShowroom()
+        {
+            var reas = RepoObj.GetAllShowRoom();
+            return View(reas);
+        }
+
+        [AcceptVerbs(HttpVerbs.Get)]
+        [Authorize(Roles = "Admin,Union")]
+        public ActionResult ShowroomEdit(int UserID)
+        {
+            ViewBag.UserStatus = RepoObj1.UserStatus();
+            var id = UserID;
+            var Role = RepoObj.GetAllUsers().Where(x => x.ID == UserID).FirstOrDefault().tblRole.Role;
+            var Email = RepoObj.GetAllUsers().Where(x => x.ID == UserID).FirstOrDefault().Email;
+            var reas = RepoObj.GetUserDetailById(id, Role);
+            Session["CurrentUserAvatar"] = reas.Image;
+            Session["UserEditID"] = id;
+            Session["UserEditEmail"] = Email;
+            return View(reas);
+        }
+
+        [AcceptVerbs(HttpVerbs.Post)]
+        [Authorize(Roles = "Admin,Union")]
+        public ActionResult ShowroomEdit(HttpPostedFileBase file, ValidateUser user)
+        {
+            try
+            {
+                if (User.Identity.IsAuthenticated)
+                {
+                    if (file != null)
+                    {
+                        string filename = Path.GetFileName(file.FileName);
+                        string _filename = DateTime.Now.ToString("yymmssfff") + filename;
+                        string extension = Path.GetExtension(file.FileName);
+                        string path = Path.Combine(Server.MapPath("~/Images/"), _filename);
+                        user.Image = "~/Images/" + _filename;
+                        if (extension.ToLower() == ".jpg" || extension.ToLower() == ".jpeg" || extension.ToLower() == ".png")
+                        {
+                            var role = RepoObj.GetUserRole(user.SignUpUpdateEmail).Role;
+                            user.tblRoleName = role;
+                            if (file.ContentLength <= 10000000)
+                            {
+                                user.ID = (int)Session["UserEditID"];
+                                user.UpdatedBy = (int)Session["Id"];
+                                user.Email = user.SignUpUpdateEmail;
+                                var IsUpdated = RepoObj.UpdateUser(user, role);
+                                string oldImgPath = Request.MapPath(Session["Image"].ToString());
+                                if (IsUpdated)
+                                {
+                                    Session["Name"] = Regex.Replace(user.Name.ToUpper().Split()[0], @"[^0-9a-zA-Z\ ]+", "");
+                                    file.SaveAs(path);
+                                    if (System.IO.File.Exists(oldImgPath))
+                                    {
+                                        if (Path.GetFileNameWithoutExtension(oldImgPath) == "user")
+                                        {
+                                        }
+                                        else
+                                        {
+                                            System.IO.File.Delete(oldImgPath);
+                                        }
+                                        Session["CurrentUserAvatar"] = user.Image;
+                                        TempData["SuccessMsg"] = "Account Updated Successfully!";
+                                        Session["UserEditEmail"] = null;
+                                        if (user.Active == "1")
+                                        {
+                                            return RedirectToAction("UserEdit", new { UserID = user.ID });
+                                        }
+                                        else
+                                        {
+                                            var IsInactive = RepoObj.InActiveModel(user.ID, role);
+                                            return RedirectToAction("UserEdit", new { UserID = user.ID });
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    TempData["ErrorMsg"] = "Error occured on updating Account!";
+                                    return RedirectToAction("UserEdit", new { UserID = user.ID });
+                                }
+                            }
+                            else
+                            {
+                                TempData["ErrorMsg"] = "Image size is very large";
+                                return RedirectToAction("UserEdit", new { UserID = user.ID });
+                            }
+                        }
+                        else
+                        {
+                            TempData["ErrorMsg"] = "Image size is not in correct format kindly choose jpg/jpeg/png files";
+                            return RedirectToAction("UserEdit", new { UserID = user.ID });
+                        }
+                    }
+                    else
+                    {
+                        user.Image = Session["CurrentUserAvatar"].ToString();
+                        user.ID = (int)Session["UserEditID"];
+                        var role = RepoObj.GetUserRole(user.SignUpUpdateEmail).Role;
+                        user.tblRoleName = role;
+                        user.Email = user.SignUpUpdateEmail;
+                        user.UpdatedBy = (int)Session["Id"];
+                        var IsUpdated = RepoObj.UpdateUser(user, role);
+                        Session["Name"] = Regex.Replace(user.Name.ToUpper().Split()[0], @"[^0-9a-zA-Z\ ]+", "");
+                        if (IsUpdated)
+                        {
+                            TempData["SuccessMsg"] = "Account Updated Successfully!";
+                            Session["UserEditEmail"] = null;
+                            if (user.Active == "1")
+                            {
+                                return RedirectToAction("UserEdit", new { UserID = user.ID });
+                            }
+                            else
+                            {
+                                var IsInactive = RepoObj.InActiveModel(user.ID, role);
+                                return RedirectToAction("UserEdit", new { UserID = user.ID });
+                            }
+                        }
+                        else
+                        {
+                            TempData["ErrorMsg"] = "Error occured on updating Account!";
+                            return RedirectToAction("UserEdit", new { UserID = user.ID });
+                        }
+                    }
+                    return RedirectToAction("UserEdit", new { UserID = user.ID });
+                }
+                else
+                {
+                    var err = (int)HttpStatusCode.BadRequest;
+                    return Json(new { error = err + " Bad Request Error " + "Invalid Request!!" });
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMsg"] = "Error occured on updating Account!" + ex.Message;
+                return RedirectToAction("UserEdit", new { UserID = user.ID });
+            }
+        }
+
+        [AcceptVerbs(HttpVerbs.Post)]
+        [Authorize(Roles = "Admin,Union")]
+        public JsonResult ShowroomInActive(int ID)
+        {
+            if (ID > 0)
+            {
+                var role = "User";
+                var IsInactive = RepoObj.InActiveModel(ID, role);
+                if (IsInactive)
+                {
+                    TempData["SuccessMsg"] = "Account Deactivated Successfully!";
+                    return Json("True",JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    TempData["SuccessMsg"] = "Error Occured On Account Deactivation!";
+                    return Json("False", JsonRequestBehavior.AllowGet);
+                }
+            }
+            else
+            {
+                TempData["SuccessMsg"] = "Error Occured On Account Deactivation!";
+                return Json("False", JsonRequestBehavior.AllowGet);
+            }
         }
 
         #endregion

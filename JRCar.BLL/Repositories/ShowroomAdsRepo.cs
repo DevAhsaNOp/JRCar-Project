@@ -618,6 +618,17 @@ namespace JRCar.BLL.Repositories
             return condition;
         }
         
+        public List<SelectListItem> UserStatus()
+        {
+            var condition = new List<SelectListItem>
+            {
+                new SelectListItem() { Text = "---Select Status---", Value = "2", Disabled = true, Selected = true },
+                new SelectListItem() { Text = "Active", Value = "1" },
+                new SelectListItem() { Text = "Deactivate", Value = "0" }
+            };
+            return condition;
+        }
+        
         public List<SelectListItem> Transmissions()
         {
             var Transmission = new List<SelectListItem>

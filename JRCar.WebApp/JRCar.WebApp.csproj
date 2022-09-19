@@ -3592,6 +3592,10 @@
     <Content Include="Views\Shared\_LoadShortlist.cshtml" />
     <Content Include="Views\Portal\ShowroomReport.cshtml" />
     <Content Include="Views\Portal\AddUser.cshtml" />
+    <Content Include="Views\Portal\ListOfUser.cshtml" />
+    <Content Include="Views\Portal\UserEdit.cshtml" />
+    <Content Include="Views\Portal\AddShowroom.cshtml" />
+    <Content Include="Views\Portal\ListOfShowroom.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

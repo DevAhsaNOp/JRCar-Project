@@ -5,6 +5,7 @@ using JRCar.DAL.UserDefine;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -18,9 +19,43 @@ namespace JRCar.BLL.Repositories
         {
             dbObj = new UserDb();
         }
-        public void InActiveModel(tblUser model)
+        public bool InActiveModel(int UserID, string Role)
         {
-            dbObj.InActiveUser(model);
+            if (UserID > 0 && Role != null)
+            {
+                var AdminData = dbObj.GetAllAdmin().Where(x => x.ID == UserID && x.tblRole.Role.ToLower().Contains(Role.ToLower())).FirstOrDefault();
+                var ShowroomData = dbObj.GetAllShowRoom().Where(x => x.ID == UserID && x.tblRole.Role.ToLower().Contains(Role.ToLower())).FirstOrDefault();
+                var UnionData = dbObj.GetAllUnion().Where(x => x.ID == UserID && x.tblRole.Role.ToLower().Contains(Role.ToLower())).FirstOrDefault();
+                var UserData = dbObj.GetAllUsers().Where(x => x.ID == UserID && x.tblRole.Role.ToLower().Contains(Role.ToLower())).FirstOrDefault();
+                if (AdminData != null)
+                {
+                    dbObj.InActiveAdmin(AdminData);
+                    return true;
+                }
+                else if (ShowroomData != null)
+                {
+                    dbObj.InActiveShowroom(ShowroomData);
+                    return true;
+                }
+                else if (UnionData != null)
+                {
+                    dbObj.InActiveUnion(UnionData);
+                    return true;
+                }
+                else if (UserData != null)
+                {
+                    dbObj.InActiveUser(UserData);
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
         }
 
         public bool IsEmailExist(string Email) 
@@ -234,7 +269,8 @@ namespace JRCar.BLL.Repositories
                     Image = model.Image,
                     RoleId = 3,
                     AddressId = model.AddressId,
-                    UnionId = model.UnionId
+                    UnionId = model.UnionId,
+                    CreatedBy = model.CreatedBy,
                 };
                 dbObj.InsertShowroom(obj);
             }

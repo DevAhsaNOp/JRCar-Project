@@ -277,7 +277,8 @@ namespace JRCar.DAL.DBLayer
                 Number = s.Number,
                 Image = s.Image,
                 Password = s.Password,
-                tblRoleID = s.tblRoleID
+                tblRoleID = s.tblRoleID,
+                Active = ((s.Active== true)? "1" : "0"),
             }).FirstOrDefault();
 
             var admin = _context.tblAdmins.Where(x => x.ID == Id && x.tblRole.Role.ToLower().Contains(Role.ToLower())).Select(s => new ValidateUser()
@@ -291,6 +292,7 @@ namespace JRCar.DAL.DBLayer
                 Number = s.Number,
                 Image = s.Image,
                 Password = s.Password,
+                Active = ((s.Active == true) ? "1" : "0"),
                 tblRoleID = s.tblRoleID
             }).FirstOrDefault();
 
@@ -305,6 +307,7 @@ namespace JRCar.DAL.DBLayer
                 Number = s.Number,
                 Image = s.Image,
                 Password = s.Password,
+                Active = ((s.Active == true) ? "1" : "0"),
                 tblRoleID = s.tblRoleID
             }).FirstOrDefault();
             
@@ -322,7 +325,8 @@ namespace JRCar.DAL.DBLayer
                 CNIC = s.CNIC,
                 tblRoleID = s.RoleId,
                 ShowroomDescription = s.Description,
-                ShowroomURL = s.ShowroomURL
+                ShowroomURL = s.ShowroomURL,
+                Active = ((s.Isactive == true) ? "1" : "0"),
             }).FirstOrDefault();
 
             if (user != null)
@@ -412,7 +416,6 @@ namespace JRCar.DAL.DBLayer
                 model.ShowroomURL = ShowroomURLGenerate(model.FullName, zone, city);
                 model.Isactive = true;
                 model.Isarchive = false;
-                model.CreatedBy = 3;
                 model.CreatedOn = DateTime.Now;
                 model.UpdatedBy = null;
                 model.UpdatedOn = null;
@@ -562,8 +565,8 @@ namespace JRCar.DAL.DBLayer
         {
             try
             {
-                model.Isactive = true;
-                model.Isarchive = false;
+                model.Isactive = false;
+                model.Isarchive = true;
                 model.CreatedOn = GetShowRoomByID(model.ID).CreatedOn;
                 model.CreatedBy = GetShowRoomByID(model.ID).CreatedBy;
                 model.UpdatedOn = DateTime.Now;

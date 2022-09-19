@@ -7,6 +7,7 @@ using System.Web.Security;
 using JRCar.BLL.Repositories;
 using JRCar.BOL.Validation_Classes;
 using System.Text.RegularExpressions;
+using System.Linq;
 
 namespace JRCar.WebApp.Controllers
 {
@@ -25,11 +26,15 @@ namespace JRCar.WebApp.Controllers
         {
             return Json(!RepoObj.IsEmailExist(SignUpEmail), JsonRequestBehavior.AllowGet);
         }
-        
-        public JsonResult IsUpdateEmailExist(string SignUpEmail)
+
+        public JsonResult IsUpdateEmailExist(string SignUpUpdateEmail)
         {
-            var UserCurrentEmail = Session["Email"].ToString();
-            return Json(!RepoObj.IsUpdateEmailExist(SignUpEmail, UserCurrentEmail), JsonRequestBehavior.AllowGet);
+            string UserCurrentEmail;
+            if (Session["UserEditEmail"] != null)
+                UserCurrentEmail = Session["UserEditEmail"].ToString();
+            else
+                UserCurrentEmail = Session["Email"].ToString();
+            return Json(!RepoObj.IsUpdateEmailExist(SignUpUpdateEmail, UserCurrentEmail), JsonRequestBehavior.AllowGet);
         }
 
         [AcceptVerbs(HttpVerbs.Get)]
@@ -72,10 +77,12 @@ namespace JRCar.WebApp.Controllers
                     {
                         if (Session["UnionUserSignUp"].ToString() == "1")
                         {
+                            Session["UnionUserSignUp"] = null;
                             return RedirectToAction("AddUser", "Portal");
                         }
                         else
                         {
+                            Session["UnionUserSignUp"] = null;
                             TempData["ErrorMsg"] = "Error occured on creating Account!";
                             return RedirectToAction("AddUser", "Portal");
                         }
@@ -106,10 +113,12 @@ namespace JRCar.WebApp.Controllers
                             {
                                 if (Session["UnionUserSignUp"].ToString() == "1")
                                 {
+                                    Session["UnionUserSignUp"] = null;
                                     return RedirectToAction("AddUser", "Portal");
                                 }
                                 else
                                 {
+                                    Session["UnionUserSignUp"] = null;
                                     TempData["ErrorMsg"] = "Error occured on creating Account!";
                                     return RedirectToAction("AddUser", "Portal");
                                 }
@@ -125,11 +134,13 @@ namespace JRCar.WebApp.Controllers
                             {
                                 if (Session["UnionUserSignUp"].ToString() == "1")
                                 {
+                                    Session["UnionUserSignUp"] = null;
                                     TempData["ErrorMsg"] = "Image size is very large";
                                     return RedirectToAction("AddUser", "Portal");
                                 }
                                 else
                                 {
+                                    Session["UnionUserSignUp"] = null;
                                     TempData["ErrorMsg"] = "Image size is very large";
                                     return RedirectToAction("AddUser", "Portal");
                                 }
@@ -147,17 +158,20 @@ namespace JRCar.WebApp.Controllers
                         {
                             if (Session["UnionUserSignUp"].ToString() == "1")
                             {
-                                TempData["ErrorMsg"] = "Error occured on creating Account!";
+                                Session["UnionUserSignUp"] = null;
+                                TempData["ErrorMsg"] = "Image is not in correct format kindly choose jpg/jpeg/png files!";
                                 return RedirectToAction("AddUser", "Portal");
                             }
                             else
                             {
-                                TempData["ErrorMsg"] = "Error occured on creating Account!";
+                                Session["UnionUserSignUp"] = null;
+                                TempData["ErrorMsg"] = "Image is not in correct format kindly choose jpg/jpeg/png files!";
                                 return RedirectToAction("AddUser", "Portal");
                             }
                         }
                         else
                         {
+                            TempData["ErrorMsg"] = "Image is not in correct format kindly choose jpg/jpeg/png files!";
                             return RedirectToAction("SignUp");
                         }
                     }
@@ -185,37 +199,134 @@ namespace JRCar.WebApp.Controllers
         {
             try
             {
-                string filename = Path.GetFileName(file.FileName);
-                string _filename = DateTime.Now.ToString("yymmssfff") + filename;
-                string extension = Path.GetExtension(file.FileName);
-                string path = Path.Combine(Server.MapPath("~/Images/"), _filename);
-                user.Image = "~/Images/" + _filename;
-
-                if (extension.ToLower() == ".jpg" || extension.ToLower() == ".jpeg" || extension.ToLower() == ".png")
+                if (file == null)
                 {
-                    if (file.ContentLength <= 10000000)
+                    user.Image = Session["ImageAvatar"].ToString();
+                    user.Email = user.SignUpEmail;
+                    /*These are hard coded values change it when project scope is changes to multiple Union*/
+                    user.UnionId = 1;
+                    user.AddressId = 2009;
+                    var area = AddressRepoObj.GetZoneLatLong(284);
+                    user.Latitude = area.Item1.ToString();
+                    user.Longitude = area.Item2.ToString();
+                    /*-------------------------------------THE-----END-------------------------------------*/
+                    var ShowroomMaxId = RepoObj.GetAllShowRoom().OrderByDescending(u => u.ID).FirstOrDefault().ID;
+                    user.CreatedBy = ((Convert.ToInt32(Session["Id"]) == 0) ? ShowroomMaxId + 1 : Convert.ToInt32(Session["Id"]));
+                    RepoObj.InsertShowroom(user);
+                    TempData["SuccessMsg"] = "Account Created Successfully!";
+                    ModelState.Clear();
+                    if (Session["UnionShowroomSignUp"] != null)
                     {
-                        user.Email = user.SignUpEmail;
-                        /*These are hard coded values change it when project scope is changes to multiple Union*/
-                        user.UnionId = 1;
-                        user.AddressId = 2009;
-                        var area = AddressRepoObj.GetZoneLatLong(284);
-                        user.Latitude = area.Item1.ToString();
-                        user.Longitude = area.Item2.ToString();
-                        /*-------------------------------------THE-----END-------------------------------------*/
-                        RepoObj.InsertShowroom(user);
-                        file.SaveAs(path);
-                        TempData["SuccessMsg"] = "Account Created Successfully!";
-                        ModelState.Clear();
-                        return RedirectToAction("SignIn");
+                        if (Session["UnionShowroomSignUp"].ToString() == "1")
+                        {
+                            Session["UnionShowroomSignUp"] = null;
+                            return RedirectToAction("AddShowroom", "Portal");
+                        }
+                        else
+                        {
+                            Session["UnionShowroomSignUp"] = null;
+                            TempData["ErrorMsg"] = "Error occured on creating Account!";
+                            return RedirectToAction("AddShowroom", "Portal");
+                        }
                     }
                     else
                     {
-                        TempData["ErrorMsg"] = "Image size is very large";
-                        return RedirectToAction("ShowroomSignUp");
+                        return RedirectToAction("SignIn");
                     }
                 }
-                return View();
+                else
+                {
+                    string filename = Path.GetFileName(file.FileName);
+                    string _filename = DateTime.Now.ToString("yymmssfff") + filename;
+                    string extension = Path.GetExtension(file.FileName);
+                    string path = Path.Combine(Server.MapPath("~/Images/"), _filename);
+                    user.Image = "~/Images/" + _filename;
+
+                    if (extension.ToLower() == ".jpg" || extension.ToLower() == ".jpeg" || extension.ToLower() == ".png")
+                    {
+                        if (file.ContentLength <= 10000000)
+                        {
+                            user.Email = user.SignUpEmail;
+                            /*These are hard coded values change it when project scope is changes to multiple Union*/
+                            user.UnionId = 1;
+                            user.AddressId = 2009;
+                            var area = AddressRepoObj.GetZoneLatLong(284);
+                            user.Latitude = area.Item1.ToString();
+                            user.Longitude = area.Item2.ToString();
+                            /*-------------------------------------THE-----END-------------------------------------*/
+                            var ShowroomMaxId = RepoObj.GetAllShowRoom().OrderByDescending(u => u.ID).FirstOrDefault().ID;
+                            user.CreatedBy = ((Convert.ToInt32(Session["Id"]) == 0) ? ShowroomMaxId + 1 : Convert.ToInt32(Session["Id"]));
+                            RepoObj.InsertShowroom(user);
+                            file.SaveAs(path);
+                            TempData["SuccessMsg"] = "Account Created Successfully!";
+                            ModelState.Clear();
+                            if (Session["UnionShowroomSignUp"] != null)
+                            {
+                                if (Session["UnionShowroomSignUp"].ToString() == "1")
+                                {
+                                    Session["UnionShowroomSignUp"] = null;
+                                    return RedirectToAction("AddShowroom", "Portal");
+                                }
+                                else
+                                {
+                                    Session["UnionShowroomSignUp"] = null;
+                                    TempData["ErrorMsg"] = "Error occured on creating Account!";
+                                    return RedirectToAction("AddShowroom", "Portal");
+                                }
+                            }
+                            else
+                            {
+                                return RedirectToAction("SignIn");
+                            }
+                        }
+                        else
+                        {
+                            if (Session["UnionShowroomSignUp"] != null)
+                            {
+                                if (Session["UnionShowroomSignUp"].ToString() == "1")
+                                {
+                                    Session["UnionShowroomSignUp"] = null;
+                                    TempData["ErrorMsg"] = "Image size is very large";
+                                    return RedirectToAction("AddShowroom", "Portal");
+                                }
+                                else
+                                {
+                                    Session["UnionShowroomSignUp"] = null;
+                                    TempData["ErrorMsg"] = "Image size is very large";
+                                    return RedirectToAction("AddShowroom", "Portal");
+                                }
+                            }
+                            else
+                            {
+                                TempData["ErrorMsg"] = "Image size is very large";
+                                return RedirectToAction("ShowroomSignUp");
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (Session["UnionShowroomSignUp"] != null)
+                        {
+                            if (Session["UnionShowroomSignUp"].ToString() == "1")
+                            {
+                                Session["UnionShowroomSignUp"] = null;
+                                TempData["ErrorMsg"] = "Image is not in correct format kindly choose jpg/jpeg/png files!";
+                                return RedirectToAction("AddShowroom", "Portal");
+                            }
+                            else
+                            {
+                                Session["UnionShowroomSignUp"] = null;
+                                TempData["ErrorMsg"] = "Image is not in correct format kindly choose jpg/jpeg/png files!";
+                                return RedirectToAction("AddShowroom", "Portal");
+                            }
+                        }
+                        else
+                        {
+                            TempData["ErrorMsg"] = "Image is not in correct format kindly choose jpg/jpeg/png files!";
+                            return RedirectToAction("ShowroomSignUp");
+                        }
+                    }
+                }
             }
             catch (Exception ex)
             {

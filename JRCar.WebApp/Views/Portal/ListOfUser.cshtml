@@ -1,0 +1,188 @@
+﻿@model IEnumerable<JRCar.BOL.tblUser>
+
+@{
+    ViewBag.Title = "List Of Users";
+    Layout = "~/Views/Shared/_StarterPortal.cshtml";
+}
+<style>
+    .table-bordered td, .table-bordered th, .table-bordered {
+        border: none !important;
+    }
+
+    .table td, .table th {
+        padding: 0.75rem;
+        vertical-align: baseline;
+    }
+
+    #StatusA .badge {
+        padding: 0.25em 1.8em !important;
+        font-size: 14px !important;
+    }
+
+    .btnAction {
+        border: none !important;
+        font-size: 18px !important;
+    }
+
+    .btnEdit {
+        background: #f79c2b;
+        color: white;
+        box-shadow: 0px 2px 7px 2px #f79c2b42;
+        border-radius: 5px;
+        margin-right: 5px !important;
+    }
+
+    .btnView {
+        background: #2bacf7;
+        color: white;
+        box-shadow: 0px 2px 7px 2px #92d4fb;
+        border-radius: 5px;
+        margin-right: 5px !important;
+    }
+
+    .btnDel {
+        color: #f9f9f9;
+        background: #f91e33;
+        box-shadow: 0px 2px 7px 2px #f91e335c;
+        border-radius: 5px;
+    }
+</style>
+
+@if (User.Identity.IsAuthenticated)
+{
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>List Of Users</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">List Of Users</li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-lg-12">
+                    @if (TempData["SuccessMsg"] != null)
+                    {
+                        <div class="alert alert-info alert-dismissable">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                            <i class="icon-info-with-circle"></i><span>@Html.Raw(TempData["SuccessMsg"])</span>
+                        </div>
+                    }
+                    @if (TempData["ErrorMsg"] != null)
+                    {
+                        <div class="alert alert-danger alert-dismissable">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                            <i class="icon-blocked"></i><span>@Html.Raw(TempData["ErrorMsg"])</span>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">DataTable with default features</h3>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <table id="example3" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>User Image</th>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Number</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        @*<tr onclick="window.location = '@Url.RouteUrl("Product", new { SeName = @product.SeName })';">*@
+                                        <tr>
+                                            <td>
+                                                @if (item.Image != null)
+                                                {
+                                                    <img src="@Url.Content(item.Image)" alt="User Image" style=" height:60px !important; width:80px !important;" />
+                                                }
+                                            </td>
+                                            <td>
+                                                @item.Name
+                                            </td>
+                                            <td>
+                                                @item.Email
+                                            </td>
+                                            <td>
+                                                @item.Number
+                                            </td>
+                                            <td id="StatusA">
+                                                @if (item.Active)
+                                                {
+                                                    <span class="badge badge-success"> Active </span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge badge-danger"> In active </span>
+                                                }
+                                            </td>
+                                            <td>
+                                                <a href="@Url.Action("UserEdit",new { UserID = item.ID })">
+                                                    <button class="btnAction btnEdit">
+                                                        <i class="far fa-edit"></i>
+                                                    </button>
+                                                </a>
+                                                <button class="btnAction btnDel" onclick="RemoveAd(@item.ID)">
+                                                    <i class="fas fa-trash-alt"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+    <script>
+        document.getElementById('UsersNav').classList.add('active')
+        document.getElementById('UserManagePage').classList.add('active')
+
+        function RemoveAd(Adid) {
+            if (Adid > 0) {
+                if (confirm("Are you sure to delete your Ad?")) {
+                    $.ajax({
+                        type: "POST",
+                        url: "@Url.Action("UserInActive", "Portal")",
+                        data: JSON.stringify({ ID: Adid }),
+                        contentType: "application/json; charset=utf-8",
+                        success: function (response) {
+                            window.location.href = "@Url.Action("ListOfUser", "Portal")";
+                        }
+                    });
+                }
+            }
+            else {
+                alert('Something went wrong please try again later!');
+            }
+        }
+    </script>
+}

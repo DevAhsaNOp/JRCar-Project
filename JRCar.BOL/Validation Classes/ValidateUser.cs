@@ -58,7 +58,10 @@ namespace JRCar.BOL.Validation_Classes
         [Display(Name = "Showroom Description")]
         public string ShowroomDescription { get; set; }
 
-        public bool Active { get; set; }
+        [Required(ErrorMessage = "*")]
+        [Display(Name = "User Status")]
+        [Range(0, 1, ErrorMessage = "Must select a Status")]
+        public string Active { get; set; }
         public int CreatedBy { get; set; }
         public System.DateTime CreatedOn { get; set; }
         public Nullable<System.DateTime> UpdatedOn { get; set; }
