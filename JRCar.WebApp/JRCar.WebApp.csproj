@@ -3563,7 +3563,6 @@
     <Content Include="Views\Shared\_FooterPortal.cshtml" />
     <Content Include="Views\Shared\_SidebarPortal.cshtml" />
     <Content Include="Views\Shared\_HeaderPortal.cshtml" />
-    <Content Include="Views\Portal\UpdateProfile.cshtml" />
     <Content Include="Views\Website\PostNewVehicles.cshtml" />
     <Content Include="Views\Website\ProfileSettings.cshtml" />
     <Content Include="Views\Shared\DisplayCity.cshtml" />
@@ -3578,11 +3577,7 @@
     <Content Include="Views\Shared\DisplayModels.cshtml" />
     <Content Include="Views\Shared\DisplaySubCategory.cshtml" />
     <Content Include="Views\Account\ShowroomSignUp.cshtml" />
-    <Content Include="Views\Portal\PostNewAd.cshtml" />
     <Content Include="Views\Website\EditVehicle.cshtml" />
-    <Content Include="Views\Portal\EditAd.cshtml" />
-    <Content Include="Views\Portal\MyAds.cshtml" />
-    <Content Include="Views\Portal\CarAds.cshtml" />
     <Content Include="Views\Shared\DisplayModelsCheckBox.cshtml" />
     <Content Include="Views\Shared\TabsVehicles.cshtml" />
     <Content Include="Views\Website\ShowroomProfile.cshtml" />
@@ -3590,12 +3585,19 @@
     <Content Include="Views\Shared\_cardealers.cshtml" />
     <Content Include="Views\Website\Shortlisted.cshtml" />
     <Content Include="Views\Shared\_LoadShortlist.cshtml" />
-    <Content Include="Views\Portal\ShowroomReport.cshtml" />
-    <Content Include="Views\Portal\AddUser.cshtml" />
-    <Content Include="Views\Portal\ListOfUser.cshtml" />
-    <Content Include="Views\Portal\UserEdit.cshtml" />
     <Content Include="Views\Portal\AddShowroom.cshtml" />
+    <Content Include="Views\Portal\AddUser.cshtml" />
+    <Content Include="Views\Portal\CarAds.cshtml" />
+    <Content Include="Views\Portal\EditAd.cshtml" />
     <Content Include="Views\Portal\ListOfShowroom.cshtml" />
+    <Content Include="Views\Portal\ListOfUser.cshtml" />
+    <Content Include="Views\Portal\ListofUserAds.cshtml" />
+    <Content Include="Views\Portal\MyAds.cshtml" />
+    <Content Include="Views\Portal\PostNewAd.cshtml" />
+    <Content Include="Views\Portal\ShowroomEdit.cshtml" />
+    <Content Include="Views\Portal\ShowroomReport.cshtml" />
+    <Content Include="Views\Portal\UpdateProfile.cshtml" />
+    <Content Include="Views\Portal\UserEdit.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

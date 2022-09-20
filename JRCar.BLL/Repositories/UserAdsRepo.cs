@@ -28,6 +28,11 @@ namespace JRCar.BLL.Repositories
             return dbObj.GetAllActiveAdsFilter(searchTerm, minimumPrice, maximumPrice, sortBy, StateId, CityId, ZoneId);
         }
 
+        public IEnumerable<ValidationUserAds> GetAllAds()
+        {
+            return dbObj.GetAllAds();
+        }
+        
         public IEnumerable<ValidationUserAds> GetAllActiveAds()
         {
             return dbObj.GetAllActiveAds();

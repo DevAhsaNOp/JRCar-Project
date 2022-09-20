@@ -70,6 +70,11 @@ namespace JRCar.BOL.Validation_Classes
 
         public bool Isactive { get; set; }
 
+        [Required(ErrorMessage = "*")]
+        [Display(Name = "User Status")]
+        [Range(0, 1, ErrorMessage = "Must select a Status")]
+        public string Active { get; set; }
+
         public bool Isarchive { get; set; }
 
         public int CreatedBy { get; set; }

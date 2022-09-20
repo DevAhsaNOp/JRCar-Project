@@ -19,18 +19,22 @@ using ClosedXML.Excel;
 using System.Text.RegularExpressions;
 using Microsoft.ReportingServices.ReportProcessing.ReportObjectModel;
 using System.Web.Helpers;
+using DocumentFormat.OpenXml.Office2010.Excel;
+using DocumentFormat.OpenXml.Spreadsheet;
 
 namespace JRCar.WebApp.Controllers
 {
     public class PortalController : Controller
     {
         private UserRepo RepoObj;
+        private UserAdsRepo userAdsRepo;
         private ShowroomAdsRepo RepoObj1;
         private AddressAutofillRepo AddressRepoObj;
 
         public PortalController()
         {
             RepoObj = new UserRepo();
+            userAdsRepo = new UserAdsRepo();
             RepoObj1 = new ShowroomAdsRepo();
             AddressRepoObj = new AddressAutofillRepo();
         }
@@ -749,6 +753,8 @@ namespace JRCar.WebApp.Controllers
                                 user.Email = user.SignUpUpdateEmail;
                                 var IsUpdated = RepoObj.UpdateUser(user, role);
                                 string oldImgPath = Request.MapPath(Session["Image"].ToString());
+                                Session["UserEditID"] = null;
+                                Session["UserEditEmail"] = null;
                                 if (IsUpdated)
                                 {
                                     Session["Name"] = Regex.Replace(user.Name.ToUpper().Split()[0], @"[^0-9a-zA-Z\ ]+", "");
@@ -764,7 +770,6 @@ namespace JRCar.WebApp.Controllers
                                         }
                                         Session["CurrentUserAvatar"] = user.Image;
                                         TempData["SuccessMsg"] = "Account Updated Successfully!";
-                                        Session["UserEditEmail"] = null;
                                         if (user.Active == "1")
                                         {
                                             return RedirectToAction("UserEdit", new { UserID = user.ID });
@@ -784,12 +789,16 @@ namespace JRCar.WebApp.Controllers
                             }
                             else
                             {
+                                Session["UserEditID"] = null;
+                                Session["UserEditEmail"] = null;
                                 TempData["ErrorMsg"] = "Image size is very large";
                                 return RedirectToAction("UserEdit", new { UserID = user.ID });
                             }
                         }
                         else
                         {
+                            Session["UserEditID"] = null;
+                            Session["UserEditEmail"] = null;
                             TempData["ErrorMsg"] = "Image is not in correct format kindly choose jpg/jpeg/png files";
                             return RedirectToAction("UserEdit", new { UserID = user.ID });
                         }
@@ -804,10 +813,11 @@ namespace JRCar.WebApp.Controllers
                         user.UpdatedBy = (int)Session["Id"];
                         var IsUpdated = RepoObj.UpdateUser(user, role);
                         Session["Name"] = Regex.Replace(user.Name.ToUpper().Split()[0], @"[^0-9a-zA-Z\ ]+", "");
+                        Session["UserEditID"] = null;
+                        Session["UserEditEmail"] = null;
                         if (IsUpdated)
                         {
                             TempData["SuccessMsg"] = "Account Updated Successfully!";
-                            Session["UserEditEmail"] = null;
                             if (user.Active == "1")
                             {
                                 return RedirectToAction("UserEdit", new { UserID = user.ID });
@@ -828,12 +838,16 @@ namespace JRCar.WebApp.Controllers
                 }
                 else
                 {
+                    Session["UserEditID"] = null;
+                    Session["UserEditEmail"] = null;
                     var err = (int)HttpStatusCode.BadRequest;
                     return Json(new { error = err + " Bad Request Error " + "Invalid Request!!" });
                 }
             }
             catch (Exception ex)
             {
+                Session["UserEditID"] = null;
+                Session["UserEditEmail"] = null;
                 TempData["ErrorMsg"] = "Error occured on updating Account!" + ex.Message;
                 return RedirectToAction("UserEdit", new { UserID = user.ID });
             }
@@ -841,7 +855,7 @@ namespace JRCar.WebApp.Controllers
 
         [AcceptVerbs(HttpVerbs.Post)]
         [Authorize(Roles = "Admin,Union")]
-        public JsonResult UserInActive(int ID)
+        public ActionResult UserInActive(int ID)
         {
             if (ID > 0)
             {
@@ -850,7 +864,7 @@ namespace JRCar.WebApp.Controllers
                 if (IsInactive)
                 {
                     TempData["SuccessMsg"] = "Account Deactivated Successfully!";
-                    return Json("True",JsonRequestBehavior.AllowGet);
+                    return Json("True", JsonRequestBehavior.AllowGet);
                 }
                 else
                 {
@@ -892,8 +906,8 @@ namespace JRCar.WebApp.Controllers
         {
             ViewBag.UserStatus = RepoObj1.UserStatus();
             var id = UserID;
-            var Role = RepoObj.GetAllUsers().Where(x => x.ID == UserID).FirstOrDefault().tblRole.Role;
-            var Email = RepoObj.GetAllUsers().Where(x => x.ID == UserID).FirstOrDefault().Email;
+            var Role = RepoObj.GetAllShowRoom().Where(x => x.ID == UserID).FirstOrDefault().tblRole.Role;
+            var Email = RepoObj.GetAllShowRoom().Where(x => x.ID == UserID).FirstOrDefault().Email;
             var reas = RepoObj.GetUserDetailById(id, Role);
             Session["CurrentUserAvatar"] = reas.Image;
             Session["UserEditID"] = id;
@@ -927,6 +941,8 @@ namespace JRCar.WebApp.Controllers
                                 user.Email = user.SignUpUpdateEmail;
                                 var IsUpdated = RepoObj.UpdateUser(user, role);
                                 string oldImgPath = Request.MapPath(Session["Image"].ToString());
+                                Session["UserEditID"] = null;
+                                Session["UserEditEmail"] = null;
                                 if (IsUpdated)
                                 {
                                     Session["Name"] = Regex.Replace(user.Name.ToUpper().Split()[0], @"[^0-9a-zA-Z\ ]+", "");
@@ -942,34 +958,37 @@ namespace JRCar.WebApp.Controllers
                                         }
                                         Session["CurrentUserAvatar"] = user.Image;
                                         TempData["SuccessMsg"] = "Account Updated Successfully!";
-                                        Session["UserEditEmail"] = null;
                                         if (user.Active == "1")
                                         {
-                                            return RedirectToAction("UserEdit", new { UserID = user.ID });
+                                            return RedirectToAction("ShowroomEdit", new { UserID = user.ID });
                                         }
                                         else
                                         {
                                             var IsInactive = RepoObj.InActiveModel(user.ID, role);
-                                            return RedirectToAction("UserEdit", new { UserID = user.ID });
+                                            return RedirectToAction("ShowroomEdit", new { UserID = user.ID });
                                         }
                                     }
                                 }
                                 else
                                 {
                                     TempData["ErrorMsg"] = "Error occured on updating Account!";
-                                    return RedirectToAction("UserEdit", new { UserID = user.ID });
+                                    return RedirectToAction("ShowroomEdit", new { UserID = user.ID });
                                 }
                             }
                             else
                             {
+                                Session["UserEditID"] = null;
+                                Session["UserEditEmail"] = null;
                                 TempData["ErrorMsg"] = "Image size is very large";
-                                return RedirectToAction("UserEdit", new { UserID = user.ID });
+                                return RedirectToAction("ShowroomEdit", new { UserID = user.ID });
                             }
                         }
                         else
                         {
+                            Session["UserEditID"] = null;
+                            Session["UserEditEmail"] = null;
                             TempData["ErrorMsg"] = "Image size is not in correct format kindly choose jpg/jpeg/png files";
-                            return RedirectToAction("UserEdit", new { UserID = user.ID });
+                            return RedirectToAction("ShowroomEdit", new { UserID = user.ID });
                         }
                     }
                     else
@@ -982,53 +1001,59 @@ namespace JRCar.WebApp.Controllers
                         user.UpdatedBy = (int)Session["Id"];
                         var IsUpdated = RepoObj.UpdateUser(user, role);
                         Session["Name"] = Regex.Replace(user.Name.ToUpper().Split()[0], @"[^0-9a-zA-Z\ ]+", "");
+                        Session["UserEditID"] = null;
+                        Session["UserEditEmail"] = null;
                         if (IsUpdated)
                         {
                             TempData["SuccessMsg"] = "Account Updated Successfully!";
-                            Session["UserEditEmail"] = null;
                             if (user.Active == "1")
                             {
-                                return RedirectToAction("UserEdit", new { UserID = user.ID });
+                                return RedirectToAction("ShowroomEdit", new { UserID = user.ID });
                             }
                             else
                             {
                                 var IsInactive = RepoObj.InActiveModel(user.ID, role);
-                                return RedirectToAction("UserEdit", new { UserID = user.ID });
+                                return RedirectToAction("ShowroomEdit", new { UserID = user.ID });
                             }
                         }
                         else
                         {
                             TempData["ErrorMsg"] = "Error occured on updating Account!";
-                            return RedirectToAction("UserEdit", new { UserID = user.ID });
+                            return RedirectToAction("ShowroomEdit", new { UserID = user.ID });
                         }
                     }
-                    return RedirectToAction("UserEdit", new { UserID = user.ID });
+                    return RedirectToAction("ShowroomEdit", new { UserID = user.ID });
                 }
                 else
                 {
+                    Session["UserEditID"] = null;
+                    Session["UserEditEmail"] = null;
                     var err = (int)HttpStatusCode.BadRequest;
                     return Json(new { error = err + " Bad Request Error " + "Invalid Request!!" });
                 }
             }
             catch (Exception ex)
             {
+                Session["UserEditID"] = null;
+                Session["UserEditEmail"] = null;
                 TempData["ErrorMsg"] = "Error occured on updating Account!" + ex.Message;
-                return RedirectToAction("UserEdit", new { UserID = user.ID });
+                return RedirectToAction("ShowroomEdit", new { UserID = user.ID });
             }
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
         [Authorize(Roles = "Admin,Union")]
-        public JsonResult ShowroomInActive(int ID)
+        public ActionResult ShowroomInActive(int ID)
         {
             if (ID > 0)
             {
-                var role = "User";
+                var role = "Showroom";
                 var IsInactive = RepoObj.InActiveModel(ID, role);
                 if (IsInactive)
                 {
                     TempData["SuccessMsg"] = "Account Deactivated Successfully!";
-                    return Json("True",JsonRequestBehavior.AllowGet);
+                    return Json("True", JsonRequestBehavior.AllowGet);
+
                 }
                 else
                 {
@@ -1039,6 +1064,62 @@ namespace JRCar.WebApp.Controllers
             else
             {
                 TempData["SuccessMsg"] = "Error Occured On Account Deactivation!";
+                return Json("False", JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        #endregion
+
+        #region **Manage Ads**
+
+        public ActionResult ListofUserAds()
+        {
+            var reas = userAdsRepo.GetAllAds();
+            return View(reas);
+        }
+        
+        public ActionResult UserAdsActive(int AdID)
+        {
+            if (AdID > 0)
+            {
+                var IsInactive = userAdsRepo.ReActiveUserAds(AdID);
+                if (IsInactive)
+                {
+                    TempData["SuccessMsg"] = "Ad Activated Successfully!";
+                    return Json("True", JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    TempData["SuccessMsg"] = "Error Occured On Ad Activation!";
+                    return Json("False", JsonRequestBehavior.AllowGet);
+                }
+            }
+            else
+            {
+                TempData["SuccessMsg"] = "Error Occured On Ad Activation!";
+                return Json("False", JsonRequestBehavior.AllowGet);
+            }
+        }
+        
+        public ActionResult UserAdsInActive(int AdID)
+        {
+            if (AdID > 0)
+            {
+                var IsInactive = userAdsRepo.InActiveUserAds(AdID);
+                if (IsInactive)
+                {
+                    TempData["SuccessMsg"] = "Ad Deactivated Successfully!";
+                    return Json("True", JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    TempData["SuccessMsg"] = "Error Occured On Ad Deactivation!";
+                    return Json("False", JsonRequestBehavior.AllowGet);
+                }
+            }
+            else
+            {
+                TempData["SuccessMsg"] = "Error Occured On Ad Deactivation!";
                 return Json("False", JsonRequestBehavior.AllowGet);
             }
         }

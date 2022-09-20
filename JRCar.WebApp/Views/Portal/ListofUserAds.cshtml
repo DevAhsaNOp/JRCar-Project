@@ -1,7 +1,7 @@
-﻿@model IEnumerable<JRCar.BOL.tblUser>
+﻿@model IEnumerable<JRCar.BOL.Validation_Classes.ValidationUserAds>
 
 @{
-    ViewBag.Title = "List Of Users";
+    ViewBag.Title = "List Of User Ads";
     Layout = "~/Views/Shared/_StarterPortal.cshtml";
 }
 <style>
@@ -25,26 +25,19 @@
     }
 
     .btnEdit {
-        background: #f79c2b;
+        background: #1ee500;
         color: white;
         box-shadow: 0px 2px 7px 2px #f79c2b42;
         border-radius: 5px;
-        margin-right: 5px !important;
-    }
-
-    .btnView {
-        background: #2bacf7;
-        color: white;
-        box-shadow: 0px 2px 7px 2px #92d4fb;
-        border-radius: 5px;
-        margin-right: 5px !important;
+        padding: 0 10px;
     }
 
     .btnDel {
-        color: #f9f9f9;
         background: #f91e33;
         box-shadow: 0px 2px 7px 2px #f91e335c;
+        color: #fff;
         border-radius: 5px;
+        padding: 0 10px;
     }
 
     .LoaderCc {
@@ -57,7 +50,7 @@
         width: inherit;
     }
 </style>
-
+<script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
 @if (User.Identity.IsAuthenticated)
 {
     <!-- Content Header (Page header) -->
@@ -65,12 +58,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>List Of Users</h1>
+                    <h1>List Of User Ads</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">List Of Users</li>
+                        <li class="breadcrumb-item active">List Of User Ads</li>
                     </ol>
                 </div>
             </div>
@@ -111,10 +104,12 @@
                             <table id="example3" class="table table-bordered table-striped table-hover">
                                 <thead>
                                     <tr>
-                                        <th>User Image</th>
-                                        <th>Name</th>
-                                        <th>Email</th>
-                                        <th>Number</th>
+                                        <th>Ad Image</th>
+                                        <th>Title</th>
+                                        <th>Model</th>
+                                        <th>Year</th>
+                                        <th>Price</th>
+                                        <th>Posted On</th>
                                         <th>Status</th>
                                         <th>Actions</th>
                                     </tr>
@@ -124,22 +119,36 @@
                                     {
                                         <tr>
                                             <td>
-                                                @if (item.Image != null)
+                                                @if (item.CarImage != null)
                                                 {
-                                                    <img src="@Url.Content(item.Image)" alt="User Image" style=" height:60px !important; width:80px !important;" />
+                                                    string path = Server.MapPath("" + item.CarImage + "");
+                                                    string[] FolderName = item.CarImage.Split('/');
+                                                    string[] imageFiles = Directory.GetFiles(path);
+                                                    List<string> images = new List<string>();
+                                                    foreach (var jha in imageFiles)
+                                                    {
+                                                        images.Add(FolderName[2] + "/" + Path.GetFileName(jha));
+                                                    }
+                                                    <img src="~/uploads/@images[0]" alt="Ad Image" style=" height:60px !important; width:80px !important;" />
                                                 }
                                             </td>
                                             <td>
-                                                @item.Name
+                                                @item.Title
                                             </td>
                                             <td>
-                                                @item.Email
+                                                @item.Model
                                             </td>
                                             <td>
-                                                @item.Number
+                                                @item.Year
+                                            </td>
+                                            <td>
+                                                @item.Price
+                                            </td>
+                                            <td>
+                                                @item.CreatedOn
                                             </td>
                                             <td id="StatusA">
-                                                @if (item.Active)
+                                                @if (item.Isactive.Value)
                                                 {
                                                     <span class="badge badge-success"> Active </span>
                                                 }
@@ -149,14 +158,18 @@
                                                 }
                                             </td>
                                             <td>
-                                                <a href="@Url.Action("UserEdit",new { UserID = item.ID })">
-                                                    <button class="btnAction btnEdit">
-                                                        <i class="far fa-edit"></i>
+                                                @if (item.Isactive.Value)
+                                                {
+                                                    <button class="btnAction btnEdit" onclick="RemoveAd(@item.AdID)">
+                                                        <i class="fas fa-toggle-on"></i>
                                                     </button>
-                                                </a>
-                                                <button class="btnAction btnDel" onclick="RemoveAd(@item.ID)">
-                                                    <i class="fas fa-trash-alt"></i>
-                                                </button>
+                                                }
+                                                else
+                                                {
+                                                    <button class="btnAction btnDel" onclick="ActivateAd(@item.AdID)">
+                                                        <i class="fas fa-toggle-off"></i>
+                                                    </button>
+                                                }
                                             </td>
                                         </tr>
                                     }
@@ -169,27 +182,26 @@
             </div>
         </div>
     </section>
-    <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
     <script>
-        document.getElementById('UsersNav').classList.add('active')
-        document.getElementById('UserManagePage').classList.add('active')
+        document.getElementById('AdssNav').classList.add('active')
+        document.getElementById('MngUserAdsPage').classList.add('active')
 
         function RemoveAd(Adid) {
             if (Adid > 0) {
-                if (confirm("Are you sure to deactivate the User?")) {
+                if (confirm("Are you sure to Deactivate the Ad?")) {
                     $("#Adloader").show();
                     $(".card").css("cursor","not-allowed");
                     $(".card").css("user-select","none");
                     $.ajax({
                         type: "POST",
-                        url: "@Url.Action("UserInActive", "Portal")",
-                        data: JSON.stringify({ ID: Adid }),
+                        url: "@Url.Action("UserAdsInActive", "Portal")",
+                        data: JSON.stringify({ AdID: Adid }),
                         contentType: "application/json; charset=utf-8",
                         success: function (response) {
                             $(".card").css("cursor", "default");
                             $(".card").css("user-select", "auto");
                             $("#Adloader").hide();
-                            window.location.href = "@Url.Action("ListOfUser","Portal")";
+                            window.location.href = "@Url.Action("ListOfUserAds","Portal")";
                         }
                     });
                 }
@@ -198,5 +210,31 @@
                 alert('Something went wrong please try again later!');
             }
         }
+
+        function ActivateAd(Adid) {
+           if (Adid > 0) {
+               if (confirm("Are you sure to Activate the Ad?")) {
+                   $("#Adloader").show();
+                   $(".card").css("cursor","not-allowed");
+                   $(".card").css("user-select","none");
+                   $.ajax({
+                       type: "POST",
+                       url: "@Url.Action("UserAdsActive", "Portal")",
+                       data: JSON.stringify({ AdID: Adid }),
+                       contentType: "application/json; charset=utf-8",
+                       success: function (response) {
+                           $(".card").css("cursor", "default");
+                           $(".card").css("user-select", "auto");
+                           $("#Adloader").hide();
+                           window.location.href = "@Url.Action("ListOfUserAds","Portal")";
+                       }
+                   });
+               }
+           }
+           else {
+               alert('Something went wrong please try again later!');
+           }
+        }
+
     </script>
 }

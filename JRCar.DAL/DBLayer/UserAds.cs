@@ -97,6 +97,25 @@ namespace JRCar.DAL.DBLayer
             return reas;
         }
 
+        public IEnumerable<ValidationUserAds> GetAllAds()
+        {
+            var reas = _context.tblUserAdds.OrderBy(Ad => Ad.CreatedOn).Select(s => new ValidationUserAds()
+            {
+                AdID = s.ID,
+                Title = s.Title,
+                Price = s.Price,
+                Year = s.Year,
+                Model = s.Model,
+                Condition = s.Condition,
+                CreatedOn = s.CreatedOn,
+                City = s.tblAddress.tblCity.CityName,
+                AdURL = s.UserAdsURL,
+                Isactive = s.Isactive,
+                CarImage = s.tblUserAddImages.Select(a => a.Image).FirstOrDefault(),
+            }).ToList();
+            return reas;
+        }
+        
         public IEnumerable<ValidationUserAds> GetAllActiveAds()
         {
             var reas = _context.tblUserAdds.OrderBy(Ad => Ad.CreatedOn).Where(x => x.Isactive == true).Select(s => new ValidationUserAds()
