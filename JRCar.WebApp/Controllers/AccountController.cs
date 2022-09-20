@@ -351,7 +351,7 @@ namespace JRCar.WebApp.Controllers
             try
             {
                 var IsSuccess = RepoObj.CheckLoginDetails(user.Email, user.Password);
-                if (IsSuccess != null)
+                if (IsSuccess != null && IsSuccess.Active == true)
                 {
                     FormsAuthentication.SetAuthCookie(user.Email, false);
                     //TempData["SuccessMsg"] = "Account Login Successfully!";
@@ -374,6 +374,11 @@ namespace JRCar.WebApp.Controllers
                         TempData["ErrorMsg"] = "Error occured on login Account!";
                         return RedirectToAction("SignIn");
                     }
+                }
+                else if (IsSuccess != null && IsSuccess.Active == false)
+                {
+                    TempData["ErrorMsg"] = "<b>Your account has been Deactivated by Admin. Contact with support for further guidance!</b>";
+                    return View("SignIn");
                 }
                 else
                 {

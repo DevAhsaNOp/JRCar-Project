@@ -203,6 +203,7 @@
           <Property Name="ManufacturerCarModelID" Type="int" />
           <Property Name="CategoryId" Type="int" />
           <Property Name="SubCategoryId" Type="int" />
+          <Property Name="Issold" Type="bit" />
         </EntityType>
         <EntityType Name="tblCategory">
           <Key>
@@ -418,6 +419,7 @@
           <Property Name="Isactive" Type="bit" />
           <Property Name="Isarchive" Type="bit" />
           <Property Name="UserAdsURL" Type="nvarchar(max)" />
+          <Property Name="Issold" Type="bit" />
         </EntityType>
         <EntityType Name="tblUsers">
           <Key>
@@ -1562,6 +1564,7 @@
           <NavigationProperty Name="tblAppointments" Relationship="jrcarModel.FK_tblAppointments_tblCars" FromRole="tblCar" ToRole="tblAppointment" />
           <NavigationProperty Name="tblCarImages" Relationship="jrcarModel.FK_dbo_tblCarImages_dbo_tblCars_CarID" FromRole="tblCar" ToRole="tblCarImage" />
           <NavigationProperty Name="tblFavAdds" Relationship="jrcarModel.FK_dbo_tblFavAdds_dbo_tblCars_CarID" FromRole="tblCar" ToRole="tblFavAdd" />
+          <Property Name="Issold" Type="Boolean" />
         </EntityType>
         <EntityType Name="tblCategory">
           <Key>
@@ -1817,6 +1820,7 @@
           <NavigationProperty Name="tblUserAddImages" Relationship="jrcarModel.FK_dbo_tblUserAddImages_dbo_tblUserAdds_tblUserAddID" FromRole="tblUserAdd" ToRole="tblUserAddImage" />
           <NavigationProperty Name="tblUser" Relationship="jrcarModel.FK_dbo_tblUserAdds_dbo_tblUsers_UserID" FromRole="tblUserAdd" ToRole="tblUser" />
           <NavigationProperty Name="tblAppointments" Relationship="jrcarModel.FK_tblAppointments_tblUserAdds" FromRole="tblUserAdd" ToRole="tblAppointment" />
+          <Property Name="Issold" Type="Boolean" />
         </EntityType>
         <EntityType Name="tblUser">
           <Key>
@@ -2617,6 +2621,7 @@
           <EntitySetMapping Name="tblCars">
             <EntityTypeMapping TypeName="jrcarModel.tblCar">
               <MappingFragment StoreEntitySet="tblCars">
+                <ScalarProperty Name="Issold" ColumnName="Issold" />
                 <ScalarProperty Name="SubCategoryId" ColumnName="SubCategoryId" />
                 <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
                 <ScalarProperty Name="ManufacturerCarModelID" ColumnName="ManufacturerCarModelID" />
@@ -2847,6 +2852,7 @@
           <EntitySetMapping Name="tblUserAdds">
             <EntityTypeMapping TypeName="jrcarModel.tblUserAdd">
               <MappingFragment StoreEntitySet="tblUserAdds">
+                <ScalarProperty Name="Issold" ColumnName="Issold" />
                 <ScalarProperty Name="UserAdsURL" ColumnName="UserAdsURL" />
                 <ScalarProperty Name="Isarchive" ColumnName="Isarchive" />
                 <ScalarProperty Name="Isactive" ColumnName="Isactive" />

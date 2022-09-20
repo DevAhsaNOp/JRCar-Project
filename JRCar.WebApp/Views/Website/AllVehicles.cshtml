@@ -298,24 +298,27 @@
             </aside>
             <div class="section-content col-lg-9 col-md-9 col-sm-12 col-xs-12" id="VehicleDiv">
                 <div class="row" id="TableContainer">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <div class="cs-user-section-title">
-                            @if (TempData["SuccessMsg"] != null)
-                            {
-                                <div class="alert alert-info alert-dismissable">
-                                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                                    <i class="icon-info-with-circle"></i><span>@Html.Raw(TempData["SuccessMsg"])</span>
-                                </div>
-                            }
-                            @if (TempData["ErrorMsg"] != null)
-                            {
-                                <div class="alert alert-danger alert-dismissable">
-                                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                                    <i class="icon-blocked"></i><span>@Html.Raw(TempData["ErrorMsg"])</span>
-                                </div>
-                            }
+                    @if (TempData["ErrorMsg"] != null || TempData["SuccessMsg"] != null)
+                    {
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="cs-user-section-title">
+                                @if (TempData["SuccessMsg"] != null)
+                                {
+                                    <div class="alert alert-info alert-dismissable">
+                                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                        <i class="icon-info-with-circle"></i><span>@Html.Raw(TempData["SuccessMsg"])</span>
+                                    </div>
+                                }
+                                @if (TempData["ErrorMsg"] != null)
+                                {
+                                    <div class="alert alert-danger alert-dismissable">
+                                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                        <i class="icon-blocked"></i><span>@Html.Raw(TempData["ErrorMsg"])</span>
+                                    </div>
+                                }
+                            </div>
                         </div>
-                    </div>
+                    }
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                         <div class="auto-sort-filter">
                             <div class="auto-show-resuilt"><span>SHOWING <em>25</em> RESULTS FOR YOUR SEARCH</span></div>
@@ -337,16 +340,16 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <div class="auto-your-search">
-                            <ul class="filtration-tags">
+                    <!--<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="auto-your-search">-->
+                            @*<ul class="filtration-tags">
                                 <li><a href="#">Hybrid <i class="icon-cross2"></i></a></li>
                                 <li><a href="#">Bmw<i class="icon-cross2"></i></a></li>
                                 <li><a href="#">Compact hatchbac<i class="icon-cross2"></i></a></li>
-                            </ul>
-                            <a href="#" class="clear-tags cs-color">Clear Filters</a>
+                            </ul>*@
+                            <!--<a href="javascript:void(0)" onclick="ReloadPage()" class="clear-tags cs-color">Clear Filters</a>
                         </div>
-                    </div>
+                    </div>-->
                     <div id="divLoader" style="display:none;">
                         <img src="~/Content/Spinner-1s-200px.gif" alt="Please Wait......" width="150" height="150" />
                     </div>
@@ -445,6 +448,10 @@
         });
         return false;
     });
+
+    function ReloadPage() {
+        window.location.href = "@Url.Action("AllVehicles","Website")";
+    }
 
     function FormVAds() {
         var search = $('#searchTerm_TxtBox').val();
@@ -659,41 +666,6 @@
             }
         });
     })
-
-    //$("input[name = 'ColorRR']").change(function () {
-    //    var Color = $(this).val();
-    //    var condi = $("input[name = 'ConditionRR']:checked").val();
-    //    var SortBy = $("#SortByVehicle").find(':selected').val();
-    //    var search = $('#searchTerm_TxtBox').val();
-    //    var priceRange = $("#price").val();
-    //    var myArr = priceRange.split`,`.map(x => +x);
-    //    var minimum = myArr[0];
-    //    var maximum = myArr[1];
-    //    var startYear = $("#StartYear").find(':selected').val();
-    //    var endYear = $("#EndYear").find(':selected').val();
-    //    var makeId = $("input[name = 'MakeRR']:checked").val();
-    //    var ModelNameListVal = null;
-    //    ModelNameListVal = [];
-
-    //    $("input[name='ModelListChkBox']:checked").each(function () {
-    //        ModelNameListVal.push($(this).attr('value'));
-    //    });
-    //    var maxYear = (endYear >= startYear) ? endYear : startYear;
-    //    var miniYear = (endYear <= startYear) ? endYear : startYear;
-
-    //    $("#divLoader").show();
-    //    $.ajax({
-    //        type: "post",
-    //        url: "/Website/GetAds",
-    //        data: { searchTerm: search, MakeId: makeId, ModelId: ModelNameListVal, maximumPrice: maximum, minimumPrice: minimum, Condition: condi, sortBy: SortBy, StartYear: miniYear, EndYear: maxYear, ColorSelected: ColorNameListVal },
-    //        datatype: "json",
-    //        traditional: true,
-    //        success: function (response) {
-    //            $("#divLoader").hide();
-    //            $("#VehicleAdsLst").html(response);
-    //        }
-    //    });
-    //})
 
     $('.chkColorclass').click(function () {
         PostColor();

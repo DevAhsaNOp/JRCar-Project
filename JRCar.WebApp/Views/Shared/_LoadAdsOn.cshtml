@@ -1,7 +1,14 @@
 ﻿@using PagedList.Mvc
 @model  PagedList.IPagedList<JRCar.BOL.Validation_Classes.ValidateShowroomAds>
 
-
+@if (Convert.ToInt32(TempData["ListReas"]) == 1)
+{
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <div class="auto-your-search" style="margin-bottom: 10px;">
+        <a href="javascript:void(0)" onclick="ReloadPage()" class="clear-tags cs-color" style="display: inline-flex !important; align-items: center !important;">Clear Filters<i class="icon-cross2" style="background: #d00000 !important; color: white; margin-left: 5px; border-radius: 50%;"></i></a>
+    </div>
+</div>
+}
 @foreach (var item in Model.Select((value, i) => new { i, value }))
 {
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">

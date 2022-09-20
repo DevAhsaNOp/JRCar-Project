@@ -49,6 +49,7 @@ namespace JRCar.BOL
         public Nullable<int> ManufacturerCarModelID { get; set; }
         public Nullable<int> CategoryId { get; set; }
         public Nullable<int> SubCategoryId { get; set; }
+        public Nullable<bool> Issold { get; set; }
     
         public virtual tblAddress tblAddress { get; set; }
         public virtual tblShowroom tblShowroom { get; set; }

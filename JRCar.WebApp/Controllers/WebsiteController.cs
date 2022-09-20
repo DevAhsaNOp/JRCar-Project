@@ -480,8 +480,8 @@ namespace JRCar.WebApp.Controllers
             {
                 return Json(null, JsonRequestBehavior.AllowGet);
             }
-        } 
-        
+        }
+
         [AcceptVerbs(HttpVerbs.Post)]
         [Authorize(Roles = "User")]
         public ActionResult DelShortlisted(int CarID)
@@ -500,7 +500,7 @@ namespace JRCar.WebApp.Controllers
             {
                 return Json(null, JsonRequestBehavior.AllowGet);
             }
-        } 
+        }
         #endregion
 
         #region **Car Dealer Profile**
@@ -557,13 +557,13 @@ namespace JRCar.WebApp.Controllers
             }
             IPagedList<tblShowroom> reas = list.ToPagedList(pageindex, pagesize);
             return PartialView("_cardealers", reas);
-        } 
+        }
         #endregion
 
         #region **Car Detail**
         [AcceptVerbs(HttpVerbs.Get)]
         [Route("Ad/{AdID}")]
-        [Authorize(Roles ="User,Showroom")]
+        [Authorize(Roles = "User,Showroom")]
         public ActionResult CarDetail(string AdID)
         {
             var carDetail = RepoObj1.GetUserAdsDetail(AdID);
@@ -590,7 +590,7 @@ namespace JRCar.WebApp.Controllers
         }
         #endregion
 
-        #region **User Car Removed**
+        #region **User Car Removed & Mark As Sold**
         [AcceptVerbs(HttpVerbs.Post)]
         [Authorize(Roles = "User")]
         public ActionResult CarRemoved(int AdID)
@@ -600,17 +600,43 @@ namespace JRCar.WebApp.Controllers
             {
                 TempData["SuccessMsg"] = "Ad Removed Successfully!";
                 var id = Convert.ToInt32(Session["Id"]);
-                var reas = RepoObj1.GetAllUserAds(id);
+                var rows = Convert.ToInt32(Session["rows"]);
+                var reas = RepoObj1.GetAllUserAds(id).Take(rows);
                 return PartialView("_LoadVehicle", reas);
             }
             else
             {
                 TempData["ErrorMsg"] = "Something went wrong. Please try again!";
                 var id = Convert.ToInt32(Session["Id"]);
-                var reas = RepoObj1.GetAllUserAds(id);
+                var rows = Convert.ToInt32(Session["rows"]);
+                var reas = RepoObj1.GetAllUserAds(id).Take(rows);
                 return PartialView("_LoadVehicle", reas);
             }
         }
+
+        [AcceptVerbs(HttpVerbs.Post)]
+        [Authorize(Roles = "User")]
+        public ActionResult UserCarSold(int AdID)
+        {
+            var carDetail = RepoObj1.MarkSoldUserAds(AdID);
+            if (carDetail)
+            {
+                TempData["SuccessMsg"] = "Ad Mark As Sold and Deactivated Successfully!";
+                var id = Convert.ToInt32(Session["Id"]);
+                var rows = Convert.ToInt32(Session["rows"]);
+                var reas = RepoObj1.GetAllUserAds(id).Take(rows);
+                return PartialView("_LoadVehicle", reas);
+            }
+            else
+            {
+                TempData["ErrorMsg"] = "Something went wrong. Please try again!";
+                var id = Convert.ToInt32(Session["Id"]);
+                var rows = Convert.ToInt32(Session["rows"]);
+                var reas = RepoObj1.GetAllUserAds(id).Take(rows);
+                return PartialView("_LoadVehicle", reas);
+            }
+        }
+
         #endregion
 
         #region **User Vehicle**
@@ -656,6 +682,7 @@ namespace JRCar.WebApp.Controllers
         #endregion
 
         #region **Search Page**
+
         [AcceptVerbs(HttpVerbs.Get)]
         [Route("Ads")]
         public ActionResult AllVehicles(string searchTerm, int? minimumPrice, int? maximumPrice, int? sortBy, int? Condition, int? StartYear, int? EndYear, int? page, int?[] MakeId, int?[] ModelId, string[] ColorSelected, string[] TransSelected)
@@ -782,14 +809,24 @@ namespace JRCar.WebApp.Controllers
             ViewBag.SortBy = (sortBy.HasValue ? sortBy.Value : 1);
             ViewBag.MaximumPrice = (maximumPrice ?? AdsRepo.GetAllActiveAds().Select(x => Convert.ToInt32(x.Price)).Max());
             ViewBag.MinimumPrice = (minimumPrice ?? AdsRepo.GetAllActiveAds().Select(x => Convert.ToInt32(x.Price)).Min());
+            
+            var maxval = AdsRepo.GetAllActiveAds().Select(x => Convert.ToInt32(x.Price)).Max();
+            var minval = AdsRepo.GetAllActiveAds().Select(x => Convert.ToInt32(x.Price)).Min();
 
             /***Number of Records you want per Page***/
             int pagesize = 2, pageindex = 1;
             pageindex = page.HasValue ? Convert.ToInt32(page) : 1;
             var list = AdsRepo.GetAllActiveAdsFilter(searchTerm, minimumPrice, maximumPrice, sortBy, Condition, StartYear, EndYear, MakeId, ModelId, ColorSelected, TransSelected);
             IPagedList<ValidateShowroomAds> reas = list.ToPagedList(pageindex, pagesize);
+
+            if (searchTerm != "" || (minimumPrice.Value >= minval && maximumPrice.Value < maxval) || (maximumPrice.Value <= maxval && minimumPrice.Value > minval) || sortBy.Value > 1 || Condition != null || (StartYear.Value >= 1972 && EndYear.Value < 2022) || (EndYear.Value <= 2022 && StartYear.Value > 1972) || MakeId != null || ModelId != null || ColorSelected != null || TransSelected != null)
+            {
+                TempData["ListReas"] = 1;
+            }
+
             return PartialView("_LoadAdsOn", reas);
         }
+        
         #endregion
 
         #region **Usabale Functions & Classes**

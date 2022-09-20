@@ -28,6 +28,11 @@ namespace JRCar.BLL.Repositories
             return dbObj.GetAllActiveAdsFilter(searchTerm, minimumPrice, maximumPrice, sortBy, Condition, StartYear, EndYear, MakeId, ModelId, ColorSelected, TransSelected);
         }
 
+        public IEnumerable<ValidateShowroomAds> GetAllAds()
+        {
+            return dbObj.GetAllAds();
+        }
+        
         public IEnumerable<ValidateShowroomAds> GetAllActiveAds()
         {
             return dbObj.GetAllActiveAds();
@@ -446,6 +451,27 @@ namespace JRCar.BLL.Repositories
             }
         }
 
+        public bool MarkSoldShowroomAds(int AdID)
+        {
+            try
+            {
+                if (AdID > 0)
+                {
+                    var user = dbObj.MarkSoldShowroomAds(AdID);
+                    if (user == true)
+                        return user;
+                    else
+                        return false;
+                }
+                else
+                    return false;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        
         public bool InActiveShowroomAds(int AdID)
         {
             try

@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<JRCar.BOL.Validation_Classes.ValidateShowroomAds>
 
 @{
-    ViewBag.Title = "My Ads";
+    ViewBag.Title = "List Of User Ads";
     Layout = "~/Views/Shared/_StarterPortal.cshtml";
 }
 <style>
@@ -25,36 +25,29 @@
     }
 
     .btnEdit {
-        background: #f79c2b;
+        background: #1ee500;
         color: white;
         box-shadow: 0px 2px 7px 2px #f79c2b42;
         border-radius: 5px;
-        margin-right: 5px !important;
-        margin-bottom: 10px !important;
-    }
-
-    .btnView {
-        background: #2bacf7;
-        color: white;
-        box-shadow: 0px 2px 7px 2px #92d4fb;
-        border-radius: 5px;
-        margin-right: 5px !important;
+        padding: 0 10px;
     }
 
     .btnDel {
-        color: #f9f9f9;
         background: #f91e33;
         box-shadow: 0px 2px 7px 2px #f91e335c;
+        color: #fff;
         border-radius: 5px;
+        padding: 0 10px;
     }
 
-    .btnSold {
-        color: #fff;
-        background: #44ed00;
-        box-shadow: 0px 2px 7px 2px #04ea2499;
-        border-radius: 5px;
-        margin-right: 5px !important;
-        margin-bottom: 10px !important;
+    .LoaderCc {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        background-color: #afafaf78;
+        height: 100%;
+        width: inherit;
     }
 </style>
 <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
@@ -65,67 +58,66 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Showroom Ads</h1>
+                    <h1>List Of User Ads</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">My Ads</li>
+                        <li class="breadcrumb-item active">List Of User Ads</li>
                     </ol>
                 </div>
             </div>
         </div><!-- /.container-fluid -->
-    </section> 
-    <section class="content-header">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-12 col-sm-12 col-lg-12">
-                    @if (TempData["SuccessMsg"] != null)
-                    {
-                        <div class="alert alert-info alert-dismissable">
-                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                            <i class="icon-info-with-circle"></i><span>@Html.Raw(TempData["SuccessMsg"])</span>
-                        </div>
-                    }
-                    @if (TempData["ErrorMsg"] != null)
-                    {
-                        <div class="alert alert-danger alert-dismissable">
-                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                            <i class="icon-blocked"></i><span>@Html.Raw(TempData["ErrorMsg"])</span>
-                        </div>
-                    }
-                </div>
-            </div>
-        </div><!-- /.container-fluid -->
     </section>
-
     <!-- Main content -->
     <section class="content">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-12">
-                    <div class="card">
+                    <div class="card" style="width:100%;height:98%">
                         <div class="card-header">
-                            <h3 class="card-title">Showroom Ads View</h3>
+                            <h3 class="card-title">DataTable with default features</h3>
+                        </div>
+                        <div id="Adloader" class="LoaderCc" style="display: none!important;">
+                            <img src="~/Content/Spinner-1s-200px.gif" alt="Please Wait......" width="100" height="100" />
                         </div>
                         <!-- /.card-header -->
-                        <div class="card-body">
-                            <table id="example3" class="table table-bordered table-striped">
+                        <div class="card-body" id="example99">
+                            <div class="row">
+                                <div class="col-md-12 col-sm-12 col-lg-12">
+                                    @if (TempData["SuccessMsg"] != null)
+                                    {
+                                        <div class="alert alert-info alert-dismissable">
+                                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                            <i class="icon-info-with-circle"></i><span>@Html.Raw(TempData["SuccessMsg"])</span>
+                                        </div>
+                                    }
+                                    @if (TempData["ErrorMsg"] != null)
+                                    {
+                                        <div class="alert alert-danger alert-dismissable">
+                                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                            <i class="icon-blocked"></i><span>@Html.Raw(TempData["ErrorMsg"])</span>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                            <table id="example3" class="table table-bordered table-striped table-hover">
                                 <thead>
                                     <tr>
                                         <th>Ad Image</th>
                                         <th>Title</th>
+                                        <th>Model</th>
+                                        <th>Year</th>
                                         <th>Price</th>
-                                        <th>Make Model</th>
+                                        <th>Showroom Name</th>
                                         <th>Posted On</th>
-                                        <th>Ad Status</th>
+                                        <th>Status</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach (var item in Model)
                                     {
-                                        @*<tr onclick="window.location = '@Url.RouteUrl("Product", new { SeName = @product.SeName })';">*@
                                         <tr>
                                             <td>
                                                 @if (item.CarImage != null)
@@ -142,23 +134,25 @@
                                                 }
                                             </td>
                                             <td>
-                                                <b style="text-transform:capitalize;">@item.Title.ToLower()</b>
-                                            </td>
-                                            <td>
-                                                Rs. @item.Price
+                                                @item.Title
                                             </td>
                                             <td>
                                                 @item.Manufacturer_Name @item.Manufacturer_CarModelName
                                             </td>
                                             <td>
+                                                @item.Year
+                                            </td>
+                                            <td>
+                                                @item.Price
+                                            </td>
+                                            <td>
+                                                @item.ShowroomName
+                                            </td>
+                                            <td>
                                                 @item.tblCarCreatedOn
                                             </td>
                                             <td id="StatusA">
-                                                @if (item.IsSold == true)
-                                                {
-                                                    <span class="badge badge-warning text-white"> Sold </span>
-                                                }
-                                                else if (item.tblCarIsactive)
+                                                @if (item.tblCarIsactive)
                                                 {
                                                     <span class="badge badge-success"> Active </span>
                                                 }
@@ -168,26 +162,16 @@
                                                 }
                                             </td>
                                             <td>
-                                                @if (item.IsSold == false && item.tblCarIsactive == true)
+                                                @if (item.tblCarIsactive)
                                                 {
-                                                    <button class="btnAction btnSold" onclick="SoldAd(@item.tblCarID)" title="Mark as Sold">
-                                                        <i class="fas fa-check-square"></i>
+                                                    <button class="btnAction btnEdit" onclick="RemoveAd(@item.tblCarID)">
+                                                        <i class="fas fa-toggle-on"></i>
                                                     </button>
-                                                    <a href="@Url.RouteUrl("EditAd",new { AdID = item.tblCarID })">
-                                                        <button class="btnAction btnEdit" title="Edit Ad">
-                                                            <i class="far fa-edit"></i>
-                                                        </button>
-                                                    </a>
                                                 }
-                                                <a href="@Url.Action("CarAds","Portal",new { AdID = item.CarsURL })" target="_blank">
-                                                    <button class="btnAction btnView" title="View Ad">
-                                                        <i class="far fa-eye"></i>
-                                                    </button>
-                                                </a>
-                                                @if (item.IsSold == false && item.tblCarIsactive == true)
+                                                else
                                                 {
-                                                    <button class="btnAction btnDel" onclick="RemoveAd(@item.tblCarID)" title="Remove Ad">
-                                                        <i class="fas fa-trash-alt"></i>
+                                                    <button class="btnAction btnDel" onclick="ActivateAd(@item.tblCarID)">
+                                                        <i class="fas fa-toggle-off"></i>
                                                     </button>
                                                 }
                                             </td>
@@ -203,20 +187,25 @@
         </div>
     </section>
     <script>
-        document.getElementById('ShowroomAdNav').classList.add('active')
-        document.getElementById('MyAdsPage').classList.add('active')
+        document.getElementById('AdssNav').classList.add('active')
+        document.getElementById('MngShowroomAdsPage').classList.add('active')
 
         function RemoveAd(Adid) {
             if (Adid > 0) {
-                if (confirm("Are you sure to delete your Ad?")) {
+                if (confirm("Are you sure to Deactivate the Ad?")) {
                     $("#Adloader").show();
+                    $(".card").css("cursor","not-allowed");
+                    $(".card").css("user-select","none");
                     $.ajax({
                         type: "POST",
-                        url: "@Url.Action("ShowroomCarRemoved", "Portal")",
+                        url: "@Url.Action("ShowroomAdsInActive", "Portal")",
                         data: JSON.stringify({ AdID: Adid }),
                         contentType: "application/json; charset=utf-8",
                         success: function (response) {
-                            window.location.href = "@Url.Action("MyAds","Portal")";
+                            $(".card").css("cursor", "default");
+                            $(".card").css("user-select", "auto");
+                            $("#Adloader").hide();
+                            window.location.href = "@Url.Action("ListofShowroomAds","Portal")";
                         }
                     });
                 }
@@ -226,24 +215,30 @@
             }
         }
 
-        function SoldAd(Adid) {
-            if (Adid > 0) {
-                if (confirm("Is your Car is sold?")) {
-                    $("#Adloader").show();
-                    $.ajax({
-                        type: "POST",
-                        url: "@Url.Action("ShowroomCarSold", "Portal")",
-                        data: JSON.stringify({ AdID: Adid }),
-                        contentType: "application/json; charset=utf-8",
-                        success: function (response) {
-                            window.location.href = "@Url.Action("MyAds","Portal")";
-                        }
-                    });
-                }
-            }
-            else {
-                alert('Something went wrong please try again later!');
-            }
+        function ActivateAd(Adid) {
+           if (Adid > 0) {
+               if (confirm("Are you sure to Activate the Ad?")) {
+                   $("#Adloader").show();
+                   $(".card").css("cursor","not-allowed");
+                   $(".card").css("user-select","none");
+                   $.ajax({
+                       type: "POST",
+                       url: "@Url.Action("ShowroomAdsActive", "Portal")",
+                       data: JSON.stringify({ AdID: Adid }),
+                       contentType: "application/json; charset=utf-8",
+                       success: function (response) {
+                           $(".card").css("cursor", "default");
+                           $(".card").css("user-select", "auto");
+                           $("#Adloader").hide();
+                           window.location.href = "@Url.Action("ListofShowroomAds","Portal")";
+                       }
+                   });
+               }
+           }
+           else {
+               alert('Something went wrong please try again later!');
+           }
         }
+
     </script>
 }

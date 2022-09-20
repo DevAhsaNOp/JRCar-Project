@@ -208,7 +208,8 @@ namespace JRCar.DAL.DBLayer
                 Image = s.Image,
                 Password = s.Password,
                 OTP = s.OTP,
-                Role = s.tblRole.Role
+                Role = s.tblRole.Role,
+                Active = s.Active,
             }).FirstOrDefault();
 
             var admin = _context.tblAdmins.Where(x => x.Email == emailtext).Select(s => new UserDefine.UserViewDetail()
@@ -219,7 +220,8 @@ namespace JRCar.DAL.DBLayer
                 Image = s.Image,
                 Password = s.Password,
                 OTP = s.OTP,
-                Role = s.tblRole.Role
+                Role = s.tblRole.Role,
+                Active = s.Active
             }).FirstOrDefault();
 
             var union = _context.tblUnions.Where(x => x.Email == emailtext).Select(s => new UserDefine.UserViewDetail()
@@ -230,7 +232,8 @@ namespace JRCar.DAL.DBLayer
                 Image = s.Image,
                 Password = s.Password,
                 OTP = s.OTP,
-                Role = s.tblRole.Role
+                Role = s.tblRole.Role,
+                Active = s.Active
             }).FirstOrDefault();
 
             var showroom = _context.tblShowrooms.Where(x => x.Email == emailtext).Select(s => new UserDefine.UserViewDetail()
@@ -241,7 +244,8 @@ namespace JRCar.DAL.DBLayer
                 Image = s.Image,
                 Password = s.Password,
                 OTP = s.OTP,
-                Role = s.tblRole.Role
+                Role = s.tblRole.Role,
+                Active = s.Isactive
             }).FirstOrDefault();
 
             if (user != null)

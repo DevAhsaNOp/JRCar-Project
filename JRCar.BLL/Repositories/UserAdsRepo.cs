@@ -350,6 +350,27 @@ namespace JRCar.BLL.Repositories
                 throw ex;
             }
         }
+        
+        public bool MarkSoldUserAds(int AdID)
+        {
+            try
+            {
+                if (AdID > 0)
+                {
+                    var user = dbObj.MarkSoldUserAds(AdID);
+                    if (user == true)
+                        return user;
+                    else
+                        return false;
+                }
+                else
+                    return false;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
 
         public bool ReActiveUserAds(int AdID)
         {

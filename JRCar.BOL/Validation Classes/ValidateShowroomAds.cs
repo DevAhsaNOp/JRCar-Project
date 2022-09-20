@@ -93,6 +93,8 @@ namespace JRCar.BOL.Validation_Classes
         public int? tblCarUpdatedBy { get; set; }
 
         public bool tblCarIsactive { get; set; }
+        
+        public bool IsSold { get; set; }
 
         public bool tblCarIsarchive { get; set; }
 

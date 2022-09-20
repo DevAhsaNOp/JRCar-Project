@@ -133,6 +133,27 @@ namespace JRCar.DAL.DBLayer
             return reas;
         }
 
+        public IEnumerable<ValidateShowroomAds> GetAllAds()
+        {
+            var reas = _context.tblCars.OrderBy(Ad => Ad.CreatedOn).Select(s => new ValidateShowroomAds()
+            {
+                tblCarID = s.ID,
+                Title = s.Title,
+                Price = s.Price,
+                Year = s.tblCarModel.Year,
+                Manufacturer_Name = s.tblManufacturer.Manufacturer_Name,
+                Manufacturer_CarModelName = s.tblManfacturerCarModel.Manufacturer_CarModelName,
+                Condition = s.Condition,
+                tblCarCreatedOn = s.CreatedOn,
+                tblCarIsactive = s.Isactive,
+                CurrentLocation = s.CurrentLocation,
+                CarsURL = s.CarsURL,
+                CarImage = s.tblCarImages.Select(a => a.Image).FirstOrDefault(),
+                ShowroomName = s.tblShowroom.FullName
+            }).ToList();
+            return reas;
+        }
+
         public IEnumerable<ValidateShowroomAds> GetAllActiveAds()
         {
             var reas = _context.tblCars.OrderBy(Ad => Ad.CreatedOn).Where(x => x.Isactive == true).Select(s => new ValidateShowroomAds()
@@ -245,6 +266,7 @@ namespace JRCar.DAL.DBLayer
                 CurrentLocation = s.CurrentLocation,
                 CarsURL = s.CarsURL,
                 CarImage = s.tblCarImages.Select(a => a.Image).FirstOrDefault(),
+                IsSold = (s.Issold == true) ? true : false,
             }).ToList();
         }
 
@@ -822,6 +844,32 @@ namespace JRCar.DAL.DBLayer
                     }
                     else
                         return false;
+                }
+                else
+                    return false;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public bool MarkSoldShowroomAds(int AdID)
+        {
+            try
+            {
+                if (AdID > 0)
+                {
+                    var reas = _context.tblCars.Where(x => x.ID == AdID).FirstOrDefault();
+                    reas.Isactive = false;
+                    reas.Issold = true;
+                    reas.Isarchive = true;
+                    reas.CreatedOn = GetShowroomAdsDetail(reas.ID).tblCarCreatedOn;
+                    reas.UpdatedBy = GetShowroomAdsDetail(reas.ID).tblCarUpdatedBy;
+                    reas.UpdatedOn = DateTime.Now.ToString();
+                    _context.Entry(reas).State = System.Data.Entity.EntityState.Modified;
+                    Save();
+                    return true;
                 }
                 else
                     return false;

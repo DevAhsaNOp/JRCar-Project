@@ -112,6 +112,7 @@ namespace JRCar.DAL.DBLayer
                 AdURL = s.UserAdsURL,
                 Isactive = s.Isactive,
                 CarImage = s.tblUserAddImages.Select(a => a.Image).FirstOrDefault(),
+                UserName = s.tblUser.Name
             }).ToList();
             return reas;
         }
@@ -185,8 +186,10 @@ namespace JRCar.DAL.DBLayer
                 Title = s.Title,
                 Isactive = s.Isactive,
                 ExpiryDate = s.ExpiryDate,
+                CreatedOn = s.CreatedOn,
                 AdURL = s.UserAdsURL,
                 CarImage = s.tblUserAddImages.Select(a => a.Image).FirstOrDefault(),
+                IsSold = s.Issold
             }).ToList();
         }
 
@@ -463,6 +466,31 @@ namespace JRCar.DAL.DBLayer
                     }
                     else
                         return false;
+                }
+                else
+                    return false;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        
+        public bool MarkSoldUserAds(int AdID)
+        {
+            try
+            {
+                if (AdID > 0)
+                {
+                    var reas = _context.tblUserAdds.Where(x => x.ID == AdID).FirstOrDefault();
+                    reas.Isactive = false;
+                    reas.Issold = true;
+                    reas.Isarchive = true;
+                    reas.CreatedOn = GetUserAdsDetail(reas.ID).CreatedOn;
+                    reas.ExpiryDate = GetUserAdsDetail(reas.ID).ExpiryDate;
+                    _context.Entry(reas).State = System.Data.Entity.EntityState.Modified;
+                    Save();
+                    return true;
                 }
                 else
                     return false;

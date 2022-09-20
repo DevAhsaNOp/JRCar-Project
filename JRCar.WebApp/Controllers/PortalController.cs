@@ -639,14 +639,13 @@ namespace JRCar.WebApp.Controllers
         #endregion
 
         #region **Showroom Ads**
+
         [AcceptVerbs(HttpVerbs.Get)]
         [Authorize(Roles = "Showroom")]
         [Route("ShowroomAd/MyAds")]
         public ActionResult MyAds()
         {
             var id = Convert.ToInt32(Session["Id"]);
-            //int rows = 2;
-            //Session["showroomrows"] = rows.Take(rows);
             var reas = RepoObj1.GetAllShowroomAds(id);
             return View(reas);
         }
@@ -660,6 +659,45 @@ namespace JRCar.WebApp.Controllers
             Session["showroomrows"] = rows;
             return PartialView("_LoadVehicle", reas);
         }
+
+        #endregion
+
+        #region **Showroom Car Remove & Mark As Sold**
+        
+        [AcceptVerbs(HttpVerbs.Post)]
+        [Authorize(Roles = "Showroom")]
+        public ActionResult ShowroomCarRemoved(int AdID)
+        {
+            var carDetail = RepoObj1.InActiveShowroomAds(AdID);
+            if (carDetail)
+            {
+                TempData["SuccessMsg"] = "Ad Removed Successfully!";
+                return Json("True", JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                TempData["ErrorMsg"] = "Something went wrong. Please try again!";
+                return Json("False", JsonRequestBehavior.AllowGet);
+            }
+        }
+        
+        [AcceptVerbs(HttpVerbs.Post)]
+        [Authorize(Roles = "Showroom")]
+        public ActionResult ShowroomCarSold(int AdID)
+        {
+            var carDetail = RepoObj1.MarkSoldShowroomAds(AdID);
+            if (carDetail)
+            {
+                TempData["SuccessMsg"] = "Ad Mark As Sold and Deactivated Successfully!";
+                return Json("True", JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                TempData["ErrorMsg"] = "Something went wrong. Please try again!";
+                return Json("False", JsonRequestBehavior.AllowGet);
+            }
+        } 
+
         #endregion
 
         #region **Showroom Ads Details**
@@ -1072,12 +1110,14 @@ namespace JRCar.WebApp.Controllers
 
         #region **Manage Ads**
 
+        [Authorize(Roles = "Admin,Union")]
         public ActionResult ListofUserAds()
         {
             var reas = userAdsRepo.GetAllAds();
             return View(reas);
         }
-        
+
+        [Authorize(Roles = "Admin,Union")]
         public ActionResult UserAdsActive(int AdID)
         {
             if (AdID > 0)
@@ -1100,12 +1140,68 @@ namespace JRCar.WebApp.Controllers
                 return Json("False", JsonRequestBehavior.AllowGet);
             }
         }
-        
+
+        [Authorize(Roles = "Admin,Union")]
         public ActionResult UserAdsInActive(int AdID)
         {
             if (AdID > 0)
             {
                 var IsInactive = userAdsRepo.InActiveUserAds(AdID);
+                if (IsInactive)
+                {
+                    TempData["SuccessMsg"] = "Ad Deactivated Successfully!";
+                    return Json("True", JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    TempData["SuccessMsg"] = "Error Occured On Ad Deactivation!";
+                    return Json("False", JsonRequestBehavior.AllowGet);
+                }
+            }
+            else
+            {
+                TempData["SuccessMsg"] = "Error Occured On Ad Deactivation!";
+                return Json("False", JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [Authorize(Roles = "Admin,Union")]
+        public ActionResult ListofShowroomAds()
+        {
+            var reas = RepoObj1.GetAllAds();
+            return View(reas);
+        }
+
+        [Authorize(Roles = "Admin,Union")]
+        public ActionResult ShowroomAdsActive(int AdID)
+        {
+            if (AdID > 0)
+            {
+                var IsInactive = RepoObj1.ReActiveShowroomAds(AdID);
+                if (IsInactive)
+                {
+                    TempData["SuccessMsg"] = "Ad Activated Successfully!";
+                    return Json("True", JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    TempData["SuccessMsg"] = "Error Occured On Ad Activation!";
+                    return Json("False", JsonRequestBehavior.AllowGet);
+                }
+            }
+            else
+            {
+                TempData["SuccessMsg"] = "Error Occured On Ad Activation!";
+                return Json("False", JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [Authorize(Roles = "Admin,Union")]
+        public ActionResult ShowroomAdsInActive(int AdID)
+        {
+            if (AdID > 0)
+            {
+                var IsInactive = RepoObj1.InActiveShowroomAds(AdID);
                 if (IsInactive)
                 {
                     TempData["SuccessMsg"] = "Ad Deactivated Successfully!";

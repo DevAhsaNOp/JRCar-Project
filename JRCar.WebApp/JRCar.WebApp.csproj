@@ -3598,6 +3598,7 @@
     <Content Include="Views\Portal\ShowroomReport.cshtml" />
     <Content Include="Views\Portal\UpdateProfile.cshtml" />
     <Content Include="Views\Portal\UserEdit.cshtml" />
+    <Content Include="Views\Portal\ListofShowroomAds.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

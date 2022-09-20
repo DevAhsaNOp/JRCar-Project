@@ -115,6 +115,8 @@ namespace JRCar.BOL.Validation_Classes
 
         [Display(Name = "Active")]
         public bool? Isactive { get; set; }
+
+        public bool? IsSold { get; set; }
         
         [Display(Name = "Archive")]
         public bool? Isarchive { get; set; }

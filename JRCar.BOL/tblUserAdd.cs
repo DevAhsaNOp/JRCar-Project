@@ -41,6 +41,7 @@ namespace JRCar.BOL
         public Nullable<bool> Isactive { get; set; }
         public Nullable<bool> Isarchive { get; set; }
         public string UserAdsURL { get; set; }
+        public Nullable<bool> Issold { get; set; }
     
         public virtual tblAddress tblAddress { get; set; }
         public virtual tblCategory tblCategory { get; set; }

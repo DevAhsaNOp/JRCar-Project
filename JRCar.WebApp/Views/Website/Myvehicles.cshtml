@@ -84,13 +84,21 @@
                                                     {
                                                         <div class="cs-post-list">
                                                             <div class="cs-edit-post">
-                                                                <a href="@Url.RouteUrl("EditVehicle",new { AdID = item.AdID })" data-toggle="tooltip" data-placement="top" title="Edit Post"><i class="icon-edit2"></i></a>
-                                                                <a href="#" data-toggle="tooltip" data-placement="top" title="Delete" onclick="RemoveAd(@item.AdID)"><i class="icon-trash-o"></i></a>
+                                                                @if (item.IsSold == false && item.Isactive == true)
+                                                                {
+                                                                    <a href="@Url.RouteUrl("EditVehicle",new { AdID = item.AdID })" data-toggle="tooltip" data-placement="top" title="Edit Post"><i class="icon-edit2"></i></a>
+                                                                    <a href="#" data-toggle="tooltip" data-placement="top" title="Delete" onclick="RemoveAd(@item.AdID)"><i class="icon-trash-o"></i></a>
+                                                                    <a href="#" data-toggle="tooltip" data-placement="top" title="Mark as sold" onclick="SoldAd(@item.AdID)"><i class="icon-check-square-o"></i></a>
+                                                                }
                                                             </div>
                                                             <div class="cs-list">
-                                                                <a href="#" data-toggle="tooltip" data-placement="top" title="Share"><i class="icon-forward4"></i></a>
-                                                                <a href="@Url.RouteUrl("EditVehicle",new { AdID = item.AdID })" data-toggle="tooltip" data-placement="top" title="Edit Post"><i class="icon-edit2"></i></a>
-                                                                <a href="#" data-toggle="tooltip" data-placement="top" title="Delete" onclick="RemoveAd(@item.AdID)"><i class="icon-trash-o"></i></a>
+                                                                @if (item.IsSold == false && item.Isactive == true)
+                                                                {
+                                                                    <a href="#" data-toggle="tooltip" data-placement="top" title="Share"><i class="icon-forward4"></i></a>
+                                                                    <a href="@Url.RouteUrl("EditVehicle",new { AdID = item.AdID })" data-toggle="tooltip" data-placement="top" title="Edit Post"><i class="icon-edit2"></i></a>
+                                                                    <a href="#" data-toggle="tooltip" data-placement="top" title="Delete" onclick="RemoveAd(@item.AdID)"><i class="icon-trash-o"></i></a>
+                                                                    <a href="#" data-toggle="tooltip" data-placement="top" title="Mark as sold" onclick="SoldAd(@item.AdID)"><i class="icon-check-square-o"></i></a>
+                                                                }
                                                             </div>
                                                         </div>
                                                         <span class="cs-default-btn" style="color:#4aa818; border:1px solid #4aa818;">
@@ -150,6 +158,28 @@
                     $.ajax({
                         type: "POST",
                         url: "@Url.Action("CarRemoved", "Website")",
+                        data: JSON.stringify({ AdID: Adid }),
+                        contentType: "application/json; charset=utf-8",
+                        success: function (response) {
+                            $("#Adloader").hide();
+                            $("#DivUpdate").empty();
+                            $("#DivUpdate").append(response);
+                        }
+                    });
+                }
+            }
+            else {
+                alert('Something went wrong please try again later!');
+            }
+        }
+
+        function SoldAd(Adid) {
+            if (Adid > 0) {
+                if (confirm("Is this car is Sold?")) {
+                    $("#Adloader").show();
+                    $.ajax({
+                        type: "POST",
+                        url: "@Url.Action("UserCarSold", "Website")",
                         data: JSON.stringify({ AdID: Adid }),
                         contentType: "application/json; charset=utf-8",
                         success: function (response) {
