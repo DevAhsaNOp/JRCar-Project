@@ -29,7 +29,6 @@ namespace JRCar.BOL
         public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<tblAddress> tblAddresses { get; set; }
         public virtual DbSet<tblAdmin> tblAdmins { get; set; }
-        public virtual DbSet<tblAnnouncement> tblAnnouncements { get; set; }
         public virtual DbSet<tblBlog> tblBlogs { get; set; }
         public virtual DbSet<tblCar> tblCars { get; set; }
         public virtual DbSet<tblCategory> tblCategories { get; set; }
@@ -57,5 +56,6 @@ namespace JRCar.BOL
         public virtual DbSet<tblCarImage> tblCarImages { get; set; }
         public virtual DbSet<tblCarFeature> tblCarFeatures { get; set; }
         public virtual DbSet<tblFavAdd> tblFavAdds { get; set; }
+        public virtual DbSet<tblAnnouncement> tblAnnouncements { get; set; }
     }
 }

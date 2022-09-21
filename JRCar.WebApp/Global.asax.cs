@@ -28,6 +28,8 @@ namespace JRCar.WebApp
             var currentTime = DateTime.Now;
             HttpContext.Current.Session["LastUpdated"] = currentTime;
             NC.RegisterNotification(currentTime);
+            HttpContext.Current.Session["AnnLastUpdated"] = currentTime;
+            NC.RegisterAnnouncement(currentTime);
         }
 
 

@@ -15,12 +15,12 @@ namespace JRCar.BOL
     public partial class tblAnnouncement
     {
         public int ID { get; set; }
-        public int ClientID { get; set; }
+        public Nullable<int> ShowroomID { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
         public System.DateTime CreatedOn { get; set; }
         public Nullable<bool> IsRead { get; set; }
     
-        public virtual tblClient tblClient { get; set; }
+        public virtual tblShowroom tblShowroom { get; set; }
     }
 }

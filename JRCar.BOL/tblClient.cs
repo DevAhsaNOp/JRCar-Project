@@ -17,7 +17,6 @@ namespace JRCar.BOL
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public tblClient()
         {
-            this.tblAnnouncements = new HashSet<tblAnnouncement>();
             this.tblNotifications = new HashSet<tblNotification1>();
         }
     
@@ -28,8 +27,6 @@ namespace JRCar.BOL
         public Nullable<System.DateTime> UpdatedOn { get; set; }
         public int TokenID { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<tblAnnouncement> tblAnnouncements { get; set; }
         public virtual tblToken tblToken { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tblNotification1> tblNotifications { get; set; }

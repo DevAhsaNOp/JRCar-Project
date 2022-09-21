@@ -65,5 +65,54 @@ namespace JRCar.BLL.Repositories
             var reas = DbObj.GetNotificationsCount(afterDate, ShowroomID);
             return reas;
         }
+        
+        public bool InsertAnnouncements(tblAnnouncement model)
+        {
+            try
+            {
+                if (model != null)
+                {
+                    var reas = DbObj.InsertAnnouncements(model);
+                    return reas;
+                }
+                else
+                    return false;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public bool ChangeAnnouncementsToAsRead(int ShowroomID)
+        {
+            if (ShowroomID > 0)
+            {
+                var reas = DbObj.ChangeAnnouncementsToAsRead(ShowroomID);
+                return reas;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public List<NotiShow> GetAnnouncements(DateTime afterDate, int ShowroomID)
+        {
+            var reas = DbObj.GetAnnouncements(afterDate, ShowroomID);
+            return reas;
+        }
+
+        public List<NotiShow> GetAllAnnouncements(int ShowroomID)
+        {
+            var reas = DbObj.GetAllAnnouncements(ShowroomID);
+            return reas;
+        }
+
+        public int GetAnnouncementsCount(DateTime afterDate, int ShowroomID)
+        {
+            var reas = DbObj.GetAnnouncementsCount(afterDate, ShowroomID);
+            return reas;
+        }
     }
 }

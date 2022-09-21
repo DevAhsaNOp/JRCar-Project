@@ -41,6 +41,32 @@ namespace JRCar.WebApp
                 }
             }
         }
+        
+        public void RegisterAnnouncement(DateTime currentTime)
+        {
+            PortalController pc = new PortalController();
+            string constring = ConfigurationManager.ConnectionStrings["jrcarNotification"].ConnectionString;
+            SqlDependency.Start(constring);
+            string SqlCmd = String.Empty;
+            SqlCmd = @"SELECT [ID] ,[ShowroomID] ,[Title] ,[Description] ,[CreatedOn] ,[IsRead] FROM [dbo].[tblAnnouncements] WHERE ([CreatedOn] > @CreatedOn or IsRead <> 1)";
+
+            using (SqlConnection con = new SqlConnection(constring))
+            {
+                SqlCommand cmd = new SqlCommand(SqlCmd, con);
+                cmd.Parameters.AddWithValue("@CreatedOn", currentTime);
+                if (con.State != System.Data.ConnectionState.Open)
+                {
+                    con.Open();
+                }
+                cmd.Notification = null;
+                SqlDependency sql = new SqlDependency(cmd);
+                sql.OnChange += new OnChangeEventHandler(sqlDep_OnChangeAnnouncement);
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+
+                }
+            }
+        }
 
         void sqlDep_OnChange(object sender, SqlNotificationEventArgs e)
         {
@@ -57,6 +83,20 @@ namespace JRCar.WebApp
                 //sql.OnChange -= sqlDep_OnChange;
                 NotificationHub.Show();
                 RegisterNotification(DateTime.Now);
+            }
+        }
+        
+        void sqlDep_OnChangeAnnouncement(object sender, SqlNotificationEventArgs e)
+        {
+            if (e.Info == SqlNotificationInfo.Update)
+            {
+                NotificationHub.Show();
+                RegisterAnnouncement(DateTime.Now);
+            }
+            else if (e.Info == SqlNotificationInfo.Insert)
+            {
+                NotificationHub.Show();
+                RegisterAnnouncement(DateTime.Now);
             }
         }
 
@@ -84,6 +124,38 @@ namespace JRCar.WebApp
             if (ShowroomID > 0)
             {
                 var reas = repo.ChangeNotificationToAsRead(ShowroomID);
+                return reas;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        
+        public List<NotiShow> GetAnnouncements(DateTime afterDate, int ShowroomID)
+        {
+            var reas = repo.GetAnnouncements(afterDate, ShowroomID);
+            return reas;
+        }
+
+        public int GetAnnouncementsCount(DateTime afterDate, int ShowroomID)
+        {
+            var reas = repo.GetAnnouncementsCount(afterDate, ShowroomID);
+            return reas;
+        }
+
+        public List<NotiShow> GetAllAnnouncements(int ShowroomID)
+        {
+            var reas = repo.GetAllAnnouncements(ShowroomID);
+            return reas;
+        }
+
+        public bool ChangeAnnouncementsToAsRead(int ShowroomID)
+        {
+
+            if (ShowroomID > 0)
+            {
+                var reas = repo.ChangeAnnouncementsToAsRead(ShowroomID);
                 return reas;
             }
             else

@@ -79,8 +79,8 @@
 
             <!-- Preloader -->
             @*<div class="preloader flex-column justify-content-center align-items-center">
-                <img class="animation__wobble" src="~/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
-            </div>*@
+                    <img class="animation__wobble" src="~/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
+                </div>*@
 
             <!-- Navbar -->
             @Html.Partial("_HeaderPortal")
@@ -347,12 +347,52 @@
                 if (message && message.toLowerCase() == "added") {
                     console.log('Hey Count');
                     updateNotificationCount();
+                    AccupdateNotificationCount();
                 }
             }
+
+            //notificationHub.client.DisplayAnno = function (message) {
+            //    if (message && message.toLowerCase() == "announcementadded") {
+            //        console.log('Hey announcement Count');
+            //    }
+            //}
 
             updateNotification();
             GetCount();
             updateNotificationCount();
+            AccupdateNotification();
+            AccGetCount();
+            AccupdateNotificationCount();
+
+            $('a.Accnoti').click(function (e) {
+                e.stopPropagation();
+                var count = 0;
+                count = parseInt($('span.Acccount').html()) || 0;
+                console.log('a.Accnoti outer' + count);
+
+                //Only load Accnotification if not already loaded
+                if (count > 0) {
+                    AccupdateNotification();
+                    sessionStorage.setItem("Acccount", 0);
+                    console.log('a.Accnoti inner if' + count);
+                    $('.Accnoti-content').show();
+                    AccupdateNotificationRead();
+                }
+                else if ($('.Accnoti-content').css('display') == 'block') {
+                    $('.Accnoti-content').hide();
+                }
+                else if ($('.Accnoti-content').css('display') == 'none') {
+                    $('.Accnoti-content').show();
+                    AccupdateNotificationRead();
+                }
+                $('span.Acccount', this).html('');
+            })
+
+            // Hide Accnotifications
+            $('html').click(function () {
+                $('.Accnoti-content').hide();
+            })
+
             $('a.noti').click(function (e) {
                 e.stopPropagation();
                 var count = 0;
@@ -382,15 +422,81 @@
                 $('.noti-content').hide();
             })
 
-            //$('a.noti').click(function () {
-            //    if ($('.noti-content').css('display') == 'block') {
-            //        console.log('Here');
-            //        $('.noti-content').hide();
-            //    }
-            //})
-
-
         });
+
+        function AccGetCount() {
+            var count = sessionStorage.getItem("Acccount");
+            console.log('a.Accnoti outer' + count);
+
+            if (count > 0) {
+                $('span.Acccount').html(count);
+            }
+            else {
+                $('span.Acccount', this).html('');
+            }
+        }
+
+        // Update Accnotification
+        function AccupdateNotification() {
+            $('#AccnotiContent').empty();
+            $('#AccnotiContent').append($('<li>Loading...</li>'));
+            $.ajax({
+                type: 'GET',
+                url: '/Portal/GetAnnouncementsList',
+                success: function (response) {
+                    $('#AccnotiContent').empty();
+                    console.log(response);
+                    if (response.length == 0) {
+                        $('#AccnotiContent').append($('<a href="#" class="dropdown-item"><i class="fas fa-envelope mr-2"></i> No New Announcement Available</a>'));
+                    }
+                    $.each(response, function (index, value) {
+                        $('#AccnotiContent').append($('<span href="#" class="dropdown-item"> <i class="fas fa-envelope mr-2"></i>' + value.Title + ' <span class="float-right text-muted text-sm">' + value.Description+'<span><span>'));
+                    });
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            })
+        }
+
+        // Update Accnotification count
+        function AccupdateNotificationCount() {
+            var count = 0;
+            $.ajax({
+                type: 'GET',
+                url: '/Portal/GetAnnouncementsListCount',
+                success: function (response) {
+                    console.log('GetNotificationsListCount:: ' + response);
+                    count = response;
+                    if (count > 0) {
+                        $('span.Acccount').html(count);
+                    }
+                    else {
+                        $('span.Acccount').html('');
+                    }
+                    console.log('AccupdateNotificationCount' + count);
+                    sessionStorage.setItem("Acccount", count);
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            })
+        }
+
+        // Notifications Change to Read When NotiFication Icon Press
+        function AccupdateNotificationRead() {
+            $.ajax({
+                type: 'GET',
+                url: '/Portal/ChangeAnnouncementsToAsRead',
+                success: function (response) {
+                    console.log('AccGetNotificationsListRead:: ' + response);
+                    sessionStorage.setItem("Acccount", 0);
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            })
+        }
 
         function GetCount() {
             var count = sessionStorage.getItem("count");
@@ -415,7 +521,7 @@
                     $('#notiContent').empty();
                     console.log(response);
                     if (response.length == 0) {
-                        $('#notiContent').append($('<a href="#" class="dropdown-item"><i class="fas fa-envelope mr-2"></i> No New Notification Available <span class="float-right text-muted text-sm"> 3 mins</span></a>'));
+                        $('#notiContent').append($('<a href="#" class="dropdown-item"><i class="fas fa-envelope mr-2"></i> No New Notification Available</a>'));
                     }
                     $.each(response, function (index, value) {
                         $('#notiContent').append($('<span href="#" class="dropdown-item"> <i class="fas fa-envelope mr-2"></i>' + value.Title + ' <span class="float-right text-muted text-sm"> <a href="/Ad/'+value.AdURL+'" target="_blank">View Ad</a></span></span>'));

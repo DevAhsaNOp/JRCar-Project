@@ -320,6 +320,7 @@ namespace JRCar.WebApp.Controllers
         #endregion
 
         #region **Notification For Showroom About New Ads**
+
         [HttpGet]
         public JsonResult GetNotificationsList()
         {
@@ -332,7 +333,7 @@ namespace JRCar.WebApp.Controllers
                     NotificationComponent NC = new NotificationComponent();
                     var list = NC.GetNotifications(notificationRegisterTime, ShowroomID);
                     //Update session here for get only new added (Notifications)
-                    Session["LastUpdate"] = DateTime.Now;
+                    Session["LastUpdated"] = DateTime.Now;
                     return new JsonResult { Data = list, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
                 }
                 else
@@ -361,7 +362,7 @@ namespace JRCar.WebApp.Controllers
                     NotificationComponent NC = new NotificationComponent();
                     var list = NC.GetNotificationsCount(notificationRegisterTime, ShowroomID);
                     //Update session here for get only new added (Notifications)
-                    Session["LastUpdate"] = DateTime.Now;
+                    Session["LastUpdated"] = DateTime.Now;
                     return new JsonResult { Data = list, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
                 }
                 else
@@ -388,7 +389,7 @@ namespace JRCar.WebApp.Controllers
                     NotificationComponent NC = new NotificationComponent();
                     var list = NC.ChangeNotificationToAsRead(ShowroomID);
                     //Update session here for get only new added (Notifications)
-                    Session["LastUpdate"] = DateTime.Now;
+                    Session["LastUpdated"] = DateTime.Now;
                     return new JsonResult { Data = list, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
                 }
                 else
@@ -400,6 +401,90 @@ namespace JRCar.WebApp.Controllers
             catch (Exception ex)
             {
                 TempData["ErrorMsg"] = "Error occured on updating Notification As Read!" + ex.Message;
+                throw ex;
+            }
+        }        
+        
+        [HttpGet]
+        public JsonResult GetAnnouncementsList()
+        {
+            try
+            {
+                if (User.Identity.IsAuthenticated)
+                {
+                    var ShowroomID = Convert.ToInt32(Session["Id"]);
+                    var notificationRegisterTime = Session["AnnLastUpdated"] != null ? Convert.ToDateTime(Session["AnnLastUpdated"]) : DateTime.Now;
+                    NotificationComponent NC = new NotificationComponent();
+                    var list = NC.GetAnnouncements(notificationRegisterTime, ShowroomID);
+                    //Update session here for get only new added (Announcements)
+                    Session["AnnLastUpdated"] = DateTime.Now;
+                    return new JsonResult { Data = list, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
+                }
+                else
+                {
+                    //insert into tblNotification values('Hey','Blablablabalb',null,2042,108,1,0,getdate())
+                    var err = (int)HttpStatusCode.BadRequest;
+                    return Json(new { error = err + " Bad Request Error " + "Invalid Request!!" });
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMsg"] = "Error occured on updating Announcements!" + ex.Message;
+                throw ex;
+            }
+        }
+
+        [HttpGet]
+        public JsonResult GetAnnouncementsListCount()
+        {
+            try
+            {
+                if (User.Identity.IsAuthenticated)
+                {
+                    var ShowroomID = Convert.ToInt32(Session["Id"]);
+                    var notificationRegisterTime = Session["AnnLastUpdated"] != null ? Convert.ToDateTime(Session["AnnLastUpdated"]) : DateTime.Now;
+                    NotificationComponent NC = new NotificationComponent();
+                    var list = NC.GetAnnouncementsCount(notificationRegisterTime, ShowroomID);
+                    //Update session here for get only new added (Announcements)
+                    Session["AnnLastUpdated"] = DateTime.Now;
+                    return new JsonResult { Data = list, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
+                }
+                else
+                {
+                    var err = (int)HttpStatusCode.BadRequest;
+                    return Json(new { error = err + " Bad Request Error " + "Invalid Request!!" });
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMsg"] = "Error occured on updating Announcements Count!" + ex.Message;
+                throw ex;
+            }
+        }
+
+        [HttpGet]
+        public JsonResult ChangeAnnouncementsToAsRead()
+        {
+            try
+            {
+                if (User.Identity.IsAuthenticated)
+                {
+                    var ShowroomID = Convert.ToInt32(Session["Id"]);
+                    NotificationComponent NC = new NotificationComponent();
+                    var list = NC.ChangeAnnouncementsToAsRead(ShowroomID);
+                    //Update session here for get only new added (Announcements)
+                    Session["AnnLastUpdated"] = DateTime.Now;
+                    return new JsonResult { Data = list, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
+                }
+                else
+                {
+                    var err = (int)HttpStatusCode.BadRequest;
+                    return Json(new { error = err + " Bad Request Error " + "Invalid Request!!" });
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMsg"] = "Error occured on updating Announcements As Read!" + ex.Message;
                 throw ex;
             }
         }

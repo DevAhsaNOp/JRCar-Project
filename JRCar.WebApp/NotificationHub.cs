@@ -13,5 +13,11 @@ namespace JRCar.WebApp
             var notificationhub = GlobalHost.ConnectionManager.GetHubContext<NotificationHub>();
             notificationhub.Clients.All.DisplayNoti("added");
         }
+        
+        //public static void AnnouncementShow()
+        //{
+        //    var notificationhub = GlobalHost.ConnectionManager.GetHubContext<NotificationHub>();
+        //    notificationhub.Clients.All.DisplayAnno("announcementadded");
+        //}
     }
 }

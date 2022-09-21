@@ -43,6 +43,33 @@ namespace JRCar.DAL.DBLayer
                 throw ex;
             }
         }
+        
+        public bool InsertAnnouncements(tblAnnouncement model)
+        {
+            try
+            {
+                if (model != null)
+                {
+                    UserDb userDb = new UserDb();
+                    var reas = userDb.GetAllShowRoom();
+                    foreach (var item in reas)
+                    {
+                        model.ShowroomID = item.ID;
+                        model.IsRead = false;
+                        model.CreatedOn = DateTime.Now;
+                        _context.tblAnnouncements.Add(model);
+                        Save();
+                    }
+                    return true;
+                }
+                else
+                    return false;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
 
         public void Save()
         {
@@ -83,10 +110,48 @@ namespace JRCar.DAL.DBLayer
                 return false;
             }
         }
+        
+        public bool ChangeAnnouncementsToAsRead(int ShowroomID)
+        {
+            var reas = _context.tblAnnouncements.Where(a => a.IsRead == false && a.ShowroomID == ShowroomID).ToList();
+            if (reas.Count > 0)
+            {
+                foreach (var announcement in reas)
+                {
+                    try
+                    {
+                        announcement.ID = announcement.ID;
+                        announcement.Title = announcement.Title;
+                        announcement.Description = announcement.Description;
+                        announcement.ShowroomID = announcement.ShowroomID;
+                        announcement.IsRead = true;
+                        announcement.CreatedOn = announcement.CreatedOn;
+                        _context.Entry(announcement).State = System.Data.Entity.EntityState.Modified;
+                        Save();
+                    }
+                    catch (Exception ex)
+                    {
+                        return false;
+                        throw ex;
+                    }
+                }
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
 
         public List<NotiShow> GetNotifications(DateTime afterDate, int ShowroomID)
         {
             var reas = _context.tblNotifications.Where(a => (a.CreatedOn > afterDate || a.IsRead == false) && (a.FromShowroomID == ShowroomID)).OrderByDescending(a => a.CreatedOn).Select(x => new NotiShow() { Title = x.Title, Description = x.Description, AdURL = x.AdURL }).ToList();
+            return reas;
+        }
+        
+        public List<NotiShow> GetAnnouncements(DateTime afterDate, int ShowroomID)
+        {
+            var reas = _context.tblAnnouncements.Where(a => (a.CreatedOn > afterDate || a.IsRead == false) && (a.ShowroomID == ShowroomID)).OrderByDescending(a => a.CreatedOn).Select(x => new NotiShow() { Title = x.Title, Description = x.Description, CreatedOn = x.CreatedOn }).ToList();
             return reas;
         }
 
@@ -95,10 +160,22 @@ namespace JRCar.DAL.DBLayer
             var reas = _context.tblNotifications.Where(a => a.FromShowroomID == ShowroomID).OrderByDescending(a => a.CreatedOn).Select(x => new NotiShow() { Title = x.Title, Description = x.Description, AdURL = x.AdURL, CreatedOn = x.CreatedOn, FromUserName = x.tblUser.Name }).ToList();
             return reas;
         }
+        
+        public List<NotiShow> GetAllAnnouncements(int ShowroomID)
+        {
+            var reas = _context.tblAnnouncements.Where(a => a.ShowroomID == ShowroomID).OrderByDescending(a => a.CreatedOn).Select(x => new NotiShow() { Title = x.Title, Description = x.Description, CreatedOn = x.CreatedOn }).ToList();
+            return reas;
+        }
 
         public int GetNotificationsCount(DateTime afterDate, int ShowroomID)
         {
             var reas = _context.tblNotifications.Where(a => a.IsRead == false && a.FromShowroomID == ShowroomID).Select(x => new NotiShow() { Title = x.Title, Description = x.Description, AdURL = x.AdURL }).ToList().Count;
+            return reas;
+        }
+        
+        public int GetAnnouncementsCount(DateTime afterDate, int ShowroomID)
+        {
+            var reas = _context.tblAnnouncements.Where(a => a.IsRead == false && a.ShowroomID == ShowroomID).Select(x => new NotiShow() { Title = x.Title, Description = x.Description}).ToList().Count;
             return reas;
         }
     }

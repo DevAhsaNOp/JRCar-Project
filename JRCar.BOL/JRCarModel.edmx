@@ -60,7 +60,7 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="ClientID" Type="int" Nullable="false" />
+          <Property Name="ShowroomID" Type="int" />
           <Property Name="Title" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="Description" Type="varchar(max)" Nullable="false" />
           <Property Name="CreatedOn" Type="datetime" Nullable="false" />
@@ -464,20 +464,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_dbo_tblAnnouncements_dbo_tblClients_ClientID">
-          <End Role="tblClients" Type="Self.tblClients" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="tblAnnouncements" Type="Self.tblAnnouncements" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="tblClients">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="tblAnnouncements">
-              <PropertyRef Name="ClientID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_dbo_tblBlogs_dbo_tblShowrooms_Showrooms_ID">
           <End Role="tblShowrooms" Type="Self.tblShowrooms" Multiplicity="0..1" />
           <End Role="tblBlogs" Type="Self.tblBlogs" Multiplicity="*" />
@@ -719,6 +705,18 @@
             </Principal>
             <Dependent Role="tblAddress">
               <PropertyRef Name="Area" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblAnnouncements_tblShowrooms">
+          <End Role="tblShowrooms" Type="Self.tblShowrooms" Multiplicity="0..1" />
+          <End Role="tblAnnouncements" Type="Self.tblAnnouncements" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblShowrooms">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="tblAnnouncements">
+              <PropertyRef Name="ShowroomID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1047,10 +1045,6 @@
             <End Role="tblRoles" EntitySet="tblRoles" />
             <End Role="tblAdmins" EntitySet="tblAdmins" />
           </AssociationSet>
-          <AssociationSet Name="FK_dbo_tblAnnouncements_dbo_tblClients_ClientID" Association="Self.FK_dbo_tblAnnouncements_dbo_tblClients_ClientID">
-            <End Role="tblClients" EntitySet="tblClients" />
-            <End Role="tblAnnouncements" EntitySet="tblAnnouncements" />
-          </AssociationSet>
           <AssociationSet Name="FK_dbo_tblBlogs_dbo_tblShowrooms_Showrooms_ID" Association="Self.FK_dbo_tblBlogs_dbo_tblShowrooms_Showrooms_ID">
             <End Role="tblShowrooms" EntitySet="tblShowrooms" />
             <End Role="tblBlogs" EntitySet="tblBlogs" />
@@ -1122,6 +1116,10 @@
           <AssociationSet Name="FK_tblAddress_tblZone" Association="Self.FK_tblAddress_tblZone">
             <End Role="tblZone" EntitySet="tblZone" />
             <End Role="tblAddress" EntitySet="tblAddress" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblAnnouncements_tblShowrooms" Association="Self.FK_tblAnnouncements_tblShowrooms">
+            <End Role="tblShowrooms" EntitySet="tblShowrooms" />
+            <End Role="tblAnnouncements" EntitySet="tblAnnouncements" />
           </AssociationSet>
           <AssociationSet Name="FK_tblAppointments_tblCars" Association="Self.FK_tblAppointments_tblCars">
             <End Role="tblCars" EntitySet="tblCars" />
@@ -1229,7 +1227,6 @@
           <EntitySet Name="sysdiagrams" EntityType="jrcarModel.sysdiagram" />
           <EntitySet Name="tblAddresses" EntityType="jrcarModel.tblAddress" />
           <EntitySet Name="tblAdmins" EntityType="jrcarModel.tblAdmin" />
-          <EntitySet Name="tblAnnouncements" EntityType="jrcarModel.tblAnnouncement" />
           <EntitySet Name="tblBlogs" EntityType="jrcarModel.tblBlog" />
           <EntitySet Name="tblCars" EntityType="jrcarModel.tblCar" />
           <EntitySet Name="tblCategories" EntityType="jrcarModel.tblCategory" />
@@ -1279,10 +1276,6 @@
           <AssociationSet Name="FK_dbo_tblAdmins_dbo_tblRoles_tblRoleID" Association="jrcarModel.FK_dbo_tblAdmins_dbo_tblRoles_tblRoleID">
             <End Role="tblRole" EntitySet="tblRoles" />
             <End Role="tblAdmin" EntitySet="tblAdmins" />
-          </AssociationSet>
-          <AssociationSet Name="FK_dbo_tblAnnouncements_dbo_tblClients_ClientID" Association="jrcarModel.FK_dbo_tblAnnouncements_dbo_tblClients_ClientID">
-            <End Role="tblClient" EntitySet="tblClients" />
-            <End Role="tblAnnouncement" EntitySet="tblAnnouncements" />
           </AssociationSet>
           <AssociationSet Name="FK_dbo_tblBlogs_dbo_tblShowrooms_Showrooms_ID" Association="jrcarModel.FK_dbo_tblBlogs_dbo_tblShowrooms_Showrooms_ID">
             <End Role="tblShowroom" EntitySet="tblShowrooms" />
@@ -1433,6 +1426,11 @@
             <End Role="tblUser" EntitySet="tblUsers" />
             <End Role="tblFavAdd" EntitySet="tblFavAdds" />
           </AssociationSet>
+          <EntitySet Name="tblAnnouncements" EntityType="jrcarModel.tblAnnouncement" />
+          <AssociationSet Name="FK_tblAnnouncements_tblShowrooms" Association="jrcarModel.FK_tblAnnouncements_tblShowrooms">
+            <End Role="tblShowroom" EntitySet="tblShowrooms" />
+            <End Role="tblAnnouncement" EntitySet="tblAnnouncements" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="C__MigrationHistory">
           <Key>
@@ -1490,18 +1488,6 @@
           <Property Name="OTP" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="Verified" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="tblRole" Relationship="jrcarModel.FK_dbo_tblAdmins_dbo_tblRoles_tblRoleID" FromRole="tblAdmin" ToRole="tblRole" />
-        </EntityType>
-        <EntityType Name="tblAnnouncement">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ClientID" Type="Int32" Nullable="false" />
-          <Property Name="Title" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="Description" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="IsRead" Type="Boolean" />
-          <NavigationProperty Name="tblClient" Relationship="jrcarModel.FK_dbo_tblAnnouncements_dbo_tblClients_ClientID" FromRole="tblAnnouncement" ToRole="tblClient" />
         </EntityType>
         <EntityType Name="tblBlog">
           <Key>
@@ -1597,7 +1583,6 @@
           <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="UpdatedOn" Type="DateTime" Precision="3" />
           <Property Name="TokenID" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="tblAnnouncements" Relationship="jrcarModel.FK_dbo_tblAnnouncements_dbo_tblClients_ClientID" FromRole="tblClient" ToRole="tblAnnouncement" />
           <NavigationProperty Name="tblToken" Relationship="jrcarModel.FK_dbo_tblClients_dbo_tblTokens_TokenID" FromRole="tblClient" ToRole="tblToken" />
           <NavigationProperty Name="tblNotifications" Relationship="jrcarModel.FK_dbo_tblNotifications_dbo_tblClients_ClientID" FromRole="tblClient" ToRole="tblNotification1" />
         </EntityType>
@@ -1723,6 +1708,7 @@
           <NavigationProperty Name="tblUnion" Relationship="jrcarModel.FK_tblShowrooms_tblUnions" FromRole="tblShowroom" ToRole="tblUnion" />
           <NavigationProperty Name="tblAppointments" Relationship="jrcarModel.FK_tblAppointments_tblShowrooms" FromRole="tblShowroom" ToRole="tblAppointment" />
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="tblAnnouncements" Relationship="jrcarModel.FK_tblAnnouncements_tblShowrooms" FromRole="tblShowroom" ToRole="tblAnnouncement" />
         </EntityType>
         <EntityType Name="tblState">
           <Key>
@@ -1943,20 +1929,6 @@
             </Principal>
             <Dependent Role="tblAdmin">
               <PropertyRef Name="tblRoleID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_dbo_tblAnnouncements_dbo_tblClients_ClientID">
-          <End Type="jrcarModel.tblClient" Role="tblClient" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="jrcarModel.tblAnnouncement" Role="tblAnnouncement" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="tblClient">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="tblAnnouncement">
-              <PropertyRef Name="ClientID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2527,6 +2499,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="tblAnnouncement">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ShowroomID" Type="Int32" />
+          <Property Name="Title" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="IsRead" Type="Boolean" />
+          <NavigationProperty Name="tblShowroom" Relationship="jrcarModel.FK_tblAnnouncements_tblShowrooms" FromRole="tblAnnouncement" ToRole="tblShowroom" />
+        </EntityType>
+        <Association Name="FK_tblAnnouncements_tblShowrooms">
+          <End Type="jrcarModel.tblShowroom" Role="tblShowroom" Multiplicity="0..1" />
+          <End Type="jrcarModel.tblAnnouncement" Role="tblAnnouncement" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblShowroom">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="tblAnnouncement">
+              <PropertyRef Name="ShowroomID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2582,18 +2578,6 @@
                 <ScalarProperty Name="Number" ColumnName="Number" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="tblAnnouncements">
-            <EntityTypeMapping TypeName="jrcarModel.tblAnnouncement">
-              <MappingFragment StoreEntitySet="tblAnnouncements">
-                <ScalarProperty Name="IsRead" ColumnName="IsRead" />
-                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="Title" ColumnName="Title" />
-                <ScalarProperty Name="ClientID" ColumnName="ClientID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -3005,6 +2989,18 @@
                 <ScalarProperty Name="Isactive" ColumnName="Isactive" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="CarID" ColumnName="CarID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblAnnouncements">
+            <EntityTypeMapping TypeName="jrcarModel.tblAnnouncement">
+              <MappingFragment StoreEntitySet="tblAnnouncements">
+                <ScalarProperty Name="IsRead" ColumnName="IsRead" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="ShowroomID" ColumnName="ShowroomID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
