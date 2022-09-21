@@ -49,9 +49,11 @@
                                         <span>
                                             <a href="javascript:void(0)" class="text-bold">@item.FromUserName</a> New car post of @item.Title
                                         </span>
-                                        <a class="btn btn-primary text-white" href="/Ad/@item.AdURL">View Ad</a>
+                                        @if (item.AdURL != null)
+                                        {
+                                            <a class="btn btn-primary text-white" href="/Ad/@item.AdURL">View Ad</a>
+                                        }
                                     </h3>
-
                                 </div>
                             </div>
                             <!-- END timeline item -->
@@ -68,7 +70,7 @@
     </section>
     <!-- /.content -->
     <script>
-        setInterval(RemoveDates(), 100);
+        setTimeout(RemoveDates(), 1);
 
         function RemoveDates() {
             var val = document.querySelectorAll('.time-label .bg-red')

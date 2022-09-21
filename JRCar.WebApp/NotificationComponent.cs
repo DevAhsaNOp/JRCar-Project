@@ -114,7 +114,9 @@ namespace JRCar.WebApp
 
         public List<NotiShow> GetAllNotifications(int ShowroomID)
         {
-            var reas = repo.GetAllNotifications(ShowroomID);
+            var reas1 = repo.GetAllNotifications(ShowroomID);
+            var reas2 = repo.GetAllAnnouncements(ShowroomID);
+            var reas = reas1.Concat(reas2).OrderByDescending(x => x.CreatedOn).ToList();
             return reas;
         }
 

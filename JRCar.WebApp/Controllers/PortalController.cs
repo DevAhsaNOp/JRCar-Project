@@ -128,31 +128,6 @@ namespace JRCar.WebApp.Controllers
         }
         #endregion
 
-        public ActionResult NotificationList()
-        {
-            try
-            {
-                if (User.Identity.IsAuthenticated)
-                {
-                    var ShowroomID = Convert.ToInt32(Session["Id"]);
-                    NotificationComponent NC = new NotificationComponent();
-                    var list = NC.GetAllNotifications(ShowroomID);
-                    return View(list);
-                }
-                else
-                {
-                    //insert into tblNotification values('Hey','Blablablabalb',null,2042,108,1,0,getdate())
-                    var err = (int)HttpStatusCode.BadRequest;
-                    return Json(new { error = err + " Bad Request Error " + "Invalid Request!!" });
-                }
-            }
-            catch (Exception ex)
-            {
-                TempData["ErrorMsg"] = "Error occured on updating Notification!" + ex.Message;
-                throw ex;
-            }
-        }
-
         #region **Any Account Profile Update**
         [AcceptVerbs(HttpVerbs.Get)]
         [Authorize(Roles = "Admin,Showroom,Union")]
@@ -319,7 +294,32 @@ namespace JRCar.WebApp.Controllers
         }
         #endregion
 
-        #region **Notification For Showroom About New Ads**
+        #region **Notification For Showroom About New Ads and Union Announcements**
+
+        public ActionResult NotificationList()
+        {
+            try
+            {
+                if (User.Identity.IsAuthenticated)
+                {
+                    var ShowroomID = Convert.ToInt32(Session["Id"]);
+                    NotificationComponent NC = new NotificationComponent();
+                    var list = NC.GetAllNotifications(ShowroomID);
+                    return View(list);
+                }
+                else
+                {
+                    //insert into tblNotification values('Hey','Blablablabalb',null,2042,108,1,0,getdate())
+                    var err = (int)HttpStatusCode.BadRequest;
+                    return Json(new { error = err + " Bad Request Error " + "Invalid Request!!" });
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMsg"] = "Error occured on updating Notification!" + ex.Message;
+                throw ex;
+            }
+        }
 
         [HttpGet]
         public JsonResult GetNotificationsList()
@@ -403,8 +403,8 @@ namespace JRCar.WebApp.Controllers
                 TempData["ErrorMsg"] = "Error occured on updating Notification As Read!" + ex.Message;
                 throw ex;
             }
-        }        
-        
+        }
+
         [HttpGet]
         public JsonResult GetAnnouncementsList()
         {
@@ -773,7 +773,7 @@ namespace JRCar.WebApp.Controllers
         #endregion
 
         #region **Showroom Car Remove & Mark As Sold**
-        
+
         [AcceptVerbs(HttpVerbs.Post)]
         [Authorize(Roles = "Showroom")]
         public ActionResult ShowroomCarRemoved(int AdID)
@@ -790,7 +790,7 @@ namespace JRCar.WebApp.Controllers
                 return Json("False", JsonRequestBehavior.AllowGet);
             }
         }
-        
+
         [AcceptVerbs(HttpVerbs.Post)]
         [Authorize(Roles = "Showroom")]
         public ActionResult ShowroomCarSold(int AdID)
@@ -806,7 +806,7 @@ namespace JRCar.WebApp.Controllers
                 TempData["ErrorMsg"] = "Something went wrong. Please try again!";
                 return Json("False", JsonRequestBehavior.AllowGet);
             }
-        } 
+        }
 
         #endregion
 
@@ -840,6 +840,44 @@ namespace JRCar.WebApp.Controllers
         #endregion
 
         #region **Unions Action Methods**
+
+        #region **Make New Announcements**
+
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult MakeAnnouncment(string Title, string Message)
+        {
+            if (Title != null && Message != null)
+            {
+                if (Title.Length > 1 && Message.Length > 1)
+                {
+                    NotificationRepo notiRepo = new NotificationRepo();
+                    tblAnnouncement tbl = new tblAnnouncement()
+                    {
+                        Title = Title,
+                        Description = Message
+                    };
+                    var reas = notiRepo.InsertAnnouncements(tbl);
+                    if (reas)
+                    {
+                        return Json(true, JsonRequestBehavior.AllowGet);
+                    }
+                    else
+                    {
+                        return Json(false, JsonRequestBehavior.AllowGet);
+                    }
+                }
+                else
+                {
+                    return Json(false, JsonRequestBehavior.AllowGet);
+                }
+            }
+            else
+            {
+                return Json(false, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        #endregion
 
         #region **Manage User**
 
@@ -1027,8 +1065,8 @@ namespace JRCar.WebApp.Controllers
             }
         }
 
-        #endregion        
-        
+        #endregion
+
         #region **Manage Showroom**
 
         [AcceptVerbs(HttpVerbs.Get)]
