@@ -90,6 +90,12 @@ namespace JRCar.DAL.DBLayer
             return reas;
         }
 
+        public List<NotiShow> GetAllNotifications(int ShowroomID)
+        {
+            var reas = _context.tblNotifications.Where(a => a.FromShowroomID == ShowroomID).OrderByDescending(a => a.CreatedOn).Select(x => new NotiShow() { Title = x.Title, Description = x.Description, AdURL = x.AdURL, CreatedOn = x.CreatedOn, FromUserName = x.tblUser.Name }).ToList();
+            return reas;
+        }
+
         public int GetNotificationsCount(DateTime afterDate, int ShowroomID)
         {
             var reas = _context.tblNotifications.Where(a => a.IsRead == false && a.FromShowroomID == ShowroomID).Select(x => new NotiShow() { Title = x.Title, Description = x.Description, AdURL = x.AdURL }).ToList().Count;
@@ -103,5 +109,9 @@ namespace JRCar.DAL.DBLayer
         public string Description { get; set; }
         public string AdURL { get; set; }
         public bool? IsRead { get; set; }
+        public DateTime CreatedOn { get; set; }
+        public string FromUserName { get; set; }
+        public virtual tblShowroom tblShowroom { get; set; }
+        public virtual tblUser tblUser { get; set; }
     }
 }

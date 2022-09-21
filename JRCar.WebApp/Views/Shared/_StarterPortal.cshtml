@@ -78,9 +78,9 @@
         <div class="wrapper">
 
             <!-- Preloader -->
-            <div class="preloader flex-column justify-content-center align-items-center">
+            @*<div class="preloader flex-column justify-content-center align-items-center">
                 <img class="animation__wobble" src="~/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
-            </div>
+            </div>*@
 
             <!-- Navbar -->
             @Html.Partial("_HeaderPortal")
@@ -415,7 +415,7 @@
                     $('#notiContent').empty();
                     console.log(response);
                     if (response.length == 0) {
-                        $('#notiContent').append($('<a href="#" class="dropdown-item"><i class="fas fa-envelope mr-2"></i> No Notification Available <span class="float-right text-muted text-sm"> 3 mins</span></a>'));
+                        $('#notiContent').append($('<a href="#" class="dropdown-item"><i class="fas fa-envelope mr-2"></i> No New Notification Available <span class="float-right text-muted text-sm"> 3 mins</span></a>'));
                     }
                     $.each(response, function (index, value) {
                         $('#notiContent').append($('<span href="#" class="dropdown-item"> <i class="fas fa-envelope mr-2"></i>' + value.Title + ' <span class="float-right text-muted text-sm"> <a href="/Ad/'+value.AdURL+'" target="_blank">View Ad</a></span></span>'));

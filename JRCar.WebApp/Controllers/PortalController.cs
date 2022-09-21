@@ -13,11 +13,11 @@ using System.Collections;
 using System.Linq;
 using JRCar.DAL.DBLayer;
 using System.Xml.Linq;
-using Microsoft.Reporting.WebForms;
+//using Microsoft.Reporting.WebForms;
 using System.Data;
 using ClosedXML.Excel;
 using System.Text.RegularExpressions;
-using Microsoft.ReportingServices.ReportProcessing.ReportObjectModel;
+//using Microsoft.ReportingServices.ReportProcessing.ReportObjectModel;
 using System.Web.Helpers;
 using DocumentFormat.OpenXml.Office2010.Excel;
 using DocumentFormat.OpenXml.Spreadsheet;
@@ -55,19 +55,19 @@ namespace JRCar.WebApp.Controllers
             return View(reas);
         }
 
-        public FileResult DownloadPDF()
-        {
-            var id = Convert.ToInt32(Session["Id"]);
-            var reas = RepoObj1.GetAllShowroomAdsForReport(id);
-            var date = DateTime.Now.ToString("dd/MMM/yyyy");
-            string filename = reas.FirstOrDefault().ShowroomName + "_" + date + "_" + "report" + ".pdf";
-            LocalReport localReport = new LocalReport();
-            localReport.DataSources.Clear();
-            localReport.DataSources.Add(new ReportDataSource("dsData", reas));
-            localReport.ReportPath = Server.MapPath("~/Reports/ShowroomCars.rdlc");
-            byte[] bytes = localReport.Render("PDF");
-            return File(bytes, "application/pdf", filename);
-        }
+        //public FileResult DownloadPDF()
+        //{
+        //    var id = Convert.ToInt32(Session["Id"]);
+        //    var reas = RepoObj1.GetAllShowroomAdsForReport(id);
+        //    var date = DateTime.Now.ToString("dd/MMM/yyyy");
+        //    string filename = reas.FirstOrDefault().ShowroomName + "_" + date + "_" + "report" + ".pdf";
+        //    LocalReport localReport = new LocalReport();
+        //    localReport.DataSources.Clear();
+        //    localReport.DataSources.Add(new ReportDataSource("dsData", reas));
+        //    localReport.ReportPath = Server.MapPath("~/Reports/ShowroomCars.rdlc");
+        //    byte[] bytes = localReport.Render("PDF");
+        //    return File(bytes, "application/pdf", filename);
+        //}
 
         public FileResult DownloadExcel()
         {
@@ -127,6 +127,31 @@ namespace JRCar.WebApp.Controllers
 
         }
         #endregion
+
+        public ActionResult NotificationList()
+        {
+            try
+            {
+                if (User.Identity.IsAuthenticated)
+                {
+                    var ShowroomID = Convert.ToInt32(Session["Id"]);
+                    NotificationComponent NC = new NotificationComponent();
+                    var list = NC.GetAllNotifications(ShowroomID);
+                    return View(list);
+                }
+                else
+                {
+                    //insert into tblNotification values('Hey','Blablablabalb',null,2042,108,1,0,getdate())
+                    var err = (int)HttpStatusCode.BadRequest;
+                    return Json(new { error = err + " Bad Request Error " + "Invalid Request!!" });
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMsg"] = "Error occured on updating Notification!" + ex.Message;
+                throw ex;
+            }
+        }
 
         #region **Any Account Profile Update**
         [AcceptVerbs(HttpVerbs.Get)]

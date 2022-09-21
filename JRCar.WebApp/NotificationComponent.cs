@@ -72,6 +72,12 @@ namespace JRCar.WebApp
             return reas;
         }
 
+        public List<NotiShow> GetAllNotifications(int ShowroomID)
+        {
+            var reas = repo.GetAllNotifications(ShowroomID);
+            return reas;
+        }
+
         public bool ChangeNotificationToAsRead(int ShowroomID)
         {
 
