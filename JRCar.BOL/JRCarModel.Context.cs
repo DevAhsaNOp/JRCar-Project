@@ -57,5 +57,6 @@ namespace JRCar.BOL
         public virtual DbSet<tblCarFeature> tblCarFeatures { get; set; }
         public virtual DbSet<tblFavAdd> tblFavAdds { get; set; }
         public virtual DbSet<tblAnnouncement> tblAnnouncements { get; set; }
+        public virtual DbSet<ANNOVIEW> ANNOVIEWs { get; set; }
     }
 }

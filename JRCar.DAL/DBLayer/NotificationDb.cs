@@ -169,7 +169,7 @@ namespace JRCar.DAL.DBLayer
 
         public List<NotiShow> GetAllAnnouncement()
         {
-            var reas = _context.tblAnnouncements.OrderByDescending(a => a.CreatedOn).Select(x => new NotiShow() { Title = x.Title, Description = x.Description, CreatedOn = x.CreatedOn, FromUserName = "JRCar Union" }).Distinct().ToList();
+            var reas = _context.ANNOVIEWs.OrderByDescending(a => a.Time).Select(x => new NotiShow() { Title = x.Title, Description = x.Description, Time = x.Date, Date = x.Time, FromUserName = "JRCar Union" }).ToList();
             return reas;
         }
 
@@ -193,6 +193,8 @@ namespace JRCar.DAL.DBLayer
         public string AdURL { get; set; }
         public bool? IsRead { get; set; }
         public DateTime CreatedOn { get; set; }
+        public string Time { get; set; }
+        public string Date { get; set; }
         public string FromUserName { get; set; }
         public bool IsNoti { get; set; }
         public bool IsAnno { get; set; }

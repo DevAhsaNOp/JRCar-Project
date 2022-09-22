@@ -450,6 +450,18 @@
           <Property Name="Latitude" Type="decimal" Precision="18" Scale="8" />
           <Property Name="Longitude" Type="decimal" Precision="18" Scale="8" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'jrcar.dbo.ANNOVIEW' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="ANNOVIEW">
+          <Key>
+            <PropertyRef Name="Title" />
+            <PropertyRef Name="Description" />
+          </Key>
+          <Property Name="Date" Type="char" MaxLength="5" />
+          <Property Name="Time" Type="varchar" MaxLength="10" />
+          <Property Name="Title" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Description" Type="varchar(max)" Nullable="false" />
+        </EntityType>
         <Association Name="FK_dbo_tblAdmins_dbo_tblRoles_tblRoleID">
           <End Role="tblRoles" Type="Self.tblRoles" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -1041,6 +1053,14 @@
           <EntitySet Name="tblUserAdds" EntityType="Self.tblUserAdds" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblUsers" EntityType="Self.tblUsers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblZone" EntityType="Self.tblZone" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ANNOVIEW" EntityType="Self.ANNOVIEW" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [ANNOVIEW].[Date] AS [Date], 
+    [ANNOVIEW].[Time] AS [Time], 
+    [ANNOVIEW].[Title] AS [Title], 
+    [ANNOVIEW].[Description] AS [Description]
+    FROM [dbo].[ANNOVIEW] AS [ANNOVIEW]</DefiningQuery>
+          </EntitySet>
           <AssociationSet Name="FK_dbo_tblAdmins_dbo_tblRoles_tblRoleID" Association="Self.FK_dbo_tblAdmins_dbo_tblRoles_tblRoleID">
             <End Role="tblRoles" EntitySet="tblRoles" />
             <End Role="tblAdmins" EntitySet="tblAdmins" />
@@ -1431,6 +1451,7 @@
             <End Role="tblShowroom" EntitySet="tblShowrooms" />
             <End Role="tblAnnouncement" EntitySet="tblAnnouncements" />
           </AssociationSet>
+          <EntitySet Name="ANNOVIEWs" EntityType="jrcarModel.ANNOVIEW" />
           </EntityContainer>
         <EntityType Name="C__MigrationHistory">
           <Key>
@@ -2523,6 +2544,16 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="ANNOVIEW">
+          <Key>
+            <PropertyRef Name="Title" />
+            <PropertyRef Name="Description" />
+          </Key>
+          <Property Name="Date" Type="String" MaxLength="5" FixedLength="true" Unicode="false" />
+          <Property Name="Time" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="Title" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3002,6 +3033,16 @@
                 <ScalarProperty Name="Title" ColumnName="Title" />
                 <ScalarProperty Name="ShowroomID" ColumnName="ShowroomID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ANNOVIEWs">
+            <EntityTypeMapping TypeName="jrcarModel.ANNOVIEW">
+              <MappingFragment StoreEntitySet="ANNOVIEW">
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Time" ColumnName="Time" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

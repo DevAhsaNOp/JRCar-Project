@@ -102,19 +102,23 @@
                         @foreach (var item in Model)
                         {
                             <div class="time-label">
-                                <span class="bg-red">@item.CreatedOn.ToString("dd MMM, yyyy")</span>
+                                <span class="bg-red">@Convert.ToDateTime(item.Date).ToString("dd MMM, yyyy")</span>
                             </div>
                             <!-- /.timeline-label -->
                             <!-- timeline item -->
                             <div>
-                                <i class="fas fa-user bg-green"></i>
+                                <i class="fas fa-bullhorn bg-red"></i>
                                 <div class="timeline-item">
-                                    <span class="time"><i class="fas fa-clock"></i> @item.CreatedOn.ToShortTimeString()</span>
-                                    <h3 class="timeline-header no-border" style="display: flex;align-items: center;justify-content: space-between;">
-                                        <span>
-                                            <a href="javascript:void(0)" class="text-bold">@item.FromUserName</a> New car post of @item.Title
-                                        </span>
-                                    </h3>
+                                    <span class="time"><i class="fas fa-clock"></i>  @item.Time</span>
+                                    <h3 class="timeline-header"><a href="#">@item.FromUserName</a> sent you an Announcement</h3>
+                                    <div class="timeline-body">
+                                        <h4 style="text-transform:capitalize !important">
+                                            @item.Title
+                                        </h4>
+                                        <p>
+                                            @item.Description
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
                             <!-- END timeline item -->
