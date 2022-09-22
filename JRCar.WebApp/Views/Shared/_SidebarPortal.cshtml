@@ -61,9 +61,9 @@
                 @if (User.IsInRole("Admin") || User.IsInRole("Union"))
                 {
                     <li class="nav-item">
-                        <a href="#" class="nav-link" style="padding-left: 14px;" id="AnnoPage" data-toggle="modal" data-target="#exampleModal" data-whatever="getbootstrap">
+                        <a href="@Url.Action("MakeAnnouncment","Portal")" class="nav-link" style="padding-left: 14px;" id="AnnoPage">
                             <i class="fas fa-envelope nav-icon" style="margin-left: 0px;"></i>
-                            <p>Make Announcment</p>
+                            <p>Announcments</p>
                         </a>
                     </li>
                     <li class="nav-item menu-open">

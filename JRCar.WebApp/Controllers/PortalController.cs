@@ -843,6 +843,30 @@ namespace JRCar.WebApp.Controllers
 
         #region **Make New Announcements**
 
+        [AcceptVerbs(HttpVerbs.Get)]
+        public ActionResult MakeAnnouncment()
+        {
+            try
+            {
+                if (User.Identity.IsAuthenticated)
+                {
+                    NotificationComponent NC = new NotificationComponent();
+                    var list = NC.GetAllAnnouncement();
+                    return View(list);
+                }
+                else
+                {
+                    var err = (int)HttpStatusCode.BadRequest;
+                    return Json(new { error = err + " Bad Request Error " + "Invalid Request!!" });
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMsg"] = "Error occured on updating Announcement!" + ex.Message;
+                throw ex;
+            }
+        }
+
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult MakeAnnouncment(string Title, string Message)
         {

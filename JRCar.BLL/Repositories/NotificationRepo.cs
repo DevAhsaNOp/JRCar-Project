@@ -109,6 +109,12 @@ namespace JRCar.BLL.Repositories
             return reas;
         }
 
+        public List<NotiShow> GetAllAnnouncement()
+        {
+            var reas = DbObj.GetAllAnnouncement();
+            return reas;
+        }
+
         public int GetAnnouncementsCount(DateTime afterDate, int ShowroomID)
         {
             var reas = DbObj.GetAnnouncementsCount(afterDate, ShowroomID);

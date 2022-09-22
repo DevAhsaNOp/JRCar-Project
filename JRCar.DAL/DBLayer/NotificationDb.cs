@@ -167,6 +167,12 @@ namespace JRCar.DAL.DBLayer
             return reas;
         }
 
+        public List<NotiShow> GetAllAnnouncement()
+        {
+            var reas = _context.tblAnnouncements.OrderByDescending(a => a.CreatedOn).Select(x => new NotiShow() { Title = x.Title, Description = x.Description, CreatedOn = x.CreatedOn, FromUserName = "JRCar Union" }).Distinct().ToList();
+            return reas;
+        }
+
         public int GetNotificationsCount(DateTime afterDate, int ShowroomID)
         {
             var reas = _context.tblNotifications.Where(a => a.IsRead == false && a.FromShowroomID == ShowroomID).Select(x => new NotiShow() { Title = x.Title, Description = x.Description, AdURL = x.AdURL }).ToList().Count;

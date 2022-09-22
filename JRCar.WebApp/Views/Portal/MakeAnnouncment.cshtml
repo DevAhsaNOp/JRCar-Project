@@ -1,0 +1,151 @@
+﻿@model IEnumerable<JRCar.DAL.DBLayer.NotiShow>
+
+@{
+    ViewBag.Title = "Announcments List";
+    Layout = "~/Views/Shared/_StarterPortal.cshtml";
+}
+
+@if (User.Identity.IsAuthenticated)
+{
+    <script>
+        function fnSuccess(data) {
+            $('#exampleModal').modal('hide');
+
+            var Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000
+            });
+
+            if (data) {
+                Toast.fire({
+                    icon: 'success',
+                    title: 'New Announcment hase been posted Succesfully!'
+                });
+            }
+            else {
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Something went wrong. Please try again Later!'
+                })
+            }
+
+        }
+    </script>
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>All Announcment</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">All Announcment</li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <button type="button" class="btn btn-primary mb-3 float-right" data-toggle="modal" data-target="#exampleModal" data-whatever="getbootstrap">
+                <i class="fas fa-envelope nav-icon" style="margin-left: 0px;"></i>
+                Make New Announcment
+            </button>
+            @using (Ajax.BeginForm("MakeAnnouncment", "Portal", new AjaxOptions
+            {
+                HttpMethod = "POST",
+                OnSuccess = "fnSuccess",
+                Confirm = "Do you want to make this Announcment?"
+            }))
+            {
+                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">New Announcment</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form>
+                                    <div class="form-group">
+                                        <label for="recipient-name" class="col-form-label">Title:</label>
+                                        <input type="text" class="form-control" id="recipient-name" name="Title" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="message-text" class="col-form-label">Message:</label>
+                                        <textarea class="form-control" id="message-text" name="Message" required></textarea>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Send Announcment</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+            <!-- Timelime example  -->
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- The time line -->
+                    <div class="timeline">
+                        <!-- timeline time label -->
+                        @foreach (var item in Model)
+                        {
+                            <div class="time-label">
+                                <span class="bg-red">@item.CreatedOn.ToString("dd MMM, yyyy")</span>
+                            </div>
+                            <!-- /.timeline-label -->
+                            <!-- timeline item -->
+                            <div>
+                                <i class="fas fa-user bg-green"></i>
+                                <div class="timeline-item">
+                                    <span class="time"><i class="fas fa-clock"></i> @item.CreatedOn.ToShortTimeString()</span>
+                                    <h3 class="timeline-header no-border" style="display: flex;align-items: center;justify-content: space-between;">
+                                        <span>
+                                            <a href="javascript:void(0)" class="text-bold">@item.FromUserName</a> New car post of @item.Title
+                                        </span>
+                                    </h3>
+                                </div>
+                            </div>
+                            <!-- END timeline item -->
+                        }
+                        <div>
+                            <i class="fas fa-clock bg-gray"></i>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.col -->
+            </div>
+        </div>
+        <!-- /.timeline -->
+    </section>
+    <!-- /.content -->
+    <script>
+        setTimeout(RemoveDates(), 1);
+
+        function RemoveDates() {
+            var val = document.querySelectorAll('.time-label .bg-red')
+            for (let index = 0; index < val.length; index++) {
+                if (index > 0) {
+                    if (val[index].innerHTML == val[index - 1].innerHTML) {
+                        val[index].remove();
+                    }
+                    else {
+                    }
+                }
+                else {
+                }
+            }
+        }
+    </script>
+}

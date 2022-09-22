@@ -152,6 +152,12 @@ namespace JRCar.WebApp
             return reas;
         }
 
+        public List<NotiShow> GetAllAnnouncement()
+        {
+            var reas = repo.GetAllAnnouncement();
+            return reas;
+        }
+
         public bool ChangeAnnouncementsToAsRead(int ShowroomID)
         {
 

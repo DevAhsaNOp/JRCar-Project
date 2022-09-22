@@ -3615,6 +3615,7 @@
     <Content Include="Views\Portal\UserEdit.cshtml" />
     <Content Include="Views\Portal\ListofShowroomAds.cshtml" />
     <Content Include="Views\Portal\NotificationList.cshtml" />
+    <Content Include="Views\Portal\MakeAnnouncment.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
