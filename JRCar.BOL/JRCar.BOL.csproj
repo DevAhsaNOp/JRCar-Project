@@ -156,6 +156,9 @@
     <Compile Include="tblNotification1.cs">
       <DependentUpon>JRCarModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="tblPayment.cs">
+      <DependentUpon>JRCarModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="tblRole.cs">
       <DependentUpon>JRCarModel.tt</DependentUpon>
     </Compile>

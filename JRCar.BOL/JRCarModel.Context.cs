@@ -42,7 +42,6 @@ namespace JRCar.BOL
         public virtual DbSet<tblNotification1> tblNotifications1 { get; set; }
         public virtual DbSet<tblRole> tblRoles { get; set; }
         public virtual DbSet<tblSearchHist> tblSearchHists { get; set; }
-        public virtual DbSet<tblShowroom> tblShowrooms { get; set; }
         public virtual DbSet<tblState> tblStates { get; set; }
         public virtual DbSet<tblSubCategory> tblSubCategories { get; set; }
         public virtual DbSet<tblToken> tblTokens { get; set; }
@@ -58,5 +57,7 @@ namespace JRCar.BOL
         public virtual DbSet<tblFavAdd> tblFavAdds { get; set; }
         public virtual DbSet<tblAnnouncement> tblAnnouncements { get; set; }
         public virtual DbSet<ANNOVIEW> ANNOVIEWs { get; set; }
+        public virtual DbSet<tblPayment> tblPayments { get; set; }
+        public virtual DbSet<tblShowroom> tblShowrooms { get; set; }
     }
 }

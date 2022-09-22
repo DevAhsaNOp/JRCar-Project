@@ -24,7 +24,7 @@ namespace JRCar.BOL
         public Nullable<bool> IsRead { get; set; }
         public System.DateTime CreatedOn { get; set; }
     
-        public virtual tblShowroom tblShowroom { get; set; }
         public virtual tblUser tblUser { get; set; }
+        public virtual tblShowroom tblShowroom { get; set; }
     }
 }

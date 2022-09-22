@@ -12,27 +12,21 @@ namespace JRCar.BOL
     using System;
     using System.Collections.Generic;
     
-    public partial class tblAppointment
+    public partial class tblPayment
     {
         public int ID { get; set; }
-        public string Email { get; set; }
-        public Nullable<int> UserInterestedID { get; set; }
-        public Nullable<int> ShowroomInterestedID { get; set; }
-        public Nullable<int> UserCarID { get; set; }
-        public Nullable<int> ShowroomCarID { get; set; }
-        public string Number { get; set; }
-        public string Purpose { get; set; }
-        public System.DateTime Date { get; set; }
-        public System.TimeSpan Time { get; set; }
-        public bool Isactive { get; set; }
-        public int CreatedBy { get; set; }
+        public Nullable<int> ShowroomID { get; set; }
+        public Nullable<decimal> Recievable { get; set; }
+        public Nullable<decimal> Recieved { get; set; }
+        public System.DateTime FromDate { get; set; }
+        public System.DateTime ToDate { get; set; }
         public System.DateTime CreatedOn { get; set; }
+        public int CreatedBy { get; set; }
         public Nullable<System.DateTime> UpdatedOn { get; set; }
         public Nullable<int> UpdatedBy { get; set; }
+        public Nullable<bool> Isactive { get; set; }
+        public Nullable<bool> Isarchive { get; set; }
     
-        public virtual tblCar tblCar { get; set; }
-        public virtual tblUserAdd tblUserAdd { get; set; }
-        public virtual tblUser tblUser { get; set; }
         public virtual tblShowroom tblShowroom { get; set; }
     }
 }

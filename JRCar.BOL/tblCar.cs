@@ -52,7 +52,6 @@ namespace JRCar.BOL
         public Nullable<bool> Issold { get; set; }
     
         public virtual tblAddress tblAddress { get; set; }
-        public virtual tblShowroom tblShowroom { get; set; }
         public virtual tblCategory tblCategory { get; set; }
         public virtual tblManfacturerCarModel tblManfacturerCarModel { get; set; }
         public virtual tblManufacturer tblManufacturer { get; set; }
@@ -64,5 +63,6 @@ namespace JRCar.BOL
         public virtual ICollection<tblCarImage> tblCarImages { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tblFavAdd> tblFavAdds { get; set; }
+        public virtual tblShowroom tblShowroom { get; set; }
     }
 }
