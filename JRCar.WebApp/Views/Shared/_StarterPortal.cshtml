@@ -17,6 +17,8 @@
     <link rel="stylesheet" href="~/dist/css/adminlte.min.css">
     <link rel="stylesheet" href="~/plugins/select2/css/select2.min.css">
     <link rel="stylesheet" href="~/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+    <!-- SweetAlert2 -->
+    <link rel="stylesheet" href="~/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
     <!-- DataTables -->
     <link rel="stylesheet" href="~/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
     <link rel="stylesheet" href="~/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
@@ -72,8 +74,29 @@
         }
     </style>
     <script>
-        function fnSuccess() {
-            $('#myelement').toast('show')
+        function fnSuccess(data) {
+            $('#exampleModal').modal('hide');
+
+            var Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000
+            });
+
+            if (data) {
+                Toast.fire({
+                    icon: 'success',
+                    title: 'New Announcment hase been posted Succesfully!'
+                });
+            }
+            else {
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Something went wrong. Please try again Later!'
+                })
+            }
+
         }
     </script>
 </head>
@@ -84,8 +107,8 @@
 
             <!-- Preloader -->
             @*<div class="preloader flex-column justify-content-center align-items-center">
-            <img class="animation__wobble" src="~/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
-        </div>*@
+                    <img class="animation__wobble" src="~/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
+                </div>*@
 
             <!-- Navbar -->
             @Html.Partial("_HeaderPortal")
@@ -102,6 +125,7 @@
             {
                 HttpMethod = "POST",
                 OnSuccess = "fnSuccess",
+                Confirm = "Do you want to make this Announcment?"
             }))
             {
                 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -134,18 +158,7 @@
                 </div>
             }
 
-            <div class="toast" id="myelement" role="alert" aria-live="assertive" aria-atomic="true" data-delay="1000">
-                <div class="toast-header">
-                    <strong class="mr-auto">Announcment</strong>
-                    <small class="text-muted">just now</small>
-                    <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="toast-body">
-                    Announcment has been posted!
-                </div>
-            </div>
+
             <!-- Control Sidebar -->
             <aside class="control-sidebar control-sidebar-dark">
                 <!-- Control sidebar content goes here -->
@@ -192,6 +205,8 @@
         <script src="~/plugins/chart.js/Chart.min.js"></script>
         <!-- AdminLTE for demo purposes -->
         <script src="~/dist/js/demo.js"></script>
+        <!-- SweetAlert2 -->
+        <script src="~/plugins/sweetalert2/sweetalert2.min.js"></script>
         <!-- Image Uploader -->
         <script type="text/javascript" src="~/dist/image-uploader.min.js"></script>
         <!-- AdminLTE dashboard demo (This is only for demo purposes) -->

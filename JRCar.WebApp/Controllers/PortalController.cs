@@ -859,20 +859,24 @@ namespace JRCar.WebApp.Controllers
                     var reas = notiRepo.InsertAnnouncements(tbl);
                     if (reas)
                     {
+                        ModelState.Clear();
                         return Json(true, JsonRequestBehavior.AllowGet);
                     }
                     else
                     {
+                        ModelState.Clear();
                         return Json(false, JsonRequestBehavior.AllowGet);
                     }
                 }
                 else
                 {
+                    ModelState.Clear();
                     return Json(false, JsonRequestBehavior.AllowGet);
                 }
             }
             else
             {
+                ModelState.Clear();
                 return Json(false, JsonRequestBehavior.AllowGet);
             }
         }
