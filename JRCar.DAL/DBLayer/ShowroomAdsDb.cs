@@ -434,7 +434,8 @@ namespace JRCar.DAL.DBLayer
                     Longitude = s.Longitude,
                     Description = s.Description,
                     tblAddress = s.tblAddress,
-                    tblCars = s.tblCars
+                    tblCars = s.tblCars,
+                    ShowroomActive = s.Isactive
                 }).FirstOrDefault();
                 return reas;
             }

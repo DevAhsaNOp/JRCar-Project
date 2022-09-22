@@ -564,6 +564,24 @@ namespace JRCar.DAL.DBLayer
                 throw ex;
             }
         }
+        
+        public void ActiveUnion(tblUnion model)
+        {
+            try
+            {
+                model.Active = true;
+                model.CreatedOn = GetUnionByID(model.ID).CreatedOn;
+                model.CreatedBy = GetUnionByID(model.ID).CreatedBy;
+                model.UpdatedOn = DateTime.Now;
+                model.tblRoleID = 4;
+                _context.Entry(model).State = System.Data.Entity.EntityState.Modified;
+                Save();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
 
         public void InActiveShowroom(tblShowroom model)
         {

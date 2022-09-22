@@ -1,0 +1,235 @@
+﻿@model IEnumerable<JRCar.BOL.tblUnion>
+
+@{
+    ViewBag.Title = "List Of Union";
+    Layout = "~/Views/Shared/_StarterPortal.cshtml";
+}
+<style>
+    .table-bordered td, .table-bordered th, .table-bordered {
+        border: none !important;
+    }
+
+    .table td, .table th {
+        padding: 0.75rem;
+        vertical-align: baseline;
+    }
+
+    #StatusA .badge {
+        padding: 0.25em 0.8em !important;
+        font-size: 14px !important;
+    }
+
+    .btnAction {
+        border: none !important;
+        font-size: 18px !important;
+    }
+
+    .btnEdit {
+        background: #56df00;
+        color: white;
+        box-shadow: 0px 2px 7px 2px #56df00a1;
+        border-radius: 5px;
+        margin-right: 5px !important;
+    }
+
+    .btnView {
+        background: #2bacf7;
+        color: white;
+        box-shadow: 0px 2px 7px 2px #92d4fb;
+        border-radius: 5px;
+        margin-right: 5px !important;
+    }
+
+    .btnDel {
+        color: #f9f9f9;
+        background: #f91e33;
+        box-shadow: 0px 2px 7px 2px #f91e335c;
+        border-radius: 5px;
+    }
+
+    .LoaderCc {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        background-color: #afafaf78;
+        height: 100%;
+        width: inherit;
+    }
+</style>
+
+@if (User.Identity.IsAuthenticated)
+{
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>List Of Union</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">List Of Union</li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card" style="width:100%;height:98%">
+                        <div class="card-header">
+                            <h3 class="card-title">List Of Union</h3>
+                        </div>
+                        <div id="Adloader" class="LoaderCc" style="display: none!important;">
+                            <img src="~/Content/Spinner-1s-200px.gif" alt="Please Wait......" width="100" height="100" />
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body" id="example99">
+                            <div class="row">
+                                <div class="col-md-12 col-sm-12 col-lg-12">
+                                    @if (TempData["SuccessMsg"] != null)
+                                    {
+                                        <div class="alert alert-info alert-dismissable">
+                                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                            <i class="icon-info-with-circle"></i><span>@Html.Raw(TempData["SuccessMsg"])</span>
+                                        </div>
+                                    }
+                                    @if (TempData["ErrorMsg"] != null)
+                                    {
+                                        <div class="alert alert-danger alert-dismissable">
+                                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                            <i class="icon-blocked"></i><span>@Html.Raw(TempData["ErrorMsg"])</span>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                            <table id="example3" class="table table-bordered table-striped table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>User Image</th>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Number</th>
+                                        <th>Created On</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @if (item.Image != null)
+                                                {
+                                                    <img src="@Url.Content(item.Image)" alt="User Image" style=" height:60px !important; width:80px !important;" />
+                                                }
+                                            </td>
+                                            <td>
+                                                @item.Name
+                                            </td>
+                                            <td>
+                                                @item.Email
+                                            </td>
+                                            <td>
+                                                @item.Number
+                                            </td>
+                                            <td>
+                                                @item.CreatedOn
+                                            </td>
+                                            <td id="StatusA">
+                                                @if (item.Active)
+                                                {
+                                                    <span class="badge badge-success"> Active </span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge badge-danger"> In active </span>
+                                                }
+                                            </td>
+                                            <td>
+                                                @if (item.Active)
+                                                {
+                                                    <button class="btnAction btnEdit" onclick="RemoveUn(@item.ID)">
+                                                        <i class="fas fa-toggle-on"></i>
+                                                    </button>
+                                                }
+                                                else
+                                                {
+                                                    <button class="btnAction btnDel" onclick="ActivateUn(@item.ID)">
+                                                        <i class="fas fa-toggle-off"></i>
+                                                    </button>
+                                                }
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+    <script>
+        document.getElementById('UnionPage').classList.add('active')
+
+        function RemoveUn(Adid) {
+            if (Adid > 0) {
+                if (confirm("Are you sure to Deactivate the Union?")) {
+                    $("#Adloader").show();
+                    $(".card").css("cursor","not-allowed");
+                    $(".card").css("user-select","none");
+                    $.ajax({
+                        type: "POST",
+                        url: "@Url.Action("UnionInActive", "Portal")",
+                        data: JSON.stringify({ ID: Adid }),
+                        contentType: "application/json; charset=utf-8",
+                        success: function (response) {
+                            $(".card").css("cursor", "default");
+                            $(".card").css("user-select", "auto");
+                            $("#Adloader").hide();
+                            window.location.href = "@Url.Action("ListOfUnion", "Portal")";
+                        }
+                    });
+                }
+            }
+            else {
+                alert('Something went wrong please try again later!');
+            }
+        }
+
+        function ActivateUn(Adid) {
+           if (Adid > 0) {
+               if (confirm("Are you sure to Activate the Union?")) {
+                   $("#Adloader").show();
+                   $(".card").css("cursor","not-allowed");
+                   $(".card").css("user-select","none");
+                   $.ajax({
+                       type: "POST",
+                       url: "@Url.Action("UnionActive", "Portal")",
+                       data: JSON.stringify({ ID: Adid }),
+                       contentType: "application/json; charset=utf-8",
+                       success: function (response) {
+                           $(".card").css("cursor", "default");
+                           $(".card").css("user-select", "auto");
+                           $("#Adloader").hide();
+                           window.location.href = "@Url.Action("ListOfUnion", "Portal")";
+                       }
+                   });
+               }
+           }
+           else {
+               alert('Something went wrong please try again later!');
+           }
+        }
+
+    </script>
+}

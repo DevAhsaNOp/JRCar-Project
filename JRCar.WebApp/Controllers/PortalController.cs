@@ -1084,13 +1084,13 @@ namespace JRCar.WebApp.Controllers
                 }
                 else
                 {
-                    TempData["SuccessMsg"] = "Error Occured On Account Deactivation!";
+                    TempData["ErrorMsg"] = "Error Occured On Account Deactivation!";
                     return Json("False", JsonRequestBehavior.AllowGet);
                 }
             }
             else
             {
-                TempData["SuccessMsg"] = "Error Occured On Account Deactivation!";
+                TempData["ErrorMsg"] = "Error Occured On Account Deactivation!";
                 return Json("False", JsonRequestBehavior.AllowGet);
             }
         }
@@ -1273,13 +1273,13 @@ namespace JRCar.WebApp.Controllers
                 }
                 else
                 {
-                    TempData["SuccessMsg"] = "Error Occured On Account Deactivation!";
+                    TempData["ErrorMsg"] = "Error Occured On Account Deactivation!";
                     return Json("False", JsonRequestBehavior.AllowGet);
                 }
             }
             else
             {
-                TempData["SuccessMsg"] = "Error Occured On Account Deactivation!";
+                TempData["ErrorMsg"] = "Error Occured On Account Deactivation!";
                 return Json("False", JsonRequestBehavior.AllowGet);
             }
         }
@@ -1308,13 +1308,13 @@ namespace JRCar.WebApp.Controllers
                 }
                 else
                 {
-                    TempData["SuccessMsg"] = "Error Occured On Ad Activation!";
+                    TempData["ErrorMsg"] = "Error Occured On Ad Activation!";
                     return Json("False", JsonRequestBehavior.AllowGet);
                 }
             }
             else
             {
-                TempData["SuccessMsg"] = "Error Occured On Ad Activation!";
+                TempData["ErrorMsg"] = "Error Occured On Ad Activation!";
                 return Json("False", JsonRequestBehavior.AllowGet);
             }
         }
@@ -1332,13 +1332,13 @@ namespace JRCar.WebApp.Controllers
                 }
                 else
                 {
-                    TempData["SuccessMsg"] = "Error Occured On Ad Deactivation!";
+                    TempData["ErrorMsg"] = "Error Occured On Ad Deactivation!";
                     return Json("False", JsonRequestBehavior.AllowGet);
                 }
             }
             else
             {
-                TempData["SuccessMsg"] = "Error Occured On Ad Deactivation!";
+                TempData["ErrorMsg"] = "Error Occured On Ad Deactivation!";
                 return Json("False", JsonRequestBehavior.AllowGet);
             }
         }
@@ -1363,13 +1363,13 @@ namespace JRCar.WebApp.Controllers
                 }
                 else
                 {
-                    TempData["SuccessMsg"] = "Error Occured On Ad Activation!";
+                    TempData["ErrorMsg"] = "Error Occured On Ad Activation!";
                     return Json("False", JsonRequestBehavior.AllowGet);
                 }
             }
             else
             {
-                TempData["SuccessMsg"] = "Error Occured On Ad Activation!";
+                TempData["ErrorMsg"] = "Error Occured On Ad Activation!";
                 return Json("False", JsonRequestBehavior.AllowGet);
             }
         }
@@ -1387,13 +1387,77 @@ namespace JRCar.WebApp.Controllers
                 }
                 else
                 {
-                    TempData["SuccessMsg"] = "Error Occured On Ad Deactivation!";
+                    TempData["ErrorMsg"] = "Error Occured On Ad Deactivation!";
                     return Json("False", JsonRequestBehavior.AllowGet);
                 }
             }
             else
             {
-                TempData["SuccessMsg"] = "Error Occured On Ad Deactivation!";
+                TempData["ErrorMsg"] = "Error Occured On Ad Deactivation!";
+                return Json("False", JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        #endregion
+
+        #region **Manage Union**
+
+        [AcceptVerbs(HttpVerbs.Get)]
+        [Authorize(Roles = "Admin")]
+        public ActionResult ListOfUnion()
+        {
+            var reas = RepoObj.GetAllUnion();
+            return View(reas);
+        }
+
+        [AcceptVerbs(HttpVerbs.Post)]
+        [Authorize(Roles = "Admin")]
+        public ActionResult UnionInActive(int ID)
+        {
+            if (ID > 0)
+            {
+                var role = "Union";
+                var IsInactive = RepoObj.InActiveModel(ID, role);
+                if (IsInactive)
+                {
+                    TempData["SuccessMsg"] = "Union Deactivated Successfully!";
+                    return Json("True", JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    TempData["ErrorMsg"] = "Error Occured On Account Deactivation!";
+                    return Json("False", JsonRequestBehavior.AllowGet);
+                }
+            }
+            else
+            {
+                TempData["ErrorMsg"] = "Error Occured On Account Deactivation!";
+                return Json("False", JsonRequestBehavior.AllowGet);
+            }
+        }
+        
+        [AcceptVerbs(HttpVerbs.Post)]
+        [Authorize(Roles = "Admin")]
+        public ActionResult UnionActive(int ID)
+        {
+            if (ID > 0)
+            {
+                var role = "Union";
+                var IsInactive = RepoObj.ActiveModel(ID, role);
+                if (IsInactive)
+                {
+                    TempData["SuccessMsg"] = "Union Activated Successfully!";
+                    return Json("True", JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    TempData["ErrorMsg"] = "Error Occured On Account Activation!";
+                    return Json("False", JsonRequestBehavior.AllowGet);
+                }
+            }
+            else
+            {
+                TempData["ErrorMsg"] = "Error Occured On Account Activation!";
                 return Json("False", JsonRequestBehavior.AllowGet);
             }
         }

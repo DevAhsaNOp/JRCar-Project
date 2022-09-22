@@ -409,7 +409,8 @@ namespace JRCar.BOL.Validation_Classes
         public virtual tblSubCategory tblSubCategory { get; set; }
 
         public virtual tblCarModel tblCarModel { get; set; }
-
+        
+        public bool? ShowroomActive { get; set; }
     }
 
 }

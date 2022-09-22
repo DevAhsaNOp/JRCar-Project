@@ -39,6 +39,7 @@ namespace JRCar.WebApp.Controllers
 
         [AcceptVerbs(HttpVerbs.Get)]
         [Authorize(Roles = "Admin,Showroom,Union")]
+        [Route("Portal")]
         public ActionResult Index()
         {
             return View();
@@ -204,7 +205,7 @@ namespace JRCar.WebApp.Controllers
                     user.Image = Session["ImageAvatar"].ToString();
                     user.Email = user.SignUpEmail;
                     /*These are hard coded values change it when project scope is changes to multiple Union*/
-                    user.UnionId = 1;
+                    user.UnionId = 5;
                     user.AddressId = 2009;
                     var area = AddressRepoObj.GetZoneLatLong(284);
                     user.Latitude = area.Item1.ToString();

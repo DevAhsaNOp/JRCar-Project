@@ -38,12 +38,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>All Announcment</h1>
+                    <h1>All Announcments</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">All Announcment</li>
+                        <li class="breadcrumb-item active">Announcments</li>
                     </ol>
                 </div>
             </div>
@@ -53,10 +53,12 @@
     <!-- Main content -->
     <section class="content">
         <div class="container-fluid">
-            <button type="button" class="btn btn-primary mb-3 float-right" data-toggle="modal" data-target="#exampleModal" data-whatever="getbootstrap">
-                <i class="fas fa-envelope nav-icon" style="margin-left: 0px;"></i>
-                Make New Announcment
-            </button>
+            <div class="text-center">
+                <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#exampleModal" data-whatever="getbootstrap">
+                    <i class="fas fa-envelope nav-icon" style="margin-left: 0px;"></i>
+                    Make New Announcment
+                </button>
+            </div>
             @using (Ajax.BeginForm("MakeAnnouncment", "Portal", new AjaxOptions
             {
                 HttpMethod = "POST",
@@ -109,7 +111,7 @@
                             <div>
                                 <i class="fas fa-bullhorn bg-red"></i>
                                 <div class="timeline-item">
-                                    <span class="time"><i class="fas fa-clock"></i>  @item.Time</span>
+                                    <span class="time text-uppercase"><i class="fas fa-clock"></i>  @Convert.ToDateTime(item.Time).ToShortTimeString()</span>
                                     <h3 class="timeline-header"><a href="#">@item.FromUserName</a> sent you an Announcement</h3>
                                     <div class="timeline-body">
                                         <h4 style="text-transform:capitalize !important">
@@ -135,6 +137,7 @@
     </section>
     <!-- /.content -->
     <script>
+        document.getElementById('AnnoPage').classList.add('active');
         setTimeout(RemoveDates(), 1);
 
         function RemoveDates() {

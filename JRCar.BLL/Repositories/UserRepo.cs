@@ -19,6 +19,7 @@ namespace JRCar.BLL.Repositories
         {
             dbObj = new UserDb();
         }
+
         public bool InActiveModel(int UserID, string Role)
         {
             if (UserID > 0 && Role != null)
@@ -45,6 +46,27 @@ namespace JRCar.BLL.Repositories
                 else if (UserData != null)
                 {
                     dbObj.InActiveUser(UserData);
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
+        
+        public bool ActiveModel(int UserID, string Role)
+        {
+            if (UserID > 0 && Role != null)
+            {
+                var UnionData = dbObj.GetAllUnion().Where(x => x.ID == UserID && x.tblRole.Role.ToLower().Contains(Role.ToLower())).FirstOrDefault();
+                if (UnionData != null)
+                {
+                    dbObj.ActiveUnion(UnionData);
                     return true;
                 }
                 else
@@ -113,6 +135,11 @@ namespace JRCar.BLL.Repositories
         public IEnumerable<tblUser> GetAllUsers()
         {
             return dbObj.GetAllUsers();
+        }
+        
+        public IEnumerable<tblUnion> GetAllUnion()
+        {
+            return dbObj.GetAllUnion();
         }
 
         public bool ForgotPassword(string emailtext)

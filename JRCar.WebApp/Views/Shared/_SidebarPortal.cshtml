@@ -34,7 +34,7 @@
             <ul class="nav nav-pills nav-sidebar flex-column" id="SiderbarNav" data-widget="treeview" role="menu" data-accordion="false">
                 <!-- Add icons to the links using the .nav-icon class with font-awesome or any other icon font library -->
                 <li class="nav-item">
-                    <a href="@Url.Action("Index","Account")" class="nav-link active" id="DashboardPage">
+                    <a href="@Url.Action("Index","Account")" class="nav-link" id="DashboardPage">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>DASHBOARD</p>
                     </a>
@@ -51,18 +51,21 @@
                         <p>NOTIFICATIONS</p>
                     </a>
                 </li>
-                @*<li class="nav-item">
-                        <a href="#" class="nav-link" id="SettingPage">
-                            <i class="fas fa-user-cog nav-icon"></i>
-                            <p>SETTINGS</p>
+                @if (User.IsInRole("Admin"))
+                {
+                    <li class="nav-item">
+                        <a href="@Url.Action("ListOfUnion","Portal")" class="nav-link" style="padding-left: 14px;" id="UnionPage">
+                            <i class="fas fa-envelope nav-icon" style="margin-left: 0px;"></i>
+                            <p>Manage Union</p>
                         </a>
-                    </li>*@
+                    </li>
+                }
 
                 @if (User.IsInRole("Admin") || User.IsInRole("Union"))
                 {
                     <li class="nav-item">
                         <a href="@Url.Action("MakeAnnouncment","Portal")" class="nav-link" style="padding-left: 14px;" id="AnnoPage">
-                            <i class="fas fa-envelope nav-icon" style="margin-left: 0px;"></i>
+                            <i class="fas fa-bullhorn nav-icon" style="margin-left: 0px;"></i>
                             <p>Announcments</p>
                         </a>
                     </li>
@@ -194,7 +197,5 @@
                 }
             </ul>
         </nav>
-        <!-- /.sidebar-menu -->
     </div>
-    <!-- /.sidebar -->
 </aside>

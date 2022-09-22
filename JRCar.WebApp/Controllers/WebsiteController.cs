@@ -511,11 +511,10 @@ namespace JRCar.WebApp.Controllers
             if (Show != null)
             {
                 var reas = adsRepo.ShowroomProfileView(Show);
-                if (reas == null)
+                if (reas == null && reas.ShowroomActive == false)
                 {
                     TempData["ErrorMsg"] = "Showroom you trying to view is not exists!";
                     return RedirectToAction("AllVehicles");
-
                 }
                 else
                 {
@@ -535,7 +534,7 @@ namespace JRCar.WebApp.Controllers
             int? page = 1;
             int pagesize = 1, pageindex = 1;
             pageindex = page.HasValue ? Convert.ToInt32(page) : 1;
-            var list = RepoObj.GetAllShowRoom();
+            var list = RepoObj.GetAllShowRoom().Where(x=>x.Isactive == true);
             IPagedList<tblShowroom> reas = list.ToPagedList(pageindex, pagesize);
             return View(reas);
         }
@@ -549,11 +548,11 @@ namespace JRCar.WebApp.Controllers
             if (searchedDealer != null)
             {
                 ViewBag.search = searchedDealer;
-                list = RepoObj.GetAllShowRoom().Where(s => s.FullName.ToLower().Contains(searchedDealer.ToLower())).ToList();
+                list = RepoObj.GetAllShowRoom().Where(s => s.FullName.ToLower().Contains(searchedDealer.ToLower()) && s.Isactive == true).ToList();
             }
             else
             {
-                list = RepoObj.GetAllShowRoom();
+                list = RepoObj.GetAllShowRoom().Where(x => x.Isactive == true); 
             }
             IPagedList<tblShowroom> reas = list.ToPagedList(pageindex, pagesize);
             return PartialView("_cardealers", reas);

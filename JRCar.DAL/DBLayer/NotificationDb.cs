@@ -169,7 +169,7 @@ namespace JRCar.DAL.DBLayer
 
         public List<NotiShow> GetAllAnnouncement()
         {
-            var reas = _context.ANNOVIEWs.OrderByDescending(a => a.Time).Select(x => new NotiShow() { Title = x.Title, Description = x.Description, Time = x.Date, Date = x.Time, FromUserName = "JRCar Union" }).ToList();
+            var reas = _context.ANNOVIEWs.OrderByDescending(a => a.Time).Select(x => new NotiShow() { Title = x.Title, Description = x.Description, Time = x.Time, Date = x.Date, FromUserName = "JRCar Union" }).ToList();
             return reas;
         }
 
