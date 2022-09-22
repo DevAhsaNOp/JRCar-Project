@@ -41,21 +41,39 @@
                             </div>
                             <!-- /.timeline-label -->
                             <!-- timeline item -->
-                            <div>
-                                <i class="fas fa-user bg-green"></i>
-                                <div class="timeline-item">
-                                    <span class="time"><i class="fas fa-clock"></i> @item.CreatedOn.ToShortTimeString()</span>
-                                    <h3 class="timeline-header no-border" style="display: flex;align-items: center;justify-content: space-between;">
-                                        <span>
-                                            <a href="javascript:void(0)" class="text-bold">@item.FromUserName</a> New car post of @item.Title
-                                        </span>
-                                        @if (item.AdURL != null)
-                                        {
-                                            <a class="btn btn-primary text-white" href="/Ad/@item.AdURL">View Ad</a>
-                                        }
-                                    </h3>
+                            if (item.IsAnno)
+                            {
+                                <div>
+                                    <i class="fas fa-bullhorn bg-red"></i>
+                                    <div class="timeline-item">
+                                        <span class="time"><i class="fas fa-clock"></i>  @item.CreatedOn.ToShortTimeString()</span>
+                                        <h3 class="timeline-header"><a href="#">@item.FromUserName</a> sent you an Announcement</h3>
+                                        <div class="timeline-body">
+                                            <h4 style="text-transform:capitalize !important">
+                                                @item.Title
+                                            </h4>
+                                            <p>
+                                                @item.Description
+                                            </p>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
+                            }
+                            if (item.IsNoti)
+                            {
+                                <div>
+                                    <i class="fas fa-bell bg-green"></i>
+                                    <div class="timeline-item">
+                                        <span class="time"><i class="fas fa-clock"></i> @item.CreatedOn.ToShortTimeString()</span>
+                                        <h3 class="timeline-header no-border" style="display: flex;align-items: center;justify-content: space-between;">
+                                            <span>
+                                                <a href="javascript:void(0)" class="text-bold">@item.FromUserName</a> Post new car of @item.Title
+                                            </span>
+                                            <a class="btn btn-primary text-white" href="/Ad/@item.AdURL">View Ad</a>
+                                        </h3>
+                                    </div>
+                                </div>
+                            }
                             <!-- END timeline item -->
                         }
                         <div>

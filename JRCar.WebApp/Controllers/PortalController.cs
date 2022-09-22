@@ -844,6 +844,7 @@ namespace JRCar.WebApp.Controllers
         #region **Make New Announcements**
 
         [AcceptVerbs(HttpVerbs.Get)]
+        [Authorize(Roles = "Admin,Union")]
         public ActionResult MakeAnnouncment()
         {
             try
@@ -868,6 +869,7 @@ namespace JRCar.WebApp.Controllers
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
+        [Authorize(Roles = "Admin,Union")]
         public ActionResult MakeAnnouncment(string Title, string Message)
         {
             if (Title != null && Message != null)

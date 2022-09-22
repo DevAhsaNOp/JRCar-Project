@@ -474,6 +474,18 @@
                     count = response;
                     if (count > 0) {
                         $('span.Acccount').html(count);
+                        var Toast = Swal.mixin({
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3000
+                        });
+
+                        Toast.fire({
+                            icon: 'warning',
+                            title: 'New Announcement!',
+                            footer: '<a href="/Portal/NotificationList">See all Announcement</a>'
+                        })
                     }
                     else {
                         $('span.Acccount').html('');

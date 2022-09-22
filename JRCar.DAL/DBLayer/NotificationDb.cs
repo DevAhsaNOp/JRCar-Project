@@ -157,13 +157,13 @@ namespace JRCar.DAL.DBLayer
 
         public List<NotiShow> GetAllNotifications(int ShowroomID)
         {
-            var reas = _context.tblNotifications.Where(a => a.FromShowroomID == ShowroomID).OrderByDescending(a => a.CreatedOn).Select(x => new NotiShow() { Title = x.Title, Description = x.Description, AdURL = x.AdURL, CreatedOn = x.CreatedOn, FromUserName = x.tblUser.Name }).ToList();
+            var reas = _context.tblNotifications.Where(a => a.FromShowroomID == ShowroomID).OrderByDescending(a => a.CreatedOn).Select(x => new NotiShow() { Title = x.Title, Description = x.Description, AdURL = x.AdURL, CreatedOn = x.CreatedOn, FromUserName = x.tblUser.Name, IsNoti = true, IsAnno = false }).ToList();
             return reas;
         }
         
         public List<NotiShow> GetAllAnnouncements(int ShowroomID)
         {
-            var reas = _context.tblAnnouncements.Where(a => a.ShowroomID == ShowroomID).OrderByDescending(a => a.CreatedOn).Select(x => new NotiShow() { Title = x.Title, Description = x.Description, AdURL = null, CreatedOn = x.CreatedOn, FromUserName = "JRCar Union" }).ToList();
+            var reas = _context.tblAnnouncements.Where(a => a.ShowroomID == ShowroomID).OrderByDescending(a => a.CreatedOn).Select(x => new NotiShow() { Title = x.Title, Description = x.Description, AdURL = null, CreatedOn = x.CreatedOn, FromUserName = "JRCar Union", IsAnno = true, IsNoti = false }).ToList();
             return reas;
         }
 
@@ -194,6 +194,8 @@ namespace JRCar.DAL.DBLayer
         public bool? IsRead { get; set; }
         public DateTime CreatedOn { get; set; }
         public string FromUserName { get; set; }
+        public bool IsNoti { get; set; }
+        public bool IsAnno { get; set; }
         public virtual tblShowroom tblShowroom { get; set; }
         public virtual tblUser tblUser { get; set; }
     }
