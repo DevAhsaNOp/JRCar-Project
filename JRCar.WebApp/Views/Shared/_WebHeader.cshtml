@@ -1,5 +1,4 @@
-﻿@*@model JRCar.BOL.Validation_Classes.ValidateUser*@
-
+﻿
 <header id="header">
     <div class="container">
         <div class="row">
@@ -11,71 +10,17 @@
                 </div>
             </div>
             <div class="col-lg-10 col-md-10 col-sm-12 col-xs-12">
-                <div class="cs-main-nav pull-right">
+                <div class="cs-main-nav pull-left" style="width: -webkit-fill-available !important;">
                     <nav class="main-navigation">
                         <ul>
                             <li><a href="@Url.Action("Index","Website")">Home</a></li>
                             <li><a href="@Url.Action("AllVehicles","Website")">Car Ads</a></li>
                             <li>
-                                <a href="#">Inventory</a>
-                                <ul>
-                                    <li><a href="auto-grid.html">Grid Style</a></li>
-                                    <li><a href="auto-listing.html">Classic Style</a></li>
-                                    <li><a href="car-listing-detail.html">Detail Page</a></li>
-                                </ul>
-                            </li>
-                            <li>
                                 <a href="@Url.Action("ShowroomDeal","Website")">Car Dealers</a>
                             </li>
-                            <li>
-                                <a href="#">Compare</a>
-                                <ul>
-                                    <li><a href="compare.html">Listing</a></li>
-                                </ul>
-                            </li>
-                            <li>
-                                <a href="#">pages</a>
-                                <ul>
-                                    <li><a href="services.html">Our Services</a></li>
-                                    <li><a href="user-post-new-vehicles.html">Post a Vehicle</a></li>
-                                    <li><a href="price-plane.html">Listing Packages</a></li>
-                                    <li><a href="faq.html">FAQ's & Help</a></li>
-                                    <li><a href="404.html">404 Page</a></li>
-                                    <li><a href="search-result.html">Search Result</a></li>
-                                    <li><a href="underconstruction.html">Under Construction</a></li>
-                                    <li><a href="underconstruction-2.html">Under Construction 2</a></li>
-                                    <li><a href="signin-page.html">Signup/Sign in</a></li>
-                                    <li><a href="contact-us.html">Contact us</a></li>
-                                </ul>
-                            </li>
-                            <li>
-                                <a href="#">News</a>
-                                <ul>
-                                    <li><a href="blog-listing-large.html">Large View</a></li>
-                                    <li><a href="blog-listing-medium.html">Medium View</a></li>
-                                    <li><a href="blog-listing-grid.html">Grid View</a></li>
-                                    <li class="menu-item-has-children">
-                                        <a href="#">Detail View</a>
-                                        <ul>
-                                            <li><a href="blog-detail-sound.html">With Audio</a></li>
-                                            <li><a href="blog-detail-video.html">With Video</a></li>
-                                            <li><a href="blog-detail-sound.html">With Soundcloud</a></li>
-                                            <li><a href="blog-detail-slider.html">With Slider</a></li>
-                                            <li><a href="blog-detail-post.html">Featured Image</a></li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li>
-                                <a href="#">Shop</a>
-                                <ul>
-                                    <li><a href="shop-listing.html">Products</a></li>
-                                    <li><a href="shop-detail.html">Detail View</a></li>
-                                    <li><a href="shop-cart.html">Cart</a></li>
-                                    <li><a href="shop-checkout.html">Checkout</a></li>
-                                </ul>
-                            </li>
-                            <li class="cs-user-option">
+                            <li><a href="contact-us.html">Contact us</a></li>
+                            <li><a href="contact-us.html">About us</a></li>
+                            <li class="cs-user-option" style="position: absolute;right: 0;">
                                 <div class="cs-login">
                                     <div class="cs-login-dropdown">
                                         @if (@Session["Name"] == null)
@@ -84,7 +29,7 @@
                                         }
                                         else if (Session["Role"].ToString() == "User")
                                         {
-                                            <a href="#"><i class="icon-user2"></i> @Session["Name"] <i class="icon-chevron-down2"></i></a>
+                                            <a href="javascript:void(0)"><i class="icon-user2"></i> @Session["Name"] <i class="icon-chevron-down2"></i></a>
                                             <div class="cs-user-dropdown">
                                                 <ul>
                                                     <li><a href="@Url.Action("ProfileSettings","Website")">Profile Setting</a></li>
@@ -95,91 +40,21 @@
                                                 <a class="btn-sign-out" href="@Url.Action("Logout", "Account")">Logout</a>
                                             </div>
                                         }
+                                        else if (Session["Role"].ToString() == "Showroom" || Session["Role"].ToString() == "Union" || Session["Role"].ToString() == "Admin")
+                                        {
+                                            <a href="javascript:void(0)"><i class="icon-user2"></i> @Session["Name"] <i class="icon-chevron-down2"></i></a>
+                                            <div class="cs-user-dropdown">
+                                                <ul>
+                                                    <li><a href="@Url.Action("Index","Account")">Goto Portal</a></li>
+                                                </ul>
+                                                <a class="btn-sign-out" href="@Url.Action("Logout", "Account")">Logout</a>
+                                            </div>
+                                        }
                                     </div>
                                     <a class="cs-bgcolor btn-form" href="@Url.Action("PostNewVehicles","Website")"><i class="icon-plus"></i> Sell Car</a>
                                     <!-- Modal Start-->
                                     <!-- Modal End-->
                                 </div>
-                                <!--<div class="cs-wish-list"><a href="#"><i class=" icon-heart4"></i><span>0</span></a>
-                                    <div class="wish-list-dropdown">
-                                        <strong>Post a new Ad</strong>
-                                        <ul>
-                                            <li class="alert alert-dismissible  fade in" role="alert">
-                                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                                <div class="cs-media">
-                                                    <a href="#">
-                                                        <img src="~/Files/extra-images/single-banner-img-1.jpg" alt="" />
-                                                    </a>
-                                                </div>
-                                                <div class="cs-info">
-                                                    <h6><a href="#">Desktop Application Developer Support</a></h6>
-                                                    Added <span>Feb 8, 2016</span>
-                                                </div>
-                                            </li>
-                                            <li class="alert alert-dismissible  fade in" role="alert">
-                                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                                <div class="cs-media">
-                                                    <a href="#">
-                                                        <img src="~/Files/extra-images/single-banner-img-2.jpg" alt="" />
-                                                    </a>
-                                                </div>
-                                                <div class="cs-info">
-                                                    <h6><a href="#">Desktop Application Developer Support</a></h6>
-                                                    Added <span>Feb 8, 2016</span>
-                                                </div>
-                                            </li>
-                                            <li class="alert alert-dismissible  fade in" role="alert">
-                                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                                <div class="cs-media">
-                                                    <a href="#">
-                                                        <img src="~/Files/extra-images/single-banner-img-3.jpg" alt="" />
-                                                    </a>
-                                                </div>
-                                                <div class="cs-info">
-                                                    <h6><a href="#">Desktop Application Developer Support</a></h6>
-                                                    Added <span>Feb 8, 2016</span>
-                                                </div>
-                                            </li>
-                                            <li class="alert alert-dismissible  fade in" role="alert">
-                                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                                <div class="cs-media">
-                                                    <a href="#">
-                                                        <img src="~/Files/extra-images/single-banner-img-1.jpg" alt="" />
-                                                    </a>
-                                                </div>
-                                                <div class="cs-info">
-                                                    <h6><a href="#">Desktop Application Developer Support</a></h6>
-                                                    Added <span>Feb 8, 2016</span>
-                                                </div>
-                                            </li>
-                                            <li class="alert alert-dismissible  fade in" role="alert">
-                                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                                <div class="cs-media">
-                                                    <a href="#">
-                                                        <img src="~/Files/extra-images/single-banner-img-2.jpg" alt="" />
-                                                    </a>
-                                                </div>
-                                                <div class="cs-info">
-                                                    <h6><a href="#">Desktop Application Developer Support</a></h6>
-                                                    Added <span>Feb 8, 2016</span>
-                                                </div>
-                                            </li>
-                                            <li class="alert alert-dismissible  fade in" role="alert">
-                                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                                <div class="cs-media">
-                                                    <a href="#">
-                                                        <img src="~/Files/extra-images/single-banner-img-3.jpg" alt="" />
-                                                    </a>
-                                                </div>
-                                                <div class="cs-info">
-                                                    <h6><a href="#">Desktop Application Developer Support</a></h6>
-                                                    Added <span>Feb 8, 2016</span>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                        <a class="btn-view-all" href="#">View All</a>
-                                    </div>
-                                </div>-->
                             </li>
                         </ul>
                     </nav>
@@ -192,7 +67,7 @@
                                 }
                                 else if (Session["Role"].ToString() == "User")
                                 {
-                                    <a href="#"><i class="icon-user2"></i> @Session["Name"] <i class="icon-chevron-down2"></i></a>
+                                    <a href="javascript:void(0)"><i class="icon-user2"></i> @Session["Name"] <i class="icon-chevron-down2"></i></a>
                                     <div class="cs-user-dropdown">
                                         <ul>
                                             <li><a href="@Url.Action("ProfileSettings","Website")">Profile Setting</a></li>
@@ -203,92 +78,21 @@
                                         <a class="btn-sign-out" href="@Url.Action("Logout", "Account")">Logout</a>
                                     </div>
                                 }
+                                else if (Session["Role"].ToString() == "Showroom" || Session["Role"].ToString() == "Union" || Session["Role"].ToString() == "Admin")
+                                {
+                                    <a href="javascript:void(0)"><i class="icon-user2"></i> @Session["Name"] <i class="icon-chevron-down2"></i></a>
+                                    <div class="cs-user-dropdown">
+                                        <ul>
+                                            <li><a href="@Url.Action("Index","Account")">Goto Portal</a></li>
+                                        </ul>
+                                        <a class="btn-sign-out" href="@Url.Action("Logout", "Account")">Logout</a>
+                                    </div>
+                                }
                             </div>
                             <a class="cs-bgcolor btn-form" href="@Url.Action("PostNewVehicles","Website")"><i class="icon-plus"></i> Sell Car</a>
                             <!-- Modal Start-->
                             <!-- Modal End-->
                         </div>
-                        <!--<div class="cs-wish-list"><a href="#"><i class=" icon-heart4"></i><span>0</span></a>
-                            <div class="wish-list-dropdown">
-                                <strong>Post a new Ad</strong>
-                                <ul>
-                                    <li class="alert alert-dismissible  fade in" role="alert">
-
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                        <div class="cs-media">
-                                            <a href="#">
-                                                <img src="~/Files/extra-images/single-banner-img-1.jpg" alt="" />
-                                            </a>
-                                        </div>
-                                        <div class="cs-info">
-                                            <h6><a href="#">Desktop Application Developer Support</a></h6>
-                                            Added <span>Feb 8, 2016</span>
-                                        </div>
-                                    </li>
-                                    <li class="alert alert-dismissible  fade in" role="alert">
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                        <div class="cs-media">
-                                            <a href="#">
-                                                <img src="~/Files/extra-images/single-banner-img-2.jpg" alt="" />
-                                            </a>
-                                        </div>
-                                        <div class="cs-info">
-                                            <h6><a href="#">Desktop Application Developer Support</a></h6>
-                                            Added <span>Feb 8, 2016</span>
-                                        </div>
-                                    </li>
-                                    <li class="alert alert-dismissible  fade in" role="alert">
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                        <div class="cs-media">
-                                            <a href="#">
-                                                <img src="~/Files/extra-images/single-banner-img-3.jpg" alt="" />
-                                            </a>
-                                        </div>
-                                        <div class="cs-info">
-                                            <h6><a href="#">Desktop Application Developer Support</a></h6>
-                                            Added <span>Feb 8, 2016</span>
-                                        </div>
-                                    </li>
-                                    <li class="alert alert-dismissible  fade in" role="alert">
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                        <div class="cs-media">
-                                            <a href="#">
-                                                <img src="~/Files/extra-images/single-banner-img-1.jpg" alt="" />
-                                            </a>
-                                        </div>
-                                        <div class="cs-info">
-                                            <h6><a href="#">Desktop Application Developer Support</a></h6>
-                                            Added <span>Feb 8, 2016</span>
-                                        </div>
-                                    </li>
-                                    <li class="alert alert-dismissible  fade in" role="alert">
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                        <div class="cs-media">
-                                            <a href="#">
-                                                <img src="~/Files/extra-images/single-banner-img-2.jpg" alt="" />
-                                            </a>
-                                        </div>
-                                        <div class="cs-info">
-                                            <h6><a href="#">Desktop Application Developer Support</a></h6>
-                                            Added <span>Feb 8, 2016</span>
-                                        </div>
-                                    </li>
-                                    <li class="alert alert-dismissible  fade in" role="alert">
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                        <div class="cs-media">
-                                            <a href="#">
-                                                <img src="~/Files/extra-images/single-banner-img-3.jpg" alt="" />
-                                            </a>
-                                        </div>
-                                        <div class="cs-info">
-                                            <h6><a href="#">Desktop Application Developer Support</a></h6>
-                                            Added <span>Feb 8, 2016</span>
-                                        </div>
-                                    </li>
-                                </ul>
-                                <a class="btn-view-all" href="#">View All</a>
-                            </div>
-                        </div>-->
                     </div>
                 </div>
             </div>

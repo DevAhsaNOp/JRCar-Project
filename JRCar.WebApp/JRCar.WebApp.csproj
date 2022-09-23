@@ -3616,6 +3616,7 @@
     <Content Include="Views\Portal\NotificationList.cshtml" />
     <Content Include="Views\Portal\MakeAnnouncment.cshtml" />
     <Content Include="Views\Portal\ListOfUnion.cshtml" />
+    <Content Include="Views\Website\AboutUs.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -40,6 +40,17 @@ namespace JRCar.WebApp.Controllers
             return View(reas);
         }
 
+        public ActionResult AboutUs()
+        {
+            return View();
+        }
+
+        public ActionResult ContactUS()
+        {
+            var reas = adsRepo.GetAllActiveAdsForTabs();
+            return View(reas);
+        }
+
         #region **Post & Edit Vehicle**
         [AcceptVerbs(HttpVerbs.Get)]
         [Authorize(Roles = "User")]
