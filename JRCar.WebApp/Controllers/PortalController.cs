@@ -839,7 +839,7 @@ namespace JRCar.WebApp.Controllers
 
         #endregion
 
-        #region **Unions Action Methods**
+        #region **Unions/Admin Action Methods**
 
         #region **Make New Announcements**
 
@@ -1400,7 +1400,7 @@ namespace JRCar.WebApp.Controllers
 
         #endregion
 
-        #region **Manage Union**
+        #region **Manage Union For Admin Only**
 
         [AcceptVerbs(HttpVerbs.Get)]
         [Authorize(Roles = "Admin")]
@@ -1461,6 +1461,10 @@ namespace JRCar.WebApp.Controllers
                 return Json("False", JsonRequestBehavior.AllowGet);
             }
         }
+
+        #endregion
+
+        #region **Manage Payments**
 
         #endregion
 
