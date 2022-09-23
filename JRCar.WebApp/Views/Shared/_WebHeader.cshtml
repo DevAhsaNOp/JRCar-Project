@@ -18,14 +18,15 @@
                             <li>
                                 <a href="@Url.Action("ShowroomDeal","Website")">Car Dealers</a>
                             </li>
-                            <li><a href="contact-us.html">Contact us</a></li>
-                            <li><a href="contact-us.html">About us</a></li>
-                            <li class="cs-user-option" style="position: absolute;right: 0;">
+                            <li><a href="@Url.Action("AboutUs","Website")">About us</a></li>
+                            <li><a href="@Url.Action("ContactUs","Website")">Contact us</a></li>
+                            <li class="cs-user-option" style="float:right">
                                 <div class="cs-login">
                                     <div class="cs-login-dropdown">
                                         @if (@Session["Name"] == null)
                                         {
-                                            <a class="cs-bgcolor btn-form" style="margin-right:10px !important;" href="@Url.Action("SignIn","Account")"><i class="icon-login"></i> Sign In </a>
+                                            <a></a>
+                                            <a class="cs-bgcolor btn-form" href="@Url.Action("SignIn","Account")"><i class="icon-login"></i> Sign In </a>
                                         }
                                         else if (Session["Role"].ToString() == "User")
                                         {

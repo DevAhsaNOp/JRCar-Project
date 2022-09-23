@@ -40,15 +40,16 @@ namespace JRCar.WebApp.Controllers
             return View(reas);
         }
 
+        [Route("about-us")]
         public ActionResult AboutUs()
         {
             return View();
         }
 
-        public ActionResult ContactUS()
+        [Route("contact-us")]
+        public ActionResult ContactUs()
         {
-            var reas = adsRepo.GetAllActiveAdsForTabs();
-            return View(reas);
+            return View();
         }
 
         #region **Post & Edit Vehicle**
