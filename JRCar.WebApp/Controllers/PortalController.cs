@@ -1468,6 +1468,26 @@ namespace JRCar.WebApp.Controllers
 
         #endregion
 
+        #region **Manage Payment**
+
+        [AcceptVerbs(HttpVerbs.Get)]
+        public ActionResult MakePayment()
+        {
+            ViewBag.Dealers = RepoObj1.GetAllDealers();
+
+            return View();
+        }
+
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult MakePayment(ValidationPayment payment)
+        {
+            ViewBag.Dealers = RepoObj1.GetAllDealers();
+
+            return View();
+        }
+
+        #endregion
+
         #endregion
     }
 }

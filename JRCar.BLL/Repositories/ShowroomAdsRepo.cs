@@ -706,6 +706,21 @@ namespace JRCar.BLL.Repositories
             }
             return categories;
         }
+
+        public List<SelectListItem> GetAllDealers()
+        {
+            UserRepo repo = new UserRepo();
+            var AllShowroom = repo.GetAllShowRoom();
+            var showrooms = new List<SelectListItem>
+            {
+                new SelectListItem() { Text = "---Select Showroom---", Value = "0", Disabled = true, Selected = true }
+            };
+            foreach (var item in AllShowroom)
+            {
+                showrooms.Add(new SelectListItem() { Text = item.FullName, Value = item.ID.ToString() });
+            }
+            return showrooms;
+        }
         
         public List<SelectListItem> GetAllMake()
         {

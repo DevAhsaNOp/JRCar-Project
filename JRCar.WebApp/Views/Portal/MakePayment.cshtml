@@ -1,0 +1,555 @@
+﻿@model JRCar.BOL.Validation_Classes.ValidationPayment
+
+@{
+    ViewBag.Title = "Make Payment";
+    Layout = "~/Views/Shared/_StarterPortal.cshtml";
+}
+<style>
+    .card-header {
+        border-bottom: 1px solid rgba(239,239,239,0.9) !important;
+        padding: 0.4rem 1.25rem !important;
+    }
+
+    .select2-container {
+        width: inherit !important;
+    }
+</style>
+@if (User.Identity.IsAuthenticated)
+{
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Make Payment</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">Manage Payment</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-10 col-sm-12 col-lg-10">
+                    @if (TempData["SuccessMsg"] != null)
+                    {
+                        <div class="alert alert-info alert-dismissable">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                            <i class="icon-info-with-circle"></i><span>@Html.Raw(TempData["SuccessMsg"])</span>
+                        </div>
+                    }
+                    @if (TempData["ErrorMsg"] != null)
+                    {
+                        <div class="alert alert-danger alert-dismissable">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                            <i class="icon-blocked"></i><span>@Html.Raw(TempData["ErrorMsg"])</span>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-10 col-sm-12 col-lg-10">
+                    @using (Html.BeginForm("MakePayment", "Portal", FormMethod.Post))
+                    {
+                        <div class="card card-primary">
+                            <div class="card-header">
+                            </div>
+                            <div class="card-body">
+                                <h6 class="bg-gradient-blue p-1 text-center"><b>Note: </b>Insert the correct Information</h6>
+                                <h4 class="text-left"><b>Showroom Information</b></h4>
+                                <div class="row">
+                                    <div class="col-md-6 col-lg-6 col-sm-12">
+                                        <div class="form-group">
+                                            <label for="exampleInputBorder">Showroom Name</label>
+                                            @Html.ValidationMessageFor(model => model.ShowroomID, "", new { @class = "text-danger" })
+                                            @Html.DropDownListFor(model => model.ShowroomID, (IEnumerable<SelectListItem>)ViewBag.Dealers, htmlAttributes: new { @class = "form-control select2bs4" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-lg-6 col-sm-12">
+                                        <div class="form-group" id="SubCategoryD">
+                                            <label for="exampleInputBorder">Showroom Address </label>
+                                            @Html.EditorFor(model => model.ShowroomAddress, new { htmlAttributes = new { @class = "form-control form-control-border border-width-2" } })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 col-lg-6 col-sm-12">
+                                        <div class="form-group">
+                                            <label for="exampleInputBorder">Showroom Phone Number</label>
+                                            @Html.EditorFor(model => model.ShowroomNumber, new { htmlAttributes = new { @class = "form-control form-control-border border-width-2" } })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-lg-6 col-sm-12">
+                                        <div class="form-group">
+                                            <label for="exampleInputBorder">Model </label>
+                                            @Html.ValidationMessageFor(model => model.ManufacturerCarModelID, "", new { @class = "text-danger" })
+                                            @Html.DropDownListFor(model => model.ManufacturerCarModelID, new SelectList(""), htmlAttributes: new { @class = "form-control select2bs4" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 col-lg-6 col-sm-12">
+                                        <div class="form-group" id="ColorD">
+                                            <label for="exampleInputBorderWidth2">Exterior Color</label>
+                                            @Html.ValidationMessageFor(model => model.Color, "", new { @class = "text-danger" })
+                                            @Html.DropDownListFor(model => model.Color, (IEnumerable<SelectListItem>)ViewBag.Colors, htmlAttributes: new { @class = "form-control select2bs4" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-lg-6 col-sm-12">
+                                        <div class="form-group" id="CondD">
+                                            <label for="exampleInputBorder">Condition </label>
+                                            @Html.ValidationMessageFor(model => model.Condition, "", new { @class = "text-danger" })
+                                            @Html.DropDownListFor(model => model.Condition, (IEnumerable<SelectListItem>)ViewBag.Conditions, htmlAttributes: new { @class = "form-control select2bs4" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 col-lg-6 col-sm-12">
+                                        <div class="form-group">
+                                            <label for="exampleInputBorderWidth2">Registered No</label>
+                                            @Html.ValidationMessageFor(model => model.RegNo, "", new { @class = "text-danger" })
+                                            @Html.EditorFor(model => model.RegNo, new { htmlAttributes = new { placeholder = "Enter Car Registered No", @class = "form-control form-control-border border-width-2" } })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-lg-6 col-sm-12">
+                                        <div class="form-group" id="ModelYearD">
+                                            <label for="exampleInputBorder">Model Year </label>
+                                            @Html.ValidationMessageFor(model => model.Year, "", new { @class = "text-danger" })
+                                            @Html.DropDownListFor(model => model.Year, (IEnumerable<SelectListItem>)ViewBag.Years, htmlAttributes: new { @class = "form-control select2bs4" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 col-lg-6 col-sm-12">
+                                        <div class="form-group">
+                                            <label for="exampleInputBorderWidth2">Registered Location</label>
+                                            @Html.ValidationMessageFor(model => model.RegLocation, "", new { @class = "text-danger" })
+                                            @Html.EditorFor(model => model.RegLocation, new { htmlAttributes = new { placeholder = "Enter Car Registered Location", @class = "form-control form-control-border border-width-2" } })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-lg-6 col-sm-12">
+                                        <div class="form-group">
+                                            <label for="exampleInputBorderWidth2">Mileage (Km)</label>
+                                            @Html.ValidationMessageFor(model => model.Mileage, "", new { @class = "text-danger" })
+                                            @Html.EditorFor(model => model.Mileage, new { htmlAttributes = new { placeholder = "Enter Car Mileage", @class = "form-control form-control-border border-width-2", oninput = "this.value = this.value.replace(/[^0-9]/g, '').replace(/(\\..*)\\./g, '$1');" } })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 col-lg-6 col-sm-12">
+                                        <div class="form-group">
+                                            <label for="exampleInputBorderWidth2">Ad Title</label>
+                                            @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+                                            @Html.EditorFor(model => model.Title, new { htmlAttributes = new { placeholder = "Enter Car Ad Title", @class = "form-control form-control-border border-width-2" } })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-lg-6 col-sm-12">
+                                        <div class="form-group">
+                                            <label for="exampleInputBorderWidth2">Price (Rs.)</label>
+                                            @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
+                                            @Html.EditorFor(model => model.Price, new { htmlAttributes = new { placeholder = "Enter Car Price", @class = "form-control form-control-border border-width-2", oninput = "this.value = this.value.replace(/[^0-9]/g, '').replace(/(\\..*)\\./g, '$1');" } })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label for="exampleInputBorderWidth2">Ad Description</label>
+                                            @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                                            @Html.TextAreaFor(model => model.Description, htmlAttributes: new { placeholder = "Enter Car Ad Description", @class = "form-control", @rows = "4" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card card-primary" id="images-not">
+                            <div class="card-header">
+                            </div>
+                            <div class="card-body">
+                                <h4 class="text-left"><b>Upload Car Photos</b></h4>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="input-images-1" style="padding-top: .5rem;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card card-primary">
+                            <div class="card-header">
+                            </div>
+                            <div class="card-body">
+                                <h4 class="text-left"><b>Additional Information</b></h4>
+                                <div class="row">
+                                    <div class="col-md-6 col-lg-6 col-sm-12">
+                                        <div class="form-group">
+                                            <label for="exampleInputBorderWidth2">Max Speed(Km/h)</label>
+                                            @Html.ValidationMessageFor(model => model.MaxSpeed, "", new { @class = "text-danger" })
+                                            @Html.EditorFor(model => model.MaxSpeed, new { htmlAttributes = new { placeholder = "Enter Car Max Speed", @class = "form-control form-control-border border-width-2", oninput = "this.value = this.value.replace(/[^0-9]/g, '').replace(/(\\..*)\\./g, '$1');" } })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-lg-6 col-sm-12">
+                                        <div class="form-group">
+                                            <label for="exampleInputBorderWidth2">Gear Type</label>
+                                            @Html.ValidationMessageFor(model => model.GearType, "", new { @class = "text-danger" })
+                                            @Html.EditorFor(model => model.GearType, new { htmlAttributes = new { placeholder = "Enter Car Gear Type", @class = "form-control form-control-border border-width-2" } })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 col-lg-6 col-sm-12">
+                                        <div class="form-group">
+                                            <label for="exampleInputBorderWidth2">Engine Capacity (cc)</label>
+                                            @Html.ValidationMessageFor(model => model.EngineCapacity, "", new { @class = "text-danger" })
+                                            @Html.EditorFor(model => model.EngineCapacity, new { htmlAttributes = new { placeholder = "Enter Car Engine Capacity", @class = "form-control form-control-border border-width-2", oninput = "this.value = this.value.replace(/[^0-9]/g, '').replace(/(\\..*)\\./g, '$1');" } })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-lg-6 col-sm-12">
+                                        <div class="form-group">
+                                            <label for="exampleInputBorder">Transmission </label>
+                                            @Html.ValidationMessageFor(model => model.Transmission, "", new { @class = "text-danger" })
+                                            @Html.DropDownListFor(model => model.Transmission, (IEnumerable<SelectListItem>)ViewBag.Transmissions, htmlAttributes: new { @class = "form-control select2bs4" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 col-lg-6 col-sm-12">
+                                        <div class="form-group">
+                                            <label for="exampleInputBorder">Body Type </label>
+                                            @Html.ValidationMessageFor(model => model.BodyType, "", new { @class = "text-danger" })
+                                            @Html.DropDownListFor(model => model.BodyType, (IEnumerable<SelectListItem>)ViewBag.BodyTypes, htmlAttributes: new { @class = "form-control select2bs4" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-lg-6 col-sm-12">
+                                        <div class="form-group">
+                                            <label for="exampleInputBorder">Assembly </label>
+                                            @Html.ValidationMessageFor(model => model.Assembly, "", new { @class = "text-danger" })
+                                            @Html.DropDownListFor(model => model.Assembly, (IEnumerable<SelectListItem>)ViewBag.Assemblys, htmlAttributes: new { @class = "form-control select2bs4" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 col-lg-6 col-sm-12">
+                                        <div class="form-group">
+                                            <label for="exampleInputBorderWidth2">Seater</label>
+                                            @Html.ValidationMessageFor(model => model.Seater, "", new { @class = "text-danger" })
+                                            @Html.EditorFor(model => model.Seater, new { htmlAttributes = new { placeholder = "Enter Car Seater", @class = "form-control form-control-border border-width-2" } })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-lg-6 col-sm-12">
+                                        <div class="form-group">
+                                            <label for="exampleInputBorderWidth2">Engine Type</label>
+                                            @Html.ValidationMessageFor(model => model.EngineType, "", new { @class = "text-danger" })
+                                            @Html.EditorFor(model => model.EngineType, new { htmlAttributes = new { placeholder = "Enter Car EngineType", @class = "form-control form-control-border border-width-2" } })
+                                        </div>
+                                    </div>
+                                </div>
+                                <h5 class="text-left"><b>Car Features:</b></h5>
+                                <div class="row">
+                                    <div class="col-md-6 col-lg-6 col-sm-12">
+                                        <div class="row">
+                                            <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                                                <div class="form-group">
+                                                    <div class="custom-control custom-checkbox">
+                                                        @Html.CheckBoxFor(model => model.AirConditioned, htmlAttributes: new { @class = "custom-control-input" })
+                                                        <label for="AirConditioned" class="custom-control-label">Air Conditioned</label>
+                                                        @Html.ValidationMessageFor(model => model.AirConditioned, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                                                <div class="form-group">
+                                                    <div class="custom-control custom-checkbox">
+                                                        @Html.CheckBoxFor(model => model.ABS, htmlAttributes: new { @class = "custom-control-input" })
+                                                        <label for="ABS" class="custom-control-label">ABS</label>
+                                                        @Html.ValidationMessageFor(model => model.ABS, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                                                <div class="form-group">
+                                                    <div class="custom-control custom-checkbox">
+                                                        @Html.CheckBoxFor(model => model.AirBag, htmlAttributes: new { @class = "custom-control-input" })
+                                                        <label for="AirBag" class="custom-control-label">Air Bag</label>
+                                                        @Html.ValidationMessageFor(model => model.AirBag, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                                                <div class="form-group">
+                                                    <div class="custom-control custom-checkbox">
+                                                        @Html.CheckBoxFor(model => model.PowerWindows, htmlAttributes: new { @class = "custom-control-input" })
+                                                        <label for="PowerWindows" class="custom-control-label">Power Windows</label>
+                                                        @Html.ValidationMessageFor(model => model.PowerWindows, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                                                <div class="form-group">
+                                                    <div class="custom-control custom-checkbox">
+                                                        @Html.CheckBoxFor(model => model.PowerMirrors, htmlAttributes: new { @class = "custom-control-input" })
+                                                        <label for="PowerMirrors" class="custom-control-label">Power Mirrors</label>
+                                                        @Html.ValidationMessageFor(model => model.PowerMirrors, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                                                <div class="form-group">
+                                                    <div class="custom-control custom-checkbox">
+                                                        @Html.CheckBoxFor(model => model.PowerLocks, htmlAttributes: new { @class = "custom-control-input" })
+                                                        <label for="PowerLocks" class="custom-control-label">Power Locks</label>
+                                                        @Html.ValidationMessageFor(model => model.PowerLocks, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                                                <div class="form-group">
+                                                    <div class="custom-control custom-checkbox">
+                                                        @Html.CheckBoxFor(model => model.PowerSteering, htmlAttributes: new { @class = "custom-control-input" })
+                                                        <label for="PowerSteering" class="custom-control-label">Power Steering</label>
+                                                        @Html.ValidationMessageFor(model => model.PowerSteering, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                                                <div class="form-group">
+                                                    <div class="custom-control custom-checkbox">
+                                                        @Html.CheckBoxFor(model => model.ImmobilizerKey, htmlAttributes: new { @class = "custom-control-input" })
+                                                        <label for="ImmobilizerKey" class="custom-control-label">Immobilizer Key</label>
+                                                        @Html.ValidationMessageFor(model => model.ImmobilizerKey, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                                                <div class="form-group">
+                                                    <div class="custom-control custom-checkbox">
+                                                        @Html.CheckBoxFor(model => model.Radio, htmlAttributes: new { @class = "custom-control-input" })
+                                                        <label for="Radio" class="custom-control-label">Radio</label>
+                                                        @Html.ValidationMessageFor(model => model.Radio, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                                                <div class="form-group">
+                                                    <div class="custom-control custom-checkbox">
+                                                        @Html.CheckBoxFor(model => model.KeyLessEntry, htmlAttributes: new { @class = "custom-control-input" })
+                                                        <label for="KeyLessEntry" class="custom-control-label">KeyLess Entry</label>
+                                                        @Html.ValidationMessageFor(model => model.KeyLessEntry, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                                                <div class="form-group">
+                                                    <div class="custom-control custom-checkbox">
+                                                        @Html.CheckBoxFor(model => model.AlloyRims, htmlAttributes: new { @class = "custom-control-input" })
+                                                        <label for="AlloyRims" class="custom-control-label">Alloy Rims</label>
+                                                        @Html.ValidationMessageFor(model => model.AlloyRims, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                                                <div class="form-group">
+                                                    <div class="custom-control custom-checkbox">
+                                                        @Html.CheckBoxFor(model => model.CoolBox, htmlAttributes: new { @class = "custom-control-input" })
+                                                        <label for="CoolBox" class="custom-control-label">Cool Box</label>
+                                                        @Html.ValidationMessageFor(model => model.CoolBox, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                                                <div class="form-group">
+                                                    <div class="custom-control custom-checkbox">
+                                                        @Html.CheckBoxFor(model => model.CruiseControl, htmlAttributes: new { @class = "custom-control-input" })
+                                                        <label for="CruiseControl" class="custom-control-label">Cruise Control</label>
+                                                        @Html.ValidationMessageFor(model => model.CruiseControl, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                                                <div class="form-group">
+                                                    <div class="custom-control custom-checkbox">
+                                                        @Html.CheckBoxFor(model => model.SunRoof, htmlAttributes: new { @class = "custom-control-input" })
+                                                        <label for="SunRoof" class="custom-control-label">Sun Roof</label>
+                                                        @Html.ValidationMessageFor(model => model.SunRoof, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-lg-6 col-sm-12">
+                                        <div class="row">
+                                            <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                                                <div class="form-group">
+                                                    <div class="custom-control custom-checkbox">
+                                                        @Html.CheckBoxFor(model => model.NavigationSystem, htmlAttributes: new { @class = "custom-control-input" })
+                                                        <label for="NavigationSystem" class="custom-control-label">Navigation System</label>
+                                                        @Html.ValidationMessageFor(model => model.NavigationSystem, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                                                <div class="form-group">
+                                                    <div class="custom-control custom-checkbox">
+                                                        @Html.CheckBoxFor(model => model.RearAcVents, htmlAttributes: new { @class = "custom-control-input" })
+                                                        <label for="RearAcVents" class="custom-control-label">Rear AcVents</label>
+                                                        @Html.ValidationMessageFor(model => model.RearAcVents, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                                                <div class="form-group">
+                                                    <div class="custom-control custom-checkbox">
+                                                        @Html.CheckBoxFor(model => model.FrontCam, htmlAttributes: new { @class = "custom-control-input" })
+                                                        <label for="FrontCam" class="custom-control-label">Front Camera</label>
+                                                        @Html.ValidationMessageFor(model => model.FrontCam, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                                                <div class="form-group">
+                                                    <div class="custom-control custom-checkbox">
+                                                        @Html.CheckBoxFor(model => model.CassetPlayer, htmlAttributes: new { @class = "custom-control-input" })
+                                                        <label for="CassetPlayer" class="custom-control-label">Casset Player</label>
+                                                        @Html.ValidationMessageFor(model => model.CassetPlayer, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                                                <div class="form-group">
+                                                    <div class="custom-control custom-checkbox">
+                                                        @Html.CheckBoxFor(model => model.DvdPlayer, htmlAttributes: new { @class = "custom-control-input" })
+                                                        <label for="DvdPlayer" class="custom-control-label">Dvd Player</label>
+                                                        @Html.ValidationMessageFor(model => model.DvdPlayer, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                                                <div class="form-group">
+                                                    <div class="custom-control custom-checkbox">
+                                                        @Html.CheckBoxFor(model => model.SteeringSwitch, htmlAttributes: new { @class = "custom-control-input" })
+                                                        <label for="SteeringSwitch" class="custom-control-label">Steering Switch</label>
+                                                        @Html.ValidationMessageFor(model => model.SteeringSwitch, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                                                <div class="form-group">
+                                                    <div class="custom-control custom-checkbox">
+                                                        @Html.CheckBoxFor(model => model.CdPlayer, htmlAttributes: new { @class = "custom-control-input" })
+                                                        <label for="CdPlayer" class="custom-control-label">Cd Player</label>
+                                                        @Html.ValidationMessageFor(model => model.CdPlayer, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                                                <div class="form-group">
+                                                    <div class="custom-control custom-checkbox">
+                                                        @Html.CheckBoxFor(model => model.ClimateControl, htmlAttributes: new { @class = "custom-control-input" })
+                                                        <label for="ClimateControl" class="custom-control-label">Climate Control</label>
+                                                        @Html.ValidationMessageFor(model => model.ClimateControl, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                                                <div class="form-group">
+                                                    <div class="custom-control custom-checkbox">
+                                                        @Html.CheckBoxFor(model => model.FrontSpeaker, htmlAttributes: new { @class = "custom-control-input" })
+                                                        <label for="FrontSpeaker" class="custom-control-label">Front Speaker</label>
+                                                        @Html.ValidationMessageFor(model => model.FrontSpeaker, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                                                <div class="form-group">
+                                                    <div class="custom-control custom-checkbox">
+                                                        @Html.CheckBoxFor(model => model.HeatedSeat, htmlAttributes: new { @class = "custom-control-input" })
+                                                        <label for="HeatedSeat" class="custom-control-label">Heated Seat</label>
+                                                        @Html.ValidationMessageFor(model => model.HeatedSeat, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                                                <div class="form-group">
+                                                    <div class="custom-control custom-checkbox">
+                                                        @Html.CheckBoxFor(model => model.RearCamera, htmlAttributes: new { @class = "custom-control-input" })
+                                                        <label for="RearCamera" class="custom-control-label">Rear Camera</label>
+                                                        @Html.ValidationMessageFor(model => model.RearCamera, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                                                <div class="form-group">
+                                                    <div class="custom-control custom-checkbox">
+                                                        @Html.CheckBoxFor(model => model.RearSeatEntertain, htmlAttributes: new { @class = "custom-control-input" })
+                                                        <label for="RearSeatEntertain" class="custom-control-label">Rear Seat Entertain</label>
+                                                        @Html.ValidationMessageFor(model => model.RearSeatEntertain, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                                                <div class="form-group">
+                                                    <div class="custom-control custom-checkbox">
+                                                        @Html.CheckBoxFor(model => model.RearSpeaker, htmlAttributes: new { @class = "custom-control-input" })
+                                                        <label for="RearSpeaker" class="custom-control-label">Rear Speaker</label>
+                                                        @Html.ValidationMessageFor(model => model.RearSpeaker, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                                                <div class="form-group">
+                                                    <div class="custom-control custom-checkbox">
+                                                        @Html.CheckBoxFor(model => model.BoxUsbAux, htmlAttributes: new { @class = "custom-control-input" })
+                                                        <label for="BoxUsbAux" class="custom-control-label">Box Usb Aux</label>
+                                                        @Html.ValidationMessageFor(model => model.BoxUsbAux, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer" style="padding-left: 0px;">
+                                    <button type="submit" class="btn btn-primary" id="postad">Submit & Continue</button>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </section>
+    <script>
+        document.getElementById('ShowroomAdNav').classList.add('active')
+        document.getElementById('PostNewAdPage').classList.add('active')
+    </script>
+}
