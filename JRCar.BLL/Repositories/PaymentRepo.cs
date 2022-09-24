@@ -28,9 +28,11 @@ namespace JRCar.BLL.Repositories
                     {
                         ShowroomID = model.ShowroomID,
                         Recievable = model.Recievable,
+                        RecievableFromDate = model.RecievableFromDate,
+                        RecievableToDate = model.RecievableToDate,
                         Recieved = model.Recieved,
-                        FromDate = model.FromDate,
-                        ToDate = model.ToDate,
+                        RecievedFromDate = model.RecievedFromDate,
+                        RecievedToDate = model.RecievedToDate,
                         CreatedBy = model.CreatedBy                        
                     };
                     var obj = DbObj.InsertPayment(payment);
@@ -58,9 +60,11 @@ namespace JRCar.BLL.Repositories
                     {
                         ShowroomID = model.ShowroomID,
                         Recievable = model.Recievable,
+                        RecievableFromDate = model.RecievableFromDate,
+                        RecievableToDate = model.RecievableToDate,
                         Recieved = model.Recieved,
-                        FromDate = model.FromDate,
-                        ToDate = model.ToDate,
+                        RecievedFromDate = model.RecievedFromDate,
+                        RecievedToDate = model.RecievedToDate,
                         UpdatedBy = model.UpdatedBy
                     };
                     var obj = DbObj.UpdatePayment(payment);
@@ -84,7 +88,7 @@ namespace JRCar.BLL.Repositories
             {
                 if (id > 0)
                 {
-                    var payment = GetPaymentById(id);
+                    var payment = DbObj.GetPaymentById(id);
                     if (payment != null)
                         return payment;
                     else
@@ -101,7 +105,20 @@ namespace JRCar.BLL.Repositories
 
         public IEnumerable<ValidationPayment> GetAllPayments()
         {
-            var payment = GetAllPayments();
+            var payment = DbObj.GetAllPayments();
+            if (payment != null)
+            {
+                return payment;
+            }
+            else
+            {
+                return null;
+            }
+        }
+        
+        public ValidationPayment GetShowroomDetailById(int ShowroomID)
+        {
+            var payment = DbObj.GetShowroomDetailById(ShowroomID);
             if (payment != null)
             {
                 return payment;

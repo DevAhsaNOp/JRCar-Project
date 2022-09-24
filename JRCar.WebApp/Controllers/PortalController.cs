@@ -28,12 +28,14 @@ namespace JRCar.WebApp.Controllers
     {
         private UserRepo RepoObj;
         private UserAdsRepo userAdsRepo;
+        private PaymentRepo PayRepoObj;
         private ShowroomAdsRepo RepoObj1;
         private AddressAutofillRepo AddressRepoObj;
 
         public PortalController()
         {
             RepoObj = new UserRepo();
+            PayRepoObj = new PaymentRepo();
             userAdsRepo = new UserAdsRepo();
             RepoObj1 = new ShowroomAdsRepo();
             AddressRepoObj = new AddressAutofillRepo();
@@ -1464,20 +1466,43 @@ namespace JRCar.WebApp.Controllers
 
         #endregion
 
-        #region **Manage Payments**
-
-        #endregion
-
         #region **Manage Payment**
 
+        [Authorize(Roles = "Admin,Union")]
         [AcceptVerbs(HttpVerbs.Get)]
         public ActionResult MakePayment()
         {
             ViewBag.Dealers = RepoObj1.GetAllDealers();
+            //var val = RepoObj1.GetAllMonths();
+            //foreach (var item in val)
+            //{
+            //    if (item.Text == "January" || item.Text == "Feburary" || item.Text == "March")
+            //    {
+            //        item.Selected = true;
+            //    }
+            //}
+            ViewBag.Month = RepoObj1.GetAllMonths();
+            ViewBag.Months = RepoObj1.GetAllMonths();
 
             return View();
         }
+        
+        [Authorize(Roles = "Admin,Union")]
+        [AcceptVerbs(HttpVerbs.Post)]
+        public JsonResult GetShowroomData(int ShowroomID)
+        {
+            var reas = PayRepoObj.GetShowroomDetailById(ShowroomID);
+            if (reas != null)
+            {
+                return Json(reas,JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json("false",JsonRequestBehavior.AllowGet);
+            }
+        }
 
+        [Authorize(Roles = "Admin,Union")]
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult MakePayment(ValidationPayment payment)
         {

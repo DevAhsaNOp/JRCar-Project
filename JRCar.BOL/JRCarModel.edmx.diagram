@@ -73,7 +73,6 @@
         <AssociationConnector Association="jrcarModel.FK_dbo_tblFavAdds_dbo_tblUsers_UserID" />
         <EntityTypeShape EntityType="jrcarModel.tblAnnouncement" Width="2.25" PointX="7.5" PointY="5.75" />
         <EntityTypeShape EntityType="jrcarModel.ANNOVIEW" Width="1.5" PointX="3.375" PointY="3.75" />
-        <EntityTypeShape EntityType="jrcarModel.tblPayment" Width="1.5" PointX="10.5" PointY="38.875" />
         <EntityTypeShape EntityType="jrcarModel.tblShowroom" Width="1.5" PointX="8.25" PointY="32.125" />
         <AssociationConnector Association="jrcarModel.FK_tblShowrooms_tblAddress" />
         <AssociationConnector Association="jrcarModel.FK_tblAnnouncements_tblShowrooms" />
@@ -81,9 +80,10 @@
         <AssociationConnector Association="jrcarModel.FK_dbo_tblBlogs_dbo_tblShowrooms_Showrooms_ID" />
         <AssociationConnector Association="jrcarModel.FK_dbo_tblCars_dbo_tblShowrooms_tblShowroomID" />
         <AssociationConnector Association="jrcarModel.FK_tblNotification_tblShowrooms" />
-        <AssociationConnector Association="jrcarModel.FK_tblPayment_tblShowrooms" />
         <AssociationConnector Association="jrcarModel.FK_tblShowrooms_tblRoles" />
         <AssociationConnector Association="jrcarModel.FK_tblShowrooms_tblUnions" />
+        <EntityTypeShape EntityType="jrcarModel.tblPayment" Width="1.5" PointX="10.5" PointY="38.75" />
+        <AssociationConnector Association="jrcarModel.FK_tblPayment_tblShowrooms" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

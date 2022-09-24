@@ -17,12 +17,14 @@ namespace JRCar.BOL
         public int ID { get; set; }
         public Nullable<int> ShowroomID { get; set; }
         public Nullable<decimal> Recievable { get; set; }
+        public System.DateTime RecievableFromDate { get; set; }
+        public System.DateTime RecievableToDate { get; set; }
         public Nullable<decimal> Recieved { get; set; }
-        public System.DateTime FromDate { get; set; }
-        public System.DateTime ToDate { get; set; }
+        public System.DateTime RecievedFromDate { get; set; }
+        public System.DateTime RecievedToDate { get; set; }
         public System.DateTime CreatedOn { get; set; }
         public int CreatedBy { get; set; }
-        public Nullable<System.DateTime> UpdatedOn { get; set; }
+        public string UpdatedOn { get; set; }
         public Nullable<int> UpdatedBy { get; set; }
         public Nullable<bool> Isactive { get; set; }
         public Nullable<bool> Isarchive { get; set; }

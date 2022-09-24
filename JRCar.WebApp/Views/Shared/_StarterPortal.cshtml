@@ -203,6 +203,7 @@
 
             $('#CategoryD').show();
             $('#SubCategoryD').hide();
+            $('#RecSec').hide();
             $('#ManufacD').hide();
             $('#ModelD').hide();
             $('#ModelYearD').hide();
@@ -223,6 +224,31 @@
                     $('#CondD').show();
                 }
             });
+
+            $("#MakePayShow #ShowroomID").change(function () {
+                var ShowroomId = $(this).val();
+                console.log(ShowroomId)
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("GetShowroomData", "Portal")",
+                    data: JSON.stringify({ ShowroomID: ShowroomId }),
+                    contentType: "application/json; charset=utf-8",
+                    success: function (response) {
+                        console.log(response);
+                        $("#MakePayShow #ShowroomNumber").val(response.ShowroomNumber);
+                        $("#MakePayShow #ShowroomAddress").val(response.ShowroomAddress);
+                        if (response.Recievable > 0) {
+                            $('#RecSec').show();
+                            var valtext = "";
+                            for (var i = 0; i < response.RecievableDate.length; i++) {
+                                console.log(response.RecievableDate[i]);
+                                valtext += response.RecievableDate[i] + ", ";
+                            }
+                            $('#RecievableDate').val(valtext);
+                        }
+                    }
+                });
+            })
 
             $("#ManufacturerCarModelID").on("change", function () {
                 var ar = $('#ManufacturerCarModelID').select2('data');

@@ -20,23 +20,27 @@ namespace JRCar.BOL.Validation_Classes
 
         public string ShowroomAddress { get; set; }
 
-        [Required(ErrorMessage = "*")]
         [Display(Name = "Recievable")]
-        [Range(0, Int32.MaxValue, ErrorMessage = "Must Enter a Recievable")]
         public decimal? Recievable { get; set; }
 
+        [Display(Name = "Recieved")]
         public decimal? Recieved { get; set; }
 
-        [Required(ErrorMessage = "*")]
-        [Display(Name = "From Date")]
-        public System.DateTime FromDate { get; set; }
+        public System.DateTime RecievableFromDate { get; set; }
 
-        [Required(ErrorMessage = "*")]
-        [Display(Name = "To Date")]
-        public System.DateTime ToDate { get; set; }
+        public System.DateTime RecievableToDate { get; set; }
+
+        public List<string> RecievableDate { get; set; }
+        
+        public List<string> RecievedDate { get; set; }
+
+        public System.DateTime RecievedFromDate { get; set; }
+
+        public System.DateTime RecievedToDate { get; set; }
+        
         public System.DateTime CreatedOn { get; set; }
         public int CreatedBy { get; set; }
-        public System.DateTime UpdatedOn { get; set; }
+        public string UpdatedOn { get; set; }
         public int? UpdatedBy { get; set; }
         public bool? Isactive { get; set; }
         public bool? Isarchive { get; set; }
