@@ -227,24 +227,28 @@
 
             $("#MakePayShow #ShowroomID").change(function () {
                 var ShowroomId = $(this).val();
-                console.log(ShowroomId)
+                $('#loader').show();
                 $.ajax({
                     type: "POST",
                     url: "@Url.Action("GetShowroomData", "Portal")",
                     data: JSON.stringify({ ShowroomID: ShowroomId }),
                     contentType: "application/json; charset=utf-8",
                     success: function (response) {
+                        $('#loader').hide();
                         console.log(response);
                         $("#MakePayShow #ShowroomNumber").val(response.ShowroomNumber);
                         $("#MakePayShow #ShowroomAddress").val(response.ShowroomAddress);
                         if (response.Recievable > 0) {
                             $('#RecSec').show();
-                            var valtext = "";
+                            $('#RecievableDateD').empty();
                             for (var i = 0; i < response.RecievableDate.length; i++) {
                                 console.log(response.RecievableDate[i]);
-                                valtext += response.RecievableDate[i] + ", ";
+                                $('#RecievableDateD').append('<span style="background-color: #ff3838;padding: 0 6px;color: white;border: 1px solid #939393;border-radius: 4px;margin-right: 5px;padding-bottom: 2px; ">' + response.RecievableDate[i].Month + ' ' + response.RecievableDate[i].Year +'</span>');
                             }
-                            $('#RecievableDate').val(valtext);
+                            $('#Recievable').val(response.Recievable);
+                        }
+                        else {
+                            $('#RecSec').hide();
                         }
                     }
                 });

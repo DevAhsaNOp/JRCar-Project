@@ -1473,15 +1473,6 @@ namespace JRCar.WebApp.Controllers
         public ActionResult MakePayment()
         {
             ViewBag.Dealers = RepoObj1.GetAllDealers();
-            //var val = RepoObj1.GetAllMonths();
-            //foreach (var item in val)
-            //{
-            //    if (item.Text == "January" || item.Text == "Feburary" || item.Text == "March")
-            //    {
-            //        item.Selected = true;
-            //    }
-            //}
-            ViewBag.Month = RepoObj1.GetAllMonths();
             ViewBag.Months = RepoObj1.GetAllMonths();
 
             return View();
@@ -1506,8 +1497,14 @@ namespace JRCar.WebApp.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult MakePayment(ValidationPayment payment)
         {
-            ViewBag.Dealers = RepoObj1.GetAllDealers();
-
+            //var reas = PayRepoObj.GetShowroomDetailById(payment.ShowroomID.Value);
+            var receivedDates = payment.RecievedDate;
+            foreach (var item in receivedDates)
+            {
+                var today = Convert.ToDateTime(item);
+                var monthStart = new DateTime(today.Year, today.Month, 1);
+                var monthEnd = monthStart.AddMonths(1).AddDays(-1);
+            }
             return View();
         }
 

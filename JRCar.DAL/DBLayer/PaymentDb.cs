@@ -133,17 +133,17 @@ namespace JRCar.DAL.DBLayer
                 throw ex;
             }
         }
-        
+
         public ValidationPayment GetShowroomDetailById(int ShowroomID)
         {
             try
             {
                 if (ShowroomID > 0)
                 {
-                    var OldPendingPayment = GetShowroomPaymentById(ShowroomID).Select(s=> new { s.RecievableFromDate , s.RecievableToDate, s.Recievable }).ToList();
+                    var OldPendingPayment = GetShowroomPaymentById(ShowroomID).Select(s => new { s.RecievableFromDate, s.RecievableToDate, s.Recievable }).ToList();
                     if (OldPendingPayment.Count > 0 && OldPendingPayment != null)
                     {
-                        List<string> Datelist = new List<string>();
+                        List<DatesD> Datelist = new List<DatesD>();
                         decimal RecievableAmnt = 0;
 
                         foreach (var OldPayment in OldPendingPayment)
@@ -153,7 +153,11 @@ namespace JRCar.DAL.DBLayer
                             var months = MonthsBetween(startDate, endDate);
                             foreach (var item in months)
                             {
-                                Datelist.Add(item.Month);
+                                Datelist.Add(new DatesD()
+                                {
+                                    Month = item.Month,
+                                    Year = item.Year,
+                                });
                             }
                             RecievableAmnt += OldPayment.Recievable.Value;
                         }
@@ -164,9 +168,10 @@ namespace JRCar.DAL.DBLayer
                             ShowroomName = a.FullName,
                             ShowroomNumber = a.Contact,
                             ShowroomAddress = a.ShopNumber + " " + a.tblAddress.CompleteAddress,
-                            RecievableDate = Datelist,
                             Recievable = RecievableAmnt
                         }).FirstOrDefault();
+
+                        payment.RecievableDate = Datelist;
 
                         if (payment != null)
                             return payment;
@@ -174,7 +179,19 @@ namespace JRCar.DAL.DBLayer
                             return null;
                     }
                     else
-                        return null;
+                    {
+                        var payment = _context.tblShowrooms.Where(x => x.ID == ShowroomID).Select(a => new ValidationPayment()
+                        {
+                            ShowroomName = a.FullName,
+                            ShowroomNumber = a.Contact,
+                            ShowroomAddress = a.ShopNumber + " " + a.tblAddress.CompleteAddress,
+                        }).FirstOrDefault();
+
+                        if (payment != null)
+                            return payment;
+                        else
+                            return null;
+                    }
                 }
                 else
                     return null;
@@ -213,7 +230,7 @@ namespace JRCar.DAL.DBLayer
             }
         }
 
-        public static IEnumerable<(string Month, int Year)> MonthsBetween(DateTime startDate,DateTime endDate)
+        public static IEnumerable<(string Month, int Year)> MonthsBetween(DateTime startDate, DateTime endDate)
         {
             DateTime iterator;
             DateTime limit;

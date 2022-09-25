@@ -30,7 +30,7 @@ namespace JRCar.BOL.Validation_Classes
 
         public System.DateTime RecievableToDate { get; set; }
 
-        public List<string> RecievableDate { get; set; }
+        public List<DatesD> RecievableDate { get; set; }
         
         public List<string> RecievedDate { get; set; }
 
@@ -47,4 +47,10 @@ namespace JRCar.BOL.Validation_Classes
 
         public virtual tblShowroom tblShowroom { get; set; }
     }
+
+    public class DatesD
+    {
+        public string Month { get; set; }
+        public int Year { get; set; }
+    } 
 }
