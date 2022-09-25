@@ -196,6 +196,7 @@
       <DependentUpon>JRCarModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Validation Classes\ValidateAddress.cs" />
+    <Compile Include="Validation Classes\ValidateAppointment.cs" />
     <Compile Include="Validation Classes\ValidateShowroom.cs" />
     <Compile Include="Validation Classes\ValidateShowroomAds.cs" />
     <Compile Include="Validation Classes\ValidateUser.cs" />

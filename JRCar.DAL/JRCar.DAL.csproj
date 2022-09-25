@@ -85,6 +85,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DBLayer\AddressAutoFillDb.cs" />
+    <Compile Include="DBLayer\AppointmentDb.cs" />
     <Compile Include="DBLayer\NotificationDb.cs" />
     <Compile Include="DBLayer\PaymentDb.cs" />
     <Compile Include="DBLayer\ShowroomAdsDb.cs" />

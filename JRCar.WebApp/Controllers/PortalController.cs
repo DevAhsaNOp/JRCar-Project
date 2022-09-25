@@ -820,6 +820,7 @@ namespace JRCar.WebApp.Controllers
             var carDetail = RepoObj1.GetShowroomAdsDetail(AdID);
             if (carDetail == null)
             {
+                Session["ShowCarID"] = null;
                 TempData["ErrorMsg"] = "Car you trying to view is not exists!";
                 return RedirectToAction("MyAds");
             }
@@ -834,9 +835,87 @@ namespace JRCar.WebApp.Controllers
                     images.Add(FolderName[2] + "/" + Path.GetFileName(item));
                 }
                 ViewBag.Images = images;
+                Session["ShowCarID"] = carDetail.tblCarID;
                 return View(carDetail);
             }
         }
+        #endregion
+
+        #region **Car Ads Appointment**
+
+        [AcceptVerbs(HttpVerbs.Get)]
+        public ActionResult SetTime(string Time)
+        {
+            Session["Apptime"] = Time;
+            return Json("true", JsonRequestBehavior.AllowGet);
+        }
+
+        [AcceptVerbs(HttpVerbs.Post)]
+        //[Authorize(Roles = "User")]
+        public ActionResult ScheduleAppointment(string useremail, string userphone, string selecteddate, string selectedtime, string purpose)
+        {
+            try
+            {
+                if (User.Identity.IsAuthenticated)
+                {
+                    if (userphone != null && selecteddate != null && selectedtime != null && purpose != null)
+                    {
+                        if (purpose.Length > 1 && selectedtime.Length > 1 && userphone.Length > 1 && selecteddate.Length > 1)
+                        {
+                            var email = (useremail.Length > 1) ? useremail : Session["Email"].ToString();
+                            var UserID = Convert.ToInt32(Session["Id"]);
+                            var CarID = Convert.ToInt32(Session["ShowCarID"]);
+                            selectedtime = Session["Apptime"].ToString();
+                            AppointmentRepo repo = new AppointmentRepo();
+
+                            ValidateAppointment appointment = new ValidateAppointment()
+                            {
+                                Email = email,
+                                UserInterestedID = UserID,
+                                ShowroomCarID = CarID,
+                                Number = userphone,
+                                Purpose = purpose,
+                                Date = Convert.ToDateTime(selecteddate),
+                                Time = TimeSpan.Parse(selectedtime),
+                                CreatedBy = UserID,
+                            };
+
+                            var reas = repo.InsertAppointment(appointment);
+                            if (reas)
+                            {
+                                ModelState.Clear();
+                                return Json(true, JsonRequestBehavior.AllowGet);
+                            }
+                            else
+                            {
+                                ModelState.Clear();
+                                return Json(false, JsonRequestBehavior.AllowGet);
+                            }
+                        }
+                        else
+                        {
+                            ModelState.Clear();
+                            return Json(false, JsonRequestBehavior.AllowGet);
+                        }
+                    }
+                    else
+                    {
+                        ModelState.Clear();
+                        return Json(false, JsonRequestBehavior.AllowGet);
+                    }
+                }
+                else
+                {
+                    ModelState.Clear();
+                    return Json(false, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         #endregion
 
         #endregion
@@ -1437,7 +1516,7 @@ namespace JRCar.WebApp.Controllers
                 return Json("False", JsonRequestBehavior.AllowGet);
             }
         }
-        
+
         [AcceptVerbs(HttpVerbs.Post)]
         [Authorize(Roles = "Admin")]
         public ActionResult UnionActive(int ID)
@@ -1477,7 +1556,7 @@ namespace JRCar.WebApp.Controllers
 
             return View();
         }
-        
+
         [Authorize(Roles = "Admin,Union")]
         [AcceptVerbs(HttpVerbs.Post)]
         public JsonResult GetShowroomData(int ShowroomID)
@@ -1485,11 +1564,11 @@ namespace JRCar.WebApp.Controllers
             var reas = PayRepoObj.GetShowroomDetailById(ShowroomID);
             if (reas != null)
             {
-                return Json(reas,JsonRequestBehavior.AllowGet);
+                return Json(reas, JsonRequestBehavior.AllowGet);
             }
             else
             {
-                return Json("false",JsonRequestBehavior.AllowGet);
+                return Json("false", JsonRequestBehavior.AllowGet);
             }
         }
 

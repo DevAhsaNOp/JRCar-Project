@@ -69,6 +69,7 @@
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\AddressAutofillRepo.cs" />
+    <Compile Include="Repositories\AppointmentRepo.cs" />
     <Compile Include="Repositories\NotificationRepo.cs" />
     <Compile Include="Repositories\PaymentRepo.cs" />
     <Compile Include="Repositories\ShowroomAdsRepo.cs" />
