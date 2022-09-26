@@ -131,7 +131,7 @@ namespace JRCar.DAL.DBLayer
                 throw ex;
             }
         }
-        
+
         public IEnumerable<ValidateAppointment> GetUserAppointmentsById(int UserID)
         {
             try
@@ -162,6 +162,18 @@ namespace JRCar.DAL.DBLayer
             {
                 throw ex;
             }
+        }
+
+        public int GetUserTodaysAppointmentsCount(DateTime currentDate, int UserID)
+        {
+            var reas = _context.tblAppointments.Where(x => x.UserInterestedID == UserID && x.Date.Date.ToString("dd/MM/yyyy") == currentDate.ToString("dd/MM/yyyy")).ToList().Count;
+            return reas;
+        }
+
+        public int GetShowroomTodaysAppointmentsCount(DateTime currentDate, int ShowroomID)
+        {
+            var reas = _context.tblAppointments.Where(x => x.ShowroomInterestedID == ShowroomID && x.Date.Date.ToString("dd/MM/yyyy") == currentDate.ToString("dd/MM/yyyy")).ToList().Count;
+            return reas;
         }
     }
 }

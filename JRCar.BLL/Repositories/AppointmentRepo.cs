@@ -153,5 +153,27 @@ namespace JRCar.BLL.Repositories
                 throw ex;
             }
         }
+
+        public int GetUserTodaysAppointmentsCount(DateTime currentDate, int UserID)
+        {
+            if (UserID > 0)
+            {
+                var reas = appointmentDb.GetUserTodaysAppointmentsCount(currentDate, UserID);
+                return reas;
+            }
+            else
+                return 0;
+        }
+
+        public int GetShowroomTodaysAppointmentsCount(DateTime currentDate, int ShowroomID)
+        {
+            if (ShowroomID > 0)
+            {
+                var reas = appointmentDb.GetShowroomTodaysAppointmentsCount(currentDate, ShowroomID);
+                return reas;
+            }
+            else
+                return 0;
+        }
     }
 }

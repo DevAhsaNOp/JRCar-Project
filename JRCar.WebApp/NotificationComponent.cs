@@ -8,12 +8,14 @@ using System.Collections.Generic;
 using System.IO;
 using JRCar.BLL.Repositories;
 using JRCar.DAL.DBLayer;
+using JRCar.BOL.Validation_Classes;
 
 namespace JRCar.WebApp
 {
     public class NotificationComponent
     {
         private NotificationRepo repo = new NotificationRepo();
+        private AppointmentRepo appointmentrepo = new AppointmentRepo();
 
         public void RegisterNotification(DateTime currentTime)
         {
@@ -35,6 +37,32 @@ namespace JRCar.WebApp
                 cmd.Notification = null;
                 SqlDependency sql = new SqlDependency(cmd);
                 sql.OnChange += new OnChangeEventHandler(sqlDep_OnChange);
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+
+                }
+            }
+        }
+
+        public void RegisterAppointment(DateTime currentTime)
+        {
+            PortalController pc = new PortalController();
+            string constring = ConfigurationManager.ConnectionStrings["jrcarNotification"].ConnectionString;
+            SqlDependency.Start(constring);
+            string SqlCmd = String.Empty;
+            SqlCmd = @"SELECT [ID], [Email], [UserInterestedID], [ShowroomInterestedID], [UserCarID], [ShowroomCarID], [Number], [Purpose], [Date], [Isactive], [CreatedBy], [CreatedOn], [UpdatedOn],[UpdatedBy] FROM [dbo].[tblAppointments] WHERE ([CreatedOn] > @CreatedOn)";
+
+            using (SqlConnection con = new SqlConnection(constring))
+            {
+                SqlCommand cmd = new SqlCommand(SqlCmd, con);
+                cmd.Parameters.AddWithValue("@CreatedOn", currentTime);
+                if (con.State != System.Data.ConnectionState.Open)
+                {
+                    con.Open();
+                }
+                cmd.Notification = null;
+                SqlDependency sql = new SqlDependency(cmd);
+                sql.OnChange += new OnChangeEventHandler(sqlDep_OnChangeAppointment);
                 using (SqlDataReader reader = cmd.ExecuteReader())
                 {
 
@@ -100,6 +128,20 @@ namespace JRCar.WebApp
             }
         }
 
+        void sqlDep_OnChangeAppointment(object sender, SqlNotificationEventArgs e)
+        {
+            if (e.Info == SqlNotificationInfo.Update)
+            {
+                NotificationHub.Show();
+                RegisterAnnouncement(DateTime.Now);
+            }
+            else if (e.Info == SqlNotificationInfo.Insert)
+            {
+                NotificationHub.Show();
+                RegisterAnnouncement(DateTime.Now);
+            }
+        }
+
         public List<NotiShow> GetNotifications(DateTime afterDate, int ShowroomID)
         {
             var reas = repo.GetNotifications(afterDate, ShowroomID);
@@ -109,6 +151,30 @@ namespace JRCar.WebApp
         public int GetNotificationsCount(DateTime afterDate, int ShowroomID)
         {
             var reas = repo.GetNotificationsCount(afterDate, ShowroomID);
+            return reas;
+        }
+
+        public int GetUserTodaysAppointmentsCount(DateTime afterDate, int UserID)
+        {
+            var reas = appointmentrepo.GetUserTodaysAppointmentsCount(afterDate, UserID);
+            return reas;
+        }
+
+        public int GetShowroomTodaysAppointmentsCount(DateTime afterDate, int ShowroomID)
+        {
+            var reas = appointmentrepo.GetShowroomTodaysAppointmentsCount(afterDate, ShowroomID);
+            return reas;
+        }
+
+        public IEnumerable<ValidateAppointment> GetShowroomAppointmentsById(int ShowroomID)
+        {
+            var reas = appointmentrepo.GetShowroomAppointmentsById(ShowroomID);
+            return reas;
+        }
+
+        public IEnumerable<ValidateAppointment> GetUserAppointmentsById(int UserID)
+        {
+            var reas = appointmentrepo.GetUserAppointmentsById(UserID);
             return reas;
         }
 
