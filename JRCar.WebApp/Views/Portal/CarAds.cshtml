@@ -22,16 +22,12 @@
     <link href="~/Files/css/color.css" rel="stylesheet">
     <link href="~/Files/css/widget.css" rel="stylesheet">
     <link href="~/Files/css/responsive.css" rel="stylesheet">
-    <!-- <link href="Files/css/bootstrap-rtl.css" rel="stylesheet"> Uncomment it if needed! -->
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-          <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-          <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
     <script src="~/Files/scripts/jquery.js"></script>
     <script src="~/Files/scripts/modernizr.js"></script>
     <script src="~/Files/scripts/bootstrap.min.js"></script>
+    <!-- SweetAlert2 -->
+    <link rel="stylesheet" href="~/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
+    <script src="~/plugins/sweetalert2/sweetalert2.min.js"></script>
     <style>
         .single-page .cs-banner ul.cs-banner-slider li .cs-media figure img {
             height: 50vh !important;
@@ -82,29 +78,47 @@
             }
     </style>
     <script>
+        function fnAuthorize() {
+            var userAuthorized = @User.Identity.IsAuthenticated.ToString().ToLower();
+            var Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000
+            });
+            if (userAuthorized) {
+            }
+            else {
+                $('#schedule-test-drive').modal('hide');
+                Toast.fire({
+                    title: '<span style="font-size:10px;line-height:10px;text-transform: capitalize;text-align:center">Please Sign In. Before Scheduling an appointment!</span>',
+                    footer: '<a href="/Account/SignIn" style="font-size:14px;" class="btn btn-danger">Sign In</a>'
+                })
+                return false;
+            }
+        }
+
         function fnSuccess(data) {
             $('#schedule-test-drive').modal('hide');
 
-            //var Toast = Swal.mixin({
-            //    toast: true,
-            //    position: 'top-end',
-            //    showConfirmButton: false,
-            //    timer: 3000
-            //});
+            var Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000
+            });
 
             if (data) {
-                alert('Success');
-                //Toast.fire({
-                //    icon: 'success',
-                //    title: 'New Announcment hase been posted Succesfully!'
-                //});
+                Toast.fire({
+                    icon: 'success',
+                    title: 'Appointment request has been sent Succesfully!'
+                });
             }
             else {
-                alert('error')
-                //Toast.fire({
-                //    icon: 'error',
-                //    title: 'Something went wrong. Please try again Later!'
-                //})
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Something went wrong. Please try again Later!'
+                })
             }
 
         }
@@ -137,7 +151,6 @@
                 contentType: "application/json; charset=utf-8",
                 dataType: "text",
                 success: function (r) {
-                    console.log(r);
                 }
             });
         }
@@ -543,6 +556,7 @@
                                                         @using (Ajax.BeginForm("ScheduleAppointment", "Portal", new AjaxOptions
                                                         {
                                                             HttpMethod = "POST",
+                                                            OnBegin = "fnAuthorize",
                                                             OnSuccess = "fnSuccess"
                                                         }, htmlAttributes: new { @class = "row" }))
                                                         {
@@ -824,28 +838,23 @@
 
             $("#btnShow").click(function (e) {
                 var userAuthorized = @User.Identity.IsAuthenticated.ToString().ToLower();
+                var Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000
+                });
                 if (userAuthorized) {
-                    $("#PhoneNumber").html("Phone Number: 0" + @Model.ShowroomNumber);
-                    $("#btnShow").hide();
                 }
                 else {
-                    window.location.href = "@Url.Action("SignIn", "Account")";
-                    SetTempData();
+                    $('#schedule-test-drive').modal('hide');
+                    Toast.fire({
+                        title: '<span style="font-size:10px;line-height:10px;text-transform: capitalize;text-align:center">Please Sign In. Before Scheduling an appointment!</span>',
+                        footer: '<a href="/Account/SignIn" style="font-size:14px;" class="btn btn-danger">Sign In</a>'
+                    })
+                    return false;
                 }
             });
-
-            function SetTempData() {
-                $.ajax({
-                    type: "POST",
-                    url: '/Account/SetTempData',
-                    data: '{ value: "Please Sign In to see a Phone number..."}',
-                    contentType: "application/json; charset=utf-8",
-                    dataType: "text",
-                    success: function (r) {
-                        console.log(r);
-                    }
-                });
-            }
 
             success();
 
