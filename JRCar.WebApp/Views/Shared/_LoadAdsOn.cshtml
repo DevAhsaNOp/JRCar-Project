@@ -82,10 +82,10 @@
                         int years, weeks, months;
                         var Tdays = Convert.ToInt32((0 - (Convert.ToDateTime(item.value.tblCarCreatedOn).Date - DateTime.Today.Date).TotalDays));
                         years = (Tdays / 365);
-                        months = Convert.ToInt32((Tdays / 30.4368499));
+                        months = Convert.ToInt32(Math.Floor(Tdays / 30.4368499));
                         weeks = (Tdays % 365) / 7;
                         Tdays = Tdays - ((years * 365) + (weeks * 7));
-                        if (years > 0)
+                        if (years >= 1)
                         {
                             <li>
                                 Posted On
@@ -94,7 +94,7 @@
                                 </span>
                             </li>
                         }
-                        else if (months > 0)
+                        else if (months >= 1)
                         {
                             <li>
                                 Posted On
@@ -103,7 +103,7 @@
                                 </span>
                             </li>
                         }
-                        else if (weeks > 0)
+                        else if (weeks >= 1)
                         {
                             <li>
                                 Posted On
@@ -127,7 +127,7 @@
                     if (Convert.ToInt32(Session["Id"]) > 0)
                     {
                         var IsShortlist = item.value.tblFavAdds.Where(x => x.CarID == item.value.tblCarID && x.UserID == Convert.ToInt32(Session["Id"])).FirstOrDefault();
-                        if (IsShortlist != null)
+                        if (IsShortlist != null && IsShortlist.Isactive == true)
                         {
                             <a href="javascript:void(0)" class="short-list cs-color btnShortList" style="margin-right: 14px !important; display: inline-flex; flex-direction: row; align-items: center;"><i class="icon-check-circle"></i>ShortListed</a>
                         }

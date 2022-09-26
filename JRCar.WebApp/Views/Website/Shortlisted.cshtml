@@ -70,7 +70,7 @@
                                         </div>
                                         <div class="cs-text">
                                             <address><i class=" icon-map2"></i>@item.tblCar.CurrentLocation, @item.tblCar.tblAddress.tblCity.CityName</address>
-                                            <h6><a href="@Url.Action("CarDetail","Website",new { AdID = item.tblCar.CarsURL })">@item.tblCar.Title</a></h6>
+                                            <h6><a href="@Url.Action("CarAds","Portal",new { AdID = item.tblCar.CarsURL })">@item.tblCar.Title</a></h6>
                                             <div class="cs-price">
                                                 <span class="cs-color">$@item.tblCar.Price</span>
                                                 <em>MSRP $32,000</em>

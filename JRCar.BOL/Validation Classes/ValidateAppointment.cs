@@ -23,10 +23,8 @@ namespace JRCar.BOL.Validation_Classes
         public string Purpose { get; set; }
 
         [Required(ErrorMessage ="*")]
-        public System.DateTime Date { get; set; }
+        public System.DateTime Datetime { get; set; }
 
-        [Required(ErrorMessage ="*")]
-        public System.TimeSpan Time { get; set; }
         public bool Isactive { get; set; }
         public int CreatedBy { get; set; }
         public System.DateTime CreatedOn { get; set; }

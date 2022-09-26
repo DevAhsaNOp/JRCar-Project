@@ -23,7 +23,6 @@ namespace JRCar.BOL
         public string Number { get; set; }
         public string Purpose { get; set; }
         public System.DateTime Date { get; set; }
-        public System.TimeSpan Time { get; set; }
         public bool Isactive { get; set; }
         public int CreatedBy { get; set; }
         public System.DateTime CreatedOn { get; set; }
@@ -31,8 +30,8 @@ namespace JRCar.BOL
         public Nullable<int> UpdatedBy { get; set; }
     
         public virtual tblCar tblCar { get; set; }
+        public virtual tblShowroom tblShowroom { get; set; }
         public virtual tblUserAdd tblUserAdd { get; set; }
         public virtual tblUser tblUser { get; set; }
-        public virtual tblShowroom tblShowroom { get; set; }
     }
 }

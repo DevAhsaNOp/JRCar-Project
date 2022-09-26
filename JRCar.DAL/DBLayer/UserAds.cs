@@ -320,10 +320,8 @@ namespace JRCar.DAL.DBLayer
         {
             if (favAdd != null)
             {
-                var favAddData = _context.tblFavAdds.Where(x => x.ID == favAdd.ID).FirstOrDefault();
-                favAddData.Isactive = false;
-                favAddData.Isarchived = true;
-                _context.Entry(favAddData).State = System.Data.Entity.EntityState.Modified;
+                var favAddData = _context.tblFavAdds.Find(favAdd.ID);
+                _context.tblFavAdds.Remove(favAddData);
                 Save();
                 return true;
             }

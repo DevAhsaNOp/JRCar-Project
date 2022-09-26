@@ -28,8 +28,7 @@ namespace JRCar.BLL.Repositories
                     tblAppointment appointment = new tblAppointment()
                     {
                         CreatedBy = model.CreatedBy,
-                        Date = model.Date,
-                        Time = model.Time,
+                        Date = model.Datetime,
                         Email = model.Email,
                         Number = model.Number,
                         Purpose = model.Purpose,
@@ -65,7 +64,6 @@ namespace JRCar.BLL.Repositories
                     tblAppointment appointment = new tblAppointment()
                     {
                         Date = model.Date,
-                        Time = model.Time,
                         Email = model.Email,
                         Number = model.Number,
                         Purpose = model.Purpose,
