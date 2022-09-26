@@ -339,6 +339,11 @@ namespace JRCar.DAL.DBLayer
             else
                 return null;
         }
+        
+        public int GetUserID(int ADId)
+        {
+            return _context.tblUserAdds.Where(x => x.ID == ADId).FirstOrDefault().UserID;
+        }
 
         public ValidationUserAds GetUserAdsDetail(string AdsId)
         {

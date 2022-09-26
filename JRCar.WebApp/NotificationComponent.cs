@@ -50,7 +50,7 @@ namespace JRCar.WebApp
             string constring = ConfigurationManager.ConnectionStrings["jrcarNotification"].ConnectionString;
             SqlDependency.Start(constring);
             string SqlCmd = String.Empty;
-            SqlCmd = @"SELECT [ID], [Email], [UserInterestedID], [ShowroomInterestedID], [UserCarID], [ShowroomCarID], [Number], [Purpose], [Date], [Isactive], [CreatedBy], [CreatedOn], [UpdatedOn],[UpdatedBy] FROM [dbo].[tblAppointments] WHERE ([CreatedOn] > @CreatedOn)";
+            SqlCmd = @"SELECT [ID] ,[AppointmentID] ,[ShowroomID] ,[UserID] ,[Email] ,[Number] ,[Purpose] ,[Date] ,[CreatedBy] ,[CreatedOn] ,[UpdatedBy] ,[UpdatedOn], [IsRead] FROM [dbo].[tblAppointmentDetails] WHERE ([CreatedOn] > @CreatedOn or IsRead <> 1)";
 
             using (SqlConnection con = new SqlConnection(constring))
             {
@@ -133,12 +133,12 @@ namespace JRCar.WebApp
             if (e.Info == SqlNotificationInfo.Update)
             {
                 NotificationHub.Show();
-                RegisterAnnouncement(DateTime.Now);
+                RegisterAppointment(DateTime.Now);
             }
             else if (e.Info == SqlNotificationInfo.Insert)
             {
                 NotificationHub.Show();
-                RegisterAnnouncement(DateTime.Now);
+                RegisterAppointment(DateTime.Now);
             }
         }
 

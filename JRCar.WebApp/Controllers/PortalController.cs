@@ -1040,7 +1040,7 @@ namespace JRCar.WebApp.Controllers
                         user.Image = "~/Images/" + _filename;
                         if (extension.ToLower() == ".jpg" || extension.ToLower() == ".jpeg" || extension.ToLower() == ".png")
                         {
-                            var role = RepoObj.GetUserRole(user.SignUpUpdateEmail).Role;
+                            var role = RepoObj.GetUserRole(Session["UserEditEmail"].ToString()).Role;
                             user.tblRoleName = role;
                             if (file.ContentLength <= 10000000)
                             {
@@ -1103,7 +1103,7 @@ namespace JRCar.WebApp.Controllers
                     {
                         user.Image = Session["CurrentUserAvatar"].ToString();
                         user.ID = (int)Session["UserEditID"];
-                        var role = RepoObj.GetUserRole(user.SignUpUpdateEmail).Role;
+                        var role = RepoObj.GetUserRole(Session["UserEditEmail"].ToString()).Role;
                         user.tblRoleName = role;
                         user.Email = user.SignUpUpdateEmail;
                         user.UpdatedBy = (int)Session["Id"];
@@ -1228,7 +1228,7 @@ namespace JRCar.WebApp.Controllers
                         user.Image = "~/Images/" + _filename;
                         if (extension.ToLower() == ".jpg" || extension.ToLower() == ".jpeg" || extension.ToLower() == ".png")
                         {
-                            var role = RepoObj.GetUserRole(user.SignUpUpdateEmail).Role;
+                            var role = RepoObj.GetUserRole(Session["UserEditEmail"].ToString()).Role;
                             user.tblRoleName = role;
                             if (file.ContentLength <= 10000000)
                             {
@@ -1291,7 +1291,7 @@ namespace JRCar.WebApp.Controllers
                     {
                         user.Image = Session["CurrentUserAvatar"].ToString();
                         user.ID = (int)Session["UserEditID"];
-                        var role = RepoObj.GetUserRole(user.SignUpUpdateEmail).Role;
+                        var role = RepoObj.GetUserRole(Session["UserEditEmail"].ToString()).Role;
                         user.tblRoleName = role;
                         user.Email = user.SignUpUpdateEmail;
                         user.UpdatedBy = (int)Session["Id"];

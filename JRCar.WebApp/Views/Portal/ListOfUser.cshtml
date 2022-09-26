@@ -154,9 +154,12 @@
                                                         <i class="far fa-edit"></i>
                                                     </button>
                                                 </a>
-                                                <button class="btnAction btnDel" onclick="RemoveAd(@item.ID)">
-                                                    <i class="fas fa-trash-alt"></i>
-                                                </button>
+                                                @if (item.Active)
+                                                {
+                                                    <button class="btnAction btnDel" onclick="RemoveAd(@item.ID)">
+                                                        <i class="fas fa-trash-alt"></i>
+                                                    </button>
+                                                }
                                             </td>
                                         </tr>
                                     }

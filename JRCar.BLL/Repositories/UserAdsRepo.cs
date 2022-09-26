@@ -439,6 +439,11 @@ namespace JRCar.BLL.Repositories
         public IEnumerable<tblManufacturer> GetAllMakes()
         {
             return dbObj.GetAllMakes();
+        }     
+        
+        public int GetUserID(int AdID)
+        {
+            return dbObj.GetUserID(AdID);
         }
 
         public IEnumerable<tblManfacturerCarModel> GetAllModels()

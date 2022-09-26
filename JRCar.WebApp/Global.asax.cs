@@ -30,6 +30,8 @@ namespace JRCar.WebApp
             NC.RegisterNotification(currentTime);
             HttpContext.Current.Session["AnnLastUpdated"] = currentTime;
             NC.RegisterAnnouncement(currentTime);
+            HttpContext.Current.Session["AppLastUpdated"] = currentTime;
+            NC.RegisterAppointment(currentTime);
         }
 
 

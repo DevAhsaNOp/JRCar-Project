@@ -66,24 +66,39 @@
           <Property Name="CreatedOn" Type="datetime" Nullable="false" />
           <Property Name="IsRead" Type="bit" />
         </EntityType>
+        <EntityType Name="tblAppointmentDetails">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AppointmentID" Type="int" />
+          <Property Name="ShowroomID" Type="int" />
+          <Property Name="UserID" Type="int" />
+          <Property Name="Email" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Number" Type="varchar" MaxLength="11" Nullable="false" />
+          <Property Name="Purpose" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Date" Type="datetime" Nullable="false" />
+          <Property Name="CreatedBy" Type="int" Nullable="false" />
+          <Property Name="CreatedOn" Type="datetime" Nullable="false" />
+          <Property Name="UpdatedBy" Type="int" />
+          <Property Name="UpdatedOn" Type="datetime" />
+          <Property Name="IsRead" Type="bit" />
+        </EntityType>
         <EntityType Name="tblAppointments">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Email" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="UserInterestedID" Type="int" />
           <Property Name="ShowroomInterestedID" Type="int" />
           <Property Name="UserCarID" Type="int" />
           <Property Name="ShowroomCarID" Type="int" />
-          <Property Name="Number" Type="varchar" MaxLength="11" Nullable="false" />
-          <Property Name="Purpose" Type="varchar" MaxLength="150" Nullable="false" />
-          <Property Name="Date" Type="datetime" Nullable="false" />
           <Property Name="Isactive" Type="bit" Nullable="false" />
           <Property Name="CreatedBy" Type="int" Nullable="false" />
           <Property Name="CreatedOn" Type="datetime" Nullable="false" />
           <Property Name="UpdatedOn" Type="datetime" />
           <Property Name="UpdatedBy" Type="int" />
+          <Property Name="IsAccepted" Type="bit" />
         </EntityType>
         <EntityType Name="tblBlogs">
           <Key>
@@ -750,6 +765,42 @@ warning 6002: The table/view 'jrcar.dbo.ANNOVIEW' does not have a primary key de
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_tblAppointmentDetails_tblAppointments">
+          <End Role="tblAppointments" Type="Self.tblAppointments" Multiplicity="0..1" />
+          <End Role="tblAppointmentDetails" Type="Self.tblAppointmentDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblAppointments">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="tblAppointmentDetails">
+              <PropertyRef Name="AppointmentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblAppointmentDetails_tblShowrooms">
+          <End Role="tblShowrooms" Type="Self.tblShowrooms" Multiplicity="0..1" />
+          <End Role="tblAppointmentDetails" Type="Self.tblAppointmentDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblShowrooms">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="tblAppointmentDetails">
+              <PropertyRef Name="ShowroomID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblAppointmentDetails_tblUsers">
+          <End Role="tblUsers" Type="Self.tblUsers" Multiplicity="0..1" />
+          <End Role="tblAppointmentDetails" Type="Self.tblAppointmentDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblUsers">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="tblAppointmentDetails">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_tblAppointments_tblCars">
           <End Role="tblCars" Type="Self.tblCars" Multiplicity="0..1" />
           <End Role="tblAppointments" Type="Self.tblAppointments" Multiplicity="*" />
@@ -1056,6 +1107,7 @@ warning 6002: The table/view 'jrcar.dbo.ANNOVIEW' does not have a primary key de
           <EntitySet Name="tblAddress" EntityType="Self.tblAddress" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblAdmins" EntityType="Self.tblAdmins" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblAnnouncements" EntityType="Self.tblAnnouncements" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblAppointmentDetails" EntityType="Self.tblAppointmentDetails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblAppointments" EntityType="Self.tblAppointments" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblBlogs" EntityType="Self.tblBlogs" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblCarFeatures" EntityType="Self.tblCarFeatures" Schema="dbo" store:Type="Tables" />
@@ -1171,6 +1223,18 @@ warning 6002: The table/view 'jrcar.dbo.ANNOVIEW' does not have a primary key de
           <AssociationSet Name="FK_tblAnnouncements_tblShowrooms" Association="Self.FK_tblAnnouncements_tblShowrooms">
             <End Role="tblShowrooms" EntitySet="tblShowrooms" />
             <End Role="tblAnnouncements" EntitySet="tblAnnouncements" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblAppointmentDetails_tblAppointments" Association="Self.FK_tblAppointmentDetails_tblAppointments">
+            <End Role="tblAppointments" EntitySet="tblAppointments" />
+            <End Role="tblAppointmentDetails" EntitySet="tblAppointmentDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblAppointmentDetails_tblShowrooms" Association="Self.FK_tblAppointmentDetails_tblShowrooms">
+            <End Role="tblShowrooms" EntitySet="tblShowrooms" />
+            <End Role="tblAppointmentDetails" EntitySet="tblAppointmentDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblAppointmentDetails_tblUsers" Association="Self.FK_tblAppointmentDetails_tblUsers">
+            <End Role="tblUsers" EntitySet="tblUsers" />
+            <End Role="tblAppointmentDetails" EntitySet="tblAppointmentDetails" />
           </AssociationSet>
           <AssociationSet Name="FK_tblAppointments_tblCars" Association="Self.FK_tblAppointments_tblCars">
             <End Role="tblCars" EntitySet="tblCars" />
@@ -1491,6 +1555,19 @@ warning 6002: The table/view 'jrcar.dbo.ANNOVIEW' does not have a primary key de
           <AssociationSet Name="FK_tblAppointments_tblUsers" Association="jrcarModel.FK_tblAppointments_tblUsers">
             <End Role="tblUser" EntitySet="tblUsers" />
             <End Role="tblAppointment" EntitySet="tblAppointments" />
+          </AssociationSet>
+          <EntitySet Name="tblAppointmentDetails" EntityType="jrcarModel.tblAppointmentDetail" />
+          <AssociationSet Name="FK_tblAppointmentDetails_tblAppointments" Association="jrcarModel.FK_tblAppointmentDetails_tblAppointments">
+            <End Role="tblAppointment" EntitySet="tblAppointments" />
+            <End Role="tblAppointmentDetail" EntitySet="tblAppointmentDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblAppointmentDetails_tblShowrooms" Association="jrcarModel.FK_tblAppointmentDetails_tblShowrooms">
+            <End Role="tblShowroom" EntitySet="tblShowrooms" />
+            <End Role="tblAppointmentDetail" EntitySet="tblAppointmentDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblAppointmentDetails_tblUsers" Association="jrcarModel.FK_tblAppointmentDetails_tblUsers">
+            <End Role="tblUser" EntitySet="tblUsers" />
+            <End Role="tblAppointmentDetail" EntitySet="tblAppointmentDetails" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="C__MigrationHistory">
@@ -1858,6 +1935,7 @@ warning 6002: The table/view 'jrcar.dbo.ANNOVIEW' does not have a primary key de
           <NavigationProperty Name="tblUserAdds" Relationship="jrcarModel.FK_dbo_tblUserAdds_dbo_tblUsers_UserID" FromRole="tblUser" ToRole="tblUserAdd" />
           <NavigationProperty Name="tblFavAdds" Relationship="jrcarModel.FK_dbo_tblFavAdds_dbo_tblUsers_UserID" FromRole="tblUser" ToRole="tblFavAdd" />
           <NavigationProperty Name="tblAppointments" Relationship="jrcarModel.FK_tblAppointments_tblUsers" FromRole="tblUser" ToRole="tblAppointment" />
+          <NavigationProperty Name="tblAppointmentDetails" Relationship="jrcarModel.FK_tblAppointmentDetails_tblUsers" FromRole="tblUser" ToRole="tblAppointmentDetail" />
         </EntityType>
         <EntityType Name="tblZone">
           <Key>
@@ -2436,6 +2514,7 @@ warning 6002: The table/view 'jrcar.dbo.ANNOVIEW' does not have a primary key de
           <NavigationProperty Name="tblUnion" Relationship="jrcarModel.FK_tblShowrooms_tblUnions" FromRole="tblShowroom" ToRole="tblUnion" />
           <NavigationProperty Name="tblPayments" Relationship="jrcarModel.FK_tblPayment_tblShowrooms" FromRole="tblShowroom" ToRole="tblPayment" />
           <NavigationProperty Name="tblAppointments" Relationship="jrcarModel.FK_tblAppointments_tblShowrooms" FromRole="tblShowroom" ToRole="tblAppointment" />
+          <NavigationProperty Name="tblAppointmentDetails" Relationship="jrcarModel.FK_tblAppointmentDetails_tblShowrooms" FromRole="tblShowroom" ToRole="tblAppointmentDetail" />
         </EntityType>
         <Association Name="FK_tblShowrooms_tblAddress">
           <End Type="jrcarModel.tblAddress" Role="tblAddress" Multiplicity="0..1" />
@@ -2560,23 +2639,21 @@ warning 6002: The table/view 'jrcar.dbo.ANNOVIEW' does not have a primary key de
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Email" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="UserInterestedID" Type="Int32" />
           <Property Name="ShowroomInterestedID" Type="Int32" />
           <Property Name="UserCarID" Type="Int32" />
           <Property Name="ShowroomCarID" Type="Int32" />
-          <Property Name="Number" Type="String" Nullable="false" MaxLength="11" FixedLength="false" Unicode="false" />
-          <Property Name="Purpose" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
-          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Isactive" Type="Boolean" Nullable="false" />
           <Property Name="CreatedBy" Type="Int32" Nullable="false" />
           <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="UpdatedOn" Type="DateTime" Precision="3" />
           <Property Name="UpdatedBy" Type="Int32" />
+          <Property Name="IsAccepted" Type="Boolean" />
           <NavigationProperty Name="tblCar" Relationship="jrcarModel.FK_tblAppointments_tblCars" FromRole="tblAppointment" ToRole="tblCar" />
           <NavigationProperty Name="tblShowroom" Relationship="jrcarModel.FK_tblAppointments_tblShowrooms" FromRole="tblAppointment" ToRole="tblShowroom" />
           <NavigationProperty Name="tblUserAdd" Relationship="jrcarModel.FK_tblAppointments_tblUserAdds" FromRole="tblAppointment" ToRole="tblUserAdd" />
           <NavigationProperty Name="tblUser" Relationship="jrcarModel.FK_tblAppointments_tblUsers" FromRole="tblAppointment" ToRole="tblUser" />
+          <NavigationProperty Name="tblAppointmentDetails" Relationship="jrcarModel.FK_tblAppointmentDetails_tblAppointments" FromRole="tblAppointment" ToRole="tblAppointmentDetail" />
         </EntityType>
         <Association Name="FK_tblAppointments_tblCars">
           <End Type="jrcarModel.tblCar" Role="tblCar" Multiplicity="0..1" />
@@ -2623,6 +2700,63 @@ warning 6002: The table/view 'jrcar.dbo.ANNOVIEW' does not have a primary key de
             </Principal>
             <Dependent Role="tblAppointment">
               <PropertyRef Name="UserInterestedID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="tblAppointmentDetail">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AppointmentID" Type="Int32" />
+          <Property Name="ShowroomID" Type="Int32" />
+          <Property Name="UserID" Type="Int32" />
+          <Property Name="Email" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Number" Type="String" Nullable="false" MaxLength="11" FixedLength="false" Unicode="false" />
+          <Property Name="Purpose" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CreatedBy" Type="Int32" Nullable="false" />
+          <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UpdatedBy" Type="Int32" />
+          <Property Name="UpdatedOn" Type="DateTime" Precision="3" />
+          <Property Name="IsRead" Type="Boolean" />
+          <NavigationProperty Name="tblAppointment" Relationship="jrcarModel.FK_tblAppointmentDetails_tblAppointments" FromRole="tblAppointmentDetail" ToRole="tblAppointment" />
+          <NavigationProperty Name="tblShowroom" Relationship="jrcarModel.FK_tblAppointmentDetails_tblShowrooms" FromRole="tblAppointmentDetail" ToRole="tblShowroom" />
+          <NavigationProperty Name="tblUser" Relationship="jrcarModel.FK_tblAppointmentDetails_tblUsers" FromRole="tblAppointmentDetail" ToRole="tblUser" />
+        </EntityType>
+        <Association Name="FK_tblAppointmentDetails_tblAppointments">
+          <End Type="jrcarModel.tblAppointment" Role="tblAppointment" Multiplicity="0..1" />
+          <End Type="jrcarModel.tblAppointmentDetail" Role="tblAppointmentDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblAppointment">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="tblAppointmentDetail">
+              <PropertyRef Name="AppointmentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblAppointmentDetails_tblShowrooms">
+          <End Type="jrcarModel.tblShowroom" Role="tblShowroom" Multiplicity="0..1" />
+          <End Type="jrcarModel.tblAppointmentDetail" Role="tblAppointmentDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblShowroom">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="tblAppointmentDetail">
+              <PropertyRef Name="ShowroomID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblAppointmentDetails_tblUsers">
+          <End Type="jrcarModel.tblUser" Role="tblUser" Multiplicity="0..1" />
+          <End Type="jrcarModel.tblAppointmentDetail" Role="tblAppointmentDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblUser">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="tblAppointmentDetail">
+              <PropertyRef Name="UserID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3120,19 +3254,35 @@ warning 6002: The table/view 'jrcar.dbo.ANNOVIEW' does not have a primary key de
           <EntitySetMapping Name="tblAppointments">
             <EntityTypeMapping TypeName="jrcarModel.tblAppointment">
               <MappingFragment StoreEntitySet="tblAppointments">
+                <ScalarProperty Name="IsAccepted" ColumnName="IsAccepted" />
                 <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
                 <ScalarProperty Name="UpdatedOn" ColumnName="UpdatedOn" />
                 <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
                 <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
                 <ScalarProperty Name="Isactive" ColumnName="Isactive" />
-                <ScalarProperty Name="Date" ColumnName="Date" />
-                <ScalarProperty Name="Purpose" ColumnName="Purpose" />
-                <ScalarProperty Name="Number" ColumnName="Number" />
                 <ScalarProperty Name="ShowroomCarID" ColumnName="ShowroomCarID" />
                 <ScalarProperty Name="UserCarID" ColumnName="UserCarID" />
                 <ScalarProperty Name="ShowroomInterestedID" ColumnName="ShowroomInterestedID" />
                 <ScalarProperty Name="UserInterestedID" ColumnName="UserInterestedID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblAppointmentDetails">
+            <EntityTypeMapping TypeName="jrcarModel.tblAppointmentDetail">
+              <MappingFragment StoreEntitySet="tblAppointmentDetails">
+                <ScalarProperty Name="IsRead" ColumnName="IsRead" />
+                <ScalarProperty Name="UpdatedOn" ColumnName="UpdatedOn" />
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Purpose" ColumnName="Purpose" />
+                <ScalarProperty Name="Number" ColumnName="Number" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="ShowroomID" ColumnName="ShowroomID" />
+                <ScalarProperty Name="AppointmentID" ColumnName="AppointmentID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>

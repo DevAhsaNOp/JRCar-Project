@@ -59,5 +59,6 @@ namespace JRCar.BOL
         public virtual DbSet<tblShowroom> tblShowrooms { get; set; }
         public virtual DbSet<tblPayment> tblPayments { get; set; }
         public virtual DbSet<tblAppointment> tblAppointments { get; set; }
+        public virtual DbSet<tblAppointmentDetail> tblAppointmentDetails { get; set; }
     }
 }

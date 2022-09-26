@@ -28,10 +28,6 @@ namespace JRCar.BLL.Repositories
                     tblAppointment appointment = new tblAppointment()
                     {
                         CreatedBy = model.CreatedBy,
-                        Date = model.Datetime,
-                        Email = model.Email,
-                        Number = model.Number,
-                        Purpose = model.Purpose,
                         UserCarID = (model.UserCarID != null) ? model.UserCarID : null,
                         ShowroomCarID = (model.ShowroomCarID != null) ? model.ShowroomCarID : null,
                         ShowroomInterestedID = (model.ShowroomInterestedID != null) ? model.ShowroomInterestedID : null,
@@ -39,6 +35,62 @@ namespace JRCar.BLL.Repositories
                     };
 
                     var reas = appointmentDb.InsertAppointment(appointment);
+                    if (reas > 0)
+                    {
+                        var appntreas = InsertAppointmentDetails(model, reas);
+                        if (appntreas)
+                            return true;
+                        else
+                            return false;
+                    }
+                    else
+                        return false;
+                }
+                else
+                    return false;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public bool InsertAppointmentDetails(ValidateAppointment model, int AppntID)
+        {
+            try
+            {
+                if (model != null)
+                {
+                    var ShowroomID = 0;
+                    var UserID = 0;
+                    if (model.ShowroomInterestedID == null)
+                    {
+                        ShowroomAdsRepo adsRepo = new ShowroomAdsRepo();
+                        ShowroomID = adsRepo.GetShowroomID(model.ShowroomCarID.Value);
+                    }
+
+                    if (model.UserInterestedID == null)
+                    {
+                        UserAdsRepo adsRepo = new UserAdsRepo();
+                        UserID = adsRepo.GetUserID(model.UserCarID.Value);
+                    }
+
+                    ShowroomID = (model.ShowroomInterestedID == null) ? ShowroomID : model.ShowroomInterestedID.Value;
+                    UserID = (model.UserInterestedID == null) ? UserID : model.UserInterestedID.Value;
+
+                    tblAppointmentDetail appointmentDetail = new tblAppointmentDetail()
+                    {
+                        AppointmentID = (model.ID > 0) ? model.ID : AppntID,
+                        ShowroomID = ShowroomID,
+                        UserID = UserID,
+                        Email = model.Email,
+                        Number = model.Number,
+                        Purpose = model.Purpose,
+                        Date = model.Datetime,
+                        CreatedBy = model.CreatedBy,
+                    };
+                    var reas = appointmentDb.InsertAppointmentDetails(appointmentDetail);
+
                     if (reas > 0)
                     {
                         return true;
@@ -55,6 +107,19 @@ namespace JRCar.BLL.Repositories
             }
         }
 
+        public bool ChangeAppointmentToAsRead(int ShowroomID)
+        {
+            if (ShowroomID > 0)
+            {
+                var reas = appointmentDb.ChangeAppointmentToAsRead(ShowroomID);
+                return reas;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         public bool UpdateAppointment(tblAppointment model)
         {
             try
@@ -63,10 +128,10 @@ namespace JRCar.BLL.Repositories
                 {
                     tblAppointment appointment = new tblAppointment()
                     {
-                        Date = model.Date,
-                        Email = model.Email,
-                        Number = model.Number,
-                        Purpose = model.Purpose,
+                        //Date = model.Date,
+                        //Email = model.Email,
+                        //Number = model.Number,
+                        //Purpose = model.Purpose,
                         UpdatedBy = model.UpdatedBy,
                         UserCarID = (model.UserCarID != null) ? model.UserCarID : null,
                         ShowroomCarID = (model.ShowroomCarID != null) ? model.ShowroomCarID : null,

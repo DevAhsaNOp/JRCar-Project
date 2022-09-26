@@ -4,6 +4,7 @@ using JRCar.DAL.DBLayer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Remoting.Contexts;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
@@ -166,6 +167,11 @@ namespace JRCar.BLL.Repositories
             }
             else
                 return null;
+        }
+
+        public int GetShowroomID(int ShowroomAdID)
+        {
+            return dbObj.GetShowroomID(ShowroomAdID);
         }
 
         public bool InsertShowroomAds(ValidateShowroomAds model)

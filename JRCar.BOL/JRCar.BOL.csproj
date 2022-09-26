@@ -114,6 +114,9 @@
     <Compile Include="tblAppointment.cs">
       <DependentUpon>JRCarModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="tblAppointmentDetail.cs">
+      <DependentUpon>JRCarModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="tblBlog.cs">
       <DependentUpon>JRCarModel.tt</DependentUpon>
     </Compile>

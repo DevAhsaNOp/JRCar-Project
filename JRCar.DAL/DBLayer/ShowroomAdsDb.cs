@@ -269,6 +269,11 @@ namespace JRCar.DAL.DBLayer
                 IsSold = (s.Issold == true) ? true : false,
             }).ToList();
         }
+        
+        public int GetShowroomID(int ShowroomAdID)
+        {
+            return _context.tblCars.Where(x => x.ID == ShowroomAdID).Select(s => s.tblShowroomID).FirstOrDefault();
+        }
 
         public IEnumerable<ValidateShowroomAds> GetAllShowroomAdsForReport(int ShowroomAdID)
         {
