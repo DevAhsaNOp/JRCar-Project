@@ -648,55 +648,55 @@
             }
 
             // Notifications Change to Read When NotiFication Icon Press
-        function AppntupdateNotificationRead() {
-            $.ajax({
-                type: 'GET',
-                url: '/Portal/ChangeShowroomAppointmentsToAsRead',
-                success: function (response) {
-                    console.log('AppntGetAppointmentListRead:: ' + response);
-                    sessionStorage.setItem("Appntcount", 0);
-                },
-                error: function (error) {
-                    console.log(error);
-                }
-            })
-        }
-
-        function GetCount() {
-            var count = sessionStorage.getItem("count");
-            console.log('a.noti outer' + count);
-
-            if (count > 0) {
-                $('span.count').html(count);
-            }
-            else {
-                $('span.count', this).html('');
-            }
-        }
-
-        // Update notification
-        function updateNotification() {
-            $('#notiContent').empty();
-            $('#notiContent').append($('<li>Loading...</li>'));
-            $.ajax({
-                type: 'GET',
-                url: '/Portal/GetNotificationsList',
-                success: function (response) {
-                    $('#notiContent').empty();
-                    console.log(response);
-                    if (response.length == 0) {
-                        $('#notiContent').append($('<a href="#" class="dropdown-item"><i class="fas fa-envelope mr-2"></i> No New Notification Available</a>'));
+            function AppntupdateNotificationRead() {
+                $.ajax({
+                    type: 'GET',
+                    url: '/Portal/ChangeShowroomAppointmentsToAsRead',
+                    success: function (response) {
+                        console.log('AppntGetAppointmentListRead:: ' + response);
+                        sessionStorage.setItem("Appntcount", 0);
+                    },
+                    error: function (error) {
+                        console.log(error);
                     }
-                    $.each(response, function (index, value) {
-                        $('#notiContent').append($('<span href="#" class="dropdown-item"> <i class="fas fa-envelope mr-2"></i>' + value.Title + ' <span class="float-right text-muted text-sm"> <a href="/Ad/'+value.AdURL+'" target="_blank">View Ad</a></span></span>'));
-                        //$('#notiContent').append($('<li>New Ad Alert: ' + value.Title + ' is less than (' + value.Description + ') </li>'));
-                    });
-                },
-                error: function (error) {
-                    console.log(error);
+                })
+            }
+
+            function GetCount() {
+                var count = sessionStorage.getItem("count");
+                console.log('a.noti outer' + count);
+
+                if (count > 0) {
+                    $('span.count').html(count);
                 }
-            })
-        }
+                else {
+                    $('span.count', this).html('');
+                }
+            }
+
+            // Update notification
+            function updateNotification() {
+                $('#notiContent').empty();
+                $('#notiContent').append($('<li>Loading...</li>'));
+                $.ajax({
+                    type: 'GET',
+                    url: '/Portal/GetNotificationsList',
+                    success: function (response) {
+                        $('#notiContent').empty();
+                        console.log(response);
+                        if (response.length == 0) {
+                            $('#notiContent').append($('<a href="#" class="dropdown-item"><i class="fas fa-envelope mr-2"></i> No New Notification Available</a>'));
+                        }
+                        $.each(response, function (index, value) {
+                            $('#notiContent').append($('<span href="#" class="dropdown-item"> <i class="fas fa-envelope mr-2"></i>' + value.Title + ' <span class="float-right text-muted text-sm"> <a href="/Ad/'+value.AdURL+'" target="_blank">View Ad</a></span></span>'));
+                            //$('#notiContent').append($('<li>New Ad Alert: ' + value.Title + ' is less than (' + value.Description + ') </li>'));
+                        });
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    }
+                })
+            }
 
         // Update notification count
         function updateNotificationCount() {
