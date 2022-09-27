@@ -218,13 +218,25 @@ namespace JRCar.DAL.DBLayer
 
         public int GetUserTodaysAppointmentsCount(DateTime currentDate, int UserID)
         {
-            var reas = _context.tblAppointments.Where(x => x.UserInterestedID == UserID && x.tblAppointmentDetails.FirstOrDefault().Date.Date.ToString("dd/MM/yyyy") == currentDate.ToString("dd/MM/yyyy")).ToList().Count;
+            var reas = _context.tblAppointments.Where(x => x.tblUserAdd.UserID == UserID && x.IsAccepted == false && x.Isactive == true).ToList().Count;
             return reas;
         }
 
         public int GetShowroomTodaysAppointmentsCount(DateTime currentDate, int ShowroomID)
         {
-            var reas = _context.tblAppointments.Where(x => x.ShowroomInterestedID == ShowroomID && x.tblAppointmentDetails.FirstOrDefault().Date.Date.ToString("dd/MM/yyyy") == currentDate.ToString("dd/MM/yyyy")).ToList().Count;
+            var reas = _context.tblAppointments.Where(x => x.tblCar.tblShowroomID == ShowroomID && x.IsAccepted == false && x.Isactive == true).ToList().Count;
+            return reas;
+        }
+
+        public IEnumerable<tblAppointment> GetUserAppointments(DateTime currentDate, int UserID)
+        {
+            var reas = _context.tblAppointments.Where(x => x.tblUserAdd.UserID == UserID && x.IsAccepted == false && x.Isactive == true).OrderByDescending(x => x.CreatedOn).ToList();
+            return reas;
+        }
+
+        public IEnumerable<tblAppointment> GetShowroomAppointments(DateTime currentDate, int ShowroomID)
+        {
+            var reas = _context.tblAppointments.Where(x => x.tblCar.tblShowroomID == ShowroomID && x.IsAccepted == false && x.Isactive == true).OrderByDescending(x => x.CreatedOn).ToList();
             return reas;
         }
     }

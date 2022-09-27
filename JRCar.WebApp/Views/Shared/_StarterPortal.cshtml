@@ -397,6 +397,9 @@
             AccupdateNotification();
             AccGetCount();
             AccupdateNotificationCount();
+            AppntupdateNotification();
+            AppntGetCount();
+            AppntupdateNotificationCount();
 
             $('a.Accnoti').click(function (e) {
                 e.stopPropagation();
@@ -425,6 +428,35 @@
             // Hide Accnotifications
             $('html').click(function () {
                 $('.Accnoti-content').hide();
+            })
+
+            $('a.Appntnoti').click(function (e) {
+                e.stopPropagation();
+                var count = 0;
+                count = parseInt($('span.Appntcount').html()) || 0;
+                console.log('a.Appntnoti outer' + count);
+
+                //Only load Appntnotification if not already loaded
+                if (count > 0) {
+                    AppntupdateNotification();
+                    sessionStorage.setItem("Appntcount", 0);
+                    console.log('a.Appntnoti inner if' + count);
+                    $('.Appntnoti-content').show();
+                    AppntupdateNotificationRead();
+                }
+                else if ($('.Appntnoti-content').css('display') == 'block') {
+                    $('.Appntnoti-content').hide();
+                }
+                else if ($('.Appntnoti-content').css('display') == 'none') {
+                    $('.Appntnoti-content').show();
+                    AppntupdateNotificationRead();
+                }
+                $('span.Appntcount', this).html('');
+            })
+
+            // Hide Appntnotifications
+            $('html').click(function () {
+                $('.Appntnoti-content').hide();
             })
 
             $('a.noti').click(function (e) {
@@ -537,6 +569,92 @@
                 success: function (response) {
                     console.log('AccGetNotificationsListRead:: ' + response);
                     sessionStorage.setItem("Acccount", 0);
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            })
+            }
+
+        function AppntGetCount() {
+            var count = sessionStorage.getItem("Appntcount");
+            console.log('a.Appntnoti outer' + count);
+
+            if (count > 0) {
+                $('span.Appntcount').html(count);
+            }
+            else {
+                $('span.Appntcount', this).html('');
+            }
+        }
+
+        // Update Appntnotification
+            function AppntupdateNotification() {
+                $('#AppntnotiContent').empty();
+                $('#AppntnotiContent').append($('<li>Loading...</li>'));
+                $.ajax({
+                    type: 'GET',
+                    url: '/Portal/GetShowroomAppointmentsList',
+                    success: function (response) {
+                        $('#AppntnotiContent').empty();
+                        console.log(response);
+                        if (response.length == 0) {
+                            $('#AppntnotiContent').append($('<a href="#" class="dropdown-item"><i class="fas fa-envelope mr-2"></i> No New Appointment Available</a>'));
+                        }
+                        $.each(response, function (index, value) {
+                            $('#AppntnotiContent').append($('<span href="#" class="dropdown-item"> <i class="fas fa-envelope mr-2"></i> New Appointment Request By' + value.Title + ' <span class="float-right text-muted text-sm">' + value.Description + '<span><span>'));
+                        });
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    }
+                })
+            }
+
+            // Update Appntnotification count
+            function AppntupdateNotificationCount() {
+                var count = 0;
+                $.ajax({
+                    type: 'GET',
+                    url: '/Portal/GetShowroomAppointmentsListCount',
+                    success: function (response) {
+                        console.log('GetAppointmentListCount:: ' + response);
+                        count = response;
+                        if (count > 0) {
+                            $('span.Appntcount').html(count);
+                            var Toast = Swal.mixin({
+                                toast: true,
+                                position: 'top-end',
+                                showConfirmButton: false,
+                                timer: 3000
+                            });
+
+                            Toast.fire({
+                                icon: 'warning',
+                                title: 'New Appointment!',
+                                footer: '<a href="/Portal/NotificationList">See all Appointment</a>'
+                            })
+                        }
+                        else {
+                            $('span.Appntcount').html('');
+                        }
+                        console.log('AppntupdateNotificationCount' + count);
+                        sessionStorage.setItem("Appntcount", count);
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    }
+                })
+            }
+
+            // Notifications Change to Read When NotiFication Icon Press
+        function AppntupdateNotificationRead() {
+            $.ajax({
+                type: 'GET',
+                url: '/Portal/ChangeShowroomAppointmentsToAsRead',
+                success: function (response) {
+                    console.log('AppntGetAppointmentListRead:: ' + response);
+                    sessionStorage.setItem("Appntcount", 0);
                 },
                 error: function (error) {
                     console.log(error);

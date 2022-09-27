@@ -166,10 +166,35 @@ namespace JRCar.WebApp
             return reas;
         }
 
+        public IEnumerable<tblAppointment> GetShowroomAppointments(DateTime afterDate, int ShowroomID)
+        {
+            var reas = appointmentrepo.GetShowroomAppointments(afterDate, ShowroomID);
+            return reas;
+        }
+
+        public IEnumerable<tblAppointment> GetUserAppointments(DateTime afterDate, int ShowroomID)
+        {
+            var reas = appointmentrepo.GetUserAppointments(afterDate, ShowroomID);
+            return reas;
+        }
+
         public IEnumerable<ValidateAppointment> GetShowroomAppointmentsById(int ShowroomID)
         {
             var reas = appointmentrepo.GetShowroomAppointmentsById(ShowroomID);
             return reas;
+        }
+
+        public bool ChangeAppointmentToAsRead(int ShowroomID)
+        {
+            if (ShowroomID > 0)
+            {
+                var reas = appointmentrepo.ChangeAppointmentToAsRead(ShowroomID);
+                return reas;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         public IEnumerable<ValidateAppointment> GetUserAppointmentsById(int UserID)

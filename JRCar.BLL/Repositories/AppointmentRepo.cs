@@ -240,5 +240,27 @@ namespace JRCar.BLL.Repositories
             else
                 return 0;
         }
+
+        public IEnumerable<tblAppointment> GetUserAppointments(DateTime currentDate, int UserID)
+        {
+            if (UserID > 0)
+            {
+                var reas = appointmentDb.GetUserAppointments(currentDate, UserID);
+                return reas;
+            }
+            else
+                return null;
+        }
+
+        public IEnumerable<tblAppointment> GetShowroomAppointments(DateTime currentDate, int ShowroomID)
+        {
+            if (ShowroomID > 0)
+            {
+                var reas = appointmentDb.GetShowroomAppointments(currentDate, ShowroomID);
+                return reas;
+            }
+            else
+                return null;
+        }
     }
 }

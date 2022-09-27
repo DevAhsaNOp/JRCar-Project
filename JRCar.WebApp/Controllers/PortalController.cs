@@ -296,7 +296,7 @@ namespace JRCar.WebApp.Controllers
         }
         #endregion
 
-        #region **Notification For Showroom About New Ads and Union Announcements**
+        #region **Notification For Showroom About New Ads, Union Announcements and User Appointments**
 
         public ActionResult NotificationList()
         {
@@ -347,7 +347,7 @@ namespace JRCar.WebApp.Controllers
             }
             catch (Exception ex)
             {
-                TempData["ErrorMsg"] = "Error occured on updating Notification!" + ex.Message;
+                TempData["ErrorMsg"] = "Error occured on loading Notification!" + ex.Message;
                 throw ex;
             }
         }
@@ -431,7 +431,7 @@ namespace JRCar.WebApp.Controllers
             }
             catch (Exception ex)
             {
-                TempData["ErrorMsg"] = "Error occured on updating Announcements!" + ex.Message;
+                TempData["ErrorMsg"] = "Error occured on loading Announcements!" + ex.Message;
                 throw ex;
             }
         }
@@ -476,6 +476,90 @@ namespace JRCar.WebApp.Controllers
                     var list = NC.ChangeAnnouncementsToAsRead(ShowroomID);
                     //Update session here for get only new added (Announcements)
                     Session["AnnLastUpdated"] = DateTime.Now;
+                    return new JsonResult { Data = list, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
+                }
+                else
+                {
+                    var err = (int)HttpStatusCode.BadRequest;
+                    return Json(new { error = err + " Bad Request Error " + "Invalid Request!!" });
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMsg"] = "Error occured on updating Announcements As Read!" + ex.Message;
+                throw ex;
+            }
+        }
+
+        [HttpGet]
+        public JsonResult GetShowroomAppointmentsList()
+        {
+            try
+            {
+                if (User.Identity.IsAuthenticated)
+                {
+                    var ShowroomID = Convert.ToInt32(Session["Id"]);
+                    var notificationRegisterTime = Session["AppLastUpdated"] != null ? Convert.ToDateTime(Session["AppLastUpdated"]) : DateTime.Now;
+                    NotificationComponent NC = new NotificationComponent();
+                    var list = NC.GetShowroomAppointments(notificationRegisterTime, ShowroomID);
+                    //Update session here for get only new added (Announcements)
+                    Session["AppLastUpdated"] = DateTime.Now;
+                    return new JsonResult { Data = list, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
+                }
+                else
+                {
+                    //insert into tblNotification values('Hey','Blablablabalb',null,2042,108,1,0,getdate())
+                    var err = (int)HttpStatusCode.BadRequest;
+                    return Json(new { error = err + " Bad Request Error " + "Invalid Request!!" });
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMsg"] = "Error occured on loading Appointments!" + ex.Message;
+                throw ex;
+            }
+        }
+
+        [HttpGet]
+        public JsonResult GetShowroomAppointmentsListCount()
+        {
+            try
+            {
+                if (User.Identity.IsAuthenticated)
+                {
+                    var ShowroomID = Convert.ToInt32(Session["Id"]);
+                    var notificationRegisterTime = Session["AppLastUpdated"] != null ? Convert.ToDateTime(Session["AppLastUpdated"]) : DateTime.Now;
+                    NotificationComponent NC = new NotificationComponent();
+                    var list = NC.GetShowroomTodaysAppointmentsCount(notificationRegisterTime, ShowroomID);
+                    //Update session here for get only new added (Announcements)
+                    Session["AppLastUpdated"] = DateTime.Now;
+                    return new JsonResult { Data = list, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
+                }
+                else
+                {
+                    var err = (int)HttpStatusCode.BadRequest;
+                    return Json(new { error = err + " Bad Request Error " + "Invalid Request!!" });
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMsg"] = "Error occured on updating Appointments Count!" + ex.Message;
+                throw ex;
+            }
+        }
+
+        [HttpGet]
+        public JsonResult ChangeShowroomAppointmentsToAsRead()
+        {
+            try
+            {
+                if (User.Identity.IsAuthenticated)
+                {
+                    var ShowroomID = Convert.ToInt32(Session["Id"]);
+                    NotificationComponent NC = new NotificationComponent();
+                    var list = NC.ChangeAppointmentToAsRead(ShowroomID);
+                    //Update session here for get only new added (Announcements)
+                    Session["AppLastUpdated"] = DateTime.Now;
                     return new JsonResult { Data = list, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
                 }
                 else
@@ -1053,7 +1137,6 @@ namespace JRCar.WebApp.Controllers
                                 Session["UserEditEmail"] = null;
                                 if (IsUpdated)
                                 {
-                                    Session["Name"] = Regex.Replace(user.Name.ToUpper().Split()[0], @"[^0-9a-zA-Z\ ]+", "");
                                     file.SaveAs(path);
                                     if (System.IO.File.Exists(oldImgPath))
                                     {
@@ -1108,7 +1191,6 @@ namespace JRCar.WebApp.Controllers
                         user.Email = user.SignUpUpdateEmail;
                         user.UpdatedBy = (int)Session["Id"];
                         var IsUpdated = RepoObj.UpdateUser(user, role);
-                        Session["Name"] = Regex.Replace(user.Name.ToUpper().Split()[0], @"[^0-9a-zA-Z\ ]+", "");
                         Session["UserEditID"] = null;
                         Session["UserEditEmail"] = null;
                         if (IsUpdated)
@@ -1241,7 +1323,6 @@ namespace JRCar.WebApp.Controllers
                                 Session["UserEditEmail"] = null;
                                 if (IsUpdated)
                                 {
-                                    Session["Name"] = Regex.Replace(user.Name.ToUpper().Split()[0], @"[^0-9a-zA-Z\ ]+", "");
                                     file.SaveAs(path);
                                     if (System.IO.File.Exists(oldImgPath))
                                     {
@@ -1296,7 +1377,6 @@ namespace JRCar.WebApp.Controllers
                         user.Email = user.SignUpUpdateEmail;
                         user.UpdatedBy = (int)Session["Id"];
                         var IsUpdated = RepoObj.UpdateUser(user, role);
-                        Session["Name"] = Regex.Replace(user.Name.ToUpper().Split()[0], @"[^0-9a-zA-Z\ ]+", "");
                         Session["UserEditID"] = null;
                         Session["UserEditEmail"] = null;
                         if (IsUpdated)
