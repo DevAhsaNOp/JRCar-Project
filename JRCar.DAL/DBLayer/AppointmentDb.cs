@@ -24,6 +24,7 @@ namespace JRCar.DAL.DBLayer
                 if (model != null)
                 {
                     model.IsAccepted = false;
+                    model.IsRead = false;
                     model.Isactive = true;
                     model.CreatedOn = DateTime.Now;
                     model.UpdatedOn = null;
@@ -40,7 +41,7 @@ namespace JRCar.DAL.DBLayer
                 throw ex;
             }
         }
-        
+
         public int InsertAppointmentDetails(tblAppointmentDetail model)
         {
             try
@@ -48,7 +49,6 @@ namespace JRCar.DAL.DBLayer
                 if (model != null)
                 {
                     model.CreatedOn = DateTime.Now;
-                    model.IsRead = false;
                     model.UpdatedOn = null;
                     model.UpdatedBy = null;
                     _context.tblAppointmentDetails.Add(model);
@@ -86,9 +86,9 @@ namespace JRCar.DAL.DBLayer
             }
         }
 
-        public bool ChangeAppointmentToAsRead(int ShowroomID)
+        public bool ChangeShowroomAppointmentToAsRead(int ShowroomID)
         {
-            var reas = _context.tblAppointmentDetails.Where(a => a.IsRead == false && a.ShowroomID == ShowroomID).ToList();
+            var reas = _context.tblAppointments.Where(a => a.IsRead == false && a.tblCar.tblShowroomID == ShowroomID).ToList();
             if (reas.Count > 0)
             {
                 foreach (var appointment in reas)
@@ -98,6 +98,35 @@ namespace JRCar.DAL.DBLayer
                         appointment.IsRead = true;
                         appointment.UpdatedOn = DateTime.Now;
                         appointment.UpdatedBy = ShowroomID;
+                        _context.Entry(appointment).State = System.Data.Entity.EntityState.Modified;
+                        _context.SaveChanges();
+                    }
+                    catch (Exception ex)
+                    {
+                        return false;
+                        throw ex;
+                    }
+                }
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public bool ChangeUserAppointmentToAsRead(int UserID)
+        {
+            var reas = _context.tblAppointments.Where(a => a.IsRead == false && a.UserInterestedID == UserID).ToList();
+            if (reas.Count > 0)
+            {
+                foreach (var appointment in reas)
+                {
+                    try
+                    {
+                        appointment.IsRead = true;
+                        appointment.UpdatedOn = DateTime.Now;
+                        appointment.UpdatedBy = UserID;
                         _context.Entry(appointment).State = System.Data.Entity.EntityState.Modified;
                         _context.SaveChanges();
                     }
@@ -219,25 +248,25 @@ namespace JRCar.DAL.DBLayer
 
         public int GetUserTodaysAppointmentsCount(DateTime currentDate, int UserID)
         {
-            var reas = _context.tblAppointments.Where(x => x.tblUserAdd.UserID == UserID && x.IsAccepted == false && x.Isactive == true).ToList().Count;
+            var reas = _context.tblAppointments.Where(x => x.tblUserAdd.UserID == UserID && x.IsAccepted == false && x.Isactive == true && (x.CreatedOn > currentDate || x.IsRead == false)).ToList().Count;
             return reas;
         }
 
         public int GetShowroomTodaysAppointmentsCount(DateTime currentDate, int ShowroomID)
         {
-            var reas = _context.tblAppointments.Where(x => x.tblCar.tblShowroomID == ShowroomID && x.IsAccepted == false && x.Isactive == true).ToList().Count;
+            var reas = _context.tblAppointments.Where(x => x.tblCar.tblShowroomID == ShowroomID && x.IsAccepted == false && x.Isactive == true && (x.CreatedOn > currentDate || x.IsRead == false)).ToList().Count;
             return reas;
         }
 
         public IEnumerable<tblAppointment> GetUserAppointments(DateTime currentDate, int UserID)
         {
-            var reas = _context.tblAppointments.Where(x => x.tblUserAdd.UserID == UserID && x.IsAccepted == false && x.Isactive == true).OrderByDescending(x => x.CreatedOn).ToList();
+            var reas = _context.tblAppointments.Where(x => x.tblUserAdd.UserID == UserID && x.IsAccepted == false && x.Isactive == true && (x.CreatedOn > currentDate || x.IsRead == false)).OrderByDescending(x => x.CreatedOn).ToList();
             return reas;
         }
 
         public IEnumerable<tblAppointment> GetShowroomAppointments(DateTime currentDate, int ShowroomID)
         {
-            var reas = _context.tblAppointments.Where(x => x.tblCar.tblShowroomID == ShowroomID && x.IsAccepted == false && x.Isactive == true).OrderByDescending(x => x.CreatedOn).ToList();
+            var reas = _context.tblAppointments.Where(x => x.tblCar.tblShowroomID == ShowroomID && x.IsAccepted == false && x.Isactive == true && (x.CreatedOn > currentDate || x.IsRead == false)).OrderByDescending(x => x.CreatedOn).ToList();
             return reas;
         }
     }

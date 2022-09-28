@@ -26,7 +26,6 @@ namespace JRCar.BOL
         public System.DateTime CreatedOn { get; set; }
         public Nullable<int> UpdatedBy { get; set; }
         public Nullable<System.DateTime> UpdatedOn { get; set; }
-        public Nullable<bool> IsRead { get; set; }
     
         public virtual tblAppointment tblAppointment { get; set; }
         public virtual tblShowroom tblShowroom { get; set; }

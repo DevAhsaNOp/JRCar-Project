@@ -107,11 +107,24 @@ namespace JRCar.BLL.Repositories
             }
         }
 
-        public bool ChangeAppointmentToAsRead(int ShowroomID)
+        public bool ChangeShowroomAppointmentToAsRead(int ShowroomID)
         {
             if (ShowroomID > 0)
             {
-                var reas = appointmentDb.ChangeAppointmentToAsRead(ShowroomID);
+                var reas = appointmentDb.ChangeShowroomAppointmentToAsRead(ShowroomID);
+                return reas;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public bool ChangeUserAppointmentToAsRead(int UserID)
+        {
+            if (UserID > 0)
+            {
+                var reas = appointmentDb.ChangeUserAppointmentToAsRead(UserID);
                 return reas;
             }
             else

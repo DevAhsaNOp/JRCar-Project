@@ -14,6 +14,9 @@ namespace JRCar.BOL.Validation_Classes
 
         [Required(ErrorMessage = "*")]
         [Display(Name = "Showroom Name")]
+        [RegularExpression(@"^[a-zA-Z ]+$", ErrorMessage = "Only Alphabets are allow")]
+        [MaxLength(50, ErrorMessage = "Name Max Length should be under 50")]
+        [MinLength(5, ErrorMessage = "Name Min Length should be 5")]
         public string FullName { get; set; }
 
         [Required(ErrorMessage = "*")]
@@ -40,11 +43,14 @@ namespace JRCar.BOL.Validation_Classes
 
         [Required(ErrorMessage = "*")]
         [Display(Name = "Phone Number")]
-        [RegularExpression(@"^\d{4}[-]?\d{7}$", ErrorMessage = "Invalid Phone Number")]
+        [RegularExpression(@"03[0-9]{2}(?!1234567)(?!1111111)(?!7654321)[0-9]{7}", ErrorMessage = "Invalid Phone Number")]
         public string Contact { get; set; }
 
         [Required(ErrorMessage = "*")]
         [Display(Name = "Shop Number")]
+        [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "Only Alphabets are allow")]
+        [MaxLength(150, ErrorMessage = "Address Length should be under 150")]
+        [MinLength(5, ErrorMessage = "Address Min Length should be 5")]
         public string ShopNumber { get; set; }
 
         public string Latitude { get; set; }

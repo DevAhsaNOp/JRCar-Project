@@ -14,32 +14,37 @@ namespace JRCar.BOL.Validation_Classes
 
         [Required(ErrorMessage = "*")]
         [Display(Name = "Name")]
+        [RegularExpression(@"^[a-zA-Z ]+$", ErrorMessage = "Only Alphabets are allow")]
+        [MaxLength(50, ErrorMessage = "Name Max Length should be under 50")]
+        [MinLength(5, ErrorMessage = "Name Min Length should be 5")]
         public string Name { get; set; }
 
         [Required(ErrorMessage = "*")]
         [Display(Name = "Email Address")]
-        [RegularExpression("^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$", ErrorMessage = "Invalid Email Address")]
+        [EmailAddress(ErrorMessage = "Invalid Email Address")]
         public string Email { get; set; }
 
         [Required(ErrorMessage = "*")]
         [Display(Name = "Email")]
-        [RegularExpression("^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$", ErrorMessage = "Invalid Email Address")]
+        [EmailAddress(ErrorMessage = "Invalid Email Address")]
         [Remote("IsEmailExist", "Account", ErrorMessage = "Email is already registered!")]
         public string SignUpEmail { get; set; }
         
         [Required(ErrorMessage = "*")]
         [Display(Name = "Email")]
-        [RegularExpression("^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$", ErrorMessage = "Invalid Email Address")]
+        [EmailAddress(ErrorMessage = "Invalid Email Address")]
         [Remote("IsUpdateEmailExist", "Account", ErrorMessage = "Email is already registered!")]
         public string SignUpUpdateEmail { get; set; }
 
         [Required(ErrorMessage = "*")]
         [Display(Name = "Phone Number")]
-        [RegularExpression(@"^\d{4}[-]?\d{7}$", ErrorMessage = "Invalid Phone Number")]
+        [RegularExpression(@"03[0-9]{2}(?!1234567)(?!1111111)(?!7654321)[0-9]{7}", ErrorMessage = "Invalid Phone Number")]
         public string Number { get; set; }
 
         [Required(ErrorMessage = "*")]
         [Display(Name = "Address")]
+        [MaxLength(100, ErrorMessage = "Address Length should be under 100")]
+        [MinLength(5, ErrorMessage = "Address Min Length should be 5")]
         public string Address { get; set; }
 
         [Required(ErrorMessage = "*")]

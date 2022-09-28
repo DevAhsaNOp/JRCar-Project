@@ -382,6 +382,7 @@
                     console.log('Hey Count');
                     updateNotificationCount();
                     AccupdateNotificationCount();
+                    AppntupdateNotificationCount();
                 }
             }
 
@@ -390,6 +391,10 @@
             //        console.log('Hey announcement Count');
             //    }
             //}
+
+            //setInterval(function myfunction() {
+            //    AppntupdateNotificationCount()
+            //}, 1000);
 
             updateNotification();
             GetCount();
@@ -602,7 +607,7 @@
                             $('#AppntnotiContent').append($('<a href="#" class="dropdown-item"><i class="fas fa-envelope mr-2"></i> No New Appointment Available</a>'));
                         }
                         $.each(response, function (index, value) {
-                            $('#AppntnotiContent').append($('<span href="#" class="dropdown-item"> <i class="fas fa-envelope mr-2"></i> New Appointment Request By' + value.Title + ' <span class="float-right text-muted text-sm">' + value.Description + '<span><span>'));
+                            $('#AppntnotiContent').append($('<span href="#" class="dropdown-item" style="white-space: pre-line;"> <i class="fas fa-envelope mr-2"></i> New Appointment Request By ' + value.Title +' for '+ value.Description + '<span>'));
                         });
                     },
                     error: function (error) {
@@ -618,27 +623,13 @@
                     type: 'GET',
                     url: '/Portal/GetShowroomAppointmentsListCount',
                     success: function (response) {
-                        console.log('GetAppointmentListCount:: ' + response);
                         count = response;
                         if (count > 0) {
                             $('span.Appntcount').html(count);
-                            var Toast = Swal.mixin({
-                                toast: true,
-                                position: 'top-end',
-                                showConfirmButton: false,
-                                timer: 3000
-                            });
-
-                            Toast.fire({
-                                icon: 'warning',
-                                title: 'New Appointment!',
-                                footer: '<a href="/Portal/NotificationList">See all Appointment</a>'
-                            })
                         }
                         else {
                             $('span.Appntcount').html('');
                         }
-                        console.log('AppntupdateNotificationCount' + count);
                         sessionStorage.setItem("Appntcount", count);
                     },
                     error: function (error) {

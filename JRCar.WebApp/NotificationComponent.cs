@@ -50,7 +50,7 @@ namespace JRCar.WebApp
             string constring = ConfigurationManager.ConnectionStrings["jrcarNotification"].ConnectionString;
             SqlDependency.Start(constring);
             string SqlCmd = String.Empty;
-            SqlCmd = @"SELECT [ID] ,[AppointmentID] ,[ShowroomID] ,[UserID] ,[Email] ,[Number] ,[Purpose] ,[Date] ,[CreatedBy] ,[CreatedOn] ,[UpdatedBy] ,[UpdatedOn], [IsRead] FROM [dbo].[tblAppointmentDetails] WHERE ([CreatedOn] > @CreatedOn or IsRead <> 1)";
+            SqlCmd = @"SELECT [ID] ,[UserInterestedID] ,[ShowroomInterestedID] ,[UserCarID] ,[ShowroomCarID] ,[Isactive] ,[CreatedBy] ,[CreatedOn] ,[UpdatedOn] ,[UpdatedBy] ,[IsAccepted] ,[IsRead] FROM [dbo].[tblAppointments] WHERE ([CreatedOn] > @CreatedOn or IsRead <> 1)";
 
             using (SqlConnection con = new SqlConnection(constring))
             {
@@ -69,7 +69,7 @@ namespace JRCar.WebApp
                 }
             }
         }
-        
+
         public void RegisterAnnouncement(DateTime currentTime)
         {
             PortalController pc = new PortalController();
@@ -113,7 +113,7 @@ namespace JRCar.WebApp
                 RegisterNotification(DateTime.Now);
             }
         }
-        
+
         void sqlDep_OnChangeAnnouncement(object sender, SqlNotificationEventArgs e)
         {
             if (e.Info == SqlNotificationInfo.Update)
@@ -168,7 +168,7 @@ namespace JRCar.WebApp
 
         public IEnumerable<NotiShow> GetShowroomAppointments(DateTime afterDate, int ShowroomID)
         {
-            var reas = appointmentrepo.GetShowroomAppointments(afterDate, ShowroomID).Select(x => new NotiShow(){ Title = x.ShowroomCarID.ToString(),Description= x.UserInterestedID.ToString()});
+            var reas = appointmentrepo.GetShowroomAppointments(afterDate, ShowroomID).Select(x => new NotiShow() { Title = x.tblUser.Name.ToString(), Description = x.tblCar.tblManufacturer.Manufacturer_Name + " " + x.tblCar.tblManfacturerCarModel.Manufacturer_CarModelName });
             return reas;
         }
 
@@ -184,11 +184,24 @@ namespace JRCar.WebApp
             return reas;
         }
 
-        public bool ChangeAppointmentToAsRead(int ShowroomID)
+        public bool ChangeShowroomAppointmentToAsRead(int ShowroomID)
         {
             if (ShowroomID > 0)
             {
-                var reas = appointmentrepo.ChangeAppointmentToAsRead(ShowroomID);
+                var reas = appointmentrepo.ChangeShowroomAppointmentToAsRead(ShowroomID);
+                return reas;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public bool ChangeUserAppointmentToAsRead(int ShowroomID)
+        {
+            if (ShowroomID > 0)
+            {
+                var reas = appointmentrepo.ChangeUserAppointmentToAsRead(ShowroomID);
                 return reas;
             }
             else
@@ -224,7 +237,7 @@ namespace JRCar.WebApp
                 return false;
             }
         }
-        
+
         public List<NotiShow> GetAnnouncements(DateTime afterDate, int ShowroomID)
         {
             var reas = repo.GetAnnouncements(afterDate, ShowroomID);

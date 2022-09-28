@@ -557,7 +557,7 @@ namespace JRCar.WebApp.Controllers
                 {
                     var ShowroomID = Convert.ToInt32(Session["Id"]);
                     NotificationComponent NC = new NotificationComponent();
-                    var list = NC.ChangeAppointmentToAsRead(ShowroomID);
+                    var list = NC.ChangeShowroomAppointmentToAsRead(ShowroomID);
                     //Update session here for get only new added (Announcements)
                     Session["AppLastUpdated"] = DateTime.Now;
                     return new JsonResult { Data = list, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
@@ -1122,13 +1122,13 @@ namespace JRCar.WebApp.Controllers
                         string extension = Path.GetExtension(file.FileName);
                         string path = Path.Combine(Server.MapPath("~/Images/"), _filename);
                         user.Image = "~/Images/" + _filename;
+                        user.ID = (int)Session["UserEditID"];
                         if (extension.ToLower() == ".jpg" || extension.ToLower() == ".jpeg" || extension.ToLower() == ".png")
                         {
                             var role = RepoObj.GetUserRole(Session["UserEditEmail"].ToString()).Role;
                             user.tblRoleName = role;
                             if (file.ContentLength <= 10000000)
                             {
-                                user.ID = (int)Session["UserEditID"];
                                 user.UpdatedBy = (int)Session["Id"];
                                 user.Email = user.SignUpUpdateEmail;
                                 var IsUpdated = RepoObj.UpdateUser(user, role);
@@ -1212,7 +1212,7 @@ namespace JRCar.WebApp.Controllers
                             return RedirectToAction("UserEdit", new { UserID = user.ID });
                         }
                     }
-                    return RedirectToAction("UserEdit", new { UserID = user.ID });
+                    return RedirectToAction("UserEdit", new { UserID = (int)Session["UserEditID"] });
                 }
                 else
                 {
@@ -1227,7 +1227,7 @@ namespace JRCar.WebApp.Controllers
                 Session["UserEditID"] = null;
                 Session["UserEditEmail"] = null;
                 TempData["ErrorMsg"] = "Error occured on updating Account!" + ex.Message;
-                return RedirectToAction("UserEdit", new { UserID = user.ID });
+                return RedirectToAction("UserEdit", new { UserID = (int)Session["UserEditID"] });
             }
         }
 
@@ -1308,13 +1308,13 @@ namespace JRCar.WebApp.Controllers
                         string extension = Path.GetExtension(file.FileName);
                         string path = Path.Combine(Server.MapPath("~/Images/"), _filename);
                         user.Image = "~/Images/" + _filename;
+                        user.ID = (int)Session["UserEditID"];
                         if (extension.ToLower() == ".jpg" || extension.ToLower() == ".jpeg" || extension.ToLower() == ".png")
                         {
                             var role = RepoObj.GetUserRole(Session["UserEditEmail"].ToString()).Role;
                             user.tblRoleName = role;
                             if (file.ContentLength <= 10000000)
                             {
-                                user.ID = (int)Session["UserEditID"];
                                 user.UpdatedBy = (int)Session["Id"];
                                 user.Email = user.SignUpUpdateEmail;
                                 var IsUpdated = RepoObj.UpdateUser(user, role);
@@ -1398,7 +1398,7 @@ namespace JRCar.WebApp.Controllers
                             return RedirectToAction("ShowroomEdit", new { UserID = user.ID });
                         }
                     }
-                    return RedirectToAction("ShowroomEdit", new { UserID = user.ID });
+                    return RedirectToAction("ShowroomEdit", new { UserID = (int)Session["UserEditID"] });
                 }
                 else
                 {
@@ -1413,7 +1413,7 @@ namespace JRCar.WebApp.Controllers
                 Session["UserEditID"] = null;
                 Session["UserEditEmail"] = null;
                 TempData["ErrorMsg"] = "Error occured on updating Account!" + ex.Message;
-                return RedirectToAction("ShowroomEdit", new { UserID = user.ID });
+                return RedirectToAction("ShowroomEdit", new { UserID = (int)Session["UserEditID"] });
             }
         }
 
