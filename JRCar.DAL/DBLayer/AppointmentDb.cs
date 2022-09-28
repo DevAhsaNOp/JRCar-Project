@@ -23,6 +23,7 @@ namespace JRCar.DAL.DBLayer
             {
                 if (model != null)
                 {
+                    model.IsAccepted = false;
                     model.Isactive = true;
                     model.CreatedOn = DateTime.Now;
                     model.UpdatedOn = null;
