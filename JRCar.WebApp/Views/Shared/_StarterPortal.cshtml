@@ -425,7 +425,7 @@
                 }
                 else if ($('.Accnoti-content').css('display') == 'none') {
                     $('.Accnoti-content').show();
-                    AccupdateNotificationRead();
+                    //AccupdateNotificationRead();
                 }
                 $('span.Acccount', this).html('');
             })
@@ -454,7 +454,7 @@
                 }
                 else if ($('.Appntnoti-content').css('display') == 'none') {
                     $('.Appntnoti-content').show();
-                    AppntupdateNotificationRead();
+                    //AppntupdateNotificationRead();
                 }
                 $('span.Appntcount', this).html('');
             })
@@ -483,7 +483,7 @@
                 }
                 else if ($('.noti-content').css('display') == 'none') {
                     $('.noti-content').show();
-                    updateNotificationRead();
+                    //updateNotificationRead();
                 }
                 $('span.count', this).html('');
             })
@@ -521,7 +521,7 @@
                         $('#AccnotiContent').append($('<a href="#" class="dropdown-item"><i class="fas fa-envelope mr-2"></i> No New Announcement Available</a>'));
                     }
                     $.each(response, function (index, value) {
-                        $('#AccnotiContent').append($('<span href="#" class="dropdown-item"> <i class="fas fa-envelope mr-2"></i>' + value.Title + ' <span class="float-right text-muted text-sm">' + value.Description+'<span><span>'));
+                        $('#AccnotiContent').append($('<span href="#" class="dropdown-item"> <i class="fas fa-envelope mr-2"></i>' + value.Title + ' <span class="float-right text-muted text-sm">' + value.Description+'</span></span>'));
                     });
                 },
                 error: function (error) {
@@ -607,7 +607,7 @@
                             $('#AppntnotiContent').append($('<a href="#" class="dropdown-item"><i class="fas fa-envelope mr-2"></i> No New Appointment Available</a>'));
                         }
                         $.each(response, function (index, value) {
-                            $('#AppntnotiContent').append($('<span href="#" class="dropdown-item" style="white-space: pre-line;"> <i class="fas fa-envelope mr-2"></i> New Appointment Request By ' + value.Title +' for '+ value.Description + '<span>'));
+                            $('#AppntnotiContent').append($('<span href="#" class="dropdown-item" style="white-space: pre-line;"> <i class="fas fa-envelope mr-2"></i> New Appointment Request By ' + value.Title + ' for ' + value.Description + '<span style="display:flex;align-items:center;justify-content: space-evenly;"><span class="btn btn-sm btn-info" style="padding: 0.25rem 2rem !important;" onclick="ReplyOn(' + value.AdURL +')"> Reply</span><span class="btn btn-sm btn-primary" style="padding: 0.25rem 2rem !important;">Accept</span></span></span>'));
                         });
                     },
                     error: function (error) {
@@ -636,6 +636,10 @@
                         console.log(error);
                     }
                 })
+            }
+
+            function ReplyOn(id) {
+                alert(id);
             }
 
             // Notifications Change to Read When NotiFication Icon Press

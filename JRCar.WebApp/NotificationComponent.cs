@@ -168,7 +168,7 @@ namespace JRCar.WebApp
 
         public IEnumerable<NotiShow> GetShowroomAppointments(DateTime afterDate, int ShowroomID)
         {
-            var reas = appointmentrepo.GetShowroomAppointments(afterDate, ShowroomID).Select(x => new NotiShow() { Title = x.tblUser.Name.ToString(), Description = x.tblCar.tblManufacturer.Manufacturer_Name + " " + x.tblCar.tblManfacturerCarModel.Manufacturer_CarModelName });
+            var reas = appointmentrepo.GetShowroomAppointments(afterDate, ShowroomID).Select(x => new NotiShow() { Title = x.tblUser.Name.ToString(), Description = x.tblCar.tblManufacturer.Manufacturer_Name + " " + x.tblCar.tblManfacturerCarModel.Manufacturer_CarModelName, AdURL = x.ID.ToString() });
             return reas;
         }
 
