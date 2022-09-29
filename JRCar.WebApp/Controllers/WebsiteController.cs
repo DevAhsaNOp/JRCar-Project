@@ -698,6 +698,7 @@ namespace JRCar.WebApp.Controllers
         [Route("Ads")]
         public ActionResult AllVehicles(string searchTerm, int? minimumPrice, int? maximumPrice, int? sortBy, int? Condition, int? StartYear, int? EndYear, int? page, int?[] MakeId, int?[] ModelId, string[] ColorSelected, string[] TransSelected)
         {
+            int pagesize = 2, pageindex = 1;
             //ValidationUserAds adsView = new ValidationUserAds();
             //var AllStates = AddressRepoObj.GetAllState();
             //var states = new List<SelectListItem>();
@@ -764,17 +765,30 @@ namespace JRCar.WebApp.Controllers
             ViewBag.Make = AllMakes;
 
             sortBy = sortBy.HasValue ? sortBy.Value : 1;
-            ViewBag.MaximumPrice = adsRepo.GetAllActiveAds().Select(x => Convert.ToInt32(x.Price)).Max();
-            ViewBag.MinimumPrice = adsRepo.GetAllActiveAds().Select(x => Convert.ToInt32(x.Price)).Min();
 
-            ViewBag.SortBy = (sortBy.HasValue ? sortBy.Value : 1);
+            if (adsRepo.GetAllActiveAds().Count() <= 0)
+            {
+                ViewBag.MaximumPrice = 0;
+                ViewBag.MinimumPrice = -1;
 
-            /***Number of Records you want per Page***/
-            int pagesize = 2, pageindex = 1;
-            pageindex = page.HasValue ? Convert.ToInt32(page) : 1;
-            var list = AdsRepo.GetAllActiveAdsFilter(searchTerm, minimumPrice, maximumPrice, sortBy, Condition, StartYear, EndYear, MakeId, ModelId, ColorSelected, TransSelected);
-            IPagedList<ValidateShowroomAds> reas = list.ToPagedList(pageindex, pagesize);
-            return View(reas);
+                ViewBag.SortBy = 1;
+                pageindex = page.HasValue ? Convert.ToInt32(page) : 1;
+                IPagedList<ValidateShowroomAds> reas1 = null;
+                return View(reas1);
+            }
+            else
+            {
+                ViewBag.MaximumPrice = adsRepo.GetAllActiveAds().Select(x => Convert.ToInt32(x.Price)).Max();
+                ViewBag.MinimumPrice = adsRepo.GetAllActiveAds().Select(x => Convert.ToInt32(x.Price)).Min();
+
+                ViewBag.SortBy = (sortBy.HasValue ? sortBy.Value : 1);
+
+                /***Number of Records you want per Page***/
+                pageindex = page.HasValue ? Convert.ToInt32(page) : 1;
+                var list = AdsRepo.GetAllActiveAdsFilter(searchTerm, minimumPrice, maximumPrice, sortBy, Condition, StartYear, EndYear, MakeId, ModelId, ColorSelected, TransSelected);
+                IPagedList<ValidateShowroomAds> reas = list.ToPagedList(pageindex, pagesize);
+                return View(reas);
+            }
         }
 
         public ActionResult GetCityListCheckBox(int StateId)
@@ -812,30 +826,43 @@ namespace JRCar.WebApp.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult GetAds(string searchTerm, int? minimumPrice, int? maximumPrice, int? sortBy, int? Condition, int? StartYear, int? EndYear, int? page, int?[] MakeId, int?[] ModelId, string[] ColorSelected, string[] TransSelected)
         {
+            /***Number of Records you want per Page***/
+            int pagesize = 2, pageindex = 1;
             AdsViewModel adsView = new AdsViewModel();
             ShowroomAdsRepo AdsRepo = new ShowroomAdsRepo();
             adsView.SearchTerm = searchTerm;
             sortBy = sortBy.HasValue ? sortBy.Value : 1;
             adsView.MaximumPrice = Convert.ToInt32(AdsRepo.GetAllActiveAdsFilter(searchTerm, minimumPrice, maximumPrice, sortBy, Condition, StartYear, EndYear, MakeId, ModelId, ColorSelected, TransSelected).Max(x => x.Price));
-            ViewBag.SortBy = (sortBy.HasValue ? sortBy.Value : 1);
-            ViewBag.MaximumPrice = (maximumPrice ?? AdsRepo.GetAllActiveAds().Select(x => Convert.ToInt32(x.Price)).Max());
-            ViewBag.MinimumPrice = (minimumPrice ?? AdsRepo.GetAllActiveAds().Select(x => Convert.ToInt32(x.Price)).Min());
-            
-            var maxval = AdsRepo.GetAllActiveAds().Select(x => Convert.ToInt32(x.Price)).Max();
-            var minval = AdsRepo.GetAllActiveAds().Select(x => Convert.ToInt32(x.Price)).Min();
-
-            /***Number of Records you want per Page***/
-            int pagesize = 2, pageindex = 1;
-            pageindex = page.HasValue ? Convert.ToInt32(page) : 1;
-            var list = AdsRepo.GetAllActiveAdsFilter(searchTerm, minimumPrice, maximumPrice, sortBy, Condition, StartYear, EndYear, MakeId, ModelId, ColorSelected, TransSelected);
-            IPagedList<ValidateShowroomAds> reas = list.ToPagedList(pageindex, pagesize);
-
-            if (searchTerm != "" || (minimumPrice.Value >= minval && maximumPrice.Value < maxval) || (maximumPrice.Value <= maxval && minimumPrice.Value > minval) || sortBy.Value > 1 || Condition != null || (StartYear.Value >= 1972 && EndYear.Value < 2022) || (EndYear.Value <= 2022 && StartYear.Value > 1972) || MakeId != null || ModelId != null || ColorSelected != null || TransSelected != null)
+            if (adsRepo.GetAllActiveAds().Count() <= 0)
             {
-                TempData["ListReas"] = 1;
-            }
+                ViewBag.MaximumPrice = 0;
+                ViewBag.MinimumPrice = -1;
 
-            return PartialView("_LoadAdsOn", reas);
+                ViewBag.SortBy = 1;
+                pageindex = page.HasValue ? Convert.ToInt32(page) : 1;
+                IPagedList<ValidateShowroomAds> reas1 = null;
+                return PartialView("_LoadAdsOn", reas1);
+            }
+            else
+            {
+                ViewBag.SortBy = (sortBy.HasValue ? sortBy.Value : 1);
+                ViewBag.MaximumPrice = (maximumPrice ?? AdsRepo.GetAllActiveAds().Select(x => Convert.ToInt32(x.Price)).Max());
+                ViewBag.MinimumPrice = (minimumPrice ?? AdsRepo.GetAllActiveAds().Select(x => Convert.ToInt32(x.Price)).Min());
+            
+                var maxval = AdsRepo.GetAllActiveAds().Select(x => Convert.ToInt32(x.Price)).Max();
+                var minval = AdsRepo.GetAllActiveAds().Select(x => Convert.ToInt32(x.Price)).Min();
+
+                pageindex = page.HasValue ? Convert.ToInt32(page) : 1;
+                var list = AdsRepo.GetAllActiveAdsFilter(searchTerm, minimumPrice, maximumPrice, sortBy, Condition, StartYear, EndYear, MakeId, ModelId, ColorSelected, TransSelected);
+                IPagedList<ValidateShowroomAds> reas = list.ToPagedList(pageindex, pagesize);
+
+                if (searchTerm != "" || (minimumPrice.Value >= minval && maximumPrice.Value < maxval) || (maximumPrice.Value <= maxval && minimumPrice.Value > minval) || sortBy.Value > 1 || Condition != null || (StartYear.Value >= 1972 && EndYear.Value < 2022) || (EndYear.Value <= 2022 && StartYear.Value > 1972) || MakeId != null || ModelId != null || ColorSelected != null || TransSelected != null)
+                {
+                    TempData["ListReas"] = 1;
+                }
+
+                return PartialView("_LoadAdsOn", reas);
+            }
         }
         
         #endregion

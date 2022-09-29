@@ -902,11 +902,11 @@ namespace JRCar.WebApp.Controllers
         public ActionResult CarAds(string AdID)
         {
             var carDetail = RepoObj1.GetShowroomAdsDetail(AdID);
-            if (carDetail == null)
+            if (carDetail == null || carDetail.tblCarIsactive == false)
             {
                 Session["ShowCarID"] = null;
                 TempData["ErrorMsg"] = "Car you trying to view is not exists!";
-                return RedirectToAction("MyAds");
+                return RedirectToAction("AllVehicles","Website");
             }
             else
             {
