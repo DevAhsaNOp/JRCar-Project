@@ -190,6 +190,48 @@ namespace JRCar.BLL.Repositories
             }
         }
 
+        public ValidateAppointment GetShowroomCurrAppointmentById(int id)
+        {
+            try
+            {
+                if (id > 0)
+                {
+                    var appointment = appointmentDb.GetShowroomCurrAppointmentById(id);
+                    if (appointment != null)
+                        return appointment;
+                    else
+                        return null;
+                }
+                else
+                    return null;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public ValidateAppointment GetUserCurrAppointmentById(int id)
+        {
+            try
+            {
+                if (id > 0)
+                {
+                    var appointment = appointmentDb.GetUserCurrAppointmentById(id);
+                    if (appointment != null)
+                        return appointment;
+                    else
+                        return null;
+                }
+                else
+                    return null;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public IEnumerable<ValidateAppointment> GetShowroomAppointmentsById(int ShowroomID)
         {
             try

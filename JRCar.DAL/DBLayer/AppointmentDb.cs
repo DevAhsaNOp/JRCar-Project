@@ -177,6 +177,62 @@ namespace JRCar.DAL.DBLayer
             }
         }
 
+        public ValidateAppointment GetShowroomCurrAppointmentById(int id)
+        {
+            try
+            {
+                if (id > 0)
+                {
+                    var appointment = _context.tblAppointments.Where(x => x.ID == id).Select(a => new ValidateAppointment()
+                    {
+                        tblUser = a.tblUser,
+                        Purpose = a.tblAppointmentDetails.FirstOrDefault().Purpose,
+                        Datetime = a.tblAppointmentDetails.FirstOrDefault().Date,
+                        ShowroomCarID = a.ShowroomCarID,
+                        CreatedOn = a.CreatedOn,
+                    }).FirstOrDefault();
+                    if (appointment != null)
+                        return appointment;
+                    else
+                        return null;
+                }
+                else
+                    return null;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public ValidateAppointment GetUserCurrAppointmentById(int id)
+        {
+            try
+            {
+                if (id > 0)
+                {
+                    var appointment = _context.tblAppointments.Where(x => x.ID == id).Select(a => new ValidateAppointment()
+                    {
+                        tblUser = a.tblUser,
+                        Purpose = a.tblAppointmentDetails.FirstOrDefault().Purpose,
+                        Datetime = a.tblAppointmentDetails.FirstOrDefault().Date,
+                        ShowroomCarID = a.ShowroomCarID,
+                        CreatedOn = a.CreatedOn,
+                    }).FirstOrDefault();
+                    if (appointment != null)
+                        return appointment;
+                    else
+                        return null;
+                }
+                else
+                    return null;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public void Save()
         {
             _context.SaveChanges();

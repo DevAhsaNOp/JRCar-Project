@@ -155,7 +155,7 @@
         @* Add css  *@
         @*<link href="~/Content/bootstrap.min.css" rel="stylesheet" />*@
         @* Add jquery code for Get Notification & setup signalr *@
-        <script type="text/javascript">
+    <script type="text/javascript">
         $(document).ready(function () {
             $('.select2').select2()
 
@@ -607,7 +607,7 @@
                             $('#AppntnotiContent').append($('<a href="#" class="dropdown-item"><i class="fas fa-envelope mr-2"></i> No New Appointment Available</a>'));
                         }
                         $.each(response, function (index, value) {
-                            $('#AppntnotiContent').append($('<span href="#" class="dropdown-item" style="white-space: pre-line;"> <i class="fas fa-envelope mr-2"></i> New Appointment Request By ' + value.Title + ' for ' + value.Description + '<span style="display:flex;align-items:center;justify-content: space-evenly;"><span class="btn btn-sm btn-info" style="padding: 0.25rem 2rem !important;" onclick="ReplyOn(' + value.AdURL +')"> Reply</span><span class="btn btn-sm btn-primary" style="padding: 0.25rem 2rem !important;">Accept</span></span></span>'));
+                            $('#AppntnotiContent').append($('<span href="#" class="dropdown-item" style="white-space: pre-line;"> <i class="fas fa-envelope mr-2"></i> New Appointment Request By ' + value.Title + ' for ' + value.Description + '<span style="display:flex;align-items:center;justify-content: space-evenly;"><span class="btn btn-sm btn-info" style="padding: 0.25rem 4rem !important;" onclick="AppntDetls(' + value.AdURL +')">View Details</span></span></span>'));
                         });
                     },
                     error: function (error) {
@@ -638,8 +638,17 @@
                 })
             }
 
-            function ReplyOn(id) {
-                alert(id);
+            function AppntDetls(id) {
+                var AppntID = id;
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("SetSession", "Portal")",
+                    data: JSON.stringify({ RemovedImages: previousRemoved }),
+                    contentType: "application/json; charset=utf-8",
+                    success: function () {
+                        console.log('ok');
+                    }
+                });
             }
 
             // Notifications Change to Read When NotiFication Icon Press
@@ -747,7 +756,7 @@
             });
         });
 
-        </script>
+    </script>
     </body>
 }
 </html>

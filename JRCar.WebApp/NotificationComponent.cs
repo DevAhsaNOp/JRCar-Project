@@ -184,6 +184,77 @@ namespace JRCar.WebApp
             return reas;
         }
 
+        public ValidateAppointment GetAppointmentById(int id)
+        {
+            try
+            {
+                if (id > 0)
+                {
+                    var appointment = appointmentrepo.GetAppointmentById(id);
+                    if (appointment != null)
+                        return appointment;
+                    else
+                        return null;
+                }
+                else
+                    return null;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public NotiShow GetShowroomCurrAppointmentById(int id)
+        {
+            try
+            {
+                if (id > 0)
+                {
+                    var appnt = appointmentrepo.GetShowroomCurrAppointmentById(id);
+                    NotiShow appointment = new NotiShow()
+                    {
+                        FromUserName = appnt.tblUser.Name,
+                        Title = appnt.tblCar.tblManufacturer.Manufacturer_Name + " "+ appnt.tblCar.tblManfacturerCarModel.Manufacturer_CarModelName,
+                        Time = appnt.Datetime.ToString(),
+                        Description = appnt.Purpose,
+                        CreatedOn = appnt.CreatedOn
+                    };
+                    if (appointment != null)
+                        return appointment;
+                    else
+                        return null;
+                }
+                else
+                    return null;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public ValidateAppointment GetUserCurrAppointmentById(int id)
+        {
+            try
+            {
+                if (id > 0)
+                {
+                    var appointment = appointmentrepo.GetUserCurrAppointmentById(id);
+                    if (appointment != null)
+                        return appointment;
+                    else
+                        return null;
+                }
+                else
+                    return null;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public bool ChangeShowroomAppointmentToAsRead(int ShowroomID)
         {
             if (ShowroomID > 0)

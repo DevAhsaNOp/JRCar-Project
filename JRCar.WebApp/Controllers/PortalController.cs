@@ -519,6 +519,34 @@ namespace JRCar.WebApp.Controllers
                 throw ex;
             }
         }
+        
+        [HttpPost]
+        public JsonResult GetShowroomAppointmentById(int id)
+        {
+            try
+            {
+                if (User.Identity.IsAuthenticated)
+                {
+                    var AppntID = id;
+                    NotificationComponent NC = new NotificationComponent();
+                    var list = NC.GetShowroomCurrAppointmentById(AppntID);
+                    ////Update session here for get only new added (Announcements)
+                    //Session["AppLastUpdated"] = DateTime.Now;
+                    return new JsonResult { Data = list, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
+                }
+                else
+                {
+                    //insert into tblNotification values('Hey','Blablablabalb',null,2042,108,1,0,getdate())
+                    var err = (int)HttpStatusCode.BadRequest;
+                    return Json(new { error = err + " Bad Request Error " + "Invalid Request!!" });
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMsg"] = "Error occured on loading Appointments!" + ex.Message;
+                throw ex;
+            }
+        }
 
         [HttpGet]
         public JsonResult GetShowroomAppointmentsListCount()
