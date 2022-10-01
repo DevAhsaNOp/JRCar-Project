@@ -91,6 +91,66 @@
             @Html.Partial("_SidebarPortal")
             <!-- /. main-sidebar-container -->
             <!-- Content Wrapper. Contains page content -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">New Appointment Request</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <h4 class="text-center text-bold bg-gradient-info text-white w-100"> Appointment Information: </h4>
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <span class="text-bold">From User:</span>
+                                    <span id="MUser"></span>
+                                </div>
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <span class="text-bold">Posted On:</span>
+                                    <span id="MPosted"></span>
+                                </div>
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <span class="text-bold">For Car:</span>
+                                    <span id="MCar"></span>
+                                </div>
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <span class="text-bold">At Date/Time:</span>
+                                    <span id="MDate"></span>
+                                </div>
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <span class="text-bold">Message:</span>
+                                    <span id="MDescp"></span>
+                                </div>
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <span class="text-bold">Phone Number:</span>
+                                    <span id="MPhone"></span>
+                                </div>
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center mt-3">
+                                    <a class="btn btn-sm btn-primary pr-5 pl-5" id="MAd" href="#" target="_blank">View Ad</a>
+                                </div>
+                            </div>
+                            <form>
+                                <div class="form-group">
+                                    <label for="recipient-name" class="col-form-label">Date/Time:</label>
+                                    <input type="datetime-local" class="form-control" placeholder="Select date" id="DateAppnt">
+                                </div>
+                                <div class="form-group">
+                                    <label for="message-text" class="col-form-label">Message:</label>
+                                    <textarea class="form-control" id="message-text"></textarea>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-danger" onclick="RejectAppnt()">Reject</button>
+                            <button type="button" class="btn btn-primary" onclick="SndAppnt()">Send Message & Accept</button>
+                            <button type="button" class="btn btn-success" onclick="AccAppnt()">Accept</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="content-wrapper">
                 @RenderBody()
             </div>
@@ -155,7 +215,7 @@
         @* Add css  *@
         @*<link href="~/Content/bootstrap.min.css" rel="stylesheet" />*@
         @* Add jquery code for Get Notification & setup signalr *@
-    <script type="text/javascript">
+        <script type="text/javascript">
         $(document).ready(function () {
             $('.select2').select2()
 
@@ -379,7 +439,7 @@
             //SignalR method for push server message to client
             notificationHub.client.DisplayNoti = function (message) {
                 if (message && message.toLowerCase() == "added") {
-                    console.log('Hey Count');
+                    console.log('Hey Notifications!!');
                     updateNotificationCount();
                     AccupdateNotificationCount();
                     AppntupdateNotificationCount();
@@ -454,7 +514,7 @@
                 }
                 else if ($('.Appntnoti-content').css('display') == 'none') {
                     $('.Appntnoti-content').show();
-                    //AppntupdateNotificationRead();
+/*                    AppntupdateNotificationRead();*/
                 }
                 $('span.Appntcount', this).html('');
             })
@@ -642,13 +702,128 @@
                 var AppntID = id;
                 $.ajax({
                     type: "POST",
-                    url: "@Url.Action("SetSession", "Portal")",
-                    data: JSON.stringify({ RemovedImages: previousRemoved }),
+                    url: "@Url.Action("GetShowroomAppointmentById", "Portal")",
+                    data: JSON.stringify({ id: AppntID }),
                     contentType: "application/json; charset=utf-8",
-                    success: function () {
-                        console.log('ok');
+                    success: function (resp) {
+                        console.log(resp);
+                        $("#MUser").text(resp.FromUserName)
+                        $("#MPosted").text(resp.Date)
+                        $("#MCar").text(resp.Title)
+                        $("#MDate").text(resp.Time)
+                        $("#MDescp").text(resp.Description)
+                        $("#MPhone").text(resp.PhoneNumber)
+                        $("#MAd").attr("href","/Ads/"+resp.AdURL)
+                        $('#exampleModal').modal('show')
                     }
                 });
+            }
+
+            function RejectAppnt() {
+                $.ajax({
+                    type: 'GET',
+                    url: '/Portal/ShowroomAppointmentReject',
+                    success: function (response) {
+                        $('#exampleModal').modal('hide');
+                        var Toast = Swal.mixin({
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3000
+                        });
+                        if (response) {
+                            Toast.fire({
+                                icon: 'success',
+                                title: 'Appointment hase been Rejected Succesfully!'
+                            });
+                            AppntupdateNotification();
+                        }
+                        else {
+                            Toast.fire({
+                                icon: 'error',
+                                title: 'Something went wrong. Please try again Later!'
+                            })
+                        }
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    }
+                })
+            }
+
+            function AccAppnt() {
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("AcceptShowroomAppointment", "Portal")",
+                    data: JSON.stringify({ IsAppntDel: false }),
+                    contentType: "application/json; charset=utf-8",
+                    success: function (response) {
+                        $('#exampleModal').modal('hide');
+                        var Toast = Swal.mixin({
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3000
+                        });
+                        if (response) {
+                            Toast.fire({
+                                icon: 'success',
+                                title: 'Appointment hase been Scheduled Succesfully!'
+                            });
+                            AppntupdateNotification();
+                        }
+                        else {
+                            Toast.fire({
+                                icon: 'error',
+                                title: 'Something went wrong. Please try again Later!'
+                            })
+                        }
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    }
+                })
+            }
+
+            function SndAppnt() {
+                var Message = $("#message-text").val();
+                var AppntDate = $("#DateAppnt").val();
+                if (Message == "" || AppntDate == null) {
+                    alert("Please select the Date\Time and Message!");
+                }
+                else {
+                    $.ajax({
+                        type: "POST",
+                        url: "@Url.Action("AcceptShowroomAppointment", "Portal")",
+                        data: JSON.stringify({ Purpose: Message, Date: AppntDate ,IsAppntDel: true }),
+                        contentType: "application/json; charset=utf-8",
+                        success: function (response) {
+                            $('#exampleModal').modal('hide');
+                            var Toast = Swal.mixin({
+                                toast: true,
+                                position: 'top-end',
+                                showConfirmButton: false,
+                                timer: 3000
+                            });
+                            if (response) {
+                                Toast.fire({
+                                    icon: 'success',
+                                    title: 'Appointment hase been Scheduled Succesfully!'
+                                });
+                                AppntupdateNotification();
+                            }
+                            else {
+                                Toast.fire({
+                                    icon: 'error',
+                                    title: 'Something went wrong. Please try again Later!'
+                                })
+                            }
+                        },
+                        error: function (error) {
+                            console.log(error);
+                        }
+                    })
+                }
             }
 
             // Notifications Change to Read When NotiFication Icon Press
@@ -693,7 +868,6 @@
                         }
                         $.each(response, function (index, value) {
                             $('#notiContent').append($('<span href="#" class="dropdown-item"> <i class="fas fa-envelope mr-2"></i>' + value.Title + ' <span class="float-right text-muted text-sm"> <a href="/Ad/'+value.AdURL+'" target="_blank">View Ad</a></span></span>'));
-                            //$('#notiContent').append($('<li>New Ad Alert: ' + value.Title + ' is less than (' + value.Description + ') </li>'));
                         });
                     },
                     error: function (error) {
@@ -756,7 +930,7 @@
             });
         });
 
-    </script>
+        </script>
     </body>
 }
 </html>

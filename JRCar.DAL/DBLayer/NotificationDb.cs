@@ -191,10 +191,12 @@ namespace JRCar.DAL.DBLayer
         public string Title { get; set; }
         public string Description { get; set; }
         public string AdURL { get; set; }
+        public string CardID { get; set; }
         public bool? IsRead { get; set; }
         public DateTime CreatedOn { get; set; }
         public string Time { get; set; }
         public string Date { get; set; }
+        public string PhoneNumber { get; set; }
         public string FromUserName { get; set; }
         public bool IsNoti { get; set; }
         public bool IsAnno { get; set; }

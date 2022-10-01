@@ -519,7 +519,7 @@ namespace JRCar.WebApp.Controllers
                 throw ex;
             }
         }
-        
+
         [HttpPost]
         public JsonResult GetShowroomAppointmentById(int id)
         {
@@ -527,16 +527,14 @@ namespace JRCar.WebApp.Controllers
             {
                 if (User.Identity.IsAuthenticated)
                 {
+                    TempData["AppntID"] = id;
                     var AppntID = id;
                     NotificationComponent NC = new NotificationComponent();
                     var list = NC.GetShowroomCurrAppointmentById(AppntID);
-                    ////Update session here for get only new added (Announcements)
-                    //Session["AppLastUpdated"] = DateTime.Now;
                     return new JsonResult { Data = list, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
                 }
                 else
                 {
-                    //insert into tblNotification values('Hey','Blablablabalb',null,2042,108,1,0,getdate())
                     var err = (int)HttpStatusCode.BadRequest;
                     return Json(new { error = err + " Bad Request Error " + "Invalid Request!!" });
                 }
@@ -544,6 +542,72 @@ namespace JRCar.WebApp.Controllers
             catch (Exception ex)
             {
                 TempData["ErrorMsg"] = "Error occured on loading Appointments!" + ex.Message;
+                throw ex;
+            }
+        }
+
+        [HttpPost]
+        public JsonResult AcceptShowroomAppointment(string Purpose, string Date, bool IsAppntDel)
+        {
+            try
+            {
+                if (User.Identity.IsAuthenticated)
+                {
+                    var AppntID = Convert.ToInt32(TempData["AppntID"]);
+                    var Usr = Convert.ToInt32(Session["Id"]);
+                    AppointmentRepo appointmentRepo = new AppointmentRepo();
+                    var reas = appointmentRepo.AcceptAppointment(AppntID, Usr, Purpose, Date, IsAppntDel);
+                    if (reas)
+                    {
+                        return Json(true, JsonRequestBehavior.AllowGet);
+                    }
+                    else
+                    {
+                        return Json(false, JsonRequestBehavior.AllowGet);
+                    }
+                }
+                else
+                {
+                    var err = (int)HttpStatusCode.BadRequest;
+                    return Json(new { error = err + " Bad Request Error " + "Invalid Request!!" });
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMsg"] = "Error occured on loading Appointments!" + ex.Message;
+                throw ex;
+            }
+        }
+
+        [HttpGet]
+        public JsonResult ShowroomAppointmentReject()
+        {
+            try
+            {
+                if (User.Identity.IsAuthenticated)
+                {
+                    var AppntID = Convert.ToInt32(TempData["AppntID"]);
+                    var Usr = Convert.ToInt32(Session["Id"]);
+                    AppointmentRepo appointmentRepo = new AppointmentRepo();
+                    var reas = appointmentRepo.RejectAppointment(AppntID, Usr);
+                    if (reas)
+                    {
+                        return Json(true, JsonRequestBehavior.AllowGet);
+                    }
+                    else
+                    {
+                        return Json(false, JsonRequestBehavior.AllowGet);
+                    }
+                }
+                else
+                {
+                    var err = (int)HttpStatusCode.BadRequest;
+                    return Json(new { error = err + " Bad Request Error " + "Invalid Request!!" });
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMsg"] = "Error occured on Rejecting Appointments!" + ex.Message;
                 throw ex;
             }
         }
@@ -934,7 +998,7 @@ namespace JRCar.WebApp.Controllers
             {
                 Session["ShowCarID"] = null;
                 TempData["ErrorMsg"] = "Car you trying to view is not exists!";
-                return RedirectToAction("AllVehicles","Website");
+                return RedirectToAction("AllVehicles", "Website");
             }
             else
             {
@@ -948,6 +1012,19 @@ namespace JRCar.WebApp.Controllers
                 }
                 ViewBag.Images = images;
                 Session["ShowCarID"] = carDetail.tblCarID;
+                if (User.Identity.IsAuthenticated)
+                {
+                    AppointmentRepo repo = new AppointmentRepo();
+                    var reas = repo.IsUserRequestThisCarAppointment((int)Session["Id"],carDetail.tblCarID);
+                    if (reas)
+                    {
+                        Session["IsSchedule"] = "true";
+                    }
+                    else
+                    {
+                        Session["IsSchedule"] = "false";
+                    }
+                }
                 return View(carDetail);
             }
         }

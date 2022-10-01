@@ -35,5 +35,11 @@ namespace JRCar.BOL.Validation_Classes
         public virtual tblUserAdd tblUserAdd { get; set; }
         public virtual tblUser tblUser { get; set; }
         public virtual tblShowroom tblShowroom { get; set; }
+        public int ShowroomID { get; set; }
+        public int? UserID { get; set; }
+        public string ShowroomContact { get; set; }
+        public string ShowroomEmail { get; set; }
+        public string UserContact { get; set; }
+        public string UserEmail { get; set; }
     }
 }

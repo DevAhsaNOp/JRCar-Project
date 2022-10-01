@@ -218,7 +218,10 @@ namespace JRCar.WebApp
                         Title = appnt.tblCar.tblManufacturer.Manufacturer_Name + " "+ appnt.tblCar.tblManfacturerCarModel.Manufacturer_CarModelName,
                         Time = appnt.Datetime.ToString(),
                         Description = appnt.Purpose,
-                        CreatedOn = appnt.CreatedOn
+                        Date = appnt.CreatedOn.ToString(),
+                        PhoneNumber = appnt.Number,
+                        AdURL = appnt.tblCar.CarsURL,
+                        CardID = appnt.ID.ToString()
                     };
                     if (appointment != null)
                         return appointment;

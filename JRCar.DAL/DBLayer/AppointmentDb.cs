@@ -86,6 +86,86 @@ namespace JRCar.DAL.DBLayer
             }
         }
 
+        public int RejectAppointment(int AppntID, int Usr)
+        {
+            try
+            {
+                if (AppntID > 0)
+                {
+                    var model = _context.tblAppointments.Where(a => a.ID == AppntID).FirstOrDefault();
+                    model.IsAccepted = false;
+                    model.Isactive = false;
+                    model.UpdatedBy = Usr;
+                    model.UpdatedOn = DateTime.Now;
+                    _context.Entry(model).State = System.Data.Entity.EntityState.Modified;
+                    Save();
+                    return model.ID;
+                }
+                else
+                    return 0;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public bool AcceptAppointment(int AppntID, int Usr, tblAppointmentDetail AppntDetailmodel)
+        {
+            try
+            {
+                if (AppntID > 0 && Usr > 0)
+                {
+                    var model = _context.tblAppointments.Where(a => a.ID == AppntID).FirstOrDefault();
+                    model.IsAccepted = true;
+                    model.Isactive = true;
+                    model.UpdatedBy = Usr;
+                    model.UpdatedOn = DateTime.Now;
+                    _context.Entry(model).State = System.Data.Entity.EntityState.Modified;
+                    Save();
+                    if (model.ID > 0 && AppntDetailmodel != null)
+                    {
+                        var reas = InsertAppointmentDetails(AppntDetailmodel);
+                        if (reas > 0)
+                            return true;
+                        else
+                            return false;
+                    }
+                    else if (model.ID > 0)
+                        return true;
+                    else
+                        return false;
+                }
+                else
+                    return false;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        
+        public bool IsUserRequestThisCarAppointment(int UserID, int CarID)
+        {
+            try
+            {
+                if (UserID > 0 && CarID > 0)
+                {
+                    var reas = _context.tblAppointments.Where(x => x.UserInterestedID == UserID && x.ShowroomCarID == CarID).FirstOrDefault();
+                    if (reas != null)
+                        return true;
+                    else
+                        return false;
+                }
+                else
+                    return false;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public bool ChangeShowroomAppointmentToAsRead(int ShowroomID)
         {
             var reas = _context.tblAppointments.Where(a => a.IsRead == false && a.tblCar.tblShowroomID == ShowroomID).ToList();
@@ -177,6 +257,62 @@ namespace JRCar.DAL.DBLayer
             }
         }
 
+        public ValidateAppointment GetShowById(int id)
+        {
+            try
+            {
+                if (id > 0)
+                {
+                    var appointment = _context.tblAppointments.Where(x => x.ID == id).Select(a => new ValidateAppointment()
+                    {
+                        ShowroomID = a.tblCar.tblShowroomID,
+                        UserID = a.UserInterestedID, 
+                        ShowroomContact = a.tblCar.tblShowroom.Contact, 
+                        ShowroomEmail = a.tblCar.tblShowroom.Email
+                    }).FirstOrDefault();
+                    if (appointment != null)
+                        return appointment;
+                    else
+                        return null;
+                }
+                else
+                    return null;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        
+        public ValidateAppointment GetUserById(int id)
+        {
+            try
+            {
+                if (id > 0)
+                {
+                    var appointment = _context.tblAppointments.Where(x => x.ID == id).Select(a => new ValidateAppointment()
+                    {
+                        ShowroomID = a.ShowroomInterestedID.Value,
+                        UserID = a.tblUserAdd.UserID, 
+                        UserContact = a.tblUserAdd.tblUser.Number, 
+                        UserEmail = a.tblUserAdd.tblUser.Email
+                    }).FirstOrDefault();
+                    if (appointment != null)
+                        return appointment;
+                    else
+                        return null;
+                }
+                else
+                    return null;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+
+
         public ValidateAppointment GetShowroomCurrAppointmentById(int id)
         {
             try
@@ -185,11 +321,14 @@ namespace JRCar.DAL.DBLayer
                 {
                     var appointment = _context.tblAppointments.Where(x => x.ID == id).Select(a => new ValidateAppointment()
                     {
+                        ID = a.ID,
+                        tblCar = a.tblCar,
                         tblUser = a.tblUser,
                         Purpose = a.tblAppointmentDetails.FirstOrDefault().Purpose,
                         Datetime = a.tblAppointmentDetails.FirstOrDefault().Date,
                         ShowroomCarID = a.ShowroomCarID,
                         CreatedOn = a.CreatedOn,
+                        Number = a.tblAppointmentDetails.FirstOrDefault().Number,
                     }).FirstOrDefault();
                     if (appointment != null)
                         return appointment;
@@ -213,6 +352,7 @@ namespace JRCar.DAL.DBLayer
                 {
                     var appointment = _context.tblAppointments.Where(x => x.ID == id).Select(a => new ValidateAppointment()
                     {
+                        tblUserAdd = a.tblUserAdd,
                         tblUser = a.tblUser,
                         Purpose = a.tblAppointmentDetails.FirstOrDefault().Purpose,
                         Datetime = a.tblAppointmentDetails.FirstOrDefault().Date,

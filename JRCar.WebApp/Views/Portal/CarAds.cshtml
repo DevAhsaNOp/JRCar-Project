@@ -120,7 +120,9 @@
                     title: '<span style="font-size:10px;line-height:10px;text-transform: capitalize;text-align:center">Something went wrong. Please try again Later!</span>',
                 })
             }
-
+            setTimeout(function () {
+                location.reload(true);
+            }, 5000);
         }
     </script>
 </head>
@@ -507,7 +509,21 @@
                         <aside class="page-sidebar col-lg-3 col-md-3 col-sm-12 col-xs-12">
                             <div class="cs-category-link-icon">
                                 <ul>
-                                    <li><a data-toggle="modal" href="http://chimpgroup.com/themeforest/automobile/remote.html" data-target="#schedule-test-drive"><i class="cs-color icon-car"></i>Schedule Appointment</a></li>
+                                    @if (User.Identity.IsAuthenticated)
+                                    {
+                                        if (Session["IsSchedule"].ToString() == "true")
+                                        {
+                                            <li><a href="javascript:void(0)" style="line-height: initial;font-weight:700"><i class="cs-color icon-check-circle"></i>Appointment already Requested!</a></li>
+                                        }
+                                        else if (Session["IsSchedule"].ToString() == "false")
+                                        {
+                                            <li><a data-toggle="modal" href="javascript:void(0)" data-target="#schedule-test-drive"><i class="cs-color icon-car"></i>Schedule Appointment</a></li>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <li><a data-toggle="modal" href="http://chimpgroup.com/themeforest/automobile/remote.html" data-target="#schedule-test-drive"><i class="cs-color icon-car"></i>Schedule Appointment</a></li>
+                                    }
                                     <li><a href="~/Files/extra-images/pdf-sample.pdf" download><i class="cs-color icon-print3"></i>Print this Detail</a></li>
                                 </ul>
                                 <div class="cs-form-modal">

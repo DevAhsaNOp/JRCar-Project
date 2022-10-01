@@ -107,6 +107,70 @@ namespace JRCar.BLL.Repositories
             }
         }
 
+        public bool AcceptAppointment(int AppntID, int Usr, string Purpose, string Date, bool IsAppntDel)
+        {
+            try
+            {
+                if (AppntID > 0 && Usr > 0 && IsAppntDel == false)
+                {
+                    tblAppointmentDetail AppntDetail = new tblAppointmentDetail();
+                    AppntDetail = null;
+                    var reas = appointmentDb.AcceptAppointment(AppntID, Usr, AppntDetail);
+                    if (reas)
+                        return true;
+                    else
+                        return false;
+                }
+                else if (AppntID > 0 && Usr > 0 && Purpose.Length > 0 && Date.Length > 0 && IsAppntDel == true)
+                {
+                    var Appnt = appointmentDb.GetShowById(AppntID);
+                    tblAppointmentDetail AppntDetail = new tblAppointmentDetail()
+                    {
+                        AppointmentID = AppntID,
+                        ShowroomID = Appnt.ShowroomID,
+                        UserID = Appnt.UserID,
+                        CreatedBy = Usr,
+                        Date = Convert.ToDateTime(Date),
+                        Purpose = Purpose,
+                        Number = Appnt.ShowroomContact,
+                        Email = Appnt.ShowroomEmail,
+                    };
+                    var reas = appointmentDb.AcceptAppointment(AppntID, Usr, AppntDetail);
+                    if (reas)
+                        return true;
+                    else
+                        return false;
+                }
+                else
+                    return false;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public bool IsUserRequestThisCarAppointment(int UserID, int CarID)
+        {
+            try
+            {
+                if (UserID > 0 && CarID > 0)
+                {
+                    var reas = appointmentDb.IsUserRequestThisCarAppointment(UserID, CarID);
+                    if (reas)
+                        return true;
+                    else
+                        return false;
+                }
+                else
+                    return false;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public bool ChangeShowroomAppointmentToAsRead(int ShowroomID)
         {
             if (ShowroomID > 0)
@@ -153,6 +217,29 @@ namespace JRCar.BLL.Repositories
                     };
 
                     var reas = appointmentDb.UpdateAppointment(appointment);
+                    if (reas > 0)
+                    {
+                        return true;
+                    }
+                    else
+                        return false;
+                }
+                else
+                    return false;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public bool RejectAppointment(int AppntID, int Usr)
+        {
+            try
+            {
+                if (AppntID > 0 && Usr > 0)
+                {
+                    var reas = appointmentDb.RejectAppointment(AppntID, Usr);
                     if (reas > 0)
                     {
                         return true;
