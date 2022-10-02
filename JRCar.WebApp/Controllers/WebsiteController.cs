@@ -571,6 +571,121 @@ namespace JRCar.WebApp.Controllers
         }
         #endregion
 
+        #region **User Appointment**
+
+        [HttpGet]
+        public JsonResult GetUserAppointmentsList()
+        {
+            try
+            {
+                if (User.Identity.IsAuthenticated)
+                {
+                    var UserID = Convert.ToInt32(Session["Id"]);
+                    var notificationRegisterTime = Session["AppLastUpdated"] != null ? Convert.ToDateTime(Session["AppLastUpdated"]) : DateTime.Now;
+                    NotificationComponent NC = new NotificationComponent();
+                    var list = NC.GetUserAppointments(notificationRegisterTime, UserID);
+                    //Update session here for get only new added (Announcements)
+                    Session["AppLastUpdated"] = DateTime.Now;
+                    return new JsonResult { Data = list, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
+                }
+                else
+                {
+                    //insert into tblNotification values('Hey','Blablablabalb',null,2042,108,1,0,getdate())
+                    var err = (int)HttpStatusCode.BadRequest;
+                    return Json(new { error = err + " Bad Request Error " + "Invalid Request!!" });
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMsg"] = "Error occured on loading Appointments!" + ex.Message;
+                throw ex;
+            }
+        }
+
+        [HttpPost]
+        public JsonResult GetUserAppointmentById(int id)
+        {
+            try
+            {
+                if (User.Identity.IsAuthenticated)
+                {
+                    TempData["AppntID"] = id;
+                    var AppntID = id;
+                    NotificationComponent NC = new NotificationComponent();
+                    var list = NC.GetUserCurrAppointmentById(AppntID);
+                    return new JsonResult { Data = list, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
+                }
+                else
+                {
+                    var err = (int)HttpStatusCode.BadRequest;
+                    return Json(new { error = err + " Bad Request Error " + "Invalid Request!!" });
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMsg"] = "Error occured on loading Appointments!" + ex.Message;
+                throw ex;
+            }
+        }
+
+        [HttpGet]
+        [Authorize(Roles ="User")]
+        public JsonResult GetUserAppointmentsListCount()
+        {
+            try
+            {
+                if (User.Identity.IsAuthenticated)
+                {
+                    var UserID = Convert.ToInt32(Session["Id"]);
+                    var notificationRegisterTime = Session["AppLastUpdated"] != null ? Convert.ToDateTime(Session["AppLastUpdated"]) : DateTime.Now;
+                    NotificationComponent NC = new NotificationComponent();
+                    var list = NC.GetUserTodaysAppointmentsCount(notificationRegisterTime, UserID);
+                    //Update session here for get only new added (Announcements)
+                    Session["AppLastUpdated"] = DateTime.Now;
+                    return new JsonResult { Data = list, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
+                }
+                else
+                {
+                    var err = (int)HttpStatusCode.BadRequest;
+                    return Json(new { error = err + " Bad Request Error " + "Invalid Request!!" });
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMsg"] = "Error occured on updating Appointments Count!" + ex.Message;
+                throw ex;
+            }
+        }
+
+        [HttpGet]
+        public JsonResult ChangeUserAppointmentsToAsRead()
+        {
+            try
+            {
+                if (User.Identity.IsAuthenticated)
+                {
+                    var UserID = Convert.ToInt32(Session["Id"]);
+                    NotificationComponent NC = new NotificationComponent();
+                    var list = NC.ChangeUserAppointmentToAsRead(UserID);
+                    //Update session here for get only new added (Announcements)
+                    Session["AppLastUpdated"] = DateTime.Now;
+                    return new JsonResult { Data = list, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
+                }
+                else
+                {
+                    var err = (int)HttpStatusCode.BadRequest;
+                    return Json(new { error = err + " Bad Request Error " + "Invalid Request!!" });
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMsg"] = "Error occured on updating Announcements As Read!" + ex.Message;
+                throw ex;
+            }
+        }
+
+        #endregion
+
         #region **Car Detail**
         [AcceptVerbs(HttpVerbs.Get)]
         [Route("Ad/{AdID}")]

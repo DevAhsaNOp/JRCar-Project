@@ -99,6 +99,8 @@
           <Property Name="UpdatedBy" Type="int" />
           <Property Name="IsAccepted" Type="bit" />
           <Property Name="IsRead" Type="bit" />
+          <Property Name="IsUserRead" Type="bit" />
+          <Property Name="ConfirmDatetime" Type="datetime" />
         </EntityType>
         <EntityType Name="tblBlogs">
           <Key>
@@ -2670,6 +2672,8 @@ warning 6002: The table/view 'jrcar.dbo.ANNOVIEW' does not have a primary key de
           <Property Name="UpdatedBy" Type="Int32" />
           <Property Name="IsAccepted" Type="Boolean" />
           <Property Name="IsRead" Type="Boolean" />
+          <Property Name="IsUserRead" Type="Boolean" />
+          <Property Name="ConfirmDatetime" Type="DateTime" Precision="3" />
           <NavigationProperty Name="tblAppointmentDetails" Relationship="jrcarModel.FK_tblAppointmentDetails_tblAppointments" FromRole="tblAppointment" ToRole="tblAppointmentDetail" />
           <NavigationProperty Name="tblCar" Relationship="jrcarModel.FK_tblAppointments_tblCars" FromRole="tblAppointment" ToRole="tblCar" />
           <NavigationProperty Name="tblShowroom" Relationship="jrcarModel.FK_tblAppointments_tblShowrooms" FromRole="tblAppointment" ToRole="tblShowroom" />
@@ -3272,6 +3276,8 @@ warning 6002: The table/view 'jrcar.dbo.ANNOVIEW' does not have a primary key de
           <EntitySetMapping Name="tblAppointments">
             <EntityTypeMapping TypeName="jrcarModel.tblAppointment">
               <MappingFragment StoreEntitySet="tblAppointments">
+                <ScalarProperty Name="ConfirmDatetime" ColumnName="ConfirmDatetime" />
+                <ScalarProperty Name="IsUserRead" ColumnName="IsUserRead" />
                 <ScalarProperty Name="IsRead" ColumnName="IsRead" />
                 <ScalarProperty Name="IsAccepted" ColumnName="IsAccepted" />
                 <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />

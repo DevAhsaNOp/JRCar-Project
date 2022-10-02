@@ -52,6 +52,30 @@
                                             </div>
                                         }
                                     </div>
+                                    @if (User.Identity.IsAuthenticated)
+                                    {
+                                        if (@Session["Name"] != null)
+                                        {
+                                            if (Session["Role"].ToString() == "User")
+                                            {
+                                                <div class="dropdown" style="position: absolute; top: 0px; right: 90%; font-size: 11px; ">
+                                                    <a class="Appntnoti" href="javascript:void(0)">
+                                                        <i class="icon-bell"></i>
+                                                        <span class="badge badge-danger navbar-badge Appntcount" style="position: absolute; top: 20%; background: #d00000; padding: 0 2px; color: white; border-radius: 50%;"></span>
+                                                    </a>
+                                                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right Appntnoti-content" style="left: inherit; right: -8rem; max-height: 260px !important; overflow-x: hidden; overflow-y: auto; width: 260px; margin: 0; padding-bottom: 0px;">
+                                                        <span class="dropdown-item dropdown-header" style="text-align: center; font-weight: 700;">15 Appointment</span>
+                                                        <hr style="margin:0" />
+                                                        <p id="AppntnotiContent" style="padding: 0px 10px;">
+                                                        </p>
+                                                        <div class="dropdown-divider" style="margin-top: 10px;"></div>
+                                                        <a href="@Url.Action("NotificationList","Portal")" class="dropdown-item dropdown-footer" style=" position: sticky; bottom: 0; border-top: 2px solid #E9ECF0; background: #f5f5f5a1; display: block; padding: 0; text-align: center;">See All Appointments</a>
+                                                    </div>
+                                                </div>
+                                            }
+
+                                        }
+                                    }
                                     <a class="cs-bgcolor btn-form" href="@Url.Action("PostNewVehicles","Website")"><i class="icon-plus"></i> Sell Car</a>
                                     <!-- Modal Start-->
                                     <!-- Modal End-->
@@ -90,6 +114,30 @@
                                     </div>
                                 }
                             </div>
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                if (@Session["Name"] != null)
+                                {
+                                    if (Session["Role"].ToString() == "User")
+                                    {
+                                        <div class="dropdown" style="position: absolute; top: 2px; right: 83%; font-size: 11px; ">
+                                            <a class="Appntnoti" href="javascript:void(0)">
+                                                <i class="icon-bell"></i>
+                                                <span class="badge badge-danger navbar-badge Appntcount" style="position: absolute; top: 20%; background: #d00000; padding: 0 2px; color: white; border-radius: 50%;"></span>
+                                            </a>
+                                            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right Appntnoti-content" style="left: inherit; right: -8rem; max-height: 260px !important; overflow-x: hidden; overflow-y: auto; width: 260px; margin: 0; padding-bottom: 0px;">
+                                                <span class="dropdown-item dropdown-header" style="text-align: center; font-weight: 700;">15 Appointment</span>
+                                                <hr style="margin:0" />
+                                                <p id="AppntnotiContent" style="padding: 0px 10px;">
+                                                </p>
+                                                <div class="dropdown-divider" style="margin-top: 10px;"></div>
+                                                <a href="@Url.Action("NotificationList","Portal")" class="dropdown-item dropdown-footer" style=" position: sticky; bottom: 0; border-top: 2px solid #E9ECF0; background: #f5f5f5a1; display: block; padding: 0; text-align: center;">See All Appointments</a>
+                                            </div>
+                                        </div>
+                                    }
+
+                                }
+                            }
                             <a class="cs-bgcolor btn-form" href="@Url.Action("PostNewVehicles","Website")"><i class="icon-plus"></i> Sell Car</a>
                             <!-- Modal Start-->
                             <!-- Modal End-->

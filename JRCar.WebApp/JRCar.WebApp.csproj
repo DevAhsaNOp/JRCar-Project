@@ -3718,6 +3718,7 @@
     <Content Include="Views\Website\AboutUs.cshtml" />
     <Content Include="Views\Website\ContactUs.cshtml" />
     <Content Include="Views\Portal\MakePayment.cshtml" />
+    <Content Include="Views\Portal\AppointmentList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

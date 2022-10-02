@@ -130,7 +130,7 @@ namespace JRCar.WebApp
 
         void sqlDep_OnChangeAppointment(object sender, SqlNotificationEventArgs e)
         {
-            if (e.Info == SqlNotificationInfo.Update)
+            if (e.Type == SqlNotificationType.Change)
             {
                 NotificationHub.Show();
                 RegisterAppointment(DateTime.Now);
@@ -172,9 +172,9 @@ namespace JRCar.WebApp
             return reas;
         }
 
-        public IEnumerable<tblAppointment> GetUserAppointments(DateTime afterDate, int ShowroomID)
+        public IEnumerable<NotiShow> GetUserAppointments(DateTime afterDate, int UserID)
         {
-            var reas = appointmentrepo.GetUserAppointments(afterDate, ShowroomID);
+            var reas = appointmentrepo.GetUserAppointments(afterDate, UserID).Select(x => new NotiShow() { Title = x.tblCar.tblShowroom.FullName.ToString(), Description = x.tblCar.tblManufacturer.Manufacturer_Name + " " + x.tblCar.tblManfacturerCarModel.Manufacturer_CarModelName, AdURL = x.ID.ToString(), IsAccpeted = x.IsAccepted.Value });
             return reas;
         }
 
@@ -271,11 +271,11 @@ namespace JRCar.WebApp
             }
         }
 
-        public bool ChangeUserAppointmentToAsRead(int ShowroomID)
+        public bool ChangeUserAppointmentToAsRead(int UserID)
         {
-            if (ShowroomID > 0)
+            if (UserID > 0)
             {
-                var reas = appointmentrepo.ChangeUserAppointmentToAsRead(ShowroomID);
+                var reas = appointmentrepo.ChangeUserAppointmentToAsRead(UserID);
                 return reas;
             }
             else

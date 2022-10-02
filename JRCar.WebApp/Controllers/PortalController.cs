@@ -298,6 +298,7 @@ namespace JRCar.WebApp.Controllers
 
         #region **Notification For Showroom About New Ads, Union Announcements and User Appointments**
 
+        [Authorize(Roles ="Showroom")]
         public ActionResult NotificationList()
         {
             try
@@ -307,6 +308,32 @@ namespace JRCar.WebApp.Controllers
                     var ShowroomID = Convert.ToInt32(Session["Id"]);
                     NotificationComponent NC = new NotificationComponent();
                     var list = NC.GetAllNotifications(ShowroomID);
+                    return View(list);
+                }
+                else
+                {
+                    //insert into tblNotification values('Hey','Blablablabalb',null,2042,108,1,0,getdate())
+                    var err = (int)HttpStatusCode.BadRequest;
+                    return Json(new { error = err + " Bad Request Error " + "Invalid Request!!" });
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMsg"] = "Error occured on updating Notification!" + ex.Message;
+                throw ex;
+            }
+        }
+
+        [Authorize(Roles = "Showroom")]
+        public ActionResult AppointmentList()
+        {
+            try
+            {
+                if (User.Identity.IsAuthenticated)
+                {
+                    var ShowroomID = Convert.ToInt32(Session["Id"]);
+                    NotificationComponent NC = new NotificationComponent();
+                    var list = NC.GetShowroomAppointmentsById(ShowroomID);
                     return View(list);
                 }
                 else

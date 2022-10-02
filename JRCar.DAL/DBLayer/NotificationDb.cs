@@ -200,6 +200,7 @@ namespace JRCar.DAL.DBLayer
         public string FromUserName { get; set; }
         public bool IsNoti { get; set; }
         public bool IsAnno { get; set; }
+        public bool IsAccpeted { get; set; }
         public virtual tblShowroom tblShowroom { get; set; }
         public virtual tblUser tblUser { get; set; }
     }

@@ -45,12 +45,6 @@
                         <p>PROFILE SETTING</p>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a href="@Url.Action("NotificationList","Portal")" class="nav-link" style="padding-left: 14px;" id="NotificationPage">
-                        <i class="fas fa-bell nav-icon" style="margin-left: 0px;"></i>
-                        <p>NOTIFICATIONS</p>
-                    </a>
-                </li>
                 @if (User.IsInRole("Admin"))
                 {
                     <li class="nav-item">
@@ -165,6 +159,18 @@
 
                 @if (User.IsInRole("Showroom"))
                 {
+                    <li class="nav-item">
+                        <a href="@Url.Action("NotificationList","Portal")" class="nav-link" style="padding-left: 14px;" id="NotificationPage">
+                            <i class="fas fa-bell nav-icon" style="margin-left: 0px;"></i>
+                            <p>NOTIFICATIONS</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="@Url.Action("AppointmentList","Portal")" class="nav-link" style="padding-left: 14px;" id="AppointmentPage">
+                            <i class="fas fa-bell nav-icon" style="margin-left: 0px;"></i>
+                            <p>APPOINTMENTS</p>
+                        </a>
+                    </li>
                     <li class="nav-item menu-open">
                         <a href="#" class="nav-link" id="ReportsNav">
                             <i class="nav-icon fas fa-ad"></i>
@@ -210,11 +216,11 @@
                                 </a>
                             </li>
                             @*<li class="nav-item">
-                                    <a href="#" class="nav-link" id="ShortlistedPage">
-                                        <i class="far fa-circle nav-icon text-bold text-teal"></i>
-                                        <p>SHORTLISTED</p>
-                                    </a>
-                                </li>*@
+                        <a href="#" class="nav-link" id="ShortlistedPage">
+                            <i class="far fa-circle nav-icon text-bold text-teal"></i>
+                            <p>SHORTLISTED</p>
+                        </a>
+                    </li>*@
                         </ul>
                     </li>
                 }

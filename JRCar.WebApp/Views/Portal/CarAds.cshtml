@@ -766,6 +766,123 @@
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB3x0O6BzuvZIQIoypSGe4uAcocdABrL2I&sensor=false"></script>
     <script>
         $(document).ready(function () {
+
+            setInterval(function () {
+                AppntupdateNotificationCount();
+            }, 1000);
+
+            AppntupdateNotification();
+            AppntGetCount();
+            AppntupdateNotificationCount();
+
+            $('a.Appntnoti').click(function (e) {
+                e.stopPropagation();
+                var count = 0;
+                count = parseInt($('span.Appntcount').html()) || 0;
+                console.log('a.Appntnoti outer' + count);
+
+                //Only load Appntnotification if not already loaded
+                if (count > 0) {
+                    AppntupdateNotification();
+                    sessionStorage.setItem("Appntcount", 0);
+                    console.log('a.Appntnoti inner if' + count);
+                    $('.Appntnoti-content').show();
+                    AppntupdateNotificationRead();
+                }
+                else if ($('.Appntnoti-content').css('display') == 'block') {
+                    $('.Appntnoti-content').hide();
+                }
+                else if ($('.Appntnoti-content').css('display') == 'none') {
+                    $('.Appntnoti-content').show();
+                    //AppntupdateNotificationRead();
+                }
+                $('span.Appntcount', this).html('');
+            })
+
+            // Hide Appntnotifications
+            $('html').click(function () {
+                $('.Appntnoti-content').hide();
+            })
+
+            // Notifications Change to Read When NotiFication Icon Press
+            function AppntupdateNotificationRead() {
+                $.ajax({
+                    type: 'GET',
+                    url: '/Website/ChangeUserAppointmentsToAsRead',
+                    success: function (response) {
+                        console.log('AppntGetAppointmentListRead:: ' + response);
+                        sessionStorage.setItem("Appntcount", 0);
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    }
+                })
+            }
+
+            function AppntGetCount() {
+                var count = sessionStorage.getItem("Appntcount");
+                console.log('a.Appntnoti outer' + count);
+
+                if (count > 0) {
+                    $('span.Appntcount').html(count);
+                }
+                else {
+                    $('span.Appntcount', this).html('');
+                }
+            }
+
+            // Update Appntnotification
+            function AppntupdateNotification() {
+                $('#AppntnotiContent').empty();
+                $('#AppntnotiContent').append($('<li>Loading...</li>'));
+                $.ajax({
+                    type: 'GET',
+                    url: '/Website/GetUserAppointmentsList',
+                    success: function (response) {
+                        $('#AppntnotiContent').empty();
+                        console.log(response);
+                        if (response.length == 0) {
+                            $('#AppntnotiContent').append($('<a href="#" class="dropdown-item"><i class="icon-envelope" style="padding-right: 5px;"></i> No Notification Available</a>'));
+                        }
+                        $.each(response, function (index, value) {
+                            console.log("IsAccepted :" + value.IsAccpeted);
+                            if (value.IsAccpeted) {
+                                $('#AppntnotiContent').append($('<span href="#" class="dropdown-item" style="white-space: pre-line;"> <i class="icon-envelope" style="padding-right: 5px;"></i> Appointment Appected By ' + value.Title + ' of ' + value.Description + '<span style="display:flex;align-items:center;justify-content: space-evenly;"><span class="btn btn-sm btn-info" style="padding: 0.25rem 4rem !important;" onclick="AppntDetls(' + value.AdURL + ')">View Details</span></span></span>'));
+                            }
+                            else {
+                                $('#AppntnotiContent').append($('<span href="#" class="dropdown-item" style="white-space: pre-line;"> <i class="icon-envelope" style="padding-right: 5px;"></i> Appointment Reject By ' + value.Title + ' of ' + value.Description + '<span style="display:flex;align-items:center;justify-content: space-evenly;"><span class="btn btn-sm btn-info" style="padding: 0.25rem 4rem !important;" onclick="AppntDetls(' + value.AdURL + ')">View Details</span></span></span>'));
+                            }
+                        });
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    }
+                })
+            }
+
+            // Update Appntnotification count
+            function AppntupdateNotificationCount() {
+                var count = 0;
+                $.ajax({
+                    type: 'GET',
+                    url: '/Website/GetUserAppointmentsListCount',
+                    success: function (response) {
+                        console.log("Hey!");
+                        count = response;
+                        if (count > 0) {
+                            $('span.Appntcount').html(count);
+                        }
+                        else {
+                            $('span.Appntcount').html('');
+                        }
+                        sessionStorage.setItem("Appntcount", count);
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    }
+                })
+            }
+
             setInterval(function () {
                 $('.slick-next').click();
             }, 3000);

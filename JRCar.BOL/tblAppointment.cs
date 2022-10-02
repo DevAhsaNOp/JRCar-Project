@@ -32,6 +32,8 @@ namespace JRCar.BOL
         public Nullable<int> UpdatedBy { get; set; }
         public Nullable<bool> IsAccepted { get; set; }
         public Nullable<bool> IsRead { get; set; }
+        public Nullable<bool> IsUserRead { get; set; }
+        public Nullable<System.DateTime> ConfirmDatetime { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tblAppointmentDetail> tblAppointmentDetails { get; set; }
