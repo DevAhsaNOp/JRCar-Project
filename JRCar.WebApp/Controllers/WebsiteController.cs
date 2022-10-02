@@ -573,6 +573,33 @@ namespace JRCar.WebApp.Controllers
 
         #region **User Appointment**
 
+        [AcceptVerbs(HttpVerbs.Get)]
+        [Authorize(Roles = "User")]
+        [Route("Myappoinments")]
+        public ActionResult UserAppointmentsList()
+        {
+            try
+            {
+                if (User.Identity.IsAuthenticated)
+                {
+                    var UserID = Convert.ToInt32(Session["Id"]);
+                    NotificationComponent NC = new NotificationComponent();
+                    var list = NC.GetUserAppointmentsById(UserID);
+                    return View(list);
+                }
+                else
+                {
+                    var err = (int)HttpStatusCode.BadRequest;
+                    return Json(new { error = err + " Bad Request Error " + "Invalid Request!!" });
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMsg"] = "Error occured on loading Appointments!" + ex.Message;
+                throw ex;
+            }
+        }
+        
         [HttpGet]
         public JsonResult GetUserAppointmentsList()
         {

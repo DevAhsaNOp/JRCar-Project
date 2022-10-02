@@ -26,6 +26,7 @@ namespace JRCar.BOL.Validation_Classes
         public System.DateTime Datetime { get; set; }
 
         public bool Isactive { get; set; }
+        public bool IsAccepted { get; set; }
         public int CreatedBy { get; set; }
         public System.DateTime CreatedOn { get; set; }
         public Nullable<System.DateTime> UpdatedOn { get; set; }

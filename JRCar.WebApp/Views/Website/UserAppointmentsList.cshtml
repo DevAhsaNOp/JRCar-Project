@@ -1,0 +1,130 @@
+﻿@model IEnumerable<JRCar.BOL.Validation_Classes.ValidateAppointment>
+
+@{
+    ViewBag.Title = "Appointment List";
+    Layout = "~/Views/Shared/_WebLayout.cshtml";
+}
+
+@if (User.Identity.IsAuthenticated)
+{
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
+    <style>
+        table.dataTable thead tr {
+            background-color: #ebebeb;
+            color: #002dd0;
+        }
+
+        .dataTables_wrapper .dataTables_filter{
+            text-align:left;
+        }
+    </style>
+    <div class="page-section" style="background: url(../../Files/extra-images/user-bg-img.jpg) no-repeat; background-size: cover; min-height: 175px; margin-top: -30px; margin-bottom: -129px;"></div>
+    <div class="page-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="cs-user-account-holder">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <ul class="cs-user-accounts-list">
+                                <li><a href="@Url.Action("Myvehicles","Website")">Shortlisted</a></li>
+                                <li><a href="@Url.Action("Shortlisted","Website")">Shortlisted</a></li>
+                                <li class="active"><a href="@Url.Action("UserAppointmentsList","Website")">My Appointments</a></li>
+                                <li>
+                                    <a href="@Url.Action("ProfileSettings","Website")">Profile Settings</a>
+                                </li>
+                                <li><a href="@Url.Action("PostNewVehicles","Website")">Post a vehicles</a></li>
+                                <li><a href="@Url.Action("Logout", "Account")">Sign Out</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="cs-user-section-title" style="margin-bottom: 10px !important">
+                                <h4>List of Appointments</h4>
+                            </div>
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            @if (TempData["SuccessMsg"] != null)
+                            {
+                                <div class="alert alert-info alert-dismissable">
+                                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                    <i class="icon-info-with-circle"></i><span>@Html.Raw(TempData["SuccessMsg"])</span>
+                                </div>
+                            }
+                            @if (TempData["ErrorMsg"] != null)
+                            {
+                                <div class="alert alert-danger alert-dismissable">
+                                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                    <i class="icon-blocked"></i><span>@Html.Raw(TempData["ErrorMsg"])</span>
+                                </div>
+                            }
+                        </div>
+                        <table id="DDexample" class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Car Info</th>
+                                    <th>Datetime</th>
+                                    <th>Requested On</th>
+                                    <th>View Ad</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                            @item.tblCar.tblManufacturer.Manufacturer_Name @item.tblCar.tblManfacturerCarModel.Manufacturer_CarModelName
+                                        </td>
+                                        <td>
+                                            @item.Datetime.ToString("dd MMM, yyyy hh:mm tt").ToUpperInvariant()
+                                        </td>
+                                        <td>
+                                            @item.CreatedOn.ToString("dd MMM, yyyy").ToUpperInvariant()
+                                        </td>
+                                        <td>
+                                            <a href="@Url.Action("CarAds","Portal",new { AdID = item.tblCar.CarsURL })" target="_blank" class="cs-bgcolor" style="color:white;padding:3px 7px;">View Detail</a>
+                                        </td>
+                                        <td>
+                                            @if (item.Isactive == true && item.IsAccepted == true)
+                                            {
+                                                <span class="badge badge-success"> Accepted </span>
+                                            }
+                                            else if (item.Isactive == false && item.IsAccepted == false)
+                                            {
+                                                <span class="badge badge-success"> Rejected </span>
+                                            }
+                                            else if (item.Isactive == true && item.IsAccepted == false)
+                                            {
+                                                <span class="badge badge-danger"> Request Pending </span>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="page-section" style="background:#19171a;">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="cs-ad" style="text-align:center; padding:55px 0 32px;">
+                        <div class="cs-media">
+                            <figure>
+                                <img src="~/Files/extra-images/cs-ad-img.jpg" alt="" />
+                            </figure>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function () {
+            $('#DDexample').DataTable();
+        });
+    </script>
+}

@@ -419,12 +419,14 @@ namespace JRCar.DAL.DBLayer
                 {
                     var appointment = _context.tblAppointments.Where(x => x.UserInterestedID == UserID && x.IsAccepted == true).Select(a => new ValidateAppointment()
                     {
-                        tblShowroom = a.tblShowroom,
+                        tblShowroom = a.tblCar.tblShowroom,
                         Purpose = a.tblAppointmentDetails.FirstOrDefault().Purpose,
                         Datetime = a.ConfirmDatetime.Value,
                         tblCar = a.tblCar,
                         tblUser = a.tblUser,
                         CreatedOn = a.CreatedOn,
+                        Isactive = a.Isactive,
+                        IsAccepted = a.IsAccepted.Value,
                     }).OrderByDescending(x => x.Datetime).ToList();
 
                     if (appointment != null)
