@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="d4b3004bd5f1413399f14f09a678d153" Name="Diagram1" ZoomLevel="83" DisplayType="true">
+      <Diagram DiagramId="d4b3004bd5f1413399f14f09a678d153" Name="Diagram1" ZoomLevel="72" DisplayType="true">
         <EntityTypeShape EntityType="jrcarModel.C__MigrationHistory" Width="1.5" PointX="0.75" PointY="0.75" />
         <EntityTypeShape EntityType="jrcarModel.sysdiagram" Width="1.5" PointX="2.75" PointY="0.75" />
         <EntityTypeShape EntityType="jrcarModel.tblAddress" Width="1.5" PointX="6" PointY="35.5" />
@@ -77,8 +77,6 @@
         <AssociationConnector Association="jrcarModel.FK_tblNotification_tblShowrooms" />
         <AssociationConnector Association="jrcarModel.FK_tblShowrooms_tblRoles" />
         <AssociationConnector Association="jrcarModel.FK_tblShowrooms_tblUnions" />
-        <EntityTypeShape EntityType="jrcarModel.tblPayment" Width="1.5" PointX="10.5" PointY="38.75" />
-        <AssociationConnector Association="jrcarModel.FK_tblPayment_tblShowrooms" />
         <EntityTypeShape EntityType="jrcarModel.tblAppointmentDetail" Width="1.5" PointX="18" PointY="27.375" />
         <EntityTypeShape EntityType="jrcarModel.tblAppointment" Width="1.5" PointX="15.75" PointY="27" />
         <AssociationConnector Association="jrcarModel.FK_tblAppointmentDetails_tblAppointments" />
@@ -88,6 +86,14 @@
         <AssociationConnector Association="jrcarModel.FK_tblAppointments_tblShowrooms" />
         <AssociationConnector Association="jrcarModel.FK_tblAppointments_tblUserAdds" />
         <AssociationConnector Association="jrcarModel.FK_tblAppointments_tblUsers" />
+        <EntityTypeShape EntityType="jrcarModel.tblPayment" Width="1.5" PointX="10.5" PointY="38.875" />
+        <AssociationConnector Association="jrcarModel.FK_tblPayment_tblShowrooms" />
+        <EntityTypeShape EntityType="jrcarModel.tblQuery" Width="1.5" PointX="15.5" PointY="21" />
+        <EntityTypeShape EntityType="jrcarModel.tblQueryDetail" Width="1.5" PointX="17.75" PointY="22" />
+        <AssociationConnector Association="jrcarModel.FK_tblQuery_tblShowrooms" />
+        <AssociationConnector Association="jrcarModel.FK_tblQuery_tblUnions" />
+        <AssociationConnector Association="jrcarModel.FK_tblQuery_tblUsers" />
+        <AssociationConnector Association="jrcarModel.FK_tblQueryDetails_tblQuery" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

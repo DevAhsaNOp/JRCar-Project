@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -73,8 +74,8 @@ namespace JRCar.DAL.DBLayer
                         ShowroomName = a.tblShowroom.FullName,
                         ShowroomNumber = a.tblShowroom.Contact,
                         ShowroomAddress = a.tblShowroom.ShopNumber + " " + a.tblShowroom.tblAddress.CompleteAddress,
-                        RecievableFromDate = a.RecievableFromDate,
-                        RecievableToDate = a.RecievableToDate,
+                        RecievableFromDate = a.RecievableFromDate.Value,
+                        RecievableToDate = a.RecievableToDate.Value,
                         Isactive = a.Isactive,
                         Isarchive = a.Isarchive,
                         CreatedBy = a.CreatedBy,
@@ -109,8 +110,8 @@ namespace JRCar.DAL.DBLayer
                         ShowroomName = a.tblShowroom.FullName,
                         ShowroomNumber = a.tblShowroom.Contact,
                         ShowroomAddress = a.tblShowroom.ShopNumber + " " + a.tblShowroom.tblAddress.CompleteAddress,
-                        RecievableFromDate = a.RecievableFromDate,
-                        RecievableToDate = a.RecievableToDate,
+                        RecievableFromDate = a.RecievableFromDate.Value,
+                        RecievableToDate = a.RecievableToDate.Value,
                         Isactive = a.Isactive,
                         Isarchive = a.Isarchive,
                         CreatedBy = a.CreatedBy,
@@ -127,6 +128,84 @@ namespace JRCar.DAL.DBLayer
                 }
                 else
                     return null;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public bool ShowroomPreviousPaymentGenerate(int ShowroomID)
+        {
+            try
+            {
+                if (ShowroomID > 0)
+                {
+                    var payment = _context.tblPayments.Where(x => x.ShowroomID == ShowroomID).FirstOrDefault();
+                    if (payment != null)
+                    {
+                        var StartDate = DateTime.Now.AddMonths(-6);
+                        var TodaysDate = DateTime.Now;
+                        var MonthsBetweenDates = MonthsBetween(StartDate, TodaysDate);
+                        var OldPayments = GetShowroomPaymentById(ShowroomID).Select(s => new { s.RecievableFromDate, s.RecievableToDate, s.Recievable }).ToList();
+                        if (OldPayments.Count > 0 && OldPayments != null)
+                        {
+                            List<DatesD> Datelist = new List<DatesD>();
+                            decimal RecievableAmnt = 0;
+
+                            foreach (var OldPayment in OldPayments)
+                            {
+                                var startDate = OldPayment.RecievableFromDate.Date;
+                                var endDate = OldPayment.RecievableToDate.Date;
+                                var months = MonthsBetween(startDate, endDate);
+                                foreach (var item in months)
+                                {
+                                    Datelist.Add(new DatesD()
+                                    {
+                                        Month = item.Month,
+                                        Year = item.Year,
+                                    });
+                                }
+                                RecievableAmnt += OldPayment.Recievable.Value;
+                            }
+                        }
+                        return true;
+                    }
+                    else
+                    {
+                        var StartDate = DateTime.Now.AddMonths(-6);
+                        var TodaysDate = DateTime.Now;
+                        var MonthsBetweenDates = MonthsBetween(StartDate, TodaysDate);
+                        var FirstMonth = MonthsBetweenDates.First();
+                        var LastMonth = MonthsBetweenDates.Last();
+                        var firstmonth = Convert.ToDateTime(FirstMonth.Month+" "+FirstMonth.Year);
+                        var lastmonth = Convert.ToDateTime(LastMonth.Month + " " + LastMonth.Year);
+                        var firstmonthStart = new DateTime(firstmonth.Year, firstmonth.Month, 1);
+                        var lastmonthStart = new DateTime(lastmonth.Year, lastmonth.Month, 1);
+                        var lastmonthEnd = lastmonthStart.AddMonths(1).AddDays(-1);
+                        var MonthsRecievableAmount = MonthsBetweenDates.Count() * 1200;
+                        var UnionID = _context.tblUnions.Max(x => x.ID);
+
+                        tblPayment tbpay = new tblPayment()
+                        {
+                            ShowroomID = ShowroomID,
+                            Recievable = MonthsRecievableAmount,
+                            RecievableFromDate = firstmonthStart,
+                            RecievableToDate = lastmonthEnd,
+                            Recieved = null,
+                            RecievedFromDate = null,
+                            RecievedToDate = null,
+                            CreatedBy = UnionID,
+                        };
+                        var obj = InsertPayment(tbpay);
+                        if (obj > 0)
+                            return true;
+                        else
+                            return false;
+                    }
+                }
+                else
+                    return false;
             }
             catch (Exception ex)
             {
@@ -213,8 +292,8 @@ namespace JRCar.DAL.DBLayer
             {
                 ShowroomName = a.tblShowroom.FullName,
                 ShowroomAddress = a.tblShowroom.ShopNumber + " " + a.tblShowroom.tblAddress.CompleteAddress,
-                RecievableFromDate = a.RecievedFromDate,
-                RecievedToDate = a.RecievableToDate,
+                RecievableFromDate = a.RecievedFromDate.Value,
+                RecievedToDate = a.RecievableToDate.Value,
                 CreatedOn = a.CreatedOn,
                 Recieved = a.Recieved,
                 Recievable = a.Recievable,

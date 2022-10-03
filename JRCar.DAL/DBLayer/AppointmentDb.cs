@@ -417,7 +417,7 @@ namespace JRCar.DAL.DBLayer
             {
                 if (UserID > 0)
                 {
-                    var appointment = _context.tblAppointments.Where(x => x.UserInterestedID == UserID && x.IsAccepted == true).Select(a => new ValidateAppointment()
+                    var appointment = _context.tblAppointments.Where(x => x.UserInterestedID == UserID).Select(a => new ValidateAppointment()
                     {
                         tblShowroom = a.tblCar.tblShowroom,
                         Purpose = a.tblAppointmentDetails.FirstOrDefault().Purpose,

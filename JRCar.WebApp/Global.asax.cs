@@ -1,4 +1,5 @@
-﻿using JRCar.WebApp.Controllers;
+﻿using JRCar.BLL.Repositories;
+using JRCar.WebApp.Controllers;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -32,6 +33,8 @@ namespace JRCar.WebApp
             NC.RegisterAnnouncement(currentTime);
             HttpContext.Current.Session["AppLastUpdated"] = currentTime;
             NC.RegisterAppointment(currentTime);
+            PaymentRepo repo = new PaymentRepo();
+            repo.ShowroomPreviousPaymentGenerate(108);
         }
 
 

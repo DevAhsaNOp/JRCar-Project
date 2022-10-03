@@ -31,7 +31,8 @@ namespace JRCar.BLL.Repositories
                         UserCarID = (model.UserCarID != null) ? model.UserCarID : null,
                         ShowroomCarID = (model.ShowroomCarID != null) ? model.ShowroomCarID : null,
                         ShowroomInterestedID = (model.ShowroomInterestedID != null) ? model.ShowroomInterestedID : null,
-                        UserInterestedID = (model.UserInterestedID != null) ? model.UserInterestedID : null
+                        UserInterestedID = (model.UserInterestedID != null) ? model.UserInterestedID : null,
+                        ConfirmDatetime = model.Datetime
                     };
 
                     var reas = appointmentDb.InsertAppointment(appointment);

@@ -81,6 +81,27 @@ namespace JRCar.BLL.Repositories
                 throw ex;
             }
         }
+        
+        public bool ShowroomPreviousPaymentGenerate(int ShowroomID)
+        {
+            try
+            {
+                if (ShowroomID > 0)
+                {
+                    var obj = DbObj.ShowroomPreviousPaymentGenerate(ShowroomID);
+                    if (obj)
+                        return true;
+                    else
+                        return false;
+                }
+                else
+                    return false;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
 
         public ValidationPayment GetPaymentById(int id)
         {
