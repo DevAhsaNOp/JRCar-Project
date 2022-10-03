@@ -7,16 +7,9 @@
 
 @if (User.Identity.IsAuthenticated)
 {
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
-    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
     <style>
-        table.dataTable thead tr {
-            background-color: #ebebeb;
-            color: #002dd0;
-        }
-
-        .dataTables_wrapper .dataTables_filter{
-            text-align:left;
+        .wp-automobile .cs-featurelisted-car .cs-post-types {
+            width: 150px !important;
         }
     </style>
     <div class="page-section" style="background: url(../../Files/extra-images/user-bg-img.jpg) no-repeat; background-size: cover; min-height: 175px; margin-top: -30px; margin-bottom: -129px;"></div>
@@ -27,7 +20,7 @@
                     <div class="cs-user-account-holder">
                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                             <ul class="cs-user-accounts-list">
-                                <li><a href="@Url.Action("Myvehicles","Website")">Shortlisted</a></li>
+                                <li><a href="@Url.Action("Myvehicles","Website")">My Vehicles</a></li>
                                 <li><a href="@Url.Action("Shortlisted","Website")">Shortlisted</a></li>
                                 <li class="active"><a href="@Url.Action("UserAppointmentsList","Website")">My Appointments</a></li>
                                 <li>
@@ -58,50 +51,62 @@
                                 </div>
                             }
                         </div>
-                        <table id="DDexample" class="table table-hover">
-                            <thead>
-                                <tr>
-                                    <th>Car Info</th>
-                                    <th>Datetime</th>
-                                    <th>Requested On</th>
-                                    <th>View Ad</th>
-                                    <th>Status</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var item in Model)
-                                {
-                                    <tr>
-                                        <td>
-                                            @item.tblCar.tblManufacturer.Manufacturer_Name @item.tblCar.tblManfacturerCarModel.Manufacturer_CarModelName
-                                        </td>
-                                        <td>
-                                            @item.Datetime.ToString("dd MMM, yyyy hh:mm tt").ToUpperInvariant()
-                                        </td>
-                                        <td>
-                                            @item.CreatedOn.ToString("dd MMM, yyyy").ToUpperInvariant()
-                                        </td>
-                                        <td>
-                                            <a href="@Url.Action("CarAds","Portal",new { AdID = item.tblCar.CarsURL })" target="_blank" class="cs-bgcolor" style="color:white;padding:3px 7px;">View Detail</a>
-                                        </td>
-                                        <td>
-                                            @if (item.Isactive == true && item.IsAccepted == true)
+                        <ul class="cs-featurelisted-car">
+                            @foreach (var item in Model)
+                            {
+                                <li class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="cs-media">
+                                        @{
+                                            var img = item.tblCar.tblCarImages.Select(s => s.Image).FirstOrDefault();
+                                            if (img != null)
                                             {
-                                                <span class="badge badge-success"> Accepted </span>
+                                                string path = Server.MapPath("" + img + "");
+                                                string[] FolderName = img.Split('/');
+                                                string[] imageFiles = Directory.GetFiles(path);
+                                                List<string> images = new List<string>();
+                                                foreach (var jha in imageFiles)
+                                                {
+                                                    images.Add(FolderName[2] + "/" + Path.GetFileName(jha));
+                                                }
+                                                <figure><a href="#"><img src="~/uploads/@images[0]" alt="Ad Image" style="width:-webkit-fill-available !important;" /></a></figure>
                                             }
-                                            else if (item.Isactive == false && item.IsAccepted == false)
-                                            {
-                                                <span class="badge badge-success"> Rejected </span>
+                                        }
+                                    </div>
+                                    <div class="cs-text">
+                                        <span class="cs-featured">@item.Datetime.ToString("dd MMMM yyyy hh:mm tt").ToUpperInvariant()</span>
+                                        <h6><a href="@Url.Action("CarAds","Portal",new { AdID = item.tblCar.CarsURL })" target="_blank">@item.tblCar.tblManufacturer.Manufacturer_Name @item.tblCar.tblManfacturerCarModel.Manufacturer_CarModelName </a></h6>
+                                        <div class="post-options">
+                                            <span>Requested on: <em>@item.CreatedOn.ToString("dd MMMM yyyy hh:mm tt").ToUpperInvariant()</em></span>
+                                            <span><a href="javascript:void(0)"> Showroom  <em>@item.tblShowroom.FullName</em></a></span>
+                                        </div>
+                                        <div class="cs-post-types">
+                                            @{
+
+                                                <a href="@Url.Action("CarAds","Portal",new { AdID = item.tblCar.CarsURL })" target="_blank" title="View Ad" class="cs-default-btn" style=" color: white; border: 1px solid #03b5eb; background: #03b5eb;">View Ad</a>
+                                                if (item.Isactive == true && item.IsAccepted == true)
+                                                {
+                                                    <span class="cs-default-btn" style="color:#4aa818; border:1px solid #4aa818; margin-right: 10px;">
+                                                        <span>Accepted</span>
+                                                    </span>
+                                                }
+                                                else if (item.Isactive == true && item.IsAccepted == false)
+                                                {
+                                                    <span class="cs-default-btn" style="color:#d00000; border:1px solid #d00000; margin-right: 10px;">
+                                                        <span>Request Pending</span>
+                                                    </span>
+                                                }
+                                                else if (item.Isactive == false && item.IsAccepted == false)
+                                                {
+                                                    <span class="cs-default-btn" style="color:#d00000; border:1px solid #d00000; margin-right: 10px;">
+                                                        <span>Rejected</span>
+                                                    </span>
+                                                }
                                             }
-                                            else if (item.Isactive == true && item.IsAccepted == false)
-                                            {
-                                                <span class="badge badge-danger"> Request Pending </span>
-                                            }
-                                        </td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
+                                        </div>
+                                    </div>
+                                </li>
+                            }
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -122,9 +127,4 @@
             </div>
         </div>
     </div>
-    <script>
-        $(document).ready(function () {
-            $('#DDexample').DataTable();
-        });
-    </script>
 }

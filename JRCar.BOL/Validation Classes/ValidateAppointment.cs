@@ -18,6 +18,7 @@ namespace JRCar.BOL.Validation_Classes
 
         [Required(ErrorMessage ="*")]
         public string Number { get; set; }
+        public string CarImage { get; set; }
 
         [Required(ErrorMessage ="*")]
         public string Purpose { get; set; }
