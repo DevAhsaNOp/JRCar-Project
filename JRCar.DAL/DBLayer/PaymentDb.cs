@@ -197,7 +197,7 @@ namespace JRCar.DAL.DBLayer
 
                             else
                             {
-                                List<DatesD> Datelist = new List<DatesD>();
+                                List<DatesD> WantToBeRecievableMonths = new List<DatesD>();
 
                                 var RecievestartDate = OldPayments.RecievedFromDate.Date;
                                 var RecieveendDate = OldPayments.RecievedToDate.Date;
@@ -206,7 +206,26 @@ namespace JRCar.DAL.DBLayer
 
                                 var Recievedmonths = MonthsBetween(RecievestartDate, RecieveendDate);
                                 var Recievablemonths = MonthsBetween(RecievablestartDate, RecievableendDate).Concat(MonthsBetweenDates).Distinct();
-                                var WantToBeRecievableMonths = Recievablemonths.Concat(Recievedmonths);
+                                //var WantToBeRecievableMonths = Recievablemonths.Concat(Recievedmonths);
+                                
+                                foreach (var months in Recievablemonths)
+                                {
+                                    foreach (var item in Recievedmonths)
+                                    {
+                                        if (item.Month == months.Month && item.Year == months.Year )
+                                        {
+
+                                        }
+                                        else
+                                        {
+                                            WantToBeRecievableMonths.Add(new DatesD()
+                                            {
+                                                Month = months.Month,
+                                                Year = months.Year,
+                                            });
+                                        }
+                                    }
+                                }
 
                                 return true;
                             }
