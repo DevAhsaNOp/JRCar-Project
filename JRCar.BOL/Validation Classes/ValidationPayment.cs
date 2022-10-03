@@ -46,6 +46,7 @@ namespace JRCar.BOL.Validation_Classes
         public bool? Isarchive { get; set; }
 
         public virtual tblShowroom tblShowroom { get; set; }
+        public int ID { get; set; }
     }
 
     public class DatesD

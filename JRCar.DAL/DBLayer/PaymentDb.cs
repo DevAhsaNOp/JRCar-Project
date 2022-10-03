@@ -47,6 +47,8 @@ namespace JRCar.DAL.DBLayer
             {
                 if (model != null)
                 {
+                    model.Isactive = true;
+                    model.Isarchive = false;
                     model.CreatedOn = GetPaymentById(model.ID).CreatedOn;
                     model.CreatedBy = GetPaymentById(model.ID).CreatedBy;
                     model.UpdatedOn = DateTime.Now.ToString();
@@ -107,11 +109,15 @@ namespace JRCar.DAL.DBLayer
                 {
                     var payment = _context.tblPayments.Where(x => x.ShowroomID == ShowroomID).Select(a => new ValidationPayment()
                     {
+                        ID = a.ID,
+                        ShowroomID = a.ShowroomID,
                         ShowroomName = a.tblShowroom.FullName,
                         ShowroomNumber = a.tblShowroom.Contact,
                         ShowroomAddress = a.tblShowroom.ShopNumber + " " + a.tblShowroom.tblAddress.CompleteAddress,
                         RecievableFromDate = a.RecievableFromDate.Value,
                         RecievableToDate = a.RecievableToDate.Value,
+                        RecievedFromDate = a.RecievedFromDate.Value,
+                        RecievedToDate = a.RecievedToDate.Value,
                         Isactive = a.Isactive,
                         Isarchive = a.Isarchive,
                         CreatedBy = a.CreatedBy,
@@ -144,52 +150,91 @@ namespace JRCar.DAL.DBLayer
                     var payment = _context.tblPayments.Where(x => x.ShowroomID == ShowroomID).FirstOrDefault();
                     if (payment != null)
                     {
-                        var StartDate = DateTime.Now.AddMonths(-6);
-                        var TodaysDate = DateTime.Now;
-                        var MonthsBetweenDates = MonthsBetween(StartDate, TodaysDate);
-                        var OldPayments = GetShowroomPaymentById(ShowroomID).Select(s => new { s.RecievableFromDate, s.RecievableToDate, s.Recievable }).ToList();
-                        if (OldPayments.Count > 0 && OldPayments != null)
+                        var OldPayments = GetShowroomPaymentById(ShowroomID).FirstOrDefault();
+                        if (OldPayments != null)
                         {
-                            List<DatesD> Datelist = new List<DatesD>();
-                            decimal RecievableAmnt = 0;
+                            var StartDate = Convert.ToDateTime("1/4/2022");
+                            var TodaysDate = DateTime.Now;
+                            var MonthsBetweenDates = MonthsBetween(StartDate, TodaysDate);
 
-                            foreach (var OldPayment in OldPayments)
+                            #region **If Showroom Doesn't Pay Any Payment Yet**
+
+                            var OldPaymentFRecieve = OldPayments.RecievedFromDate.ToString("dd/MM/yyyy");
+                            var OldPaymentTRecieve = OldPayments.RecievedToDate.ToString("dd/MM/yyyy");
+                            var IsNotMonth = "01/01/0001";
+
+                            if (OldPaymentFRecieve == IsNotMonth && OldPaymentTRecieve == IsNotMonth)
                             {
-                                var startDate = OldPayment.RecievableFromDate.Date;
-                                var endDate = OldPayment.RecievableToDate.Date;
-                                var months = MonthsBetween(startDate, endDate);
-                                foreach (var item in months)
+                                var FirstMonth = MonthsBetweenDates.First();
+                                var LastMonth = MonthsBetweenDates.Last();
+                                var firstmonth = Convert.ToDateTime(FirstMonth.Month + " " + FirstMonth.Year);
+                                var lastmonth = Convert.ToDateTime(LastMonth.Month + " " + LastMonth.Year);
+                                var firstmonthStart = new DateTime(firstmonth.Year, firstmonth.Month, 1);
+                                var lastmonthStart = new DateTime(lastmonth.Year, lastmonth.Month, 1);
+                                var lastmonthEnd = lastmonthStart.AddMonths(1).AddDays(-1);
+                                var UnionID = _context.tblUnions.Max(x => x.ID);
+
+                                var Payments = _context.tblPayments.Where(x => x.ShowroomID == ShowroomID).First();
+                                Payments.RecievableFromDate = firstmonthStart;
+                                Payments.RecievableToDate = lastmonthEnd;
+                                Payments.Recievable = null;
+                                Payments.UpdatedBy = UnionID;
+                                Payments.UpdatedOn = DateTime.Now.ToString();
+
+                                if (Payments != null)
                                 {
-                                    Datelist.Add(new DatesD()
-                                    {
-                                        Month = item.Month,
-                                        Year = item.Year,
-                                    });
+                                    var obj = UpdatePayment(Payments);
+                                    if (obj > 0)
+                                        return true;
+                                    else
+                                        return false;
                                 }
-                                RecievableAmnt += OldPayment.Recievable.Value;
+                                else
+                                    return false;
                             }
+
+                            #endregion
+
+                            else
+                            {
+                                List<DatesD> Datelist = new List<DatesD>();
+
+                                var RecievestartDate = OldPayments.RecievedFromDate.Date;
+                                var RecieveendDate = OldPayments.RecievedToDate.Date;
+                                var RecievablestartDate = OldPayments.RecievableFromDate.Date;
+                                var RecievableendDate = OldPayments.RecievableToDate.Date;
+
+                                var Recievedmonths = MonthsBetween(RecievestartDate, RecieveendDate);
+                                var Recievablemonths = MonthsBetween(RecievablestartDate, RecievableendDate).Concat(MonthsBetweenDates).Distinct();
+                                var WantToBeRecievableMonths = Recievablemonths.Concat(Recievedmonths);
+
+                                return true;
+                            }
+
                         }
-                        return true;
+                        else
+                        {
+                            return false;
+                        }
                     }
                     else
                     {
-                        var StartDate = DateTime.Now.AddMonths(-6);
+                        var StartDate = Convert.ToDateTime("1/4/2022");
                         var TodaysDate = DateTime.Now;
                         var MonthsBetweenDates = MonthsBetween(StartDate, TodaysDate);
                         var FirstMonth = MonthsBetweenDates.First();
                         var LastMonth = MonthsBetweenDates.Last();
-                        var firstmonth = Convert.ToDateTime(FirstMonth.Month+" "+FirstMonth.Year);
+                        var firstmonth = Convert.ToDateTime(FirstMonth.Month + " " + FirstMonth.Year);
                         var lastmonth = Convert.ToDateTime(LastMonth.Month + " " + LastMonth.Year);
                         var firstmonthStart = new DateTime(firstmonth.Year, firstmonth.Month, 1);
                         var lastmonthStart = new DateTime(lastmonth.Year, lastmonth.Month, 1);
                         var lastmonthEnd = lastmonthStart.AddMonths(1).AddDays(-1);
-                        var MonthsRecievableAmount = MonthsBetweenDates.Count() * 1200;
                         var UnionID = _context.tblUnions.Max(x => x.ID);
 
                         tblPayment tbpay = new tblPayment()
                         {
                             ShowroomID = ShowroomID,
-                            Recievable = MonthsRecievableAmount,
+                            Recievable = null,
                             RecievableFromDate = firstmonthStart,
                             RecievableToDate = lastmonthEnd,
                             Recieved = null,
