@@ -298,7 +298,8 @@
                         console.log(response);
                         $("#MakePayShow #ShowroomNumber").val(response.ShowroomNumber);
                         $("#MakePayShow #ShowroomAddress").val(response.ShowroomAddress);
-                        if (response.Recievable > 0) {
+                        console.log(response.RecievableDate != null);
+                        if (response.RecievableDate != null) {
                             $('#RecSec').show();
                             $('#RecievableDateD').empty();
                             for (var i = 0; i < response.RecievableDate.length; i++) {
