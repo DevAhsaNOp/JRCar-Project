@@ -26,17 +26,17 @@ namespace JRCar.BOL.Validation_Classes
         [Display(Name = "Recieved")]
         public decimal? Recieved { get; set; }
 
-        public System.DateTime RecievableFromDate { get; set; }
+        public Nullable<System.DateTime> RecievableFromDate { get; set; }
 
-        public System.DateTime RecievableToDate { get; set; }
+        public Nullable<System.DateTime> RecievableToDate { get; set; }
 
         public List<DatesD> RecievableDate { get; set; }
         
         public List<string> RecievedDate { get; set; }
 
-        public System.DateTime RecievedFromDate { get; set; }
+        public Nullable<System.DateTime> RecievedFromDate { get; set; }
 
-        public System.DateTime RecievedToDate { get; set; }
+        public Nullable<System.DateTime> RecievedToDate { get; set; }
         
         public System.DateTime CreatedOn { get; set; }
         public int CreatedBy { get; set; }
@@ -46,6 +46,7 @@ namespace JRCar.BOL.Validation_Classes
         public bool? Isarchive { get; set; }
 
         public virtual tblShowroom tblShowroom { get; set; }
+
         public int ID { get; set; }
     }
 

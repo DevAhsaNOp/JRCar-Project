@@ -364,6 +364,11 @@ namespace JRCar.WebApp.Controllers
                     var role = Session["Role"].ToString();
                     if (role == "Admin" || role == "Union" || role == "Showroom")
                     {
+                        if (role == "Showroom")
+                        {
+                            PaymentRepo repo = new PaymentRepo();
+                            repo.ShowroomPreviousPaymentGenerate(IsSuccess.ID);
+                        }
                         return RedirectToAction("Index");
                     }
                     else if (role == "User")
