@@ -299,7 +299,8 @@
                         $("#MakePayShow #ShowroomNumber").val(response.ShowroomNumber);
                         $("#MakePayShow #ShowroomAddress").val(response.ShowroomAddress);
                         console.log(response.RecievableDate != null);
-                        if (response.RecievableDate != null) {
+                        console.log("EEE: "+response.RecievableDate.length);
+                        if (response.RecievableDate.length > 0) {
                             $('#RecSec').show();
                             $('#RecievableDateD').empty();
                             for (var i = 0; i < response.RecievableDate.length; i++) {

@@ -163,6 +163,23 @@ namespace JRCar.BLL.Repositories
             }
         }
 
+        public bool IsMonthPaymentRecieved(int ShowroomID, List<string> RMonths)
+        {
+            try
+            {
+                if (ShowroomID > 0)
+                {
+                    return DbObj.IsMonthPaymentRecieved(ShowroomID, RMonths);
+                }
+                else
+                    return false;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public ValidationPayment GetPaymentById(int id)
         {
             try

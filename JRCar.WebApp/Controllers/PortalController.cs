@@ -1789,11 +1789,19 @@ namespace JRCar.WebApp.Controllers
         {
             try
             {
+                IEnumerable<string> RecievableMonth = null;
                 var PayID = PayRepoObj.GetPaymentID(payment.ShowroomID.Value).ID;
                 var PRecievedFromDate = PayRepoObj.GetPaymentID(payment.ShowroomID.Value).RecievedFromDate;
                 var PRecieved = PayRepoObj.GetPaymentID(payment.ShowroomID.Value).Recieved;
+                var PRecievable = PayRepoObj.GetPaymentID(payment.ShowroomID.Value).Recievable;
                 var receivedDates = payment.RecievedDate;
-                var RecievableMonth = PayRepoObj.GetRecievableMonths(payment.ShowroomID.Value).Except(receivedDates);
+                var Months = PayRepoObj.GetRecievableMonths(payment.ShowroomID.Value);
+
+                if (Months != null)
+                {
+                    RecievableMonth = Months.Except(receivedDates);
+                }
+
                 DateTime RecievablefirstmonthStart = DateTime.Now;
                 DateTime RecievablelastmonthEnd = DateTime.Now;
 
@@ -1805,7 +1813,7 @@ namespace JRCar.WebApp.Controllers
                 var receivedlastmonthStart = new DateTime(receivedlastmonth.Year, receivedlastmonth.Month, 1);
                 var receivedlastmonthEnd = receivedlastmonthStart.AddMonths(1).AddDays(-1);
 
-                if (RecievableMonth.Count() > 0)
+                if (RecievableMonth != null)
                 {
                     var RecievableFirstMonth = Convert.ToDateTime(RecievableMonth.First());
                     var RecievableLastMonth = Convert.ToDateTime(RecievableMonth.Last());
@@ -1821,9 +1829,14 @@ namespace JRCar.WebApp.Controllers
                     receivedfirstmonthStart = PRecievedFromDate.Value;
                 }
 
-                if (PRecieved > 0)
+                if (PRecieved > 0 )
                 {
                     payment.Recieved += PRecieved;
+                }
+                
+                if (PRecievable > 0 )
+                {
+                    payment.Recievable += PRecievable;
                 }
 
                 ValidationPayment Payment = new ValidationPayment()
