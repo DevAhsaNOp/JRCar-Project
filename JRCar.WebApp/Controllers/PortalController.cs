@@ -46,6 +46,11 @@ namespace JRCar.WebApp.Controllers
             return View();
         }
 
+        public JsonResult IsMonthExist(int ShowroomID, List<string> RecievedDate)
+        {
+            return Json(PayRepoObj.IsMonthPaymentRecieved(ShowroomID, RecievedDate), JsonRequestBehavior.AllowGet);
+        }
+
         #region **Showroom Action Methods**
 
         #region **Showroom Reporting**
@@ -1829,12 +1834,12 @@ namespace JRCar.WebApp.Controllers
                     receivedfirstmonthStart = PRecievedFromDate.Value;
                 }
 
-                if (PRecieved > 0 )
+                if (PRecieved > 0)
                 {
                     payment.Recieved += PRecieved;
                 }
-                
-                if (PRecievable > 0 )
+
+                if (PRecievable > 0)
                 {
                     payment.Recievable += PRecievable;
                 }

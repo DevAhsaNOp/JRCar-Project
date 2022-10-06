@@ -268,6 +268,7 @@
             $('#ModelD').hide();
             $('#ModelYearD').hide();
             $('#CondD').hide();
+            $('#PayError').hide();
 
             $("#SubCategoryId").on("change", function () {
                 var ar = $('#SubCategoryId').select2('data');
@@ -314,6 +315,38 @@
                     }
                 });
             })
+
+            $('#MakePayShow').submit(function () {
+                var a = $("#RecievedDate").val();
+                //event.preventDefault();
+                if (a.length > 0) {
+                    var ShowroomId = $("#ShowroomID").val();
+                    $.ajax({
+                        type: "POST",
+                        url: "@Url.Action("IsMonthExist", "Portal")",
+                        data: JSON.stringify({ ShowroomID: ShowroomId, RecievedDate: a }),
+                        contentType: "application/json; charset=utf-8",
+                        success: function (response) {
+                            console.log(response);
+                            if (response == "") {
+                                $("#PayError").empty();
+                                $("#PayError").hide();
+                            }
+                            else {
+                                $("#PayError").show();
+                                $("#PayError").text(response);
+                            }
+                        }
+                    });
+                    if ($("#PayError").text() == "") {
+
+                    }
+                    else {
+                        return false;
+                    }
+                }
+                return true;
+            });
 
             $("#ManufacturerCarModelID").on("change", function () {
                 var ar = $('#ManufacturerCarModelID').select2('data');

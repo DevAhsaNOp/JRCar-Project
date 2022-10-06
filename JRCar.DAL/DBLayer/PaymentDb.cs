@@ -176,22 +176,41 @@ namespace JRCar.DAL.DBLayer
             }
         }
 
-        public bool IsMonthPaymentRecieved(int ShowroomID, List<string> RMonths)
+        public string IsMonthPaymentRecieved(int ShowroomID, List<string> RMonths)
         {
             try
             {
                 if (ShowroomID > 0)
                 {
-                    var payment = _context.tblPayments.Where(x => x.ShowroomID == ShowroomID).Select(x => new { x.RecievedFromDate, x.RecievedToDate }).FirstOrDefault();
-                    var MonthsBetweenDates = MonthsBetween(payment.RecievedFromDate.Value, payment.RecievedToDate.Value).Select(x => x.Month + " " + x.Year);
-                    var IsMonthPaid = MonthsBetweenDates.All(RMonths.Contains);
-                    if (IsMonthPaid)
-                        return true;
+                    var ErrorMsg = "";
+                    var PaidMonths = _context.tblPayments.Where(x => x.ShowroomID == ShowroomID).Select(x => new { x.RecievedFromDate, x.RecievedToDate }).FirstOrDefault();
+                    var MonthsBetweenDates = MonthsBetween(PaidMonths.RecievedFromDate.Value, PaidMonths.RecievedToDate.Value).Select(x => x.Month + " " + x.Year);
+
+                    if (PaidMonths != null)
+                    {
+                        foreach (var month in MonthsBetweenDates)
+                        {
+                            foreach (var item in RMonths)
+                            {
+                                if (item == month)
+                                {
+                                    ErrorMsg += month +", ";
+                                }
+                                else
+                                {
+                                    ErrorMsg += " ";
+                                }
+                            }
+                        }
+                    }
+
+                    if (ErrorMsg.Trim() != "")
+                        return ErrorMsg.Trim() + " fees already paid";
                     else
-                        return false;
+                        return "";
                 }
                 else
-                    return false;
+                    return null;
             }
             catch (Exception ex)
             {

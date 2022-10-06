@@ -163,7 +163,7 @@ namespace JRCar.BLL.Repositories
             }
         }
 
-        public bool IsMonthPaymentRecieved(int ShowroomID, List<string> RMonths)
+        public string IsMonthPaymentRecieved(int ShowroomID, List<string> RMonths)
         {
             try
             {
@@ -172,7 +172,7 @@ namespace JRCar.BLL.Repositories
                     return DbObj.IsMonthPaymentRecieved(ShowroomID, RMonths);
                 }
                 else
-                    return false;
+                    return null;
             }
             catch (Exception ex)
             {
