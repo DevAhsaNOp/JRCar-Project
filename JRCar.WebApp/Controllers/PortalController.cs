@@ -1791,6 +1791,7 @@ namespace JRCar.WebApp.Controllers
             {
                 var PayID = PayRepoObj.GetPaymentID(payment.ShowroomID.Value).ID;
                 var PRecievedFromDate = PayRepoObj.GetPaymentID(payment.ShowroomID.Value).RecievedFromDate;
+                var PRecieved = PayRepoObj.GetPaymentID(payment.ShowroomID.Value).Recieved;
                 var receivedDates = payment.RecievedDate;
                 var RecievableMonth = PayRepoObj.GetRecievableMonths(payment.ShowroomID.Value).Except(receivedDates);
                 DateTime RecievablefirstmonthStart = DateTime.Now;
@@ -1818,6 +1819,11 @@ namespace JRCar.WebApp.Controllers
                 if (PRecievedFromDate != null)
                 {
                     receivedfirstmonthStart = PRecievedFromDate.Value;
+                }
+
+                if (PRecieved > 0)
+                {
+                    payment.Recieved += PRecieved;
                 }
 
                 ValidationPayment Payment = new ValidationPayment()

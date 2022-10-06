@@ -85,40 +85,43 @@
                 }
             </div>
         </li>
-        <!-- Appointment Dropdown Menu -->
-        <li class="nav-item dropdown">
-            <a class="Appntnoti nav-link" data-toggle="dropdown" href="#">
-                <i class="fas fa-calendar-alt"></i>
-                <span class="badge badge-danger navbar-badge Appntcount"></span>
-            </a>
-            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right Appntnoti-content" style="left: inherit; right: -8rem; max-height: 260px !important; overflow-x: hidden; overflow-y: auto">
-                <span class="dropdown-item dropdown-header">15 Appointment</span>
-                <div class="dropdown-divider"></div>
-                <span id="AppntnotiContent">
-                </span>
-                <div class="dropdown-divider"></div>
-                <a href="@Url.Action("AppointmentList","Portal")" class="dropdown-item dropdown-footer" style="position: sticky; bottom: 0px; border-top: 1px solid #E9ECF0; background: white; ">See All Appointments</a>
-            </div>
-        </li>
-        <!-- Notifications Dropdown Menu -->
-        <li class="nav-item dropdown">
-            <a class="noti nav-link" data-toggle="dropdown" href="#">
-                <i class="far fa-bell"></i>
-                <span class="badge badge-danger navbar-badge count"></span>
-            </a>
-            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right noti-content" style="left: inherit; right: -85px; max-height: 260px !important; overflow: auto;">
-                <span class="dropdown-item dropdown-header">15 Notifications</span>
-                <div class="dropdown-divider"></div>
-                <span id="notiContent">
-                </span>
-                <div class="dropdown-divider"></div>
-                <a href="@Url.Action("NotificationList","Portal")" class="dropdown-item dropdown-footer" style="position: sticky; bottom: 0px; border-top: 1px solid #E9ECF0; background: white; ">See All Notifications</a>
-            </div>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="@Url.Action("Logout", "Account")" role="button">
-                <i class="fas fa-sign-out-alt"></i>&nbsp;Logout
-            </a>
-        </li>
+        @if (User.IsInRole("Showroom"))
+        {
+            <!-- Appointment Dropdown Menu -->
+            <li class="nav-item dropdown">
+                <a class="Appntnoti nav-link" data-toggle="dropdown" href="#">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span class="badge badge-danger navbar-badge Appntcount"></span>
+                </a>
+                <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right Appntnoti-content" style="left: inherit; right: -8rem; max-height: 260px !important; overflow-x: hidden; overflow-y: auto">
+                    <span class="dropdown-item dropdown-header">15 Appointment</span>
+                    <div class="dropdown-divider"></div>
+                    <span id="AppntnotiContent">
+                    </span>
+                    <div class="dropdown-divider"></div>
+                    <a href="@Url.Action("AppointmentList", "Portal")" class="dropdown-item dropdown-footer" style="position: sticky; bottom: 0px; border-top: 1px solid #E9ECF0; background: white; ">See All Appointments</a>
+                </div>
+            </li>
+            <!-- Notifications Dropdown Menu -->
+            <li class="nav-item dropdown">
+                <a class="noti nav-link" data-toggle="dropdown" href="#">
+                    <i class="far fa-bell"></i>
+                    <span class="badge badge-danger navbar-badge count"></span>
+                </a>
+                <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right noti-content" style="left: inherit; right: -85px; max-height: 260px !important; overflow: auto;">
+                    <span class="dropdown-item dropdown-header">15 Notifications</span>
+                    <div class="dropdown-divider"></div>
+                    <span id="notiContent">
+                    </span>
+                    <div class="dropdown-divider"></div>
+                    <a href="@Url.Action("NotificationList", "Portal")" class="dropdown-item dropdown-footer" style="position: sticky; bottom: 0px; border-top: 1px solid #E9ECF0; background: white; ">See All Notifications</a>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="@Url.Action("Logout", "Account")" role="button">
+                    <i class="fas fa-sign-out-alt"></i>&nbsp;Logout
+                </a>
+            </li>
+        }
     </ul>
 </nav>

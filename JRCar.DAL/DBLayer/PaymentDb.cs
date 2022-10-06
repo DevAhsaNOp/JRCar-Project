@@ -379,6 +379,7 @@ namespace JRCar.DAL.DBLayer
                     if (OldPendingPayment != null)
                     {
                         List<DatesD> Datelist = new List<DatesD>();
+                        Datelist = null;
                         decimal RecievableAmnt = 0;
 
                         if (OldPendingPayment.RecievableFromDate != null && OldPendingPayment.RecievableToDate != null)
@@ -466,7 +467,7 @@ namespace JRCar.DAL.DBLayer
 
         public ValidationPayment GetPaymentID(int ShowroomID)
         {
-            var payment = _context.tblPayments.Where(x => x.ShowroomID == ShowroomID).Select(x => new ValidationPayment() { ID = x.ID, RecievedFromDate = x.RecievedFromDate }).FirstOrDefault();
+            var payment = _context.tblPayments.Where(x => x.ShowroomID == ShowroomID).Select(x => new ValidationPayment() { ID = x.ID, RecievedFromDate = x.RecievedFromDate,Recieved = x.Recieved }).FirstOrDefault();
 
             if (payment != null)
             {
