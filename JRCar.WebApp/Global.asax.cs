@@ -1,4 +1,5 @@
 ﻿using JRCar.BLL.Repositories;
+using JRCar.BOL;
 using JRCar.WebApp.Controllers;
 using System;
 using System.Collections.Generic;

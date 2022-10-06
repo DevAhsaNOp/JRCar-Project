@@ -4,6 +4,7 @@ using JRCar.DAL.DBLayer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Remoting.Contexts;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -69,6 +70,65 @@ namespace JRCar.BLL.Repositories
                     };
                     var obj = DbObj.UpdatePayment(payment);
                     if (obj > 0)
+                        return true;
+                    else
+                        return false;
+                }
+                else
+                    return false;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public List<string> GetRecievableMonths(int ShowroomID)
+        {
+            if (ShowroomID > 0)
+            {
+                var list = DbObj.GetRecievableMonths(ShowroomID);
+                return list;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public ValidationPayment GetPaymentID(int ShowroomID)
+        {
+            if (ShowroomID > 0)
+            {
+                var payment = DbObj.GetPaymentID(ShowroomID);
+                return payment;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public bool ShowroomPaymentClear(ValidationPayment model)
+        {
+            try
+            {
+                if (model != null)
+                {
+                    tblPayment payment = new tblPayment()
+                    {
+                        ID = model.ID,
+                        ShowroomID = model.ShowroomID,
+                        Recievable = model.Recievable,
+                        RecievableFromDate = model.RecievableFromDate,
+                        RecievableToDate = model.RecievableToDate,
+                        Recieved = model.Recieved,
+                        RecievedFromDate = model.RecievedFromDate,
+                        RecievedToDate = model.RecievedToDate,
+                        UpdatedBy = model.UpdatedBy
+                    };
+                    var obj = DbObj.ShowroomPaymentClear(payment);
+                    if (obj)
                         return true;
                     else
                         return false;

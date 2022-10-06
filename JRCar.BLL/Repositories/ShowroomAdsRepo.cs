@@ -731,20 +731,35 @@ namespace JRCar.BLL.Repositories
         public List<SelectListItem> GetAllMonths()
         {
             var month = new List<SelectListItem>();
-            for (int i = -2; i <= 1; ++i)
+            for (int i = 0; i <= 1; ++i)
             {
-                month.Add(new SelectListItem() { Text = "January" + " " + DateTime.Now.AddYears(i).ToString("yyyy"), Value = "January" + " " + DateTime.Now.AddYears(i).ToString("yyyy") });
-                month.Add(new SelectListItem() { Text = "February" + " " + DateTime.Now.AddYears(i).ToString("yyyy"), Value = "February" + " " + DateTime.Now.AddYears(i).ToString("yyyy") });
-                month.Add(new SelectListItem() { Text = "March" + " " + DateTime.Now.AddYears(i).ToString("yyyy"), Value = "March" + " " + DateTime.Now.AddYears(i).ToString("yyyy") });
-                month.Add(new SelectListItem() { Text = "April" + " " + DateTime.Now.AddYears(i).ToString("yyyy"), Value = "April" + " " + DateTime.Now.AddYears(i).ToString("yyyy") });
-                month.Add(new SelectListItem() { Text = "May" + " " + DateTime.Now.AddYears(i).ToString("yyyy"), Value = "May" + " " + DateTime.Now.AddYears(i).ToString("yyyy") });
-                month.Add(new SelectListItem() { Text = "June" + " " + DateTime.Now.AddYears(i).ToString("yyyy"), Value = "June" + " " + DateTime.Now.AddYears(i).ToString("yyyy") });
-                month.Add(new SelectListItem() { Text = "July" + " " + DateTime.Now.AddYears(i).ToString("yyyy"), Value = "July" + " " + DateTime.Now.AddYears(i).ToString("yyyy") });
-                month.Add(new SelectListItem() { Text = "August" + " " + DateTime.Now.AddYears(i).ToString("yyyy"), Value = "August" + " " + DateTime.Now.AddYears(i).ToString("yyyy") });
-                month.Add(new SelectListItem() { Text = "September" + " " + DateTime.Now.AddYears(i).ToString("yyyy"), Value = "September" + " " + DateTime.Now.AddYears(i).ToString("yyyy") });
-                month.Add(new SelectListItem() { Text = "October" + " " + DateTime.Now.AddYears(i).ToString("yyyy"), Value = "October" + " " + DateTime.Now.AddYears(i).ToString("yyyy") });
-                month.Add(new SelectListItem() { Text = "November" + " " + DateTime.Now.AddYears(i).ToString("yyyy"), Value = "November" + " " + DateTime.Now.AddYears(i).ToString("yyyy") });
-                month.Add(new SelectListItem() { Text = "December" + " " + DateTime.Now.AddYears(i).ToString("yyyy"), Value = "December" + " " + DateTime.Now.AddYears(i).ToString("yyyy") });
+                if (i == 0)
+                {
+                    month.Add(new SelectListItem() { Text = "April" + " " + DateTime.Now.AddYears(i).ToString("yyyy"), Value = "April" + " " + DateTime.Now.AddYears(i).ToString("yyyy") });
+                    month.Add(new SelectListItem() { Text = "May" + " " + DateTime.Now.AddYears(i).ToString("yyyy"), Value = "May" + " " + DateTime.Now.AddYears(i).ToString("yyyy") });
+                    month.Add(new SelectListItem() { Text = "June" + " " + DateTime.Now.AddYears(i).ToString("yyyy"), Value = "June" + " " + DateTime.Now.AddYears(i).ToString("yyyy") });
+                    month.Add(new SelectListItem() { Text = "July" + " " + DateTime.Now.AddYears(i).ToString("yyyy"), Value = "July" + " " + DateTime.Now.AddYears(i).ToString("yyyy") });
+                    month.Add(new SelectListItem() { Text = "August" + " " + DateTime.Now.AddYears(i).ToString("yyyy"), Value = "August" + " " + DateTime.Now.AddYears(i).ToString("yyyy") });
+                    month.Add(new SelectListItem() { Text = "September" + " " + DateTime.Now.AddYears(i).ToString("yyyy"), Value = "September" + " " + DateTime.Now.AddYears(i).ToString("yyyy") });
+                    month.Add(new SelectListItem() { Text = "October" + " " + DateTime.Now.AddYears(i).ToString("yyyy"), Value = "October" + " " + DateTime.Now.AddYears(i).ToString("yyyy") });
+                    month.Add(new SelectListItem() { Text = "November" + " " + DateTime.Now.AddYears(i).ToString("yyyy"), Value = "November" + " " + DateTime.Now.AddYears(i).ToString("yyyy") });
+                    month.Add(new SelectListItem() { Text = "December" + " " + DateTime.Now.AddYears(i).ToString("yyyy"), Value = "December" + " " + DateTime.Now.AddYears(i).ToString("yyyy") });
+                }
+                else
+                {
+                    month.Add(new SelectListItem() { Text = "January" + " " + DateTime.Now.AddYears(i).ToString("yyyy"), Value = "January" + " " + DateTime.Now.AddYears(i).ToString("yyyy") });
+                    month.Add(new SelectListItem() { Text = "February" + " " + DateTime.Now.AddYears(i).ToString("yyyy"), Value = "February" + " " + DateTime.Now.AddYears(i).ToString("yyyy") });
+                    month.Add(new SelectListItem() { Text = "March" + " " + DateTime.Now.AddYears(i).ToString("yyyy"), Value = "March" + " " + DateTime.Now.AddYears(i).ToString("yyyy") });
+                    month.Add(new SelectListItem() { Text = "April" + " " + DateTime.Now.AddYears(i).ToString("yyyy"), Value = "April" + " " + DateTime.Now.AddYears(i).ToString("yyyy") });
+                    month.Add(new SelectListItem() { Text = "May" + " " + DateTime.Now.AddYears(i).ToString("yyyy"), Value = "May" + " " + DateTime.Now.AddYears(i).ToString("yyyy") });
+                    month.Add(new SelectListItem() { Text = "June" + " " + DateTime.Now.AddYears(i).ToString("yyyy"), Value = "June" + " " + DateTime.Now.AddYears(i).ToString("yyyy") });
+                    month.Add(new SelectListItem() { Text = "July" + " " + DateTime.Now.AddYears(i).ToString("yyyy"), Value = "July" + " " + DateTime.Now.AddYears(i).ToString("yyyy") });
+                    month.Add(new SelectListItem() { Text = "August" + " " + DateTime.Now.AddYears(i).ToString("yyyy"), Value = "August" + " " + DateTime.Now.AddYears(i).ToString("yyyy") });
+                    month.Add(new SelectListItem() { Text = "September" + " " + DateTime.Now.AddYears(i).ToString("yyyy"), Value = "September" + " " + DateTime.Now.AddYears(i).ToString("yyyy") });
+                    month.Add(new SelectListItem() { Text = "October" + " " + DateTime.Now.AddYears(i).ToString("yyyy"), Value = "October" + " " + DateTime.Now.AddYears(i).ToString("yyyy") });
+                    month.Add(new SelectListItem() { Text = "November" + " " + DateTime.Now.AddYears(i).ToString("yyyy"), Value = "November" + " " + DateTime.Now.AddYears(i).ToString("yyyy") });
+                    month.Add(new SelectListItem() { Text = "December" + " " + DateTime.Now.AddYears(i).ToString("yyyy"), Value = "December" + " " + DateTime.Now.AddYears(i).ToString("yyyy") });
+                }
             }
             return month;
         }

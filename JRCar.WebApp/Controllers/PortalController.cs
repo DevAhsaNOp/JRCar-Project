@@ -298,7 +298,7 @@ namespace JRCar.WebApp.Controllers
 
         #region **Notification For Showroom About New Ads, Union Announcements and User Appointments**
 
-        [Authorize(Roles ="Showroom")]
+        [Authorize(Roles = "Showroom")]
         public ActionResult NotificationList()
         {
             try
@@ -1042,7 +1042,7 @@ namespace JRCar.WebApp.Controllers
                 if (User.Identity.IsAuthenticated)
                 {
                     AppointmentRepo repo = new AppointmentRepo();
-                    var reas = repo.IsUserRequestThisCarAppointment((int)Session["Id"],carDetail.tblCarID);
+                    var reas = repo.IsUserRequestThisCarAppointment((int)Session["Id"], carDetail.tblCarID);
                     if (reas)
                     {
                         Session["IsSchedule"] = "true";
@@ -1787,15 +1787,69 @@ namespace JRCar.WebApp.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult MakePayment(ValidationPayment payment)
         {
-            //var reas = PayRepoObj.GetShowroomDetailById(payment.ShowroomID.Value);
-            var receivedDates = payment.RecievedDate;
-            foreach (var item in receivedDates)
+            try
             {
-                var today = Convert.ToDateTime(item);
-                var monthStart = new DateTime(today.Year, today.Month, 1);
-                var monthEnd = monthStart.AddMonths(1).AddDays(-1);
+                var PayID = PayRepoObj.GetPaymentID(payment.ShowroomID.Value).ID;
+                var PRecievedFromDate = PayRepoObj.GetPaymentID(payment.ShowroomID.Value).RecievedFromDate;
+                var receivedDates = payment.RecievedDate;
+                var RecievableMonth = PayRepoObj.GetRecievableMonths(payment.ShowroomID.Value).Except(receivedDates);
+                DateTime RecievablefirstmonthStart = DateTime.Now;
+                DateTime RecievablelastmonthEnd = DateTime.Now;
+
+                var receivedFirstMonth = Convert.ToDateTime(receivedDates.First());
+                var receivedLastMonth = Convert.ToDateTime(receivedDates.Last());
+                var receivedfirstmonth = Convert.ToDateTime(receivedFirstMonth.Month + " " + receivedFirstMonth.Year);
+                var receivedlastmonth = Convert.ToDateTime(receivedLastMonth.Month + " " + receivedLastMonth.Year);
+                var receivedfirstmonthStart = new DateTime(receivedfirstmonth.Year, receivedfirstmonth.Month, 1);
+                var receivedlastmonthStart = new DateTime(receivedlastmonth.Year, receivedlastmonth.Month, 1);
+                var receivedlastmonthEnd = receivedlastmonthStart.AddMonths(1).AddDays(-1);
+
+                if (RecievableMonth.Count() > 0)
+                {
+                    var RecievableFirstMonth = Convert.ToDateTime(RecievableMonth.First());
+                    var RecievableLastMonth = Convert.ToDateTime(RecievableMonth.Last());
+                    var Recievablefirstmonth = Convert.ToDateTime(RecievableFirstMonth.Month + " " + RecievableFirstMonth.Year);
+                    var Recievablelastmonth = Convert.ToDateTime(RecievableLastMonth.Month + " " + RecievableLastMonth.Year);
+                    RecievablefirstmonthStart = new DateTime(Recievablefirstmonth.Year, Recievablefirstmonth.Month, 1);
+                    var RecievablelastmonthStart = new DateTime(Recievablelastmonth.Year, Recievablelastmonth.Month, 1);
+                    RecievablelastmonthEnd = RecievablelastmonthStart.AddMonths(1).AddDays(-1);
+                }
+
+                if (PRecievedFromDate != null)
+                {
+                    receivedfirstmonthStart = PRecievedFromDate.Value;
+                }
+
+                ValidationPayment Payment = new ValidationPayment()
+                {
+                    ID = PayID,
+                    ShowroomID = payment.ShowroomID,
+                    Recieved = payment.Recieved,
+                    Recievable = payment.Recievable,
+                    RecievedFromDate = receivedfirstmonthStart,
+                    RecievedToDate = receivedlastmonthEnd,
+                    RecievableFromDate = RecievablefirstmonthStart,
+                    RecievableToDate = RecievablelastmonthEnd,
+                    UpdatedBy = (int)Session["Id"],
+                };
+
+                var reas = PayRepoObj.ShowroomPaymentClear(Payment);
+                if (reas)
+                {
+                    TempData["SuccessMsg"] = "Payment Added Successfully!";
+                }
+                else
+                {
+                    TempData["ErrorMsg"] = "Error occured on Payment of Showroom!";
+                }
+                return RedirectToAction("MakePayment");
             }
-            return View();
+            catch (Exception ex)
+            {
+                TempData["ErrorMsg"] = "Error occured on Payment of Showroom!";
+                throw ex;
+            }
+
         }
 
         #endregion

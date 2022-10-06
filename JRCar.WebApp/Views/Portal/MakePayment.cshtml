@@ -113,15 +113,9 @@
                                     </div>
                                 </div>
                                 <div id="RecSec">
-                                    <h5 class="text-left bg-gradient-blue text-center p-1"><b class="text-white">Previous Outstanding Amount Information</b></h5>
+                                    <h5 class="text-left bg-gradient-blue text-center p-1"><b class="text-white">Previous Outstanding Months Information</b></h5>
                                     <div class="row">
-                                        <div class="col-md-6 col-lg-6 col-sm-12">
-                                            <div class="form-group">
-                                                <label for="exampleInputBorder">Recievable Amount</label>
-                                                @Html.EditorFor(model => model.Recievable, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6 col-lg-6 col-sm-12">
+                                        <div class="col-md-12 col-lg-12 col-sm-12">
                                             <div class="form-group">
                                                 <label for="exampleInputBorder">Months</label>
                                                 <div class="form-control" readonly="readonly" style="user-select: none !important; height: fit-content;" id="RecievableDateD" name="RecievableDate"></div>
@@ -134,13 +128,22 @@
                                     <div class="row">
                                         <div class="col-md-6 col-lg-6 col-sm-12">
                                             <div class="form-group">
+                                                <label for="exampleInputBorder">Recievable Amount</label>
+                                                @Html.ValidationMessageFor(model => model.Recievable, "", new { @class = "text-danger" })
+                                                @Html.EditorFor(model => model.Recievable, new { htmlAttributes = new { @class = "form-control", oninput = "this.value = this.value.replace(/[^0-9]/g, '').replace(/(\\..*)\\./g, '$1');"} })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-lg-6 col-sm-12">
+                                            <div class="form-group">
                                                 <label for="exampleInputBorder">Recieved Amount</label>
-                                                @Html.EditorFor(model => model.Recieved, new { htmlAttributes = new { @class = "form-control" } })
+                                                @Html.ValidationMessageFor(model => model.Recieved, "", new { @class = "text-danger" })
+                                                @Html.EditorFor(model => model.Recieved, new { htmlAttributes = new { @class = "form-control", oninput = "this.value = this.value.replace(/[^0-9]/g, '').replace(/(\\..*)\\./g, '$1');"} })
                                             </div>
                                         </div>
                                         <div class="col-md-6 col-lg-6 col-sm-12">
                                             <div class="form-group">
                                                 <label for="exampleInputBorder">Months</label>
+                                                @Html.ValidationMessageFor(model => model.RecievedDate, "", new { @class = "text-danger" })
                                                 @Html.DropDownListFor(model => model.RecievedDate, (IEnumerable<SelectListItem>)ViewBag.Months, htmlAttributes: new { @class = "form-control select2", @multiple = "multiple" })
                                             </div>
                                         </div>

@@ -20,9 +20,11 @@ namespace JRCar.BOL.Validation_Classes
 
         public string ShowroomAddress { get; set; }
 
+        [Required(ErrorMessage ="*")]
         [Display(Name = "Recievable")]
         public decimal? Recievable { get; set; }
 
+        [Required(ErrorMessage = "*")]
         [Display(Name = "Recieved")]
         public decimal? Recieved { get; set; }
 
@@ -31,7 +33,9 @@ namespace JRCar.BOL.Validation_Classes
         public Nullable<System.DateTime> RecievableToDate { get; set; }
 
         public List<DatesD> RecievableDate { get; set; }
-        
+
+        [Required(ErrorMessage = "*")]
+        [Display(Name = "Recieved Month")]
         public List<string> RecievedDate { get; set; }
 
         public Nullable<System.DateTime> RecievedFromDate { get; set; }
