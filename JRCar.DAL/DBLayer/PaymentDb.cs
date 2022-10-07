@@ -377,7 +377,7 @@ namespace JRCar.DAL.DBLayer
                     }
                     else
                     {
-                        var StartDate = Convert.ToDateTime("1/4/2022");
+                        var StartDate = Convert.ToDateTime("April" + " " + "2022");
                         var TodaysDate = DateTime.Now;
                         var MonthsBetweenDates = MonthsBetween(StartDate, TodaysDate);
                         var FirstMonth = MonthsBetweenDates.First();
