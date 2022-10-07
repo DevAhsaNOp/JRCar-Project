@@ -715,7 +715,7 @@ namespace JRCar.BLL.Repositories
 
         public List<SelectListItem> GetAllDealers()
         {
-            UserRepo repo = new UserRepo();
+            PaymentRepo repo = new PaymentRepo();
             var AllShowroom = repo.GetAllShowRoom();
             var showrooms = new List<SelectListItem>
             {

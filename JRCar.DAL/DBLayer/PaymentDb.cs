@@ -257,6 +257,19 @@ namespace JRCar.DAL.DBLayer
                 throw ex;
             }
         }
+        
+        public IEnumerable<tblShowroom> GetAllShowRoom()
+        {
+            try
+            {
+               var reas = _context.tblPayments.Select(x => x.tblShowroom).ToList();
+               return reas;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
 
         public bool ShowroomPreviousPaymentGenerate(int ShowroomID)
         {

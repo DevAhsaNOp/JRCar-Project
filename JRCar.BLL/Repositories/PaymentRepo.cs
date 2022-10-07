@@ -141,7 +141,20 @@ namespace JRCar.BLL.Repositories
                 throw ex;
             }
         }
-        
+
+        public IEnumerable<tblShowroom> GetAllShowRoom()
+        {
+            try
+            {
+                var reas = DbObj.GetAllShowRoom();
+                return reas;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public bool ShowroomPreviousPaymentGenerate(int ShowroomID)
         {
             try
