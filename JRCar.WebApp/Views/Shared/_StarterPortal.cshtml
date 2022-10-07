@@ -316,9 +316,33 @@
                 });
             })
 
+            setInterval(function () {
+                var a = $("#RecievedDate").val();
+                if (a.length > 0) {
+                }
+                else {
+                    $("#PayError").empty();
+                    $("#PayError").hide();
+                }
+            }, 1000)
+
             $('#MakePayShow').submit(function () {
                 var a = $("#RecievedDate").val();
-                //event.preventDefault();
+                if (a.length > 0) {
+                    if ($("#PayError").text() == "") {
+                       return true;
+                    }
+                    else {
+                       return false;
+                    }
+                }
+                else {
+                    return false;
+                }
+            });
+
+            $('#RecievedDate').change(function () {
+                var a = $("#RecievedDate").val();
                 if (a.length > 0) {
                     var ShowroomId = $("#ShowroomID").val();
                     $.ajax({

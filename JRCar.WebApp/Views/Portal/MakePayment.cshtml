@@ -81,7 +81,7 @@
                         <div class="card-header">
                             <h3 class="card-title">Add New Showroom Payment</h3>
                         </div>
-                        @using (Html.BeginForm("MakePayment", "Portal", FormMethod.Post,htmlAttributes: new {@id = "MakePayShow", @onsubmit= "event.preventDefault();" }))
+                        @using (Html.BeginForm("MakePayment", "Portal", FormMethod.Post,htmlAttributes: new {@id = "MakePayShow"}))
                         {
                             <div id="loader" style="display: none!important;">
                                 <img src="~/Content/Spinner-1s-200px.gif" alt="Please Wait......" width="100" height="100" />
