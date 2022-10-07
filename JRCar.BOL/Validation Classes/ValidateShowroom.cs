@@ -48,7 +48,6 @@ namespace JRCar.BOL.Validation_Classes
 
         [Required(ErrorMessage = "*")]
         [Display(Name = "Shop Number")]
-        [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "Only Alphabets are allow")]
         [MaxLength(150, ErrorMessage = "Address Length should be under 150")]
         [MinLength(5, ErrorMessage = "Address Min Length should be 5")]
         public string ShopNumber { get; set; }
