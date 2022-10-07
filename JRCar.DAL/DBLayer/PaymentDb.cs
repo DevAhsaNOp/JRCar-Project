@@ -499,6 +499,7 @@ namespace JRCar.DAL.DBLayer
                 CreatedOn = a.CreatedOn,
                 Recieved = a.Recieved,
                 Recievable = a.Recievable,
+                tblShowroom = a.tblShowroom,
             }).ToList();
 
             if (payment != null)
@@ -550,6 +551,98 @@ namespace JRCar.DAL.DBLayer
                 );
 
                 iterator = iterator.AddMonths(1);
+            }
+        }
+
+        public ValidationPayment GetShowroomDetailsById(int ShowroomID)
+        {
+            try
+            {
+                if (ShowroomID > 0)
+                {
+                    var OldPayment = GetShowroomPaymentById(ShowroomID).Select(s => new { s.RecievableFromDate, s.RecievableToDate, s.RecievedFromDate, s.RecievedToDate,s.Recieved, s.Recievable }).FirstOrDefault();
+                    if (OldPayment != null)
+                    {
+                        List<DatesD> Datelist = new List<DatesD>();
+                        List<DatesD> Datelist2 = new List<DatesD>();
+                        List<DatesD> Datelist3 = new List<DatesD>();
+                        decimal RecievableAmnt = 0;
+                        decimal RecievedAmnt = 0;
+
+                        if (OldPayment.RecievableFromDate != null && OldPayment.RecievableToDate != null)
+                        {
+                            var startDate = OldPayment.RecievableFromDate.Value.Date;
+                            var endDate = OldPayment.RecievableToDate.Value.Date;
+                            var months = MonthsBetween(startDate, endDate);
+                            foreach (var item in months)
+                            {
+                                Datelist.Add(new DatesD()
+                                {
+                                    Month = item.Month,
+                                    Year = item.Year,
+                                    IsPaid = false,
+                                });
+                            }
+                            RecievableAmnt += OldPayment.Recievable.Value;
+                        }
+                        
+                        if (OldPayment.RecievedFromDate != null && OldPayment.RecievedToDate != null)
+                        {
+                            var startDate = OldPayment.RecievedFromDate.Value.Date;
+                            var endDate = OldPayment.RecievedToDate.Value.Date;
+                            var months = MonthsBetween(startDate, endDate);
+                            foreach (var item in months)
+                            {
+                                Datelist2.Add(new DatesD()
+                                {
+                                    Month = item.Month,
+                                    Year = item.Year,
+                                    IsPaid = true,
+                                });
+                            }
+                            RecievedAmnt += OldPayment.Recieved.Value;
+                        }
+
+                        var payment = _context.tblShowrooms.Where(x => x.ID == ShowroomID).Select(a => new ValidationPayment()
+                        {
+                            ShowroomName = a.FullName,
+                            ShowroomNumber = a.Contact,
+                            ShowroomAddress = a.ShopNumber + " " + a.tblAddress.CompleteAddress,
+                            tblShowroom = a.tblPayments.FirstOrDefault().tblShowroom,
+                            Recievable = RecievableAmnt,
+                            Recieved = RecievedAmnt
+                        }).FirstOrDefault();
+
+                        payment.RecievableDate = Datelist;
+                        payment.RecievedDates = Datelist2;
+                        payment.datesDs = Enumerable.Concat(Datelist, Datelist2).OrderBy(m => DateTime.Parse(m.Month + " " + m.Year)).ToList();
+
+                        if (payment != null)
+                            return payment;
+                        else
+                            return null;
+                    }
+                    else
+                    {
+                        var payment = _context.tblShowrooms.Where(x => x.ID == ShowroomID).Select(a => new ValidationPayment()
+                        {
+                            ShowroomName = a.FullName,
+                            ShowroomNumber = a.Contact,
+                            ShowroomAddress = a.ShopNumber + " " + a.tblAddress.CompleteAddress,
+                        }).FirstOrDefault();
+
+                        if (payment != null)
+                            return payment;
+                        else
+                            return null;
+                    }
+                }
+                else
+                    return null;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
             }
         }
     }

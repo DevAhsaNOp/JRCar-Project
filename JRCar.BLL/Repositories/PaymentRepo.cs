@@ -226,5 +226,18 @@ namespace JRCar.BLL.Repositories
                 return null;
             }
         }
+        
+        public ValidationPayment GetShowroomDetailsById(int ShowroomID)
+        {
+            var payment = DbObj.GetShowroomDetailsById(ShowroomID);
+            if (payment != null)
+            {
+                return payment;
+            }
+            else
+            {
+                return null;
+            }
+        }
     }
 }

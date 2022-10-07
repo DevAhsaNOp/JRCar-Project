@@ -1772,6 +1772,22 @@ namespace JRCar.WebApp.Controllers
 
             return View();
         }
+        
+        [Authorize(Roles = "Admin,Union")]
+        [AcceptVerbs(HttpVerbs.Get)]
+        public ActionResult ShowroomPayment()
+        {
+            var reas = PayRepoObj.GetAllPayments();
+            return View(reas);
+        }
+        
+        [Authorize(Roles = "Admin,Union")]
+        [AcceptVerbs(HttpVerbs.Get)]
+        public ActionResult ShowroomInfo(int ShowroomID)
+        {
+            var reas = PayRepoObj.GetShowroomDetailsById(ShowroomID);
+            return View(reas);
+        }
 
         [Authorize(Roles = "Admin,Union")]
         [AcceptVerbs(HttpVerbs.Post)]

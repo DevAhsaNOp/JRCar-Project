@@ -33,11 +33,15 @@ namespace JRCar.BOL.Validation_Classes
 
         public Nullable<System.DateTime> RecievableToDate { get; set; }
 
-        public List<DatesD> RecievableDate { get; set; }
-
         [Required(ErrorMessage = "*")]
         [Display(Name = "Recieved Month")]
         public List<string> RecievedDate { get; set; }
+
+        public List<DatesD> RecievableDate { get; set; }
+
+        public List<DatesD> RecievedDates { get; set; }
+
+        public List<DatesD> datesDs { get; set; }
 
         public Nullable<System.DateTime> RecievedFromDate { get; set; }
 
@@ -59,5 +63,6 @@ namespace JRCar.BOL.Validation_Classes
     {
         public string Month { get; set; }
         public int Year { get; set; }
+        public bool IsPaid { get; set; }
     } 
 }

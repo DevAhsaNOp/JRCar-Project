@@ -318,12 +318,15 @@
 
             setInterval(function () {
                 var a = $("#RecievedDate").val();
-                if (a.length > 0) {
+                if (a != undefined) {
+                    if (a.length > 0) {
+                    }
+                    else {
+                        $("#PayError").empty();
+                        $("#PayError").hide();
+                    }
                 }
-                else {
-                    $("#PayError").empty();
-                    $("#PayError").hide();
-                }
+
             }, 1000)
 
             $('#MakePayShow').submit(function () {

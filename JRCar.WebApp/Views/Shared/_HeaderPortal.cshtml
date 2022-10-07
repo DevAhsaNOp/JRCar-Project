@@ -62,31 +62,30 @@
                     </form>
                 </div>
             </li>*@
-
-        <!-- Announcements Dropdown Menu -->
-        <li class="nav-item dropdown">
-            <a class="Accnoti nav-link" data-toggle="dropdown" href="#">
-                <i class="fas fa-bullhorn"></i>
-                <span class="badge badge-danger navbar-badge Acccount"></span>
-            </a>
-            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right Accnoti-content" style="left: inherit; right: -10rem; max-height: 260px !important; overflow: auto;">
-                <span class="dropdown-item dropdown-header">15 Announcements</span>
-                <div class="dropdown-divider"></div>
-                <span id="AccnotiContent">
-                </span>
-                <div class="dropdown-divider"></div>
-                @if (User.IsInRole("Showroom"))
-                {
-                    <a href="@Url.Action("NotificationList","Portal")" class="dropdown-item dropdown-footer" style="position: sticky; bottom: 0px; border-top: 1px solid #E9ECF0; background: white; ">See All Announcements</a>
-                }
-                else
-                {
-                    <a href="@Url.Action("MakeAnnouncment","Portal")" class="dropdown-item dropdown-footer" style="position: sticky; bottom: 0px; border-top: 1px solid #E9ECF0; background: white; ">See All Announcements</a>
-                }
-            </div>
-        </li>
         @if (User.IsInRole("Showroom"))
         {
+            <!-- Announcements Dropdown Menu -->
+            <li class="nav-item dropdown">
+                <a class="Accnoti nav-link" data-toggle="dropdown" href="#">
+                    <i class="fas fa-bullhorn"></i>
+                    <span class="badge badge-danger navbar-badge Acccount"></span>
+                </a>
+                <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right Accnoti-content" style="left: inherit; right: -10rem; max-height: 260px !important; overflow: auto;">
+                    <span class="dropdown-item dropdown-header">15 Announcements</span>
+                    <div class="dropdown-divider"></div>
+                    <span id="AccnotiContent">
+                    </span>
+                    <div class="dropdown-divider"></div>
+                    @if (User.IsInRole("Showroom"))
+                    {
+                        <a href="@Url.Action("NotificationList","Portal")" class="dropdown-item dropdown-footer" style="position: sticky; bottom: 0px; border-top: 1px solid #E9ECF0; background: white; ">See All Announcements</a>
+                    }
+                    else
+                    {
+                        <a href="@Url.Action("MakeAnnouncment","Portal")" class="dropdown-item dropdown-footer" style="position: sticky; bottom: 0px; border-top: 1px solid #E9ECF0; background: white; ">See All Announcements</a>
+                    }
+                </div>
+            </li>
             <!-- Appointment Dropdown Menu -->
             <li class="nav-item dropdown">
                 <a class="Appntnoti nav-link" data-toggle="dropdown" href="#">
@@ -118,10 +117,10 @@
                 </div>
             </li>
         }
-            <li class="nav-item">
-                <a class="nav-link" href="@Url.Action("Logout", "Account")" role="button">
-                    <i class="fas fa-sign-out-alt"></i>&nbsp;Logout
-                </a>
-            </li>
+        <li class="nav-item">
+            <a class="nav-link" href="@Url.Action("Logout", "Account")" role="button">
+                <i class="fas fa-sign-out-alt"></i>&nbsp;Logout
+            </a>
+        </li>
     </ul>
 </nav>
