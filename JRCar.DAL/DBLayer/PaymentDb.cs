@@ -183,8 +183,13 @@ namespace JRCar.DAL.DBLayer
                 if (ShowroomID > 0)
                 {
                     var ErrorMsg = "";
+                    var ErrorMsg2 = "";
+                    var ValSelected = Convert.ToDateTime(RMonths.Last());
                     var PaidMonths = _context.tblPayments.Where(x => x.ShowroomID == ShowroomID).Select(x => new { x.RecievedFromDate, x.RecievedToDate }).FirstOrDefault();
                     var MonthsBetweenDates = MonthsBetween(PaidMonths.RecievedFromDate.Value, PaidMonths.RecievedToDate.Value).Select(x => x.Month + " " + x.Year);
+                    var MonthsBetweenUDates = MonthsBetween(PaidMonths.RecievedFromDate.Value, ValSelected).Select(x => x.Month + " " + x.Year);
+                    var IsUnPaidMonths = MonthsBetweenUDates.Except(MonthsBetweenDates);
+                    var UnPaidMonths = IsUnPaidMonths.Except(RMonths);
 
                     if (PaidMonths != null)
                     {
@@ -204,8 +209,20 @@ namespace JRCar.DAL.DBLayer
                         }
                     }
 
-                    if (ErrorMsg.Trim() != "")
+                    if (UnPaidMonths != null)
+                    {
+                        foreach (var item in UnPaidMonths)
+                        {
+                            ErrorMsg2 += item + " ";
+                        }
+                    }
+
+                    if (ErrorMsg.Trim() != "" && ErrorMsg2.Trim() != "")
+                        return ErrorMsg.Trim() + " fees already paid and " + ErrorMsg2.Trim() + " fees is not paid!";
+                    else if (ErrorMsg.Trim() != "")
                         return ErrorMsg.Trim() + " fees already paid";
+                    else if (ErrorMsg2.Trim() != "")
+                        return ErrorMsg2.Trim() + " fees is not paid!";
                     else
                         return "";
                 }
