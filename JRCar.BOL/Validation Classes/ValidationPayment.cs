@@ -29,6 +29,12 @@ namespace JRCar.BOL.Validation_Classes
         [Display(Name = "Recieved")]
         public decimal? Recieved { get; set; }
 
+        [Display(Name = "Discount")]
+        public decimal? Discount { get; set; }
+
+        [Display(Name = "Balance")]
+        public decimal? Balance { get; set; }
+
         public Nullable<System.DateTime> RecievableFromDate { get; set; }
 
         public Nullable<System.DateTime> RecievableToDate { get; set; }

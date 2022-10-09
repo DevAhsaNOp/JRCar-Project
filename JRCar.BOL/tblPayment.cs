@@ -28,6 +28,8 @@ namespace JRCar.BOL
         public Nullable<int> UpdatedBy { get; set; }
         public Nullable<bool> Isactive { get; set; }
         public Nullable<bool> Isarchive { get; set; }
+        public Nullable<decimal> Discount { get; set; }
+        public Nullable<decimal> Balance { get; set; }
     
         public virtual tblShowroom tblShowroom { get; set; }
     }

@@ -297,7 +297,7 @@ namespace JRCar.DAL.DBLayer
                     var payment = _context.tblPayments.Where(x => x.ShowroomID == ShowroomID).FirstOrDefault();
                     if (payment != null)
                     {
-                        var OldPayments = GetShowroomPaymentById(ShowroomID).FirstOrDefault();
+                        var OldPayments = GetShowroomPaymentById(ShowroomID);
                         if (OldPayments != null)
                         {
                             var Sfirstmonth = Convert.ToDateTime("April" + " " + "2022");
@@ -307,9 +307,15 @@ namespace JRCar.DAL.DBLayer
 
                             #region **If Showroom Doesn't Pay Any Payment Yet**
 
-                            var OldPaymentFRecieve = (OldPayments.RecievedFromDate == null) ? "01/01/0001" : OldPayments.RecievedFromDate.Value.ToString("dd/MM/yyyy");
-                            var OldPaymentTRecieve = (OldPayments.RecievedToDate == null) ? "01/01/0001" : OldPayments.RecievedToDate.Value.ToString("dd/MM/yyyy");
+                            var OldPaymentFRecieve = "";
+                            var OldPaymentTRecieve = "";
                             var IsNotMonth = "01/01/0001";
+
+                            foreach (var payments in OldPayments)
+                            {
+                                OldPaymentFRecieve = (payments.RecievedFromDate == null) ? "01/01/0001" : payments.RecievedFromDate.Value.ToString("dd/MM/yyyy");
+                                OldPaymentTRecieve = (payments.RecievedToDate == null) ? "01/01/0001" : payments.RecievedToDate.Value.ToString("dd/MM/yyyy");
+                            }
 
                             if (OldPaymentFRecieve == IsNotMonth && OldPaymentTRecieve == IsNotMonth)
                             {
@@ -347,15 +353,27 @@ namespace JRCar.DAL.DBLayer
 
                             else
                             {
-                                var RecievestartDate = OldPayments.RecievedFromDate.Value.Date;
-                                var RecieveendDate = OldPayments.RecievedToDate.Value.Date;
+                                DateTime RecievestartDate;
+                                DateTime RecieveendDate;
+
+                                if (OldPayments.Count() == 1)
+                                {
+                                    RecievestartDate = OldPayments.FirstOrDefault().RecievedFromDate.Value.Date;
+                                    RecieveendDate = OldPayments.FirstOrDefault().RecievedToDate.Value.Date;
+                                }
+                                else
+                                {
+                                    RecievestartDate = OldPayments.FirstOrDefault().RecievedFromDate.Value.Date;
+                                    RecieveendDate = OldPayments.LastOrDefault().RecievedToDate.Value.Date;
+                                }
+                                        
                                 var Recievedmonths = MonthsBetween(RecievestartDate, RecieveendDate);
 
                                 /*If Showroom Pays Some of the Month Payment But Not Current or Previous Months*/
-                                if (OldPayments.RecievableFromDate != null && OldPayments.RecievableToDate != null)
+                                if (OldPayments.LastOrDefault().RecievableFromDate != null && OldPayments.LastOrDefault().RecievableToDate != null)
                                 {
-                                    var RecievablestartDate = OldPayments.RecievableFromDate.Value.Date;
-                                    var RecievableendDate = OldPayments.RecievableToDate.Value.Date;
+                                    var RecievablestartDate = OldPayments.LastOrDefault().RecievableFromDate.Value.Date;
+                                    var RecievableendDate = OldPayments.LastOrDefault().RecievableToDate.Value.Date;
                                     var Recievablemonths = MonthsBetween(RecievablestartDate, RecievableendDate).Concat(MonthsBetweenDates).Distinct();
                                     var WantToBeRecievableMonths = Recievablemonths.Except(Recievedmonths).OrderBy(m => DateTime.Parse(m.Month + " " + m.Year)).ToList();
 
@@ -368,7 +386,8 @@ namespace JRCar.DAL.DBLayer
                                     var lastmonthEnd = lastmonthStart.AddMonths(1).AddDays(-1);
                                     var UnionID = _context.tblUnions.Max(x => x.ID);
 
-                                    var Payments = _context.tblPayments.Where(x => x.ShowroomID == ShowroomID).First();
+                                    var PaymentsLst = _context.tblPayments.Where(x => x.ShowroomID == ShowroomID).ToList();
+                                    var Payments = PaymentsLst.LastOrDefault();
                                     Payments.RecievableFromDate = firstmonthStart;
                                     Payments.RecievableToDate = lastmonthEnd;
                                     Payments.Recievable = null;

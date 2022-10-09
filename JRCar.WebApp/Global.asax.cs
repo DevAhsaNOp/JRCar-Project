@@ -34,6 +34,8 @@ namespace JRCar.WebApp
             NC.RegisterAnnouncement(currentTime);
             HttpContext.Current.Session["AppLastUpdated"] = currentTime;
             NC.RegisterAppointment(currentTime);
+            PaymentRepo repo = new PaymentRepo();
+            repo.ShowroomPreviousPaymentGenerate(108);
         }
 
 

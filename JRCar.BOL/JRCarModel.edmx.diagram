@@ -86,14 +86,14 @@
         <AssociationConnector Association="jrcarModel.FK_tblAppointments_tblShowrooms" />
         <AssociationConnector Association="jrcarModel.FK_tblAppointments_tblUserAdds" />
         <AssociationConnector Association="jrcarModel.FK_tblAppointments_tblUsers" />
-        <EntityTypeShape EntityType="jrcarModel.tblPayment" Width="1.5" PointX="10.5" PointY="38.875" />
-        <AssociationConnector Association="jrcarModel.FK_tblPayment_tblShowrooms" />
         <EntityTypeShape EntityType="jrcarModel.tblQuery" Width="1.5" PointX="15.5" PointY="21" />
         <EntityTypeShape EntityType="jrcarModel.tblQueryDetail" Width="1.5" PointX="17.75" PointY="22" />
         <AssociationConnector Association="jrcarModel.FK_tblQuery_tblShowrooms" />
         <AssociationConnector Association="jrcarModel.FK_tblQuery_tblUnions" />
         <AssociationConnector Association="jrcarModel.FK_tblQuery_tblUsers" />
         <AssociationConnector Association="jrcarModel.FK_tblQueryDetails_tblQuery" />
+        <EntityTypeShape EntityType="jrcarModel.tblPayment" Width="1.5" PointX="10.5" PointY="38.75" />
+        <AssociationConnector Association="jrcarModel.FK_tblPayment_tblShowrooms" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
