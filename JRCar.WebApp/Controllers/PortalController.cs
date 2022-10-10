@@ -1772,7 +1772,7 @@ namespace JRCar.WebApp.Controllers
 
             return View();
         }
-        
+
         [Authorize(Roles = "Admin,Union")]
         [AcceptVerbs(HttpVerbs.Get)]
         public ActionResult ShowroomPayment()
@@ -1780,7 +1780,7 @@ namespace JRCar.WebApp.Controllers
             var reas = PayRepoObj.GetAllPayments();
             return View(reas);
         }
-        
+
         [Authorize(Roles = "Admin,Union")]
         [AcceptVerbs(HttpVerbs.Get)]
         public ActionResult ShowroomInfo(int ShowroomID)
@@ -1811,10 +1811,8 @@ namespace JRCar.WebApp.Controllers
             try
             {
                 IEnumerable<string> RecievableMonth = null;
-                var PayID = PayRepoObj.GetPaymentID(payment.ShowroomID.Value).ID;
-                var PRecievedFromDate = PayRepoObj.GetPaymentID(payment.ShowroomID.Value).RecievedFromDate;
-                var PRecieved = PayRepoObj.GetPaymentID(payment.ShowroomID.Value).Recieved;
-                var PRecievable = PayRepoObj.GetPaymentID(payment.ShowroomID.Value).Recievable;
+                var PRecievedFromDate = PayRepoObj.GetPaymentID(payment.ShowroomID.Value).Item2;
+                var PBalance = PayRepoObj.GetPaymentID(payment.ShowroomID.Value).Item1;
                 var receivedDates = payment.RecievedDate;
                 var Months = PayRepoObj.GetRecievableMonths(payment.ShowroomID.Value);
 
@@ -1823,8 +1821,10 @@ namespace JRCar.WebApp.Controllers
                     RecievableMonth = Months.Except(receivedDates);
                 }
 
-                DateTime RecievablefirstmonthStart = DateTime.Now;
-                DateTime RecievablelastmonthEnd = DateTime.Now;
+                var CurrentMonth = DateTime.Now.Month;
+
+                DateTime NextRecievablemonthStart = DateTime.Now;
+                DateTime NextRecievablemonthEnd= DateTime.Now;
 
                 var receivedFirstMonth = Convert.ToDateTime(receivedDates.First());
                 var receivedLastMonth = Convert.ToDateTime(receivedDates.Last());
@@ -1833,43 +1833,35 @@ namespace JRCar.WebApp.Controllers
                 var receivedfirstmonthStart = new DateTime(receivedfirstmonth.Year, receivedfirstmonth.Month, 1);
                 var receivedlastmonthStart = new DateTime(receivedlastmonth.Year, receivedlastmonth.Month, 1);
                 var receivedlastmonthEnd = receivedlastmonthStart.AddMonths(1).AddDays(-1);
+                NextRecievablemonthStart = receivedlastmonthStart.AddMonths(1).AddDays(0);
 
-                if (RecievableMonth != null)
+                if (receivedlastmonthEnd.Month < CurrentMonth)
                 {
-                    var RecievableFirstMonth = Convert.ToDateTime(RecievableMonth.First());
-                    var RecievableLastMonth = Convert.ToDateTime(RecievableMonth.Last());
-                    var Recievablefirstmonth = Convert.ToDateTime(RecievableFirstMonth.Month + " " + RecievableFirstMonth.Year);
-                    var Recievablelastmonth = Convert.ToDateTime(RecievableLastMonth.Month + " " + RecievableLastMonth.Year);
-                    RecievablefirstmonthStart = new DateTime(Recievablefirstmonth.Year, Recievablefirstmonth.Month, 1);
-                    var RecievablelastmonthStart = new DateTime(Recievablelastmonth.Year, Recievablelastmonth.Month, 1);
-                    RecievablelastmonthEnd = RecievablelastmonthStart.AddMonths(1).AddDays(-1);
+                    DateTime now = DateTime.Now;
+                    var startDate = new DateTime(now.Year, now.Month, 1);
+                    NextRecievablemonthEnd = startDate.AddMonths(1).AddDays(-1);
+                    //NextRecievablemonthEnd = receivedlastmonthStart.AddMonths(2).AddDays(-1);
+                }
+                else if (receivedlastmonthEnd.Month > CurrentMonth)
+                {
+                    NextRecievablemonthEnd = receivedlastmonthStart.AddMonths(2).AddDays(-1);
                 }
 
-                if (PRecievedFromDate != null)
+                if (PBalance > 0)
                 {
-                    receivedfirstmonthStart = PRecievedFromDate.Value;
-                }
-
-                if (PRecieved > 0)
-                {
-                    payment.Recieved += PRecieved;
-                }
-
-                if (PRecievable > 0)
-                {
-                    payment.Recievable += PRecievable;
+                    payment.Balance += PBalance;
                 }
 
                 ValidationPayment Payment = new ValidationPayment()
                 {
-                    ID = PayID,
                     ShowroomID = payment.ShowroomID,
+                    Balance = payment.Balance,
                     Recieved = payment.Recieved,
                     Recievable = payment.Recievable,
                     RecievedFromDate = receivedfirstmonthStart,
                     RecievedToDate = receivedlastmonthEnd,
-                    RecievableFromDate = RecievablefirstmonthStart,
-                    RecievableToDate = RecievablelastmonthEnd,
+                    RecievableFromDate = NextRecievablemonthStart,
+                    RecievableToDate = NextRecievablemonthEnd,
                     UpdatedBy = (int)Session["Id"],
                 };
 

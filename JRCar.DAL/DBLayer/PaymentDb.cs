@@ -71,11 +71,11 @@ namespace JRCar.DAL.DBLayer
         {
             if (ShowroomID > 0)
             {
-                var OldPendingPayment = GetShowroomPaymentById(ShowroomID).Select(s => new { s.RecievableFromDate, s.RecievableToDate }).FirstOrDefault();
-                if (OldPendingPayment.RecievableFromDate != null && OldPendingPayment.RecievableToDate != null)
+                var OldPendingPayment = GetShowroomPaymentById(ShowroomID).Select(s => new { s.RecievableFromDate, s.RecievableToDate }).ToList();
+                if (OldPendingPayment.LastOrDefault().RecievableFromDate != null && OldPendingPayment.LastOrDefault().RecievableToDate != null)
                 {
-                    var startDate = OldPendingPayment.RecievableFromDate.Value.Date;
-                    var endDate = OldPendingPayment.RecievableToDate.Value.Date;
+                    var startDate = OldPendingPayment.LastOrDefault().RecievableFromDate.Value.Date;
+                    var endDate = OldPendingPayment.LastOrDefault().RecievableToDate.Value.Date;
                     var months = MonthsBetween(startDate, endDate);
                     List<string> list = new List<string>();
                     foreach (var item in months)
@@ -185,9 +185,9 @@ namespace JRCar.DAL.DBLayer
                     var ErrorMsg = "";
                     var ErrorMsg2 = "";
                     var ValSelected = Convert.ToDateTime(RMonths.Last());
-                    var PaidMonths = _context.tblPayments.Where(x => x.ShowroomID == ShowroomID).Select(x => new { x.RecievedFromDate, x.RecievedToDate }).FirstOrDefault();
-                    var MonthsBetweenDates = MonthsBetween(PaidMonths.RecievedFromDate.Value, PaidMonths.RecievedToDate.Value).Select(x => x.Month + " " + x.Year);
-                    var MonthsBetweenUDates = MonthsBetween(PaidMonths.RecievedFromDate.Value, ValSelected).Select(x => x.Month + " " + x.Year);
+                    var PaidMonths = _context.tblPayments.Where(x => x.ShowroomID == ShowroomID).Select(x => new { x.RecievedFromDate, x.RecievedToDate }).ToList();
+                    var MonthsBetweenDates = MonthsBetween(PaidMonths.FirstOrDefault().RecievedFromDate.Value, PaidMonths.LastOrDefault().RecievedToDate.Value).Select(x => x.Month + " " + x.Year);
+                    var MonthsBetweenUDates = MonthsBetween(PaidMonths.FirstOrDefault().RecievedFromDate.Value, ValSelected).Select(x => x.Month + " " + x.Year);
                     var IsUnPaidMonths = MonthsBetweenUDates.Except(MonthsBetweenDates);
                     var UnPaidMonths = IsUnPaidMonths.Except(RMonths);
 
@@ -199,7 +199,7 @@ namespace JRCar.DAL.DBLayer
                             {
                                 if (item == month)
                                 {
-                                    ErrorMsg += month +", ";
+                                    ErrorMsg += month + ", ";
                                 }
                                 else
                                 {
@@ -274,13 +274,13 @@ namespace JRCar.DAL.DBLayer
                 throw ex;
             }
         }
-        
+
         public IEnumerable<tblShowroom> GetAllShowRoom()
         {
             try
             {
-               var reas = _context.tblPayments.Select(x => x.tblShowroom).ToList();
-               return reas;
+                var reas = _context.tblPayments.Select(x => x.tblShowroom).ToList().Distinct();
+                return reas;
             }
             catch (Exception ex)
             {
@@ -366,7 +366,7 @@ namespace JRCar.DAL.DBLayer
                                     RecievestartDate = OldPayments.FirstOrDefault().RecievedFromDate.Value.Date;
                                     RecieveendDate = OldPayments.LastOrDefault().RecievedToDate.Value.Date;
                                 }
-                                        
+
                                 var Recievedmonths = MonthsBetween(RecievestartDate, RecieveendDate);
 
                                 /*If Showroom Pays Some of the Month Payment But Not Current or Previous Months*/
@@ -471,34 +471,38 @@ namespace JRCar.DAL.DBLayer
             {
                 if (ShowroomID > 0)
                 {
-                    var OldPendingPayment = GetShowroomPaymentById(ShowroomID).Select(s => new { s.RecievableFromDate, s.RecievableToDate, s.Recievable }).FirstOrDefault();
+                    var OldPendingPayment = GetShowroomPaymentById(ShowroomID).Select(s => new { s.RecievableFromDate, s.RecievableToDate, s.Balance });
                     if (OldPendingPayment != null)
                     {
                         List<DatesD> Datelist = new List<DatesD>();
-                        decimal RecievableAmnt = 0;
+                        decimal? TBalanceAmnt = 0;
 
-                        if (OldPendingPayment.RecievableFromDate != null && OldPendingPayment.RecievableToDate != null)
+                        foreach (var payments in OldPendingPayment)
                         {
-                            var startDate = OldPendingPayment.RecievableFromDate.Value.Date;
-                            var endDate = OldPendingPayment.RecievableToDate.Value.Date;
-                            var months = MonthsBetween(startDate, endDate);
-                            foreach (var item in months)
+                            if (payments.RecievableFromDate != null && payments.RecievableToDate != null)
                             {
-                                Datelist.Add(new DatesD()
+                                var startDate = payments.RecievableFromDate.Value.Date;
+                                var endDate = payments.RecievableToDate.Value.Date;
+                                var months = MonthsBetween(startDate, endDate);
+                                foreach (var item in months)
                                 {
-                                    Month = item.Month,
-                                    Year = item.Year,
-                                });
+                                    Datelist.Add(new DatesD()
+                                    {
+                                        Month = item.Month,
+                                        Year = item.Year,
+                                    });
+                                }
+                                TBalanceAmnt += (payments.Balance == null) ? 0 : payments.Balance.Value;
                             }
-                            RecievableAmnt = 0;
                         }
+
 
                         var payment = _context.tblShowrooms.Where(x => x.ID == ShowroomID).Select(a => new ValidationPayment()
                         {
                             ShowroomName = a.FullName,
                             ShowroomNumber = a.Contact,
                             ShowroomAddress = a.ShopNumber + " " + a.tblAddress.CompleteAddress,
-                            Recievable = RecievableAmnt
+                            Balance = TBalanceAmnt
                         }).FirstOrDefault();
 
                         payment.RecievableDate = Datelist;
@@ -561,13 +565,22 @@ namespace JRCar.DAL.DBLayer
             }
         }
 
-        public ValidationPayment GetPaymentID(int ShowroomID)
+        public Tuple<decimal, DateTime> GetPaymentID(int ShowroomID)
         {
-            var payment = _context.tblPayments.Where(x => x.ShowroomID == ShowroomID).Select(x => new ValidationPayment() { ID = x.ID, RecievedFromDate = x.RecievedFromDate, Recieved = x.Recieved, Recievable = x.Recievable }).FirstOrDefault();
+            var payment = _context.tblPayments.Where(x => x.ShowroomID == ShowroomID).Select(x => new ValidationPayment() { RecievedFromDate = x.RecievedFromDate, Balance = x.Balance }).ToList();
+            decimal Balance = 0;
+            foreach (var item in payment)
+            {
+                if (item.Balance != null)
+                {
+                    Balance += item.Balance.Value;
+                }
+            }
+            var RecievedFromDate = payment.FirstOrDefault().RecievedFromDate.Value;
 
             if (payment != null)
             {
-                return payment;
+                return Tuple.Create(Balance, RecievedFromDate);
             }
             else
             {
@@ -609,48 +622,68 @@ namespace JRCar.DAL.DBLayer
             {
                 if (ShowroomID > 0)
                 {
-                    var OldPayment = GetShowroomPaymentById(ShowroomID).Select(s => new { s.RecievableFromDate, s.RecievableToDate, s.RecievedFromDate, s.RecievedToDate,s.Recieved, s.Recievable }).FirstOrDefault();
+                    var OldPayment = GetShowroomPaymentById(ShowroomID).Select(s => new { s.RecievableFromDate, s.RecievableToDate, s.RecievedFromDate, s.RecievedToDate, s.Recieved, s.Recievable, s.Discount, s.Balance });
                     if (OldPayment != null)
                     {
                         List<DatesD> Datelist = new List<DatesD>();
                         List<DatesD> Datelist2 = new List<DatesD>();
                         List<DatesD> Datelist3 = new List<DatesD>();
-                        decimal RecievableAmnt = 0;
-                        decimal RecievedAmnt = 0;
+                        decimal TBalanceAmnt = 0;
+                        decimal TDiscountAmnt = 0;
+                        decimal TRecievedAmnt = 0;
+                        decimal TRecievableAmnt = 0;
 
-                        if (OldPayment.RecievableFromDate != null && OldPayment.RecievableToDate != null)
+                        foreach (var payments in OldPayment)
                         {
-                            var startDate = OldPayment.RecievableFromDate.Value.Date;
-                            var endDate = OldPayment.RecievableToDate.Value.Date;
-                            var months = MonthsBetween(startDate, endDate);
-                            foreach (var item in months)
+                            if (payments.RecievableFromDate != null && payments.RecievableToDate != null)
                             {
-                                Datelist.Add(new DatesD()
+                                var startDate = payments.RecievableFromDate.Value.Date;
+                                var endDate = payments.RecievableToDate.Value.Date;
+                                var months = MonthsBetween(startDate, endDate);
+                                foreach (var item in months)
                                 {
-                                    Month = item.Month,
-                                    Year = item.Year,
-                                    IsPaid = false,
-                                });
+                                    Datelist.Add(new DatesD()
+                                    {
+                                        Month = item.Month,
+                                        Year = item.Year,
+                                        IsPaid = false,
+                                        Recievable = payments.Recievable,
+                                        Recieved = payments.Recieved,
+                                        Discount = payments.Discount,
+                                        Balance = payments.Balance
+                                    });
+                                    TBalanceAmnt += (payments.Balance == null) ? 0 : payments.Balance.Value;
+                                    TDiscountAmnt += (payments.Discount == null) ? 0 : payments.Discount.Value;
+                                    TRecievedAmnt += (payments.Recieved == null) ? 0 : payments.Recieved.Value;
+                                    TRecievableAmnt += (payments.Recievable == null) ? 0 : payments.Recievable.Value;
+                                }
                             }
-                            RecievableAmnt += OldPayment.Recievable.Value;
-                        }
-                        
-                        if (OldPayment.RecievedFromDate != null && OldPayment.RecievedToDate != null)
-                        {
-                            var startDate = OldPayment.RecievedFromDate.Value.Date;
-                            var endDate = OldPayment.RecievedToDate.Value.Date;
-                            var months = MonthsBetween(startDate, endDate);
-                            foreach (var item in months)
+
+                            if (payments.RecievedFromDate != null && payments.RecievedToDate != null)
                             {
-                                Datelist2.Add(new DatesD()
+                                var startDate = payments.RecievedFromDate.Value.Date;
+                                var endDate = payments.RecievedToDate.Value.Date;
+                                var months = MonthsBetween(startDate, endDate);
+                                foreach (var item in months)
                                 {
-                                    Month = item.Month,
-                                    Year = item.Year,
-                                    IsPaid = true,
-                                });
+                                    Datelist2.Add(new DatesD()
+                                    {
+                                        Month = item.Month,
+                                        Year = item.Year,
+                                        IsPaid = true,
+                                        Recievable = payments.Recievable,
+                                        Recieved = payments.Recieved,
+                                        Discount = payments.Discount,
+                                        Balance = payments.Balance
+                                    });
+                                    TBalanceAmnt += payments.Balance.Value;
+                                    TDiscountAmnt += payments.Discount.Value;
+                                    TRecievedAmnt += payments.Recieved.Value;
+                                    TRecievableAmnt += payments.Recievable.Value;
+                                }
                             }
-                            RecievedAmnt += OldPayment.Recieved.Value;
                         }
+
 
                         var payment = _context.tblShowrooms.Where(x => x.ID == ShowroomID).Select(a => new ValidationPayment()
                         {
@@ -658,8 +691,10 @@ namespace JRCar.DAL.DBLayer
                             ShowroomNumber = a.Contact,
                             ShowroomAddress = a.ShopNumber + " " + a.tblAddress.CompleteAddress,
                             tblShowroom = a.tblPayments.FirstOrDefault().tblShowroom,
-                            Recievable = RecievableAmnt,
-                            Recieved = RecievedAmnt
+                            Recievable = TRecievableAmnt,
+                            Recieved = TRecievedAmnt,
+                            Discount = TDiscountAmnt,
+                            Balance = TBalanceAmnt,
                         }).FirstOrDefault();
 
                         payment.RecievableDate = Datelist;

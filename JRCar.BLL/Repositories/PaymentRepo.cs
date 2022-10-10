@@ -96,7 +96,7 @@ namespace JRCar.BLL.Repositories
             }
         }
 
-        public ValidationPayment GetPaymentID(int ShowroomID)
+        public Tuple<decimal, DateTime> GetPaymentID(int ShowroomID)
         {
             if (ShowroomID > 0)
             {

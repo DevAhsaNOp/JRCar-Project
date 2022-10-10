@@ -70,5 +70,9 @@ namespace JRCar.BOL.Validation_Classes
         public string Month { get; set; }
         public int Year { get; set; }
         public bool IsPaid { get; set; }
+        public decimal? Recievable { get; set; }
+        public decimal? Recieved { get; set; }
+        public decimal? Discount { get; set; }
+        public decimal? Balance { get; set; }
     } 
 }
