@@ -23,10 +23,17 @@ namespace JRCar.BOL.Validation_Classes
 
         [Required(ErrorMessage ="*")]
         [Display(Name = "Recievable")]
+        [Range(1, Int32.MaxValue, ErrorMessage = "Amount should be Greater than Zero!")]
         public decimal? Recievable { get; set; }
+        
+        [Required(ErrorMessage ="*")]
+        [Display(Name = "Current Amount")]
+        [Range(1, Int32.MaxValue, ErrorMessage = "Amount should be Greater than Zero!")]
+        public decimal? CAmount { get; set; }
 
         [Required(ErrorMessage = "*")]
         [Display(Name = "Recieved")]
+        [Range(1, Int32.MaxValue, ErrorMessage = "Amount should be Greater than Zero!")]
         public decimal? Recieved { get; set; }
 
         [Display(Name = "Discount")]
@@ -34,6 +41,8 @@ namespace JRCar.BOL.Validation_Classes
 
         [Display(Name = "Balance")]
         public decimal? Balance { get; set; }
+
+        public decimal? PBalance { get; set; }
 
         public Nullable<System.DateTime> RecievableFromDate { get; set; }
 

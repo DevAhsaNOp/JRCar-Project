@@ -1,6 +1,7 @@
 ﻿using JRCar.BOL;
 using JRCar.BOL.Validation_Classes;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -252,12 +253,14 @@ namespace JRCar.DAL.DBLayer
                         RecievableToDate = a.RecievableToDate.Value,
                         RecievedFromDate = a.RecievedFromDate.Value,
                         RecievedToDate = a.RecievedToDate.Value,
+                        Recievable = a.Recievable,
+                        Recieved = a.Recieved,
+                        Discount = a.Discount,
+                        Balance = a.Balance,
                         Isactive = a.Isactive,
                         Isarchive = a.Isarchive,
                         CreatedBy = a.CreatedBy,
                         CreatedOn = a.CreatedOn,
-                        Recieved = a.Recieved,
-                        Recievable = a.Recievable,
                         UpdatedOn = a.UpdatedOn,
                         UpdatedBy = a.UpdatedBy
                     }).ToList();
@@ -477,24 +480,22 @@ namespace JRCar.DAL.DBLayer
                         List<DatesD> Datelist = new List<DatesD>();
                         decimal? TBalanceAmnt = 0;
 
-                        foreach (var payments in OldPendingPayment)
+                        if (OldPendingPayment.LastOrDefault().RecievableFromDate != null && OldPendingPayment.LastOrDefault().RecievableToDate != null)
                         {
-                            if (payments.RecievableFromDate != null && payments.RecievableToDate != null)
+                            var startDate = OldPendingPayment.LastOrDefault().RecievableFromDate.Value.Date;
+                            var endDate = OldPendingPayment.LastOrDefault().RecievableToDate.Value.Date;
+                            var months = MonthsBetween(startDate, endDate);
+                            foreach (var item in months)
                             {
-                                var startDate = payments.RecievableFromDate.Value.Date;
-                                var endDate = payments.RecievableToDate.Value.Date;
-                                var months = MonthsBetween(startDate, endDate);
-                                foreach (var item in months)
+                                Datelist.Add(new DatesD()
                                 {
-                                    Datelist.Add(new DatesD()
-                                    {
-                                        Month = item.Month,
-                                        Year = item.Year,
-                                    });
-                                }
-                                TBalanceAmnt += (payments.Balance == null) ? 0 : payments.Balance.Value;
+                                    Month = item.Month,
+                                    Year = item.Year,
+                                });
                             }
                         }
+
+                        TBalanceAmnt += (OldPendingPayment.LastOrDefault().Balance == null) ? 0 : OldPendingPayment.LastOrDefault().Balance.Value;
 
 
                         var payment = _context.tblShowrooms.Where(x => x.ID == ShowroomID).Select(a => new ValidationPayment()
@@ -545,15 +546,8 @@ namespace JRCar.DAL.DBLayer
         {
             var payment = _context.tblPayments.Select(a => new ValidationPayment()
             {
-                ShowroomName = a.tblShowroom.FullName,
-                ShowroomAddress = a.tblShowroom.ShopNumber + " " + a.tblShowroom.tblAddress.CompleteAddress,
-                RecievableFromDate = a.RecievedFromDate.Value,
-                RecievedToDate = a.RecievableToDate.Value,
-                CreatedOn = a.CreatedOn,
-                Recieved = a.Recieved,
-                Recievable = a.Recievable,
                 tblShowroom = a.tblShowroom,
-            }).ToList();
+            }).ToList().Distinct();
 
             if (payment != null)
             {
@@ -676,10 +670,10 @@ namespace JRCar.DAL.DBLayer
                                         Discount = payments.Discount,
                                         Balance = payments.Balance
                                     });
-                                    TBalanceAmnt += payments.Balance.Value;
-                                    TDiscountAmnt += payments.Discount.Value;
-                                    TRecievedAmnt += payments.Recieved.Value;
-                                    TRecievableAmnt += payments.Recievable.Value;
+                                    TBalanceAmnt += (payments.Balance == null) ? 0 : payments.Balance.Value;
+                                    TDiscountAmnt += (payments.Discount == null) ? 0 : payments.Discount.Value;
+                                    TRecievedAmnt += (payments.Recieved == null) ? 0 : payments.Recieved.Value;
+                                    TRecievableAmnt += (payments.Recievable == null) ? 0 : payments.Recievable.Value;
                                 }
                             }
                         }
@@ -699,7 +693,8 @@ namespace JRCar.DAL.DBLayer
 
                         payment.RecievableDate = Datelist;
                         payment.RecievedDates = Datelist2;
-                        payment.datesDs = Enumerable.Concat(Datelist, Datelist2).OrderBy(m => DateTime.Parse(m.Month + " " + m.Year)).ToList();
+                        var result = Datelist.Where(p => !Datelist2.Any(x => x.Month == p.Month)).ToList();
+                        payment.datesDs = Enumerable.Concat(result, Datelist2).Distinct().OrderBy(m => DateTime.Parse(m.Month + " " + m.Year)).ToList();
 
                         if (payment != null)
                             return payment;

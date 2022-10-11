@@ -264,6 +264,7 @@
             $('#CategoryD').show();
             $('#SubCategoryD').hide();
             $('#RecSec').hide();
+            $('#RecAmou').hide();
             $('#ManufacD').hide();
             $('#ModelD').hide();
             $('#ModelYearD').hide();
@@ -299,15 +300,20 @@
                         console.log(response);
                         $("#MakePayShow #ShowroomNumber").val(response.ShowroomNumber);
                         $("#MakePayShow #ShowroomAddress").val(response.ShowroomAddress);
+                        $('#RecAmou').show();
 
-                        if (response.RecievableDate != null) {
+                        if (response.RecievableDate != null || response.Balance > 0) {
                             if (response.RecievableDate.length > 0) {
                                 $('#RecSec').show();
+                                $("#MakePayShow #PBalance").val(response.Balance);
                                 $('#RecievableDateD').empty();
                                 for (var i = 0; i < response.RecievableDate.length; i++) {
                                     console.log(response.RecievableDate[i]);
                                     $('#RecievableDateD').append('<span style="background-color: #ff3838;padding: 0 6px;color: white;border: 1px solid #939393;border-radius: 4px;margin-right: 5px;padding-bottom: 2px; ">' + response.RecievableDate[i].Month + ' ' + response.RecievableDate[i].Year +'</span>');
                                 }
+                            }
+                            else {
+                                $("#MakePayShow #PBalance").val(response.Balance);
                             }
                         }
                         else {

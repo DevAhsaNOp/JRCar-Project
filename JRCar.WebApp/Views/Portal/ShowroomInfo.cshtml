@@ -129,6 +129,10 @@
                                                 <th>S.No </th>
                                                 <th>Month</th>
                                                 <th>Year</th>
+                                                <th>Recievable</th>
+                                                <th>Recieved</th>
+                                                <th>Discount</th>
+                                                <th>Balance</th>
                                                 <th>Status</th>
                                             </tr>
                                         </thead>
@@ -145,6 +149,18 @@
                                                     </td>
                                                     <td>
                                                         @item.Year
+                                                    </td>
+                                                    <td>
+                                                        @item.Recievable
+                                                    </td>
+                                                    <td>
+                                                        @item.Recieved
+                                                    </td>
+                                                    <td>
+                                                        @item.Discount
+                                                    </td>
+                                                    <td>
+                                                        @item.Balance
                                                     </td>
                                                     <td id="StatusA">
                                                         @if (item.IsPaid)

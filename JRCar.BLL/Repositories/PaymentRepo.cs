@@ -29,12 +29,14 @@ namespace JRCar.BLL.Repositories
                     {
                         ShowroomID = model.ShowroomID,
                         Recievable = model.Recievable,
+                        Recieved = model.Recieved,
+                        Discount = model.Discount,
+                        Balance = model.Balance,
                         RecievableFromDate = model.RecievableFromDate,
                         RecievableToDate = model.RecievableToDate,
-                        Recieved = model.Recieved,
                         RecievedFromDate = model.RecievedFromDate,
                         RecievedToDate = model.RecievedToDate,
-                        CreatedBy = model.CreatedBy                        
+                        CreatedBy = model.CreatedBy,
                     };
                     var obj = DbObj.InsertPayment(payment);
                     if (obj > 0)
@@ -117,15 +119,16 @@ namespace JRCar.BLL.Repositories
                 {
                     tblPayment payment = new tblPayment()
                     {
-                        ID = model.ID,
                         ShowroomID = model.ShowroomID,
                         Recievable = model.Recievable,
+                        Recieved = model.Recieved,
+                        Discount = model.Discount,
+                        Balance = model.Balance,
                         RecievableFromDate = model.RecievableFromDate,
                         RecievableToDate = model.RecievableToDate,
-                        Recieved = model.Recieved,
                         RecievedFromDate = model.RecievedFromDate,
                         RecievedToDate = model.RecievedToDate,
-                        UpdatedBy = model.UpdatedBy
+                        CreatedBy = model.CreatedBy,
                     };
                     var obj = DbObj.ShowroomPaymentClear(payment);
                     if (obj)

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<JRCar.BOL.Validation_Classes.ValidationPayment>
+﻿@model IEnumerable<JRCar.BOL.tblShowroom>
 
 @{
     ViewBag.Title = "List Of Showrooms Payment";
@@ -94,8 +94,6 @@
                                         <th>Showroom Name</th>
                                         <th>Address</th>
                                         <th>Contact</th>
-                                        <th>Recievable Amount</th>
-                                        <th>Recieved Amount</th>
                                         <th>Status</th>
                                         <th>Actions</th>
                                     </tr>
@@ -105,22 +103,16 @@
                                     {
                                         <tr>
                                             <td>
-                                                @item.ShowroomName
+                                                @item.FullName
                                             </td>
                                             <td>
-                                                @item.ShowroomAddress
+                                                @item.ShopNumber @item.tblAddress.CompleteAddress
                                             </td>
                                             <td>
-                                                @item.tblShowroom.Contact
-                                            </td>
-                                            <td>
-                                                @item.Recievable
-                                            </td>
-                                            <td>
-                                                @item.Recieved
+                                                @item.Contact
                                             </td>
                                             <td id="StatusA">
-                                                @if (item.tblShowroom.Isactive)
+                                                @if (item.Isactive)
                                                 {
                                                     <span class="badge badge-success"> Active </span>
                                                 }
@@ -130,7 +122,7 @@
                                                 }
                                             </td>
                                             <td>
-                                                <a href="@Url.Action("ShowroomInfo",new { ShowroomID = item.tblShowroom.ID })">
+                                                <a href="@Url.Action("ShowroomInfo",new { ShowroomID = item.ID })">
                                                     <button class="btnAction btnView">
                                                         <i class="far fa-eye"></i>
                                                     </button>

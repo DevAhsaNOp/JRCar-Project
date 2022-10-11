@@ -1777,7 +1777,7 @@ namespace JRCar.WebApp.Controllers
         [AcceptVerbs(HttpVerbs.Get)]
         public ActionResult ShowroomPayment()
         {
-            var reas = PayRepoObj.GetAllPayments();
+            var reas = PayRepoObj.GetAllShowRoom();
             return View(reas);
         }
 
@@ -1842,30 +1842,26 @@ namespace JRCar.WebApp.Controllers
                     NextRecievablemonthEnd = startDate.AddMonths(1).AddDays(-1);
                     //NextRecievablemonthEnd = receivedlastmonthStart.AddMonths(2).AddDays(-1);
                 }
-                else if (receivedlastmonthEnd.Month > CurrentMonth)
+                else if (receivedlastmonthEnd.Month >= CurrentMonth)
                 {
                     NextRecievablemonthEnd = receivedlastmonthStart.AddMonths(2).AddDays(-1);
-                }
-
-                if (PBalance > 0)
-                {
-                    payment.Balance += PBalance;
                 }
 
                 ValidationPayment Payment = new ValidationPayment()
                 {
                     ShowroomID = payment.ShowroomID,
-                    Balance = payment.Balance,
-                    Recieved = payment.Recieved,
                     Recievable = payment.Recievable,
+                    Recieved = payment.Recieved,
+                    Discount = payment.Discount,
+                    Balance = payment.Balance,
                     RecievedFromDate = receivedfirstmonthStart,
                     RecievedToDate = receivedlastmonthEnd,
                     RecievableFromDate = NextRecievablemonthStart,
                     RecievableToDate = NextRecievablemonthEnd,
-                    UpdatedBy = (int)Session["Id"],
+                    CreatedBy = (int)Session["Id"],                   
                 };
 
-                var reas = PayRepoObj.ShowroomPaymentClear(Payment);
+                var reas = PayRepoObj.InsertPayment(Payment);
                 if (reas)
                 {
                     TempData["SuccessMsg"] = "Payment Added Successfully!";
