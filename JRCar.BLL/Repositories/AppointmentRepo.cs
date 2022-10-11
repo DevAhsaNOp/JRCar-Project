@@ -25,6 +25,7 @@ namespace JRCar.BLL.Repositories
             {
                 if (model != null)
                 {
+                    int reas = 0;
                     tblAppointment appointment = new tblAppointment()
                     {
                         CreatedBy = model.CreatedBy,
@@ -34,8 +35,14 @@ namespace JRCar.BLL.Repositories
                         UserInterestedID = (model.UserInterestedID != null) ? model.UserInterestedID : null,
                         ConfirmDatetime = model.Datetime
                     };
-
-                    var reas = appointmentDb.InsertAppointment(appointment);
+                    if (model.UserInterestedID != null)
+                    {
+                        reas = appointmentDb.InsertUserAppointment(appointment);
+                    }
+                    else
+                    {
+                        reas = appointmentDb.InsertAppointment(appointment);
+                    }
                     if (reas > 0)
                     {
                         var appntreas = InsertAppointmentDetails(model, reas);

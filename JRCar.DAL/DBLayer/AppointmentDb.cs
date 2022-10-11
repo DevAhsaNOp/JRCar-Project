@@ -42,6 +42,32 @@ namespace JRCar.DAL.DBLayer
                 throw ex;
             }
         }
+        
+        public int InsertUserAppointment(tblAppointment model)
+        {
+            try
+            {
+                if (model != null)
+                {
+                    model.IsAccepted = false;
+                    model.IsRead = null;
+                    model.IsUserRead = false;
+                    model.Isactive = true;
+                    model.CreatedOn = DateTime.Now;
+                    model.UpdatedOn = null;
+                    model.UpdatedBy = null;
+                    _context.tblAppointments.Add(model);
+                    Save();
+                    return model.ID;
+                }
+                else
+                    return 0;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
 
         public int InsertAppointmentDetails(tblAppointmentDetail model)
         {
@@ -445,7 +471,7 @@ namespace JRCar.DAL.DBLayer
 
         public int GetUserTodaysAppointmentsCount(DateTime currentDate, int UserID)
         {
-            var reas = _context.tblAppointments.Where(x => x.UserInterestedID == UserID && (x.UpdatedOn > currentDate || x.IsUserRead == false)).OrderByDescending(x => x.UpdatedOn).ToList().Count;
+            var reas = _context.tblAppointments.Where(x => (x.UserInterestedID == UserID && (x.UpdatedOn > currentDate || x.IsUserRead == false)) || (x.tblUserAdd.UserID == UserID && (x.UpdatedOn > currentDate || x.IsUserRead == false))).OrderByDescending(x => x.CreatedOn).ToList().Count;
             return reas;
         }
 
@@ -457,7 +483,7 @@ namespace JRCar.DAL.DBLayer
 
         public IEnumerable<tblAppointment> GetUserAppointments(DateTime currentDate, int UserID)
         {
-            var reas = _context.tblAppointments.Where(x => x.UserInterestedID == UserID && (x.UpdatedOn > currentDate || x.IsUserRead == false)).OrderByDescending(x => x.UpdatedOn).ToList();
+            var reas = _context.tblAppointments.Where(x => (x.UserInterestedID == UserID && (x.UpdatedOn > currentDate || x.IsUserRead == false)) || (x.tblUserAdd.UserID == UserID && (x.UpdatedOn > currentDate || x.IsUserRead == false))).ToList();
             return reas;
         }
 

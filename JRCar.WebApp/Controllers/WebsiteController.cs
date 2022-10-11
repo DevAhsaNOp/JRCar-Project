@@ -713,6 +713,74 @@ namespace JRCar.WebApp.Controllers
 
         #endregion
 
+        #region **Car Ads Appointment**
+
+        [AcceptVerbs(HttpVerbs.Post)]
+        [Authorize(Roles = "Showroom")]
+        public ActionResult ScheduleAppointment(string useremail, string userphone, string selecteddatetime, string purpose)
+        {
+            try
+            {
+                if (User.Identity.IsAuthenticated)
+                {
+                    if (userphone != null && selecteddatetime != null && purpose != null)
+                    {
+                        if (purpose.Length > 1 && userphone.Length > 1 && selecteddatetime.Length > 1)
+                        {
+                            var email = (useremail.Length > 1) ? useremail : Session["Email"].ToString();
+                            var ShowroomID = Convert.ToInt32(Session["Id"]);
+                            var CarID = Convert.ToInt32(Session["UserCarID"]);
+                            AppointmentRepo repo = new AppointmentRepo();
+
+                            ValidateAppointment appointment = new ValidateAppointment()
+                            {
+                                Email = email,
+                                ShowroomInterestedID = ShowroomID,
+                                UserCarID = CarID,
+                                Number = userphone,
+                                Purpose = purpose,
+                                Datetime = Convert.ToDateTime(selecteddatetime),
+                                CreatedBy = ShowroomID,
+                            };
+
+                            var reas = repo.InsertAppointment(appointment);
+                            if (reas)
+                            {
+                                ModelState.Clear();
+                                return Json(true, JsonRequestBehavior.AllowGet);
+                            }
+                            else
+                            {
+                                ModelState.Clear();
+                                return Json(false, JsonRequestBehavior.AllowGet);
+                            }
+                        }
+                        else
+                        {
+                            ModelState.Clear();
+                            return Json(false, JsonRequestBehavior.AllowGet);
+                        }
+                    }
+                    else
+                    {
+                        ModelState.Clear();
+                        return Json(false, JsonRequestBehavior.AllowGet);
+                    }
+                }
+                else
+                {
+                    ModelState.Clear();
+                    return Json(false, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        #endregion
+
         #region **Car Detail**
         [AcceptVerbs(HttpVerbs.Get)]
         [Route("Ad/{AdID}")]
@@ -724,6 +792,7 @@ namespace JRCar.WebApp.Controllers
             var IsUserCar = carDetail.UserID;
             if ((carDetail == null || UserID != IsUserCar) && (RepoObj.IsShowroom(UserID) == false))
             {
+                Session["UserCarID"] = null;
                 TempData["ErrorMsg"] = "Car you trying to view is not exists!";
                 return RedirectToAction("AllVehicles");
             }
@@ -737,6 +806,7 @@ namespace JRCar.WebApp.Controllers
                 {
                     images.Add(FolderName[2] + "/" + Path.GetFileName(item));
                 }
+                Session["UserCarID"] = carDetail.AdID;
                 ViewBag.Images = images;
                 return View(carDetail);
             }

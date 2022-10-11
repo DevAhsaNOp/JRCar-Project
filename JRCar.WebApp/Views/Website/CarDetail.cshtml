@@ -24,16 +24,12 @@
         <link href="~/Files/css/color.css" rel="stylesheet">
         <link href="~/Files/css/widget.css" rel="stylesheet">
         <link href="~/Files/css/responsive.css" rel="stylesheet">
-        <!-- <link href="Files/css/bootstrap-rtl.css" rel="stylesheet"> Uncomment it if needed! -->
-        <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-        <!--[if lt IE 9]>
-              <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-              <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-        <![endif]-->
         <script src="~/Files/scripts/jquery.js"></script>
         <script src="~/Files/scripts/modernizr.js"></script>
         <script src="~/Files/scripts/bootstrap.min.js"></script>
+        <!-- SweetAlert2 -->
+        <link rel="stylesheet" href="~/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
+        <script src="~/plugins/sweetalert2/sweetalert2.min.js"></script>
         <style>
             .single-page .cs-banner ul.cs-banner-slider li .cs-media figure img {
                 height: 50vh !important;
@@ -57,7 +53,80 @@
                 padding-bottom: 10px !important;
                 margin-bottom: 10px !important;
             }
+
+            .modal-open .modal {
+                overflow-x: auto;
+                overflow-y: auto;
+            }
+
+            input[type="datetime-local"], input[type="time"] {
+                font-size: 14px;
+                color: #cacaca;
+                border: none;
+                padding: 0;
+                border-radius: 0;
+                height: 16px;
+                position: relative;
+                top: -5px;
+            }
+
+                input[type="datetime-local"]::-webkit-calendar-picker-indicator, input[type="time"]::-webkit-calendar-picker-indicator {
+                    cursor: pointer;
+                    border-radius: 4px;
+                    font-size: 18px;
+                    margin-right: 2px;
+                    opacity: 1;
+                    filter: invert(0.55);
+                }
         </style>
+        <script>
+        function fnAuthorize() {
+            var userAuthorized = @User.Identity.IsAuthenticated.ToString().ToLower();
+            var Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 5000
+            });
+            if (userAuthorized) {
+            }
+            else {
+                $('#schedule-test-drive').modal('hide');
+                Toast.fire({
+                    title: '<span style="font-size:10px;line-height:10px;text-transform: capitalize;text-align:center">Please Sign In. Before Scheduling an appointment!</span>',
+                    footer: '<a href="/Account/SignIn" style="font-size:14px;" class="btn btn-danger">Sign In</a>'
+                })
+                return false;
+            }
+        }
+
+        function fnSuccess(data) {
+            $('#schedule-test-drive').modal('hide');
+            $('#schedule-test-drive').find('form').trigger('reset');
+            var Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 5000
+            });
+
+            if (data) {
+                Toast.fire({
+                    icon: 'success',
+                    title: '<span style="font-size:10px;line-height:10px;text-transform: capitalize;text-align:center">Appointment request has been sent Succesfully!</span>',
+                });
+            }
+            else {
+                Toast.fire({
+                    icon: 'error',
+                    title: '<span style="font-size:10px;line-height:10px;text-transform: capitalize;text-align:center">Something went wrong. Please try again Later!</span>',
+                })
+            }
+            setTimeout(function () {
+                location.reload(true);
+            }, 5000);
+        }
+        </script>
     </head>
     <body class="wp-automobile single-page">
         <div class="wrapper">
@@ -182,80 +251,12 @@
                                     </div>
                                 </div>
                             </div>
-
                             <aside class="page-sidebar col-lg-3 col-md-3 col-sm-12 col-xs-12">
                                 <div class="cs-category-link-icon">
                                     <ul>
-                                        <li><a data-toggle="modal" href="http://chimpgroup.com/themeforest/automobile/remote.html" data-target="#request-more-info"><i class="cs-color icon-question-circle"></i>Request More Info</a></li>
-                                        <li><a data-toggle="modal" href="http://chimpgroup.com/themeforest/automobile/remote.html" data-target="#schedule-test-drive"><i class="cs-color icon-chrome2"></i>Schedule Test Drive</a></li>
-                                        <li><a data-toggle="modal" href="http://chimpgroup.com/themeforest/automobile/remote.html" data-target="#make-an-Offer"><i class="cs-color icon-documents2"></i>Make an Offer</a></li>
+                                        <li><a data-toggle="modal" href="javascript:void(0)" data-target="#schedule-test-drive"><i class="cs-color icon-car"></i>Schedule Appointment</a></li>
                                         <li><a href="~/Files/extra-images/pdf-sample.pdf" download><i class="cs-color icon-print3"></i>Print this Detail</a></li>
-                                        <li><a data-toggle="modal" href="http://chimpgroup.com/themeforest/automobile/remote.html" data-target="#email-to-friend"><i class="cs-color icon-mail5"></i>Email to a Friend</a></li>
                                     </ul>
-                                    <div class="cs-form-modal">
-                                        <div class="modal fade" id="request-more-info" tabindex="-1" role="dialog">
-                                            <div class="modal-dialog" role="document">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <h4>Request More Info</h4>
-                                                        <div class="cs-login-form">
-                                                            <form class="row">
-                                                                <div class="col-lg-12 col-lg-12 col-sm-12 col-xs-12">
-                                                                    <div class="cs-modal-field">
-                                                                        <label for="cs-username-3">
-                                                                            <strong>USERNAME</strong>
-                                                                            <i class="icon-user-plus2"></i>
-                                                                            <input type="text" id="cs-username-3" placeholder="Type desired username" required>
-                                                                        </label>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-lg-12 col-lg-12 col-sm-12 col-xs-12">
-                                                                    <div class="cs-modal-field">
-                                                                        <label for="cs-email-3">
-                                                                            <strong>Email</strong>
-                                                                            <i class="icon-envelope"></i>
-                                                                            <input type="email" id="cs-email-3" placeholder="Type desired email" required>
-                                                                        </label>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-lg-12 col-lg-12 col-sm-12 col-xs-12">
-                                                                    <div class="cs-modal-field">
-                                                                        <label for="phone">
-                                                                            <strong>Phone</strong>
-                                                                            <i class="icon-iphone26"></i>
-                                                                            <input type="tel" id="phone" placeholder="+44 123 456 789">
-                                                                        </label>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-lg-12 col-lg-12 col-sm-12 col-xs-12">
-                                                                    <div class="cs-modal-field">
-                                                                        <label>
-                                                                            <textarea required></textarea>
-                                                                        </label>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-lg-12 col-lg-12 col-sm-12 col-xs-12">
-                                                                    <div class="cs-modal-field">
-                                                                        <div class="cs-media">
-                                                                            <figure><img src="~/Files/extra-images/cs-captha-img.png" alt="" /></figure>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-lg-12 col-lg-12 col-sm-12 col-xs-12">
-                                                                    <div class="cs-modal-field">
-                                                                        <input class="cs-color csborder-color" type="submit" value="Submit Query">
-                                                                    </div>
-                                                                </div>
-                                                            </form>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
                                     <div class="cs-form-modal">
                                         <div class="modal fade" id="schedule-test-drive" tabindex="-1" role="dialog">
                                             <div class="modal-dialog" role="document">
@@ -264,24 +265,21 @@
                                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                                     </div>
                                                     <div class="modal-body">
-                                                        <h4>Schedule Test Drive</h4>
+                                                        <h4>Schedule Appointment</h4>
                                                         <div class="cs-login-form">
-                                                            <form class="row">
-                                                                <div class="col-lg-12 col-lg-12 col-sm-12 col-xs-12">
-                                                                    <div class="cs-modal-field">
-                                                                        <label for="cs-username-4">
-                                                                            <strong>USERNAME</strong>
-                                                                            <i class="icon-user-plus2"></i>
-                                                                            <input type="text" id="cs-username-4" placeholder="Type desired username" required>
-                                                                        </label>
-                                                                    </div>
-                                                                </div>
+                                                            @using (Ajax.BeginForm("ScheduleAppointment", "Website", new AjaxOptions
+                                                            {
+                                                                HttpMethod = "POST",
+                                                                OnBegin = "fnAuthorize",
+                                                                OnSuccess = "fnSuccess"
+                                                            }, htmlAttributes: new { @class = "row" }))
+                                                            {
                                                                 <div class="col-lg-12 col-lg-12 col-sm-12 col-xs-12">
                                                                     <div class="cs-modal-field">
                                                                         <label for="cs-email-4">
                                                                             <strong>Email</strong>
                                                                             <i class="icon-envelope"></i>
-                                                                            <input type="email" id="cs-email-4" placeholder="Type desired username" required>
+                                                                            <input type="email" id="cs-email-4" title="Email is not in correct format. e.g. abc@mail.com" style="color: darkslategray;" placeholder="Type your email" name="useremail">
                                                                         </label>
                                                                     </div>
                                                                 </div>
@@ -290,31 +288,24 @@
                                                                         <label for="phone-1">
                                                                             <strong>Phone</strong>
                                                                             <i class="icon-iphone26"></i>
-                                                                            <input type="tel" id="phone-1" placeholder="+44 123 456 789">
+                                                                            <input type="tel" style="color: darkslategray;" title="Phone Number is not in correct format. e.g. 0331 2345678" pattern="03[0-9]{2}(?!1234567)(?!1111111)(?!7654321)[0-9]{7}" id="phone-1" placeholder="+92 331 23 456 78" required name="userphone">
                                                                         </label>
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-lg-12 col-lg-12 col-sm-12 col-xs-12">
                                                                     <div class="cs-modal-field">
                                                                         <label for="best-time-1">
-                                                                            <strong>Best time</strong>
-                                                                            <i class="icon-clock96"></i>
-                                                                            <input type="text" id="best-time-1" placeholder="Select date" required>
+                                                                            <strong>Best Datetime</strong>
+                                                                            @*<i class="icon-calendar"></i>*@
+                                                                            <input type="datetime-local" id="best-date-1" style="color: darkslategray;" placeholder="Select date" required name="selecteddatetime">
                                                                         </label>
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-lg-12 col-lg-12 col-sm-12 col-xs-12">
                                                                     <div class="cs-modal-field">
                                                                         <label>
-                                                                            <textarea required></textarea>
+                                                                            <textarea required placeholder="Purpose to Visit" style="color: darkslategray;" name="purpose"></textarea>
                                                                         </label>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-lg-12 col-lg-12 col-sm-12 col-xs-12">
-                                                                    <div class="cs-modal-field">
-                                                                        <div class="cs-media">
-                                                                            <figure><img src="~/Files/extra-images/cs-captha-img.png" alt="" /></figure>
-                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-lg-12 col-lg-12 col-sm-12 col-xs-12">
@@ -322,167 +313,7 @@
                                                                         <input class="cs-color csborder-color" type="submit" value="Submit Query">
                                                                     </div>
                                                                 </div>
-                                                            </form>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="cs-form-modal">
-                                        <div class="modal fade" id="make-an-Offer" tabindex="-1" role="dialog">
-                                            <div class="modal-dialog" role="document">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <h4>Make an Offer</h4>
-                                                        <div class="cs-login-form">
-                                                            <form class="row">
-                                                                <div class="col-lg-12 col-lg-12 col-sm-12 col-xs-12">
-                                                                    <div class="cs-modal-field">
-                                                                        <label for="cs-username-6">
-                                                                            <strong>USERNAME</strong>
-                                                                            <i class="icon-user-plus2"></i>
-                                                                            <input type="text" id="cs-username-6" placeholder="Type desired username" required>
-                                                                        </label>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-lg-12 col-lg-12 col-sm-12 col-xs-12">
-                                                                    <div class="cs-modal-field">
-                                                                        <label for="cs-email-6">
-                                                                            <strong>Email</strong>
-                                                                            <i class="icon-envelope"></i>
-                                                                            <input type="email" id="cs-email-6" placeholder="Type desired email" required>
-                                                                        </label>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-lg-12 col-lg-12 col-sm-12 col-xs-12">
-                                                                    <div class="cs-modal-field">
-                                                                        <label for="phone-6">
-                                                                            <strong>Phone</strong>
-                                                                            <i class="icon-iphone26"></i>
-                                                                            <input type="tel" id="phone-6" placeholder="+44 123 456 789">
-                                                                        </label>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-lg-12 col-lg-12 col-sm-12 col-xs-12">
-                                                                    <div class="cs-modal-field">
-                                                                        <label for="offered-price">
-                                                                            <strong>Offered Price</strong>
-                                                                            <i class="icon-dollar183"></i>
-                                                                            <input type="text" id="offered-price" placeholder="$25,000">
-                                                                        </label>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-lg-12 col-lg-12 col-sm-12 col-xs-12">
-                                                                    <div class="cs-modal-field">
-                                                                        <label>
-                                                                            <strong>Financing Required</strong>
-                                                                            <i class="icon-expand38"></i>
-                                                                            <select data-placeholder="" style="width:100%;" class="chosen-select" tabindex="5">
-                                                                                <option>$30,000</option>
-                                                                                <option>$35,000</option>
-                                                                                <option>$45,000</option>
-                                                                                <option>$55,000</option>
-                                                                            </select>
-                                                                        </label>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-lg-12 col-lg-12 col-sm-12 col-xs-12">
-                                                                    <div class="cs-modal-field">
-                                                                        <label>
-                                                                            <textarea required></textarea>
-                                                                        </label>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-lg-12 col-lg-12 col-sm-12 col-xs-12">
-                                                                    <div class="cs-modal-field">
-                                                                        <div class="cs-media">
-                                                                            <figure><img src="~/Files/extra-images/cs-captha-img.png" alt="" /></figure>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-lg-12 col-lg-12 col-sm-12 col-xs-12">
-                                                                    <div class="cs-modal-field">
-                                                                        <input class="cs-color csborder-color" type="submit" value="Submit Query">
-                                                                    </div>
-                                                                </div>
-                                                            </form>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="cs-form-modal">
-                                        <div class="modal fade" id="email-to-friend" tabindex="-1" role="dialog">
-                                            <div class="modal-dialog" role="document">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <h4>Email to a Friend</h4>
-                                                        <div class="cs-login-form">
-                                                            <form class="row">
-                                                                <div class="col-lg-12 col-lg-12 col-sm-12 col-xs-12">
-                                                                    <div class="cs-modal-field">
-                                                                        <label for="cs-username-7">
-                                                                            <strong>USERNAME</strong>
-                                                                            <i class="icon-user-plus2"></i>
-                                                                            <input type="text" id="cs-username-7" placeholder="Type desired username" required>
-                                                                        </label>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-lg-12 col-lg-12 col-sm-12 col-xs-12">
-                                                                    <div class="cs-modal-field">
-                                                                        <label for="cs-email-7">
-                                                                            <strong>Email</strong>
-                                                                            <i class="icon-envelope"></i>
-                                                                            <input type="email" id="cs-email-7" placeholder="Type desired email" required>
-                                                                        </label>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-lg-12 col-lg-12 col-sm-12 col-xs-12">
-                                                                    <div class="cs-modal-field">
-                                                                        <label for="cs-friend-email">
-                                                                            <strong>Friend Email</strong>
-                                                                            <i class="icon-envelope"></i>
-                                                                            <input type="email" id="cs-friend-email" placeholder="Type desired friend email" required>
-                                                                        </label>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-lg-12 col-lg-12 col-sm-12 col-xs-12">
-                                                                    <div class="cs-modal-field">
-                                                                        <label for="phone-7">
-                                                                            <strong>Phone</strong>
-                                                                            <i class="icon-iphone26"></i>
-                                                                            <input type="tel" id="phone-7" placeholder="+44 123 456 789">
-                                                                        </label>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-lg-12 col-lg-12 col-sm-12 col-xs-12">
-                                                                    <div class="cs-modal-field">
-                                                                        <label>
-                                                                            <textarea required></textarea>
-                                                                        </label>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-lg-12 col-lg-12 col-sm-12 col-xs-12">
-                                                                    <div class="cs-modal-field">
-                                                                        <div class="cs-media">
-                                                                            <figure><img src="~/Files/extra-images/cs-captha-img.png" alt="" /></figure>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-lg-12 col-lg-12 col-sm-12 col-xs-12">
-                                                                    <div class="cs-modal-field">
-                                                                        <input class="cs-color csborder-color" type="submit" value="Submit Query">
-                                                                    </div>
-                                                                </div>
-                                                            </form>
+                                                            }
                                                         </div>
                                                     </div>
                                                 </div>
@@ -670,6 +501,116 @@
                 $('.slick-next').click();
             }, 3000);
 
+            setInterval(function () {
+                AppntupdateNotificationCount();
+            }, 1000);
+
+            AppntupdateNotification();
+            AppntGetCount();
+            AppntupdateNotificationCount();
+
+            $('a.Appntnoti').click(function (e) {
+                e.stopPropagation();
+                var count = 0;
+                count = parseInt($('span.Appntcount').html()) || 0;
+
+                //Only load Appntnotification if not already loaded
+                if (count > 0) {
+                    AppntupdateNotification();
+                    sessionStorage.setItem("Appntcount", 0);
+                    $('.Appntnoti-content').show();
+                    AppntupdateNotificationRead();
+                }
+                else if ($('.Appntnoti-content').css('display') == 'block') {
+                    $('.Appntnoti-content').hide();
+                }
+                else if ($('.Appntnoti-content').css('display') == 'none') {
+                    $('.Appntnoti-content').show();
+                    //AppntupdateNotificationRead();
+                }
+                $('span.Appntcount', this).html('');
+            })
+
+            // Hide Appntnotifications
+            $('html').click(function () {
+                $('.Appntnoti-content').hide();
+            })
+
+            // Notifications Change to Read When NotiFication Icon Press
+            function AppntupdateNotificationRead() {
+                $.ajax({
+                    type: 'GET',
+                    url: '/Website/ChangeUserAppointmentsToAsRead',
+                    success: function (response) {
+                        sessionStorage.setItem("Appntcount", 0);
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    }
+                })
+            }
+
+            function AppntGetCount() {
+                var count = sessionStorage.getItem("Appntcount");
+
+                if (count > 0) {
+                    $('span.Appntcount').html(count);
+                }
+                else {
+                    $('span.Appntcount', this).html('');
+                }
+            }
+
+            // Update Appntnotification
+            function AppntupdateNotification() {
+                $('#AppntnotiContent').empty();
+                $('#AppntnotiContent').append($('<li>Loading...</li>'));
+                $.ajax({
+                    type: 'GET',
+                    url: '/Website/GetUserAppointmentsList',
+                    success: function (response) {
+                        $('#AppntnotiContent').empty();
+                        if (response.length == 0) {
+                            $('#AppntnotiContent').append($('<a href="#" class="dropdown-item"><i class="icon-envelope" style="padding-right: 5px;"></i> No Notification Available</a>'));
+                        }
+                        $.each(response, function (index, value) {
+                            console.log("IsAccepted :" + value.IsAccpeted);
+                            if (value.IsAccpeted) {
+                                $('#AppntnotiContent').append($('<span href="#" class="dropdown-item" style="white-space: pre-line;"> <i class="icon-envelope" style="padding-right: 5px;"></i> Appointment Appected By ' + value.Title + ' of ' + value.Description + '<span style="display:flex;align-items:center;justify-content: space-evenly;"><span class="btn btn-sm btn-info" style="padding: 0.25rem 4rem !important;" onclick="AppntDetls(' + value.AdURL + ')">View Details</span></span></span>'));
+                            }
+                            else {
+                                $('#AppntnotiContent').append($('<span href="#" class="dropdown-item" style="white-space: pre-line;"> <i class="icon-envelope" style="padding-right: 5px;"></i> Appointment Reject By ' + value.Title + ' of ' + value.Description + '<span style="display:flex;align-items:center;justify-content: space-evenly;"><span class="btn btn-sm btn-info" style="padding: 0.25rem 4rem !important;" onclick="AppntDetls(' + value.AdURL + ')">View Details</span></span></span>'));
+                            }
+                        });
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    }
+                })
+            }
+
+            // Update Appntnotification count
+            function AppntupdateNotificationCount() {
+                var count = 0;
+                $.ajax({
+                    type: 'GET',
+                    url: '/Website/GetUserAppointmentsListCount',
+                    success: function (response) {
+                        count = response;
+                        if (count > 0) {
+                            $('span.Appntcount').html(count);
+                        }
+                        else {
+                            $('span.Appntcount').html('');
+                        }
+                        sessionStorage.setItem("Appntcount", count);
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    }
+                })
+            }
+
             const currentTimezoneOffset = 8; // UTC+8:00 timezone, change it
 
             Date.prototype.yyyymmdd = function () {
@@ -703,28 +644,25 @@
 
             $("#btnShow").click(function (e) {
                 var userAuthorized = @User.Identity.IsAuthenticated.ToString().ToLower();
+                var Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 5000
+                });
                 if (userAuthorized) {
                     $("#PhoneNumber").html("Phone Number: 0" + @Model.Number);
                     $("#btnShow").hide();
                 }
                 else {
-                    window.location.href = "@Url.Action("SignIn", "Account")";
-                    SetTempData();
+                    $('#schedule-test-drive').modal('hide');
+                    Toast.fire({
+                        title: '<span style="font-size:10px;line-height:10px;text-transform: capitalize;text-align:center">Please Sign In. Before View a Number!</span>',
+                        footer: '<a href="/Account/SignIn" style="font-size:14px;" class="btn btn-danger">Sign In</a>'
+                    })
+                    return false;
                 }
             });
-
-            function SetTempData() {
-                $.ajax({
-                    type: "POST",
-                    url: '/Account/SetTempData',
-                    data: '{ value: "Please Sign In to see a Phone number..."}',
-                    contentType: "application/json; charset=utf-8",
-                    dataType: "text",
-                    success: function (r) {
-                        console.log(r);
-                    }
-                });
-            }
 
             success();
 

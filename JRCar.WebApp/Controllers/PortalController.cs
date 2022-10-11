@@ -530,13 +530,21 @@ namespace JRCar.WebApp.Controllers
             {
                 if (User.Identity.IsAuthenticated)
                 {
-                    var ShowroomID = Convert.ToInt32(Session["Id"]);
-                    var notificationRegisterTime = Session["AppLastUpdated"] != null ? Convert.ToDateTime(Session["AppLastUpdated"]) : DateTime.Now;
-                    NotificationComponent NC = new NotificationComponent();
-                    var list = NC.GetShowroomAppointments(notificationRegisterTime, ShowroomID);
-                    //Update session here for get only new added (Announcements)
-                    Session["AppLastUpdated"] = DateTime.Now;
-                    return new JsonResult { Data = list, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
+                    if (Session["Id"] != null)
+                    {
+                        var ShowroomID = Convert.ToInt32(Session["Id"]);
+                        var notificationRegisterTime = Session["AppLastUpdated"] != null ? Convert.ToDateTime(Session["AppLastUpdated"]) : DateTime.Now;
+                        NotificationComponent NC = new NotificationComponent();
+                        var list = NC.GetShowroomAppointments(notificationRegisterTime, ShowroomID);
+                        //Update session here for get only new added (Announcements)
+                        Session["AppLastUpdated"] = DateTime.Now;
+                        return new JsonResult { Data = list, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
+                    }
+                    else
+                    {
+                        var err = (int)HttpStatusCode.BadRequest;
+                        return Json(new { error = err + " Bad Request Error " + "Invalid Request!!" });
+                    }
                 }
                 else
                 {

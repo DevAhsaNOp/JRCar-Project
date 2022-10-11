@@ -397,6 +397,7 @@ namespace JRCar.DAL.DBLayer
                     {
                         model.Isactive = true;
                         model.Isarchive = false;
+                        model.Issold = false;
                         model.CreatedOn = DateTime.Now;
                         model.ExpiryDate = DateTime.Now.AddMonths(2);
                         _context.tblUserAdds.Add(model);
