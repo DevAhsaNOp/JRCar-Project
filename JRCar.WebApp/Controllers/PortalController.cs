@@ -140,6 +140,7 @@ namespace JRCar.WebApp.Controllers
         [Authorize(Roles = "Admin,Showroom,Union")]
         public ActionResult UpdateProfile()
         {
+            Session["UserEditEmail"] = null;
             var id = Convert.ToInt32(Session["Id"]);
             var Role = Session["Role"].ToString();
             var reas = RepoObj.GetUserDetailById(id, Role);
@@ -171,30 +172,30 @@ namespace JRCar.WebApp.Controllers
                                 user.Email = user.SignUpUpdateEmail;
                                 var Role = Session["Role"].ToString();
                                 var IsUpdated = RepoObj.UpdateUser(user, role);
-                                string oldImgPath = Request.MapPath(Session["Image"].ToString());
+                                //string oldImgPath = Request.MapPath(Session["Image"].ToString());
                                 if (IsUpdated)
                                 {
                                     Session["Name"] = Regex.Replace(user.Name.ToUpper().Split()[0], @"[^0-9a-zA-Z\ ]+", "");
                                     file.SaveAs(path);
-                                    if (System.IO.File.Exists(oldImgPath))
+                                    TempData["SuccessMsg"] = "Account Updated Successfully!";
+                                    Session["Image"] = user.Image;
+                                    if (role == "Admin" || role == "Union" || role == "Showroom")
                                     {
-                                        System.IO.File.Delete(oldImgPath);
-                                        TempData["SuccessMsg"] = "Account Updated Successfully!";
-                                        Session["Image"] = user.Image;
-                                        if (role == "Admin" || role == "Union" || role == "Showroom")
-                                        {
-                                            return RedirectToAction("UpdateProfile");
-                                        }
-                                        else if (role == "User")
-                                        {
-                                            return RedirectToAction("ProfileSettings", "Website");
-                                        }
-                                        else
-                                        {
-                                            TempData["ErrorMsg"] = "Error occured on login Account!";
-                                            return RedirectToAction("SignIn");
-                                        }
+                                        return RedirectToAction("UpdateProfile");
                                     }
+                                    else if (role == "User")
+                                    {
+                                        return RedirectToAction("ProfileSettings", "Website");
+                                    }
+                                    else
+                                    {
+                                        TempData["ErrorMsg"] = "Error occured on login Account!";
+                                        return RedirectToAction("SignIn");
+                                    }
+                                    //if (System.IO.File.Exists(oldImgPath))
+                                    //{
+                                    //    System.IO.File.Delete(oldImgPath);
+                                    //}
                                 }
                                 else
                                 {
@@ -1463,33 +1464,33 @@ namespace JRCar.WebApp.Controllers
                                 user.UpdatedBy = (int)Session["Id"];
                                 user.Email = user.SignUpUpdateEmail;
                                 var IsUpdated = RepoObj.UpdateUser(user, role);
-                                string oldImgPath = Request.MapPath(Session["Image"].ToString());
+                                //string oldImgPath = Request.MapPath(Session["Image"].ToString());
                                 Session["UserEditID"] = null;
                                 Session["UserEditEmail"] = null;
                                 if (IsUpdated)
                                 {
                                     file.SaveAs(path);
-                                    if (System.IO.File.Exists(oldImgPath))
+                                    Session["CurrentUserAvatar"] = user.Image;
+                                    TempData["SuccessMsg"] = "Account Updated Successfully!";
+                                    if (user.Active == "1")
                                     {
-                                        if (Path.GetFileNameWithoutExtension(oldImgPath) == "user")
-                                        {
-                                        }
-                                        else
-                                        {
-                                            System.IO.File.Delete(oldImgPath);
-                                        }
-                                        Session["CurrentUserAvatar"] = user.Image;
-                                        TempData["SuccessMsg"] = "Account Updated Successfully!";
-                                        if (user.Active == "1")
-                                        {
-                                            return RedirectToAction("ShowroomEdit", new { UserID = user.ID });
-                                        }
-                                        else
-                                        {
-                                            var IsInactive = RepoObj.InActiveModel(user.ID, role);
-                                            return RedirectToAction("ShowroomEdit", new { UserID = user.ID });
-                                        }
+                                        return RedirectToAction("ShowroomEdit", new { UserID = user.ID });
                                     }
+                                    else
+                                    {
+                                        var IsInactive = RepoObj.InActiveModel(user.ID, role);
+                                        return RedirectToAction("ShowroomEdit", new { UserID = user.ID });
+                                    }
+                                    //if (System.IO.File.Exists(oldImgPath))
+                                    //{
+                                    //    if (Path.GetFileNameWithoutExtension(oldImgPath) == "user")
+                                    //    {
+                                    //    }
+                                    //    else
+                                    //    {
+                                    //        System.IO.File.Delete(oldImgPath);
+                                    //    }
+                                    //}
                                 }
                                 else
                                 {
@@ -1543,7 +1544,7 @@ namespace JRCar.WebApp.Controllers
                             return RedirectToAction("ShowroomEdit", new { UserID = user.ID });
                         }
                     }
-                    return RedirectToAction("ShowroomEdit", new { UserID = (int)Session["UserEditID"] });
+                    //return RedirectToAction("ShowroomEdit", new { UserID = (int)Session["UserEditID"] });
                 }
                 else
                 {

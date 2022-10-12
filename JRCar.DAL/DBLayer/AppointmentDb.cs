@@ -227,7 +227,7 @@ namespace JRCar.DAL.DBLayer
 
         public bool ChangeUserAppointmentToAsRead(int UserID)
         {
-            var reas = _context.tblAppointments.Where(a => a.IsUserRead == false && a.UserInterestedID == UserID).ToList();
+            var reas = _context.tblAppointments.Where(a => (a.IsUserRead == false && a.UserInterestedID == UserID) || (a.tblUserAdd.UserID == UserID && a.IsUserRead == false)).ToList();
             if (reas.Count > 0)
             {
                 foreach (var appointment in reas)

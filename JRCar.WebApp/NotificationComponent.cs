@@ -9,6 +9,7 @@ using System.IO;
 using JRCar.BLL.Repositories;
 using JRCar.DAL.DBLayer;
 using JRCar.BOL.Validation_Classes;
+using System.Security.Policy;
 
 namespace JRCar.WebApp
 {
@@ -174,8 +175,36 @@ namespace JRCar.WebApp
 
         public IEnumerable<NotiShow> GetUserAppointments(DateTime afterDate, int UserID)
         {
-            var reas = appointmentrepo.GetUserAppointments(afterDate, UserID).Select(x => new NotiShow() { Title = x.tblCar.tblShowroom.FullName.ToString(), Description = x.tblCar.tblManufacturer.Manufacturer_Name + " " + x.tblCar.tblManfacturerCarModel.Manufacturer_CarModelName, AdURL = x.ID.ToString(), IsAccpeted = x.IsAccepted.Value });
-            return reas;
+            //var reas = appointmentrepo.GetUserAppointments(afterDate, UserID).Select(x => new NotiShow() { Title = x.tblCar.tblShowroom.FullName.ToString(), Description = x.tblCar.tblManufacturer.Manufacturer_Name + " " + x.tblCar.tblManfacturerCarModel.Manufacturer_CarModelName, AdURL = x.ID.ToString(), IsAccpeted = x.IsAccepted.Value });
+            var reas = appointmentrepo.GetUserAppointments(afterDate, UserID);
+            List<NotiShow> notis = new List<NotiShow>();
+            if (reas != null)
+            {
+                foreach (var item in reas)
+                {
+                    if (item.tblCar != null)
+                    {
+                        NotiShow noti = new NotiShow();
+                        noti.Title = item.tblCar.tblShowroom.FullName.ToString();
+                        noti.Description = item.tblCar.tblManufacturer.Manufacturer_Name + " " + item.tblCar.tblManfacturerCarModel.Manufacturer_CarModelName;
+                        noti.AdURL = item.ID.ToString();
+                        noti.IsAccpeted = item.IsAccepted.Value;
+                        notis.Add(noti);
+                    }
+                    else if (item.tblUserAdd != null)
+                    {
+                        NotiShow noti = new NotiShow();
+                        noti.Title = "New Appointment";
+                        noti.Description = item.tblUserAdd.tblManufacturer.Manufacturer_Name + " " + item.tblUserAdd.tblManfacturerCarModel.Manufacturer_CarModelName;
+                        noti.AdURL = item.ID.ToString();
+                        noti.IsAccpeted = item.IsAccepted.Value;
+                        notis.Add(noti);
+                    }
+                }
+                return notis;
+            }
+            else
+                return null;
         }
 
         public IEnumerable<ValidateAppointment> GetShowroomAppointmentsById(int ShowroomID)
@@ -215,7 +244,7 @@ namespace JRCar.WebApp
                     NotiShow appointment = new NotiShow()
                     {
                         FromUserName = appnt.tblUser.Name,
-                        Title = appnt.tblCar.tblManufacturer.Manufacturer_Name + " "+ appnt.tblCar.tblManfacturerCarModel.Manufacturer_CarModelName,
+                        Title = appnt.tblCar.tblManufacturer.Manufacturer_Name + " " + appnt.tblCar.tblManfacturerCarModel.Manufacturer_CarModelName,
                         Time = appnt.Datetime.ToString(),
                         Description = appnt.Purpose,
                         Date = appnt.CreatedOn.ToString(),

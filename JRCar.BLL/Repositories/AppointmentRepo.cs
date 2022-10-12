@@ -37,11 +37,11 @@ namespace JRCar.BLL.Repositories
                     };
                     if (model.UserInterestedID != null)
                     {
-                        reas = appointmentDb.InsertUserAppointment(appointment);
+                        reas = appointmentDb.InsertAppointment(appointment);
                     }
                     else
                     {
-                        reas = appointmentDb.InsertAppointment(appointment);
+                        reas = appointmentDb.InsertUserAppointment(appointment);
                     }
                     if (reas > 0)
                     {
