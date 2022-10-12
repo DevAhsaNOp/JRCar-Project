@@ -382,12 +382,14 @@ namespace JRCar.DAL.DBLayer
                 {
                     var appointment = _context.tblAppointments.Where(x => x.ID == id).Select(a => new ValidateAppointment()
                     {
+                        ID= a.ID,
                         tblUserAdd = a.tblUserAdd,
-                        tblUser = a.tblUser,
+                        tblShowroom = a.tblShowroom,
                         Purpose = a.tblAppointmentDetails.FirstOrDefault().Purpose,
                         Datetime = a.tblAppointmentDetails.FirstOrDefault().Date,
-                        ShowroomCarID = a.ShowroomCarID,
+                        UserCarID = a.UserCarID,
                         CreatedOn = a.CreatedOn,
+                        Number = a.tblAppointmentDetails.FirstOrDefault().Number,
                     }).FirstOrDefault();
                     if (appointment != null)
                         return appointment;

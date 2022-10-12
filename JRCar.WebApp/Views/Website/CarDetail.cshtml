@@ -574,13 +574,7 @@
                             $('#AppntnotiContent').append($('<a href="#" class="dropdown-item"><i class="icon-envelope" style="padding-right: 5px;"></i> No Notification Available</a>'));
                         }
                         $.each(response, function (index, value) {
-                            console.log("IsAccepted :" + value.IsAccpeted);
-                            if (value.IsAccpeted) {
-                                $('#AppntnotiContent').append($('<span href="#" class="dropdown-item" style="white-space: pre-line;"> <i class="icon-envelope" style="padding-right: 5px;"></i> Appointment Appected By ' + value.Title + ' of ' + value.Description + '<span style="display:flex;align-items:center;justify-content: space-evenly;"><span class="btn btn-sm btn-info" style="padding: 0.25rem 4rem !important;" onclick="AppntDetls(' + value.AdURL + ')">View Details</span></span></span>'));
-                            }
-                            else {
-                                $('#AppntnotiContent').append($('<span href="#" class="dropdown-item" style="white-space: pre-line;"> <i class="icon-envelope" style="padding-right: 5px;"></i> Appointment Reject By ' + value.Title + ' of ' + value.Description + '<span style="display:flex;align-items:center;justify-content: space-evenly;"><span class="btn btn-sm btn-info" style="padding: 0.25rem 4rem !important;" onclick="AppntDetls(' + value.AdURL + ')">View Details</span></span></span>'));
-                            }
+                            $('#AppntnotiContent').append($('<span href="#" class="dropdown-item" style="white-space: pre-line;"> <i class="icon-envelope" style="padding-right: 5px;"></i> ' + value.Title + value.Description + '<span style="display:flex;aligs:center;justify-content: space-evenly;"><span class="btn btn-sm btn-info" style="padding: 0.25rem 4rem !important;" onclick="AppntDetls(' + value.AdURL + ')">View Details</span></span></span>'));
                         });
                     },
                     error: function (error) {

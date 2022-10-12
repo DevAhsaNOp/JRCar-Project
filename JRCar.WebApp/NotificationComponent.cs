@@ -185,17 +185,24 @@ namespace JRCar.WebApp
                     if (item.tblCar != null)
                     {
                         NotiShow noti = new NotiShow();
-                        noti.Title = item.tblCar.tblShowroom.FullName.ToString();
-                        noti.Description = item.tblCar.tblManufacturer.Manufacturer_Name + " " + item.tblCar.tblManfacturerCarModel.Manufacturer_CarModelName;
-                        noti.AdURL = item.ID.ToString();
+                        if (item.IsAccepted.Value == false)
+                        {
+                            noti.Title = " Appointment Reject By " + item.tblCar.tblShowroom.FullName.ToString();
+                        }
+                        if (item.IsAccepted.Value == true)
+                        {
+                            noti.Title = " Appointment Appected By " + item.tblCar.tblShowroom.FullName.ToString();
+                        }
+                        noti.Description = " of " + item.tblCar.tblManufacturer.Manufacturer_Name + " " + item.tblCar.tblManfacturerCarModel.Manufacturer_CarModelName;
+                        noti.AdURL = "false";
                         noti.IsAccpeted = item.IsAccepted.Value;
                         notis.Add(noti);
                     }
                     else if (item.tblUserAdd != null)
                     {
                         NotiShow noti = new NotiShow();
-                        noti.Title = "New Appointment";
-                        noti.Description = item.tblUserAdd.tblManufacturer.Manufacturer_Name + " " + item.tblUserAdd.tblManfacturerCarModel.Manufacturer_CarModelName;
+                        noti.Title = "New Appointment Requested By" + item.tblShowroom.FullName.ToString();
+                        noti.Description = " of " + item.tblUserAdd.tblManufacturer.Manufacturer_Name + " " + item.tblUserAdd.tblManfacturerCarModel.Manufacturer_CarModelName;
                         noti.AdURL = item.ID.ToString();
                         noti.IsAccpeted = item.IsAccepted.Value;
                         notis.Add(noti);
@@ -266,13 +273,24 @@ namespace JRCar.WebApp
             }
         }
 
-        public ValidateAppointment GetUserCurrAppointmentById(int id)
+        public NotiShow GetUserCurrAppointmentById(int id)
         {
             try
             {
                 if (id > 0)
                 {
-                    var appointment = appointmentrepo.GetUserCurrAppointmentById(id);
+                    var appnt = appointmentrepo.GetUserCurrAppointmentById(id);
+                    NotiShow appointment = new NotiShow()
+                    {
+                        FromUserName = appnt.tblShowroom.FullName,
+                        Title = appnt.tblUserAdd.tblManufacturer.Manufacturer_Name + " " + appnt.tblUserAdd.tblManfacturerCarModel.Manufacturer_CarModelName,
+                        Time = appnt.Datetime.ToString(),
+                        Description = appnt.Purpose,
+                        Date = appnt.CreatedOn.ToString(),
+                        PhoneNumber = appnt.Number,
+                        AdURL = appnt.tblUserAdd.UserAdsURL,
+                        CardID = appnt.ID.ToString()
+                    };
                     if (appointment != null)
                         return appointment;
                     else

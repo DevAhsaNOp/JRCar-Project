@@ -30,6 +30,136 @@
     <link type="text/css" rel="stylesheet" href="~/dist/image-uploader.min.css">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
+
+            function UAppntDetls(id) {
+                var AppntID = id;
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("GetUserAppointmentById", "Website")",
+                    data: JSON.stringify({ id: AppntID }),
+                    contentType: "application/json; charset=utf-8",
+                    success: function (resp) {
+                        console.log(resp);
+                        $("#MUser").text(resp.FromUserName)
+                        $("#MPosted").text(resp.Date)
+                        $("#MCar").text(resp.Title)
+                        $("#MDate").text(resp.Time)
+                        $("#MDescp").text(resp.Description)
+                        $("#MPhone").text(resp.PhoneNumber)
+                        $("#MAd").attr("href","/Ads/"+resp.AdURL)
+                        $('#UserAppnt').modal('show')
+                    }
+                });
+            }
+
+            function URejectAppnt() {
+                $.ajax({
+                    type: 'GET',
+                    url: '/Portal/ShowroomAppointmentReject',
+                    success: function (response) {
+                        $('#exampleModal').modal('hide');
+                        var Toast = Swal.mixin({
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3000
+                        });
+                        if (response) {
+                            Toast.fire({
+                                icon: 'success',
+                                title: 'Appointment hase been Rejected Succesfully!'
+                            });
+                            AppntupdateNotification();
+                        }
+                        else {
+                            Toast.fire({
+                                icon: 'error',
+                                title: 'Something went wrong. Please try again Later!'
+                            })
+                        }
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    }
+                })
+            }
+
+            function UAccAppnt() {
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("AcceptShowroomAppointment", "Portal")",
+                    data: JSON.stringify({ IsAppntDel: false }),
+                    contentType: "application/json; charset=utf-8",
+                    success: function (response) {
+                        $('#exampleModal').modal('hide');
+                        var Toast = Swal.mixin({
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3000
+                        });
+                        if (response) {
+                            Toast.fire({
+                                icon: 'success',
+                                title: 'Appointment hase been Scheduled Succesfully!'
+                            });
+                            AppntupdateNotification();
+                        }
+                        else {
+                            Toast.fire({
+                                icon: 'error',
+                                title: 'Something went wrong. Please try again Later!'
+                            })
+                        }
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    }
+                })
+            }
+
+            function USndAppnt() {
+                var Message = $("#message-text").val();
+                var AppntDate = $("#DateAppnt").val();
+                if (Message == "" || AppntDate == null) {
+                    alert("Please select the Date\Time and Message!");
+                }
+                else {
+                    $.ajax({
+                        type: "POST",
+                        url: "@Url.Action("AcceptShowroomAppointment", "Portal")",
+                        data: JSON.stringify({ Purpose: Message, Date: AppntDate ,IsAppntDel: true }),
+                        contentType: "application/json; charset=utf-8",
+                        success: function (response) {
+                            $('#exampleModal').modal('hide');
+                            var Toast = Swal.mixin({
+                                toast: true,
+                                position: 'top-end',
+                                showConfirmButton: false,
+                                timer: 3000
+                            });
+                            if (response) {
+                                Toast.fire({
+                                    icon: 'success',
+                                    title: 'Appointment hase been Scheduled Succesfully!'
+                                });
+                                AppntupdateNotification();
+                            }
+                            else {
+                                Toast.fire({
+                                    icon: 'error',
+                                    title: 'Something went wrong. Please try again Later!'
+                                })
+                            }
+                        },
+                        error: function (error) {
+                            console.log(error);
+                        }
+                    })
+                }
+            }
+    </script>
     <style>
         .select2-results__option--selectable {
             list-style: none !important;
@@ -226,6 +356,31 @@
                 top: 50% !IMPORTANT;
                 width: 0 !IMPORTANT;
             }
+
+        .modal-open .modal {
+            overflow-x: auto;
+            overflow-y: auto;
+        }
+
+        input[type="datetime-local"], input[type="time"] {
+            font-size: 14px;
+            color: #cacaca;
+            border: none;
+            padding: 0;
+            border-radius: 0;
+            height: 16px;
+            position: relative;
+            top: -5px;
+        }
+
+            input[type="datetime-local"]::-webkit-calendar-picker-indicator, input[type="time"]::-webkit-calendar-picker-indicator {
+                cursor: pointer;
+                border-radius: 4px;
+                font-size: 18px;
+                margin-right: 2px;
+                opacity: 1;
+                filter: invert(0.55);
+            }
     </style>
 </head>
 <body class="wp-automobile">
@@ -234,6 +389,56 @@
         @Html.Partial("_WebHeader")
         <!-- Header End -->
         <!-- Main Start -->
+        <div class="cs-form-modal">
+            <div class="modal fade" id="UserAppnt" tabindex="-1" role="dialog">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        </div>
+                        <div class="modal-body">
+                            <div>
+                                <h4 style="text-align:center;font-weight:700;color: white !important;" class="cs-bgcolor"> Appointment Information: </h4>
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <span style="font-weight:700;">From Showroom:</span>
+                                    <span id="MUser"></span>
+                                </div>
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <span style="font-weight:700;">Posted On:</span>
+                                    <span id="MPosted"></span>
+                                </div>
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <span style="font-weight:700;">For Car:</span>
+                                    <span id="MCar"></span>
+                                </div>
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <span style="font-weight:700;">At Date/Time:</span>
+                                    <span id="MDate"></span>
+                                </div>
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <span style="font-weight:700;">Message:</span>
+                                    <span id="MDescp"></span>
+                                </div>
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <span style="font-weight:700;">Phone Number:</span>
+                                    <span id="MPhone"></span>
+                                </div>
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align:center; margin-top:20px;">
+                                    <a class="btn btn-sm btn-primary" style="padding: 5px 35px; font-size: 14px;" id="MAd" href="#" target="_blank">View Ad</a>
+                                </div>
+                            </div>
+                            <div class="cs-login-form">
+                                <div class="col-lg-12 col-lg-12 col-sm-12 col-xs-12">
+                                    <div class="cs-modal-field">
+                                        <input class="cs-color csborder-color" type="submit" value="Submit Query">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="main-section">
             @RenderBody()
         </div>
@@ -331,12 +536,11 @@
                             $('#AppntnotiContent').append($('<a href="#" class="dropdown-item"><i class="icon-envelope" style="padding-right: 5px;"></i> No Notification Available</a>'));
                         }
                         $.each(response, function (index, value) {
-                            console.log("IsAccepted :" + value.IsAccpeted);
-                            if (value.IsAccpeted) {
-                                $('#AppntnotiContent').append($('<span href="#" class="dropdown-item" style="white-space: pre-line;"> <i class="icon-envelope" style="padding-right: 5px;"></i> Appointment Appected By ' + value.Title + ' of ' + value.Description + '<span style="display:flex;align-items:center;justify-content: space-evenly;"><span class="btn btn-sm btn-info" style="padding: 0.25rem 4rem !important;" onclick="AppntDetls(' + value.AdURL + ')">View Details</span></span></span>'));
+                            if (value.AdURL == "false") {
+                                $('#AppntnotiContent').append($('<span href="#" class="dropdown-item" style="white-space: pre-line;"> <i class="icon-envelope" style="padding-right: 5px;"></i> ' + value.Title + value.Description + '<span style="display:flex;aligs:center;justify-content: space-evenly;"><a class="btn btn-sm btn-info" style="padding: 0.25rem 4rem !important; color: white !important;" href="/Myappoinments" target="_blank">View Details</a></span></span>'));
                             }
                             else {
-                                $('#AppntnotiContent').append($('<span href="#" class="dropdown-item" style="white-space: pre-line;"> <i class="icon-envelope" style="padding-right: 5px;"></i> Appointment Reject By ' + value.Title + ' of ' + value.Description + '<span style="display:flex;align-items:center;justify-content: space-evenly;"><span class="btn btn-sm btn-info" style="padding: 0.25rem 4rem !important;" onclick="AppntDetls(' + value.AdURL + ')">View Details</span></span></span>'));
+                                $('#AppntnotiContent').append($('<span href="#" class="dropdown-item" style="white-space: pre-line;"> <i class="icon-envelope" style="padding-right: 5px;"></i> ' + value.Title + value.Description + '<span style="display:flex;aligs:center;justify-content: space-evenly;"><span class="btn btn-sm btn-info" style="padding: 0.25rem 4rem !important;" onclick="UAppntDetls(' + value.AdURL + ')">View Details</span></span></span>'));
                             }
                         });
                     },
