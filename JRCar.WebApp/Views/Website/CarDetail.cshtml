@@ -80,6 +80,162 @@
                 }
         </style>
         <script>
+
+        // Update Appntnotification
+        function uAppntupdateNotification() {
+            $('#AppntnotiContent').empty();
+            $('#AppntnotiContent').append($('<li>Loading...</li>'));
+            $.ajax({
+                type: 'GET',
+                url: '/Website/GetUserAppointmentsList',
+                success: function (response) {
+                    $('#AppntnotiContent').empty();
+                    if (response.length == 0) {
+                        $('#AppntnotiContent').append($('<a href="#" class="dropdown-item"><i class="icon-envelope" style="padding-right: 5px;"></i> No Notification Available</a>'));
+                    }
+                    $.each(response, function (index, value) {
+                        if (value.AdURL == "false") {
+                            $('#AppntnotiContent').append($('<span href="#" class="dropdown-item" style="white-space: pre-line;"> <i class="icon-envelope" style="padding-right: 5px;"></i> ' + value.Title + value.Description + '<span style="display:flex;aligs:center;justify-content: space-evenly;"><a class="btn btn-sm btn-info" style="padding: 0.25rem 4rem !important; color: white !important;" href="/Myappoinments" target="_blank">View Details</a></span></span>'));
+                        }
+                        else {
+                            $('#AppntnotiContent').append($('<span href="#" class="dropdown-item" style="white-space: pre-line;"> <i class="icon-envelope" style="padding-right: 5px;"></i> ' + value.Title + value.Description + '<span style="display:flex;aligs:center;justify-content: space-evenly;"><span class="btn btn-sm btn-info" style="padding: 0.25rem 4rem !important;" onclick="UAppntDetls(' + value.AdURL + ')">View Details</span></span></span>'));
+                        }
+                    });
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            })
+        }
+
+        function UAppntDetls(id) {
+            var AppntID = id;
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("GetUserAppointmentById", "Website")",
+                data: JSON.stringify({ id: AppntID }),
+                contentType: "application/json; charset=utf-8",
+                success: function (resp) {
+                    console.log(resp);
+                    $("#MUser").text(resp.FromUserName)
+                    $("#MPosted").text(resp.Date)
+                    $("#MCar").text(resp.Title)
+                    $("#MDate").text(resp.Time)
+                    $("#MDescp").text(resp.Description)
+                    $("#MPhone").text(resp.PhoneNumber)
+                    $("#MAd").attr("href","/Ad/"+resp.AdURL)
+                    $('#UserAppnt').modal('show')
+                }
+            });
+        }
+
+        function URejectAppnt() {
+            $.ajax({
+                type: 'GET',
+                url: '/Website/UserAppointmentReject',
+                success: function (response) {
+                    $('#UserAppnt').modal('hide');
+                    var Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000
+                    });
+                    if (response) {
+                        Toast.fire({
+                            icon: 'success',
+                            title: 'Appointment hase been Rejected Succesfully!'
+                        });
+                        uAppntupdateNotification();
+                    }
+                    else {
+                        Toast.fire({
+                            icon: 'error',
+                            title: 'Something went wrong. Please try again Later!'
+                        })
+                    }
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            })
+        }
+
+        function UAccAppnt() {
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("AcceptUserAppointment", "Website")",
+                data: JSON.stringify({ IsAppntDel: false }),
+                contentType: "application/json; charset=utf-8",
+                success: function (response) {
+                    $('#UserAppnt').modal('hide');
+                    var Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000
+                    });
+                    if (response) {
+                        Toast.fire({
+                            icon: 'success',
+                            title: 'Appointment hase been Scheduled Succesfully!'
+                        });
+                        uAppntupdateNotification();
+                    }
+                    else {
+                        Toast.fire({
+                            icon: 'error',
+                            title: 'Something went wrong. Please try again Later!'
+                        })
+                    }
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            })
+        }
+
+        function USndAppnt() {
+            var Message = $("#message-text").val();
+            var AppntDate = $("#DateAppnt").val();
+            if (Message == "" || AppntDate == null) {
+                alert("Please select the Date\Time and Message!");
+            }
+            else {
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("AcceptUserAppointment", "Website")",
+                    data: JSON.stringify({ Purpose: Message, Date: AppntDate ,IsAppntDel: true }),
+                    contentType: "application/json; charset=utf-8",
+                    success: function (response) {
+                        $('#UserAppnt').modal('hide');
+                        var Toast = Swal.mixin({
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3000
+                        });
+                        if (response) {
+                            Toast.fire({
+                                icon: 'success',
+                                title: 'Appointment hase been Scheduled Succesfully!'
+                            });
+                            uAppntupdateNotification();
+                        }
+                        else {
+                            Toast.fire({
+                                icon: 'error',
+                                title: 'Something went wrong. Please try again Later!'
+                            })
+                        }
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    }
+                })
+            }
+        }
+
         function fnAuthorize() {
             var userAuthorized = @User.Identity.IsAuthenticated.ToString().ToLower();
             var Toast = Swal.mixin({
@@ -157,6 +313,71 @@
                     </div>
                 </div>
             </div>
+            <div class="cs-form-modal">
+                <div class="modal fade" id="UserAppnt" tabindex="-1" role="dialog">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            </div>
+                            <div class="modal-body">
+                                <div>
+                                    <h4 style="text-align:center;font-weight:700;color: white !important;" class="cs-bgcolor"> Appointment Information: </h4>
+                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <span style="font-weight:700;">From Showroom:</span>
+                                        <span id="MUser"></span>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <span style="font-weight:700;">Posted On:</span>
+                                        <span id="MPosted"></span>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <span style="font-weight:700;">For Car:</span>
+                                        <span id="MCar"></span>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <span style="font-weight:700;">At Date/Time:</span>
+                                        <span id="MDate"></span>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <span style="font-weight:700;">Message:</span>
+                                        <span id="MDescp"></span>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <span style="font-weight:700;">Phone Number:</span>
+                                        <span id="MPhone"></span>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align:center; margin-top:10px;">
+                                        <a class="btn btn-sm btn-primary" style="padding: 5px 35px; font-size: 14px;" id="MAd" href="#" target="_blank">View Ad</a>
+                                    </div>
+                                </div>
+                                <div class="cs-login-form" style="margin-top:20px">
+                                    <div class="col-lg-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <div class="cs-modal-field">
+                                            <label for="best-time-1">
+                                                <strong>Best Datetime</strong>
+                                                <input type="datetime-local" id="DateAppnt" style="color: darkslategray;" placeholder="Select date" required name="selecteddatetime">
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <div class="cs-modal-field">
+                                            <label>
+                                                <textarea required placeholder="Message" id="message-text" style="color: darkslategray;" name="purpose"></textarea>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger" onclick="URejectAppnt()">Reject</button>
+                                <button type="button" class="btn btn-primary" onclick="USndAppnt()">Send Message & Accept</button>
+                                <button type="button" class="btn btn-success" onclick="UAccAppnt()">Accept</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <!-- Single - Page Slider End -->
             <!-- Main Start -->
             <div class="main-section">
@@ -222,12 +443,12 @@
                                                         </li>
                                                         <li class="col-lg-1 col-md-1 col-sm-6 col-xs-6" style="text-align: left !important">
                                                             @*<div class="cs-media">
-                                                                    <figure><i class="icon-gas20 cs-color"></i></figure>
-                                                                </div>
-                                                                <div class="auto-text">
-                                                                    <span>Fuel Type</span>
-                                                                    <strong>Hybrid</strong>
-                                                                </div>*@
+                                                            <figure><i class="icon-gas20 cs-color"></i></figure>
+                                                        </div>
+                                                        <div class="auto-text">
+                                                            <span>Fuel Type</span>
+                                                            <strong>Hybrid</strong>
+                                                        </div>*@
                                                         </li>
                                                     </ul>
                                                     <p class="more-text" style="text-align:left !important">
@@ -499,13 +720,13 @@
         $(document).ready(function () {
             setInterval(function () {
                 $('.slick-next').click();
-            }, 3000);
+            }, 10000);
 
             setInterval(function () {
                 AppntupdateNotificationCount();
             }, 1000);
 
-            AppntupdateNotification();
+            uAppntupdateNotification();
             AppntGetCount();
             AppntupdateNotificationCount();
 
@@ -516,7 +737,7 @@
 
                 //Only load Appntnotification if not already loaded
                 if (count > 0) {
-                    AppntupdateNotification();
+                    uAppntupdateNotification();
                     sessionStorage.setItem("Appntcount", 0);
                     $('.Appntnoti-content').show();
                     AppntupdateNotificationRead();
@@ -559,28 +780,6 @@
                 else {
                     $('span.Appntcount', this).html('');
                 }
-            }
-
-            // Update Appntnotification
-            function AppntupdateNotification() {
-                $('#AppntnotiContent').empty();
-                $('#AppntnotiContent').append($('<li>Loading...</li>'));
-                $.ajax({
-                    type: 'GET',
-                    url: '/Website/GetUserAppointmentsList',
-                    success: function (response) {
-                        $('#AppntnotiContent').empty();
-                        if (response.length == 0) {
-                            $('#AppntnotiContent').append($('<a href="#" class="dropdown-item"><i class="icon-envelope" style="padding-right: 5px;"></i> No Notification Available</a>'));
-                        }
-                        $.each(response, function (index, value) {
-                            $('#AppntnotiContent').append($('<span href="#" class="dropdown-item" style="white-space: pre-line;"> <i class="icon-envelope" style="padding-right: 5px;"></i> ' + value.Title + value.Description + '<span style="display:flex;aligs:center;justify-content: space-evenly;"><span class="btn btn-sm btn-info" style="padding: 0.25rem 4rem !important;" onclick="AppntDetls(' + value.AdURL + ')">View Details</span></span></span>'));
-                        });
-                    },
-                    error: function (error) {
-                        console.log(error);
-                    }
-                })
             }
 
             // Update Appntnotification count
