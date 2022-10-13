@@ -137,6 +137,31 @@ namespace JRCar.DAL.DBLayer
                 throw ex;
             }
         }
+        
+        public int RejectUserAppointment(int AppntID, int Usr)
+        {
+            try
+            {
+                if (AppntID > 0)
+                {
+                    var model = _context.tblAppointments.Where(a => a.ID == AppntID).FirstOrDefault();
+                    model.IsAccepted = false;
+                    model.Isactive = false;
+                    model.IsRead = false;
+                    model.UpdatedBy = Usr;
+                    model.UpdatedOn = DateTime.Now;
+                    _context.Entry(model).State = System.Data.Entity.EntityState.Modified;
+                    Save();
+                    return model.ID;
+                }
+                else
+                    return 0;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
 
         public bool AcceptAppointment(int AppntID, int Usr, tblAppointmentDetail AppntDetailmodel)
         {
@@ -147,6 +172,43 @@ namespace JRCar.DAL.DBLayer
                     var model = _context.tblAppointments.Where(a => a.ID == AppntID).FirstOrDefault();
                     model.IsAccepted = true;
                     model.IsUserRead = false;
+                    model.Isactive = true;
+                    model.UpdatedBy = Usr;
+                    model.UpdatedOn = DateTime.Now;
+                    model.ConfirmDatetime = ((AppntDetailmodel == null) ? model.tblAppointmentDetails.Where(x => x.AppointmentID == AppntID).FirstOrDefault().Date : AppntDetailmodel.Date);
+                    _context.Entry(model).State = System.Data.Entity.EntityState.Modified;
+                    Save();
+                    if (model.ID > 0 && AppntDetailmodel != null)
+                    {
+                        var reas = InsertAppointmentDetails(AppntDetailmodel);
+                        if (reas > 0)
+                            return true;
+                        else
+                            return false;
+                    }
+                    else if (model.ID > 0)
+                        return true;
+                    else
+                        return false;
+                }
+                else
+                    return false;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        
+        public bool AcceptUserAppointment(int AppntID, int Usr, tblAppointmentDetail AppntDetailmodel)
+        {
+            try
+            {
+                if (AppntID > 0 && Usr > 0)
+                {
+                    var model = _context.tblAppointments.Where(a => a.ID == AppntID).FirstOrDefault();
+                    model.IsAccepted = true;
+                    model.IsRead = false;
                     model.Isactive = true;
                     model.UpdatedBy = Usr;
                     model.UpdatedOn = DateTime.Now;
@@ -473,7 +535,7 @@ namespace JRCar.DAL.DBLayer
 
         public int GetUserTodaysAppointmentsCount(DateTime currentDate, int UserID)
         {
-            var reas = _context.tblAppointments.Where(x => (x.UserInterestedID == UserID && (x.UpdatedOn > currentDate || x.IsUserRead == false)) || (x.tblUserAdd.UserID == UserID && (x.UpdatedOn > currentDate || x.IsUserRead == false))).OrderByDescending(x => x.CreatedOn).ToList().Count;
+            var reas = _context.tblAppointments.Where(x => (x.UserInterestedID == UserID && (x.UpdatedOn > currentDate || x.IsUserRead == false)) || (x.tblUserAdd.UserID == UserID && x.IsUserRead == false)).OrderByDescending(x => x.CreatedOn).ToList().Count;
             return reas;
         }
 
@@ -485,7 +547,7 @@ namespace JRCar.DAL.DBLayer
 
         public IEnumerable<tblAppointment> GetUserAppointments(DateTime currentDate, int UserID)
         {
-            var reas = _context.tblAppointments.Where(x => (x.UserInterestedID == UserID && (x.UpdatedOn > currentDate || x.IsUserRead == false)) || (x.tblUserAdd.UserID == UserID && (x.UpdatedOn > currentDate || x.IsUserRead == false))).ToList();
+            var reas = _context.tblAppointments.Where(x => (x.UserInterestedID == UserID && (x.UpdatedOn > currentDate || x.IsUserRead == false)) || (x.tblUserAdd.UserID == UserID && x.IsUserRead == false)).ToList();
             return reas;
         }
 

@@ -711,6 +711,72 @@ namespace JRCar.WebApp.Controllers
             }
         }
 
+        [HttpPost]
+        public JsonResult AcceptUserAppointment(string Purpose, string Date, bool IsAppntDel)
+        {
+            try
+            {
+                if (User.Identity.IsAuthenticated)
+                {
+                    var AppntID = Convert.ToInt32(TempData["AppntID"]);
+                    var Usr = Convert.ToInt32(Session["Id"]);
+                    AppointmentRepo appointmentRepo = new AppointmentRepo();
+                    var reas = appointmentRepo.AcceptUserAppointment(AppntID, Usr, Purpose, Date, IsAppntDel);
+                    if (reas)
+                    {
+                        return Json(true, JsonRequestBehavior.AllowGet);
+                    }
+                    else
+                    {
+                        return Json(false, JsonRequestBehavior.AllowGet);
+                    }
+                }
+                else
+                {
+                    var err = (int)HttpStatusCode.BadRequest;
+                    return Json(new { error = err + " Bad Request Error " + "Invalid Request!!" });
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMsg"] = "Error occured on loading Appointments!" + ex.Message;
+                throw ex;
+            }
+        }
+
+        [HttpGet]
+        public JsonResult UserAppointmentReject()
+        {
+            try
+            {
+                if (User.Identity.IsAuthenticated)
+                {
+                    var AppntID = Convert.ToInt32(TempData["AppntID"]);
+                    var Usr = Convert.ToInt32(Session["Id"]);
+                    AppointmentRepo appointmentRepo = new AppointmentRepo();
+                    var reas = appointmentRepo.RejectUserAppointment(AppntID, Usr);
+                    if (reas)
+                    {
+                        return Json(true, JsonRequestBehavior.AllowGet);
+                    }
+                    else
+                    {
+                        return Json(false, JsonRequestBehavior.AllowGet);
+                    }
+                }
+                else
+                {
+                    var err = (int)HttpStatusCode.BadRequest;
+                    return Json(new { error = err + " Bad Request Error " + "Invalid Request!!" });
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMsg"] = "Error occured on Rejecting Appointments!" + ex.Message;
+                throw ex;
+            }
+        }
+
         #endregion
 
         #region **Car Ads Appointment**

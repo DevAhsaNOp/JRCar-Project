@@ -30,69 +30,139 @@
     <link type="text/css" rel="stylesheet" href="~/dist/image-uploader.min.css">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <!-- SweetAlert2 -->
+    <link rel="stylesheet" href="~/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
+    <script src="~/plugins/sweetalert2/sweetalert2.min.js"></script>
     <script>
 
-            function UAppntDetls(id) {
-                var AppntID = id;
-                $.ajax({
-                    type: "POST",
-                    url: "@Url.Action("GetUserAppointmentById", "Website")",
-                    data: JSON.stringify({ id: AppntID }),
-                    contentType: "application/json; charset=utf-8",
-                    success: function (resp) {
-                        console.log(resp);
-                        $("#MUser").text(resp.FromUserName)
-                        $("#MPosted").text(resp.Date)
-                        $("#MCar").text(resp.Title)
-                        $("#MDate").text(resp.Time)
-                        $("#MDescp").text(resp.Description)
-                        $("#MPhone").text(resp.PhoneNumber)
-                        $("#MAd").attr("href","/Ad/"+resp.AdURL)
-                        $('#UserAppnt').modal('show')
+        // Update Appntnotification
+        function uAppntupdateNotification() {
+            $('#AppntnotiContent').empty();
+            $('#AppntnotiContent').append($('<li>Loading...</li>'));
+            $.ajax({
+                type: 'GET',
+                url: '/Website/GetUserAppointmentsList',
+                success: function (response) {
+                    $('#AppntnotiContent').empty();
+                    if (response.length == 0) {
+                        $('#AppntnotiContent').append($('<a href="#" class="dropdown-item"><i class="icon-envelope" style="padding-right: 5px;"></i> No Notification Available</a>'));
                     }
-                });
-            }
-
-            function URejectAppnt() {
-                $.ajax({
-                    type: 'GET',
-                    url: '/Portal/ShowroomAppointmentReject',
-                    success: function (response) {
-                        $('#exampleModal').modal('hide');
-                        var Toast = Swal.mixin({
-                            toast: true,
-                            position: 'top-end',
-                            showConfirmButton: false,
-                            timer: 3000
-                        });
-                        if (response) {
-                            Toast.fire({
-                                icon: 'success',
-                                title: 'Appointment hase been Rejected Succesfully!'
-                            });
-                            AppntupdateNotification();
+                    $.each(response, function (index, value) {
+                        if (value.AdURL == "false") {
+                            $('#AppntnotiContent').append($('<span href="#" class="dropdown-item" style="white-space: pre-line;"> <i class="icon-envelope" style="padding-right: 5px;"></i> ' + value.Title + value.Description + '<span style="display:flex;aligs:center;justify-content: space-evenly;"><a class="btn btn-sm btn-info" style="padding: 0.25rem 4rem !important; color: white !important;" href="/Myappoinments" target="_blank">View Details</a></span></span>'));
                         }
                         else {
-                            Toast.fire({
-                                icon: 'error',
-                                title: 'Something went wrong. Please try again Later!'
-                            })
+                            $('#AppntnotiContent').append($('<span href="#" class="dropdown-item" style="white-space: pre-line;"> <i class="icon-envelope" style="padding-right: 5px;"></i> ' + value.Title + value.Description + '<span style="display:flex;aligs:center;justify-content: space-evenly;"><span class="btn btn-sm btn-info" style="padding: 0.25rem 4rem !important;" onclick="UAppntDetls(' + value.AdURL + ')">View Details</span></span></span>'));
                         }
-                    },
-                    error: function (error) {
-                        console.log(error);
-                    }
-                })
-            }
+                    });
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            })
+        }
 
-            function UAccAppnt() {
+        function UAppntDetls(id) {
+            var AppntID = id;
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("GetUserAppointmentById", "Website")",
+                data: JSON.stringify({ id: AppntID }),
+                contentType: "application/json; charset=utf-8",
+                success: function (resp) {
+                    console.log(resp);
+                    $("#MUser").text(resp.FromUserName)
+                    $("#MPosted").text(resp.Date)
+                    $("#MCar").text(resp.Title)
+                    $("#MDate").text(resp.Time)
+                    $("#MDescp").text(resp.Description)
+                    $("#MPhone").text(resp.PhoneNumber)
+                    $("#MAd").attr("href","/Ad/"+resp.AdURL)
+                    $('#UserAppnt').modal('show')
+                }
+            });
+        }
+
+        function URejectAppnt() {
+            $.ajax({
+                type: 'GET',
+                url: '/Website/UserAppointmentReject',
+                success: function (response) {
+                    $('#UserAppnt').modal('hide');
+                    var Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000
+                    });
+                    if (response) {
+                        Toast.fire({
+                            icon: 'success',
+                            title: 'Appointment hase been Rejected Succesfully!'
+                        });
+                        uAppntupdateNotification();
+                    }
+                    else {
+                        Toast.fire({
+                            icon: 'error',
+                            title: 'Something went wrong. Please try again Later!'
+                        })
+                    }
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            })
+        }
+
+        function UAccAppnt() {
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("AcceptUserAppointment", "Website")",
+                data: JSON.stringify({ IsAppntDel: false }),
+                contentType: "application/json; charset=utf-8",
+                success: function (response) {
+                    $('#UserAppnt').modal('hide');
+                    var Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000
+                    });
+                    if (response) {
+                        Toast.fire({
+                            icon: 'success',
+                            title: 'Appointment hase been Scheduled Succesfully!'
+                        });
+                        uAppntupdateNotification();
+                    }
+                    else {
+                        Toast.fire({
+                            icon: 'error',
+                            title: 'Something went wrong. Please try again Later!'
+                        })
+                    }
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            })
+        }
+
+        function USndAppnt() {
+            var Message = $("#message-text").val();
+            var AppntDate = $("#DateAppnt").val();
+            if (Message == "" || AppntDate == null) {
+                alert("Please select the Date\Time and Message!");
+            }
+            else {
                 $.ajax({
                     type: "POST",
-                    url: "@Url.Action("AcceptShowroomAppointment", "Portal")",
-                    data: JSON.stringify({ IsAppntDel: false }),
+                    url: "@Url.Action("AcceptUserAppointment", "Website")",
+                    data: JSON.stringify({ Purpose: Message, Date: AppntDate ,IsAppntDel: true }),
                     contentType: "application/json; charset=utf-8",
                     success: function (response) {
-                        $('#exampleModal').modal('hide');
+                        $('#UserAppnt').modal('hide');
                         var Toast = Swal.mixin({
                             toast: true,
                             position: 'top-end',
@@ -104,7 +174,7 @@
                                 icon: 'success',
                                 title: 'Appointment hase been Scheduled Succesfully!'
                             });
-                            AppntupdateNotification();
+                            uAppntupdateNotification();
                         }
                         else {
                             Toast.fire({
@@ -118,47 +188,7 @@
                     }
                 })
             }
-
-            function USndAppnt() {
-                var Message = $("#message-text").val();
-                var AppntDate = $("#DateAppnt").val();
-                if (Message == "" || AppntDate == null) {
-                    alert("Please select the Date\Time and Message!");
-                }
-                else {
-                    $.ajax({
-                        type: "POST",
-                        url: "@Url.Action("AcceptShowroomAppointment", "Portal")",
-                        data: JSON.stringify({ Purpose: Message, Date: AppntDate ,IsAppntDel: true }),
-                        contentType: "application/json; charset=utf-8",
-                        success: function (response) {
-                            $('#exampleModal').modal('hide');
-                            var Toast = Swal.mixin({
-                                toast: true,
-                                position: 'top-end',
-                                showConfirmButton: false,
-                                timer: 3000
-                            });
-                            if (response) {
-                                Toast.fire({
-                                    icon: 'success',
-                                    title: 'Appointment hase been Scheduled Succesfully!'
-                                });
-                                AppntupdateNotification();
-                            }
-                            else {
-                                Toast.fire({
-                                    icon: 'error',
-                                    title: 'Something went wrong. Please try again Later!'
-                                })
-                            }
-                        },
-                        error: function (error) {
-                            console.log(error);
-                        }
-                    })
-                }
-            }
+        }
     </script>
     <style>
         .select2-results__option--selectable {
@@ -432,23 +462,23 @@
                                     <div class="cs-modal-field">
                                         <label for="best-time-1">
                                             <strong>Best Datetime</strong>
-                                            <input type="datetime-local" id="best-date-1" style="color: darkslategray;" placeholder="Select date" required name="selecteddatetime">
+                                            <input type="datetime-local" id="DateAppnt" style="color: darkslategray;" placeholder="Select date" required name="selecteddatetime">
                                         </label>
                                     </div>
                                 </div>
                                 <div class="col-lg-12 col-lg-12 col-sm-12 col-xs-12">
                                     <div class="cs-modal-field">
                                         <label>
-                                            <textarea required placeholder="Message" style="color: darkslategray;" name="purpose"></textarea>
+                                            <textarea required placeholder="Message" id="message-text" style="color: darkslategray;" name="purpose"></textarea>
                                         </label>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-danger" onclick="RejectAppnt()">Reject</button>
-                            <button type="button" class="btn btn-primary" onclick="SndAppnt()">Send Message & Accept</button>
-                            <button type="button" class="btn btn-success" onclick="AccAppnt()">Accept</button>
+                            <button type="button" class="btn btn-danger" onclick="URejectAppnt()">Reject</button>
+                            <button type="button" class="btn btn-primary" onclick="USndAppnt()">Send Message & Accept</button>
+                            <button type="button" class="btn btn-success" onclick="UAccAppnt()">Accept</button>
                         </div>
                     </div>
                 </div>
@@ -482,7 +512,7 @@
                 AppntupdateNotificationCount();
             }, 1000);
 
-            AppntupdateNotification();
+            uAppntupdateNotification();
             AppntGetCount();
             AppntupdateNotificationCount();
 
@@ -493,7 +523,7 @@
 
                 //Only load Appntnotification if not already loaded
                 if (count > 0) {
-                    AppntupdateNotification();
+                    uAppntupdateNotification();
                     sessionStorage.setItem("Appntcount", 0);
                     $('.Appntnoti-content').show();
                     AppntupdateNotificationRead();
@@ -536,33 +566,6 @@
                 else {
                     $('span.Appntcount', this).html('');
                 }
-            }
-
-            // Update Appntnotification
-            function AppntupdateNotification() {
-                $('#AppntnotiContent').empty();
-                $('#AppntnotiContent').append($('<li>Loading...</li>'));
-                $.ajax({
-                    type: 'GET',
-                    url: '/Website/GetUserAppointmentsList',
-                    success: function (response) {
-                        $('#AppntnotiContent').empty();
-                        if (response.length == 0) {
-                            $('#AppntnotiContent').append($('<a href="#" class="dropdown-item"><i class="icon-envelope" style="padding-right: 5px;"></i> No Notification Available</a>'));
-                        }
-                        $.each(response, function (index, value) {
-                            if (value.AdURL == "false") {
-                                $('#AppntnotiContent').append($('<span href="#" class="dropdown-item" style="white-space: pre-line;"> <i class="icon-envelope" style="padding-right: 5px;"></i> ' + value.Title + value.Description + '<span style="display:flex;aligs:center;justify-content: space-evenly;"><a class="btn btn-sm btn-info" style="padding: 0.25rem 4rem !important; color: white !important;" href="/Myappoinments" target="_blank">View Details</a></span></span>'));
-                            }
-                            else {
-                                $('#AppntnotiContent').append($('<span href="#" class="dropdown-item" style="white-space: pre-line;"> <i class="icon-envelope" style="padding-right: 5px;"></i> ' + value.Title + value.Description + '<span style="display:flex;aligs:center;justify-content: space-evenly;"><span class="btn btn-sm btn-info" style="padding: 0.25rem 4rem !important;" onclick="UAppntDetls(' + value.AdURL + ')">View Details</span></span></span>'));
-                            }
-                        });
-                    },
-                    error: function (error) {
-                        console.log(error);
-                    }
-                })
             }
 
             // Update Appntnotification count
