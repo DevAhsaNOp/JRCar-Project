@@ -58,7 +58,7 @@
                                                 }
                                                 else if (item.Isactive == true && item.IsAccepted == false)
                                                 {
-                                                    <span style="font-size:14px" class="badge badge-warning">Waiting for your Response</span>
+                                                    <span style="font-size:14px" class="badge badge-warning text-white">Waiting for your Response</span>
                                                 }
                                                 else if (item.Isactive == false && item.IsAccepted == false)
                                                 {
@@ -70,6 +70,10 @@
                                             </div>
                                             <div class="timeline-footer">
                                                 <a class="btn btn-primary btn-sm" href="/Ads/@item.tblCar.CarsURL">View Ad</a>
+                                                @if (item.Isactive == true && item.IsAccepted == false)
+                                                {
+                                                <a class="btn btn-warning btn-sm" onclick="AppntDetls(@item.ID)">Accept Appointment</a>
+                                                }
                                             </div>
                                         </div>
                                     </div>
@@ -90,7 +94,7 @@
                                                 </h4>
                                                 @if (item.Isactive == true && item.IsAccepted == true)
                                                 {
-                                                    <span style="font-size:14px" class="badge badge-success">Accepted</span>
+                                                    <span style="font-size:14px" class="badge badge-success">Appointment Booked</span>
                                                 }
                                                 else if (item.Isactive == true && item.IsAccepted == false)
                                                 {
