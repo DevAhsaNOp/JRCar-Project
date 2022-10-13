@@ -478,17 +478,50 @@ namespace JRCar.DAL.DBLayer
             {
                 if (ShowroomID > 0)
                 {
-                    var appointment = _context.tblAppointments.Where(x => x.tblCar.tblShowroomID == ShowroomID && x.IsAccepted == true).Select(a => new ValidateAppointment()
+                    //var appointment = _context.tblAppointments.Where(x => (x.tblCar.tblShowroomID == ShowroomID && x.IsAccepted == true) || (x.ShowroomInterestedID == ShowroomID)).Select(a => new ValidateAppointment()
+                    //{
+                    //    tblShowroom = a.tblShowroom,
+                    //    Purpose = a.tblAppointmentDetails.FirstOrDefault().Purpose,
+                    //    Datetime = a.ConfirmDatetime.Value,
+                    //    tblCar = a.tblCar,
+                    //    tblUser = a.tblUser,
+                    //    CreatedOn = a.CreatedOn,
+                    //}).OrderByDescending(x => x.Datetime).ToList();
+                    var appointment = _context.tblAppointments.Where(x => (x.tblCar.tblShowroomID == ShowroomID) || (x.ShowroomInterestedID == ShowroomID)).ToList();
+                    List<ValidateAppointment> appnt = new List<ValidateAppointment>();
+                    foreach (var item in appointment)
                     {
-                        tblShowroom = a.tblShowroom,
-                        Purpose = a.tblAppointmentDetails.FirstOrDefault().Purpose,
-                        Datetime = a.ConfirmDatetime.Value,
-                        tblCar = a.tblCar,
-                        tblUser = a.tblUser,
-                        CreatedOn = a.CreatedOn,
-                    }).OrderByDescending(x => x.Datetime).ToList();
+                        if (item.tblCar != null)
+                        {
+                            ValidateAppointment validate = new ValidateAppointment();
+                            validate.ID = item.ID;
+                            validate.tblShowroom = item.tblCar.tblShowroom;
+                            validate.Purpose = item.tblAppointmentDetails.FirstOrDefault().Purpose;
+                            validate.Datetime = item.ConfirmDatetime.Value;
+                            validate.tblCar = item.tblCar;
+                            validate.tblUser = item.tblUser;
+                            validate.CreatedOn = item.CreatedOn;
+                            validate.Isactive = item.Isactive;
+                            validate.IsAccepted = item.IsAccepted.Value;
+                            appnt.Add(validate);
+                        }
+                        else if (item.tblUserAdd != null)
+                        {
+                            ValidateAppointment validate = new ValidateAppointment();
+                            validate.ID = item.ID;
+                            validate.tblShowroom = item.tblShowroom;
+                            validate.Purpose = item.tblAppointmentDetails.FirstOrDefault().Purpose;
+                            validate.Datetime = item.ConfirmDatetime.Value;
+                            validate.tblUserAdd = item.tblUserAdd;
+                            validate.tblUser = item.tblUserAdd.tblUser;
+                            validate.CreatedOn = item.CreatedOn;
+                            validate.Isactive = item.Isactive;
+                            validate.IsAccepted = item.IsAccepted.Value;
+                            appnt.Add(validate);
+                        }
+                    }
                     if (appointment != null)
-                        return appointment;
+                        return appnt.OrderByDescending(x => x.Datetime);
                     else
                         return null;
                 }
@@ -507,20 +540,41 @@ namespace JRCar.DAL.DBLayer
             {
                 if (UserID > 0)
                 {
-                    var appointment = _context.tblAppointments.Where(x => x.UserInterestedID == UserID).Select(a => new ValidateAppointment()
+                    var appointment = _context.tblAppointments.Where(x => x.UserInterestedID == UserID || x.tblUserAdd.UserID == UserID).ToList();
+                    List<ValidateAppointment> appnt = new List<ValidateAppointment>();
+                    foreach (var item in appointment)
                     {
-                        tblShowroom = a.tblCar.tblShowroom,
-                        Purpose = a.tblAppointmentDetails.FirstOrDefault().Purpose,
-                        Datetime = a.ConfirmDatetime.Value,
-                        tblCar = a.tblCar,
-                        tblUser = a.tblUser,
-                        CreatedOn = a.CreatedOn,
-                        Isactive = a.Isactive,
-                        IsAccepted = a.IsAccepted.Value,
-                    }).OrderByDescending(x => x.Datetime).ToList();
-
+                        if (item.tblCar != null)
+                        {
+                            ValidateAppointment validate = new ValidateAppointment();
+                            validate.ID = item.ID;
+                            validate.tblShowroom = item.tblCar.tblShowroom;
+                            validate.Purpose = item.tblAppointmentDetails.FirstOrDefault().Purpose;
+                            validate.Datetime = item.ConfirmDatetime.Value;
+                            validate.tblCar = item.tblCar;
+                            validate.tblUser = item.tblUser;
+                            validate.CreatedOn = item.CreatedOn;
+                            validate.Isactive = item.Isactive;
+                            validate.IsAccepted = item.IsAccepted.Value;
+                            appnt.Add(validate);
+                        }
+                        else if (item.tblUserAdd != null)
+                        {
+                            ValidateAppointment validate = new ValidateAppointment();
+                            validate.ID = item.ID;
+                            validate.tblShowroom = item.tblShowroom;
+                            validate.Purpose = item.tblAppointmentDetails.FirstOrDefault().Purpose;
+                            validate.Datetime = item.ConfirmDatetime.Value;
+                            validate.tblUserAdd = item.tblUserAdd;
+                            validate.tblUser = item.tblUserAdd.tblUser;
+                            validate.CreatedOn = item.CreatedOn;
+                            validate.Isactive = item.Isactive;
+                            validate.IsAccepted = item.IsAccepted.Value;
+                            appnt.Add(validate);
+                        }
+                    }
                     if (appointment != null)
-                        return appointment;
+                        return appnt.OrderByDescending(x => x.Datetime);
                     else
                         return null;
                 }

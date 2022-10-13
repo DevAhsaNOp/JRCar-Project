@@ -38,26 +38,75 @@
                             <!-- timeline time label -->
                             @foreach (var item in Model)
                             {
-                                <div class="time-label">
-                                    <span class="bg-red">@item.Datetime.ToString("dd MMM, yyyy")</span>
-                                </div>
-                                <!-- /.timeline-label -->
-                                <!-- timeline item -->
-                                <div>
-                                    <i class="fas fa-bullhorn bg-red"></i>
-                                    <div class="timeline-item">
-                                        <span class="time"><i class="fas fa-clock"></i>  @item.CreatedOn.ToString("dd MMM, yyyy hh:mm:ss tt")</span>
-                                        <h3 class="timeline-header"><a href="#">@item.tblUser.Name</a> book an Appointment</h3>
-                                        <div class="timeline-body">
-                                            <h4 style="text-transform:capitalize !important">
-                                                For Car @item.tblCar.tblManufacturer.Manufacturer_Name @item.tblCar.tblManfacturerCarModel.Manufacturer_CarModelName at <span class="bg-info pr-2 pl-2" style="border-radius:5px">@item.Datetime.ToString("hh:mm tt").ToUpperInvariant()</span> 
-                                            </h4>
-                                            <p>
-                                                @item.Purpose
-                                            </p>
+                                if (item.tblCar != null)
+                                {
+                                    <div class="time-label">
+                                        <span class="bg-red">@item.Datetime.ToString("dd MMM, yyyy")</span>
+                                    </div>
+                                    <div>
+                                        <i class="fas fa-bullhorn bg-red"></i>
+                                        <div class="timeline-item">
+                                            <span class="time"><i class="fas fa-clock"></i>@item.CreatedOn.ToString("dd MMM, yyyy hh:mm:ss tt")</span>
+                                            <h3 class="timeline-header"><a href="#">@item.tblUser.Name</a> book an Appointment</h3>
+                                            <div class="timeline-body">
+                                                <h4 style="text-transform:capitalize !important">
+                                                    For Car @item.tblCar.tblManufacturer.Manufacturer_Name @item.tblCar.tblManfacturerCarModel.Manufacturer_CarModelName at <span class="bg-info pr-2 pl-2" style="border-radius:5px">@item.Datetime.ToString("hh:mm tt").ToUpperInvariant()</span>
+                                                </h4>
+                                                @if (item.Isactive == true && item.IsAccepted == true)
+                                                {
+                                                    <span style="font-size:14px" class="badge badge-success">Appointment Booked</span>
+                                                }
+                                                else if (item.Isactive == true && item.IsAccepted == false)
+                                                {
+                                                    <span style="font-size:14px" class="badge badge-warning">Waiting for your Response</span>
+                                                }
+                                                else if (item.Isactive == false && item.IsAccepted == false)
+                                                {
+                                                    <span style="font-size:14px" class="badge badge-danger">Rejected</span>
+                                                }
+                                                <p style="margin-bottom: 0">
+                                                    @item.Purpose
+                                                </p>
+                                            </div>
+                                            <div class="timeline-footer">
+                                                <a class="btn btn-primary btn-sm" href="/Ads/@item.tblCar.CarsURL">View Ad</a>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
+                                }
+                                else if (item.tblUserAdd != null)
+                                {
+                                    <div class="time-label">
+                                        <span class="bg-red">@item.Datetime.ToString("dd MMM, yyyy")</span>
+                                    </div>
+                                    <div>
+                                        <i class="fas fa-bullhorn bg-red"></i>
+                                        <div class="timeline-item">
+                                            <span class="time"><i class="fas fa-clock"></i>  @item.CreatedOn.ToString("dd MMM, yyyy hh:mm:ss tt")</span>
+                                            <h3 class="timeline-header">You request an Appointment</h3>
+                                            <div class="timeline-body">
+                                                <h4 style="text-transform:capitalize !important">
+                                                    For Car @item.tblUserAdd.tblManufacturer.Manufacturer_Name @item.tblUserAdd.tblManfacturerCarModel.Manufacturer_CarModelName at <span class="bg-info pr-2 pl-2" style="border-radius:5px">@item.Datetime.ToString("hh:mm tt").ToUpperInvariant()</span>
+                                                </h4>
+                                                @if (item.Isactive == true && item.IsAccepted == true)
+                                                {
+                                                    <span style="font-size:14px" class="badge badge-success">Accepted</span>
+                                                }
+                                                else if (item.Isactive == true && item.IsAccepted == false)
+                                                {
+                                                    <span style="font-size:14px" class="badge badge-warning">Request Pending</span>
+                                                }
+                                                else if (item.Isactive == false && item.IsAccepted == false)
+                                                {
+                                                    <span style="font-size:14px" class="badge badge-danger">Rejected</span>
+                                                }
+                                                <p style="margin-bottom: 0">
+                                                    @item.Purpose
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
                             }
                             <div>
                                 <i class="fas fa-clock bg-gray"></i>

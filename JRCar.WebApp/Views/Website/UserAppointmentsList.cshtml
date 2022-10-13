@@ -64,48 +64,107 @@
                                     <li class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                         <div class="cs-media">
                                             @{
-                                                var img = item.tblCar.tblCarImages.Select(s => s.Image).FirstOrDefault();
-                                                if (img != null)
+                                                if (item.tblCar != null)
                                                 {
-                                                    string path = Server.MapPath("" + img + "");
-                                                    string[] FolderName = img.Split('/');
-                                                    string[] imageFiles = Directory.GetFiles(path);
-                                                    List<string> images = new List<string>();
-                                                    foreach (var jha in imageFiles)
+                                                    var img = item.tblCar.tblCarImages.Select(s => s.Image).FirstOrDefault();
+                                                    if (img != null)
                                                     {
-                                                        images.Add(FolderName[2] + "/" + Path.GetFileName(jha));
+                                                        string path = Server.MapPath("" + img + "");
+                                                        string[] FolderName = img.Split('/');
+                                                        string[] imageFiles = Directory.GetFiles(path);
+                                                        List<string> images = new List<string>();
+                                                        foreach (var jha in imageFiles)
+                                                        {
+                                                            images.Add(FolderName[2] + "/" + Path.GetFileName(jha));
+                                                        }
+                                                        <figure><a href="#"><img src="~/uploads/@images[0]" alt="Ad Image" style="width:-webkit-fill-available !important;" /></a></figure>
                                                     }
-                                                    <figure><a href="#"><img src="~/uploads/@images[0]" alt="Ad Image" style="width:-webkit-fill-available !important;" /></a></figure>
+                                                }
+                                                else if (item.tblUserAdd != null)
+                                                {
+                                                    var img = item.tblUserAdd.tblUserAddImages.Select(s => s.Image).FirstOrDefault();
+                                                    if (img != null)
+                                                    {
+                                                        string path = Server.MapPath("" + img + "");
+                                                        string[] FolderName = img.Split('/');
+                                                        string[] imageFiles = Directory.GetFiles(path);
+                                                        List<string> images = new List<string>();
+                                                        foreach (var jha in imageFiles)
+                                                        {
+                                                            images.Add(FolderName[2] + "/" + Path.GetFileName(jha));
+                                                        }
+                                                        <figure><a href="#"><img src="~/uploads/@images[0]" alt="Ad Image" style="width:-webkit-fill-available !important;" /></a></figure>
+                                                    }
                                                 }
                                             }
                                         </div>
                                         <div class="cs-text">
                                             <span class="cs-featured">@item.Datetime.ToString("dd MMMM yyyy hh:mm tt").ToUpperInvariant()</span>
-                                            <h6><a href="@Url.Action("CarAds","Portal",new { AdID = item.tblCar.CarsURL })" target="_blank">@item.tblCar.tblManufacturer.Manufacturer_Name @item.tblCar.tblManfacturerCarModel.Manufacturer_CarModelName </a></h6>
+                                            @if (item.tblCar != null)
+                                            {
+                                                <h6><a href="@Url.Action("CarAds","Portal",new { AdID = item.tblCar.CarsURL })" target="_blank">@item.tblCar.tblManufacturer.Manufacturer_Name @item.tblCar.tblManfacturerCarModel.Manufacturer_CarModelName </a></h6>
+                                            }
+                                            else if (item.tblUserAdd != null)
+                                            {
+                                                <h6><a href="@Url.Action("CarDetail","Website",new { AdID = item.tblUserAdd.UserAdsURL })" target="_blank">@item.tblUserAdd.tblManufacturer.Manufacturer_Name @item.tblUserAdd.tblManfacturerCarModel.Manufacturer_CarModelName </a></h6>
+                                            }
                                             <div class="post-options">
                                                 <span>Requested on: <em>@item.CreatedOn.ToString("dd MMMM yyyy hh:mm tt").ToUpperInvariant()</em></span>
-                                                <span><a href="javascript:void(0)"> Showroom  <em>@item.tblShowroom.FullName</em></a></span>
+                                                @if (item.tblCar != null)
+                                                {
+                                                    <span><a href="javascript:void(0)"> Showroom  <em>@item.tblShowroom.FullName</em></a></span>
+                                                }
+                                                else if (item.tblUserAdd != null)
+                                                {
+                                                    <span><a href="javascript:void(0)"> By Showroom  <em>@item.tblShowroom.FullName</em></a></span>
+                                                }
                                             </div>
                                             <div class="cs-post-types">
                                                 @{
-                                                    <a href="@Url.Action("CarAds","Portal",new { AdID = item.tblCar.CarsURL })" target="_blank" title="View Ad" class="cs-default-btn" style=" color: white; border: 1px solid #03b5eb; background: #03b5eb;">View Ad</a>
-                                                    if (item.Isactive == true && item.IsAccepted == true)
+                                                    if (item.tblCar != null)
                                                     {
-                                                        <span class="cs-default-btn" style="color:#4aa818; border:1px solid #4aa818; margin-right: 10px;">
-                                                            <span>Accepted</span>
-                                                        </span>
+                                                        <a href="@Url.Action("CarAds","Portal",new { AdID = item.tblCar.CarsURL })" target="_blank" title="View Ad" class="cs-default-btn" style=" color: white; border: 1px solid #03b5eb; background: #03b5eb;">View Ad</a>
+                                                        if (item.Isactive == true && item.IsAccepted == true)
+                                                        {
+                                                            <span class="cs-default-btn" style="color:#4aa818; border:1px solid #4aa818; margin-right: 10px;">
+                                                                <span>Accepted</span>
+                                                            </span>
+                                                        }
+                                                        else if (item.Isactive == true && item.IsAccepted == false)
+                                                        {
+                                                            <span class="cs-default-btn" style="color:#d00000; border:1px solid #d00000; margin-right: 10px;">
+                                                                <span>Request Pending</span>
+                                                            </span>
+                                                        }
+                                                        else if (item.Isactive == false && item.IsAccepted == false)
+                                                        {
+                                                            <span class="cs-default-btn" style="color:#d00000; border:1px solid #d00000; margin-right: 10px;">
+                                                                <span>Rejected</span>
+                                                            </span>
+                                                        }
                                                     }
-                                                    else if (item.Isactive == true && item.IsAccepted == false)
+                                                    if (item.tblUserAdd != null)
                                                     {
-                                                        <span class="cs-default-btn" style="color:#d00000; border:1px solid #d00000; margin-right: 10px;">
-                                                            <span>Request Pending</span>
-                                                        </span>
-                                                    }
-                                                    else if (item.Isactive == false && item.IsAccepted == false)
-                                                    {
-                                                        <span class="cs-default-btn" style="color:#d00000; border:1px solid #d00000; margin-right: 10px;">
-                                                            <span>Rejected</span>
-                                                        </span>
+                                                        <a href="@Url.Action("CarDetail","Website",new { AdID = item.tblUserAdd.UserAdsURL })" target="_blank" title="View Ad" class="cs-default-btn" style=" color: white; border: 1px solid #03b5eb; background: #03b5eb;">View Ad</a>
+                                                        if (item.Isactive == true && item.IsAccepted == true)
+                                                        {
+                                                            <span class="cs-default-btn" style="color:#4aa818; border:1px solid #4aa818; margin-right: 10px;">
+                                                                <span>Accepted</span>
+                                                            </span>
+                                                        }
+                                                        else if (item.Isactive == true && item.IsAccepted == false)
+                                                        {
+                                                            <a onclick="UAppntDetls(@item.ID)" title="View Ad" class="cs-default-btn" style=" color: white; border: 1px solid #03b5eb; background: #03b5eb;margin-right:5px;cursor:pointer;">View Detail</a>
+                                                            <span class="cs-default-btn" style="color:#d00000; border:1px solid #d00000; margin-top: 25px;">
+                                                                <span>Request Pending</span>
+                                                            </span>
+                                                        }
+                                                        else if (item.Isactive == false && item.IsAccepted == false)
+                                                        {
+                                                            <span class="cs-default-btn" style="color:#d00000; border:1px solid #d00000; margin-right: 10px;">
+                                                                <span>Rejected</span>
+                                                            </span>
+                                                        }
                                                     }
                                                 }
                                             </div>
