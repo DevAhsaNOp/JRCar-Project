@@ -47,7 +47,7 @@
                         $("#MDate").text(resp.Time)
                         $("#MDescp").text(resp.Description)
                         $("#MPhone").text(resp.PhoneNumber)
-                        $("#MAd").attr("href","/Ads/"+resp.AdURL)
+                        $("#MAd").attr("href","/Ad/"+resp.AdURL)
                         $('#UserAppnt').modal('show')
                     }
                 });
@@ -423,17 +423,32 @@
                                     <span style="font-weight:700;">Phone Number:</span>
                                     <span id="MPhone"></span>
                                 </div>
-                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align:center; margin-top:20px;">
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align:center; margin-top:10px;">
                                     <a class="btn btn-sm btn-primary" style="padding: 5px 35px; font-size: 14px;" id="MAd" href="#" target="_blank">View Ad</a>
                                 </div>
                             </div>
-                            <div class="cs-login-form">
+                            <div class="cs-login-form" style="margin-top:20px">
                                 <div class="col-lg-12 col-lg-12 col-sm-12 col-xs-12">
                                     <div class="cs-modal-field">
-                                        <input class="cs-color csborder-color" type="submit" value="Submit Query">
+                                        <label for="best-time-1">
+                                            <strong>Best Datetime</strong>
+                                            <input type="datetime-local" id="best-date-1" style="color: darkslategray;" placeholder="Select date" required name="selecteddatetime">
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 col-lg-12 col-sm-12 col-xs-12">
+                                    <div class="cs-modal-field">
+                                        <label>
+                                            <textarea required placeholder="Message" style="color: darkslategray;" name="purpose"></textarea>
+                                        </label>
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" onclick="RejectAppnt()">Reject</button>
+                            <button type="button" class="btn btn-primary" onclick="SndAppnt()">Send Message & Accept</button>
+                            <button type="button" class="btn btn-success" onclick="AccAppnt()">Accept</button>
                         </div>
                     </div>
                 </div>
