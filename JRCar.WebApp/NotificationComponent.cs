@@ -10,6 +10,7 @@ using JRCar.BLL.Repositories;
 using JRCar.DAL.DBLayer;
 using JRCar.BOL.Validation_Classes;
 using System.Security.Policy;
+using DocumentFormat.OpenXml.Spreadsheet;
 
 namespace JRCar.WebApp
 {
@@ -169,13 +170,46 @@ namespace JRCar.WebApp
 
         public IEnumerable<NotiShow> GetShowroomAppointments(DateTime afterDate, int ShowroomID)
         {
-            var reas = appointmentrepo.GetShowroomAppointments(afterDate, ShowroomID).Select(x => new NotiShow() { Title = x.tblUser.Name.ToString(), Description = x.tblCar.tblManufacturer.Manufacturer_Name + " " + x.tblCar.tblManfacturerCarModel.Manufacturer_CarModelName, AdURL = x.ID.ToString() });
-            return reas;
+            //var reas = appointmentrepo.GetShowroomAppointments(afterDate, ShowroomID).Select(x => new NotiShow() { Title = x.tblUser.Name.ToString(), Description = x.tblCar.tblManufacturer.Manufacturer_Name + " " + x.tblCar.tblManfacturerCarModel.Manufacturer_CarModelName, AdURL = x.ID.ToString() });
+            var reas = appointmentrepo.GetShowroomAppointments(afterDate, ShowroomID);
+            List<NotiShow> notis = new List<NotiShow>();
+            if (reas != null)
+            {
+                foreach (var item in reas)
+                {
+                    if (item.tblCar != null)
+                    {
+                        NotiShow noti = new NotiShow();
+                        noti.Title = "New Appointment Requested By" + item.tblUser.Name.ToString();
+                        noti.Description = " of " + item.tblCar.tblManufacturer.Manufacturer_Name + " " + item.tblCar.tblManfacturerCarModel.Manufacturer_CarModelName;
+                        noti.AdURL = item.ID.ToString();
+                        notis.Add(noti);
+                    }
+                    else if (item.tblUserAdd != null)
+                    {
+                        NotiShow noti = new NotiShow();
+                        if (item.IsAccepted.Value == false)
+                        {
+                            noti.Title = " Appointment Reject By " + item.tblUserAdd.tblUser.Name.ToString();
+                        }
+                        if (item.IsAccepted.Value == true)
+                        {
+                            noti.Title = " Appointment Appected By " + item.tblUserAdd.tblUser.Name.ToString();
+                        }
+                        noti.Description = " of " + item.tblUserAdd.tblManufacturer.Manufacturer_Name + " " + item.tblUserAdd.tblManfacturerCarModel.Manufacturer_CarModelName;
+                        noti.AdURL = "false";
+                        noti.IsAccpeted = item.IsAccepted.Value;
+                        notis.Add(noti);
+                    }
+                }
+                return notis;
+            }
+            else
+                return null;
         }
 
         public IEnumerable<NotiShow> GetUserAppointments(DateTime afterDate, int UserID)
         {
-            //var reas = appointmentrepo.GetUserAppointments(afterDate, UserID).Select(x => new NotiShow() { Title = x.tblCar.tblShowroom.FullName.ToString(), Description = x.tblCar.tblManufacturer.Manufacturer_Name + " " + x.tblCar.tblManfacturerCarModel.Manufacturer_CarModelName, AdURL = x.ID.ToString(), IsAccpeted = x.IsAccepted.Value });
             var reas = appointmentrepo.GetUserAppointments(afterDate, UserID);
             List<NotiShow> notis = new List<NotiShow>();
             if (reas != null)
