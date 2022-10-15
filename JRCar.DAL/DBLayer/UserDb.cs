@@ -140,7 +140,7 @@ namespace JRCar.DAL.DBLayer
                     mm.IsBodyHtml = true;
                     smtp.Host = "smtp.gmail.com";
                     smtp.EnableSsl = true;
-                    NetworkCredential NetworkCred = new NetworkCredential(email, "zbmkdbvsqhvnhmmw");
+                    NetworkCredential NetworkCred = new NetworkCredential(email, "vcwonsjwxtsbyajf");
                     smtp.UseDefaultCredentials = true;
                     smtp.Credentials = NetworkCred;
                     smtp.Port = 587;
