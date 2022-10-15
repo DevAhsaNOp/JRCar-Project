@@ -28,6 +28,8 @@
     <!-- SweetAlert2 -->
     <link rel="stylesheet" href="~/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
     <script src="~/plugins/sweetalert2/sweetalert2.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/css/toastr.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/js/toastr.js"></script>
     <style>
         .single-page .cs-banner ul.cs-banner-slider li .cs-media figure img {
             height: 50vh !important;
@@ -78,6 +80,82 @@
             }
     </style>
     <script>
+
+        function CCShortlistAd(ID) {
+            var userAuthorized = @User.Identity.IsAuthenticated.ToString().ToLower();
+            if (userAuthorized) {
+                console.log(userAuthorized);
+                $.ajax({
+                    url: "@Url.Action("Shortlisted", "Website")",
+                    type: 'POST',
+                    data: JSON.stringify({ CarID: ID }),
+                    contentType: "application/json; charset=utf-8",
+                    success: function (resp) {
+                        toastr.options = {
+                            "closeButton": true,
+                            "debug": true,
+                            "newestOnTop": false,
+                            "progressBar": true,
+                            "positionClass": "toast-top-right",
+                            "preventDuplicates": false,
+                            "showDuration": "300",
+                            "hideDuration": "10000",
+                            "timeOut": "2000",
+                            "extendedTimeOut": "1000",
+                            "showEasing": "swing",
+                            "hideEasing": "linear",
+                            "showMethod": "fadeIn",
+                            "hideMethod": "fadeOut"
+                        }
+                        toastr["success"](resp, "Added");
+                        if (resp != null) {
+                            setTimeout(function () {
+                                location.reload();
+                            }, 5000);
+                        }
+                        else {
+                            toastr.options = {
+                                "closeButton": true,
+                                "debug": true,
+                                "newestOnTop": false,
+                                "progressBar": true,
+                                "positionClass": "toast-top-right",
+                                "preventDuplicates": false,
+                                "showDuration": "300",
+                                "hideDuration": "10000",
+                                "timeOut": "2000",
+                                "extendedTimeOut": "1000",
+                                "showEasing": "swing",
+                                "hideEasing": "linear",
+                                "showMethod": "fadeIn",
+                                "hideMethod": "fadeOut"
+                            }
+                            toastr["error"]("An error occured please try again later!", "Error");
+                        }
+                    }
+                });
+            }
+            else {
+                console.log(userAuthorized);
+                toastr.options = {
+                    "closeButton": true,
+                    "debug": true,
+                    "newestOnTop": false,
+                    "progressBar": true,
+                    "positionClass": "toast-top-right",
+                    "preventDuplicates": false,
+                    "showDuration": "300",
+                    "hideDuration": "10000",
+                    "timeOut": "2000",
+                    "extendedTimeOut": "1000",
+                    "showEasing": "swing",
+                    "hideEasing": "linear",
+                    "showMethod": "fadeIn",
+                    "hideMethod": "fadeOut"
+                }
+                toastr["error"]("SignIn to add in shortlist!", "Error");
+            }
+        }
 
         // Update Appntnotification
         function uAppntupdateNotification() {
@@ -304,8 +382,24 @@
                     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 pull-right">
                         <div class="cs-button-style">
                             <a class="btn-video" href="#"><i class="icon-play_arrow"></i> Watch video</a>
-                            @*<a class="btn-compare" href="#"><i class="icon-flow-tree"></i> Compare</a>*@
-                            <a class="btn-shortlist" href="#"><i class="icon-heart-o"></i> shortlist</a>
+                            @{
+                                if (Convert.ToInt32(Session["Id"]) > 0)
+                                {
+                                    var IsShortlist = Session["IsShortlistCC"].ToString();
+                                    if (IsShortlist == "true")
+                                    {
+                                        <a class="btn-shortlist btnShortList" href="javascript:void(0)">Shortlisted</a>
+                                    }
+                                    else
+                                    {
+                                        <a class="btn-shortlist btnShortList" href="javascript:void(0)" onclick="CCShortlistAd(@Model.tblCarID)"><i class="icon-heart-o"></i> shortlist</a>
+                                    }
+                                }
+                                else
+                                {
+                                    <a class="btn-shortlist btnShortList" href="javascript:void(0)" onclick="CCShortlistAd(@Model.tblCarID)"><i class="icon-heart-o"></i> shortlist</a>
+                                }
+                            }
                         </div>
                     </div>
                 </div>
@@ -408,7 +502,24 @@
                                             <div class="detail-btn">
                                                 <div class="cs-button-style">
                                                     <a class="btn-compare" href="#"><i class="icon-flow-tree"></i> Compare</a>
-                                                    <a class="btn-shortlist" href="#"><i class="icon-heart-o"></i> shortlist</a>
+                                                    @{
+                                                        if (Convert.ToInt32(Session["Id"]) > 0)
+                                                        {
+                                                            var IsShortlist = Session["IsShortlistCC"].ToString();
+                                                            if (IsShortlist == "true")
+                                                            {
+                                                                <a class="btn-shortlist btnShortList" href="javascript:void(0)">Shortlisted</a>
+                                                            }
+                                                            else
+                                                            {
+                                                                <a class="btn-shortlist btnShortList" href="javascript:void(0)" onclick="CCShortlistAd(@Model.tblCarID)"><i class="icon-heart-o"></i> shortlist</a>
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            <a class="btn-shortlist btnShortList" href="javascript:void(0)" onclick="CCShortlistAd(@Model.tblCarID)"><i class="icon-heart-o"></i> shortlist</a>
+                                                        }
+                                                    }
                                                 </div>
                                             </div>
                                         </div>

@@ -49,6 +49,15 @@ namespace JRCar.BLL.Repositories
             return dbObj.GetAllInActiveAds();
         }
 
+        public bool IsCarShortlist(int CarID, int UserID)
+        {
+            var IsShortlist = dbObj.IsCarShortlist(CarID, UserID);
+            if (IsShortlist)
+                return true;
+            else
+                return false;
+        }
+
         public ValidateShowroomAds GetShowroomAdsDetail(string AdsId)
         {
             var user = dbObj.GetShowroomAdsDetail(AdsId);

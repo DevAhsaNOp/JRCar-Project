@@ -581,6 +581,15 @@ namespace JRCar.DAL.DBLayer
                 return null;
         }
 
+        public bool IsCarShortlist(int CarID, int UserID)
+        {
+            var IsShortlist = _context.tblFavAdds.Where(x => x.CarID == CarID && x.UserID == UserID && x.Isactive == true).FirstOrDefault();
+            if (IsShortlist != null)
+                return true;
+            else
+                return false;
+        }
+
         public ValidateShowroomAds GetShowroomAdsDetail(string AdsId)
         {
             var user = _context.tblCars.Where(x => x.CarsURL == AdsId).Select(s => new ValidateShowroomAds()

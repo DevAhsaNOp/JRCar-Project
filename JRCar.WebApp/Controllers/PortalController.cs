@@ -21,6 +21,7 @@ using System.Text.RegularExpressions;
 using System.Web.Helpers;
 using DocumentFormat.OpenXml.Office2010.Excel;
 using DocumentFormat.OpenXml.Spreadsheet;
+using DocumentFormat.OpenXml.EMMA;
 
 namespace JRCar.WebApp.Controllers
 {
@@ -1055,6 +1056,16 @@ namespace JRCar.WebApp.Controllers
                 Session["ShowCarID"] = carDetail.tblCarID;
                 if (User.Identity.IsAuthenticated)
                 {
+                    var UserID = Convert.ToInt32(Session["Id"]);
+                    var IsShortlist = RepoObj1.IsCarShortlist(carDetail.tblCarID, UserID);
+                    if (IsShortlist)
+                    {
+                        Session["IsShortlistCC"] = "true";
+                    }
+                    else
+                    {
+                        Session["IsShortlistCC"] = "false";
+                    }
                     AppointmentRepo repo = new AppointmentRepo();
                     var reas = repo.IsUserRequestThisCarAppointment((int)Session["Id"], carDetail.tblCarID);
                     if (reas)
