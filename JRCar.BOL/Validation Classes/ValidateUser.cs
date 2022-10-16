@@ -21,18 +21,18 @@ namespace JRCar.BOL.Validation_Classes
 
         [Required(ErrorMessage = "*")]
         [Display(Name = "Email Address")]
-        [EmailAddress(ErrorMessage = "Invalid Email Address")]
+        [RegularExpression("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$", ErrorMessage = "Invalid Email Address")]
         public string Email { get; set; }
 
         [Required(ErrorMessage = "*")]
         [Display(Name = "Email")]
-        [EmailAddress(ErrorMessage = "Invalid Email Address")]
+        [RegularExpression("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$", ErrorMessage = "Invalid Email Address")]
         [Remote("IsEmailExist", "Account", ErrorMessage = "Email is already registered!")]
         public string SignUpEmail { get; set; }
-        
+
         [Required(ErrorMessage = "*")]
         [Display(Name = "Email")]
-        [EmailAddress(ErrorMessage = "Invalid Email Address")]
+        [RegularExpression("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$", ErrorMessage = "Invalid Email Address")]
         [Remote("IsUpdateEmailExist", "Account", ErrorMessage = "Email is already registered!")]
         public string SignUpUpdateEmail { get; set; }
 
