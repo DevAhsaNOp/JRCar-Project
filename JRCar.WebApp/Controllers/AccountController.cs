@@ -26,6 +26,11 @@ namespace JRCar.WebApp.Controllers
         {
             return Json(!RepoObj.IsEmailExist(SignUpEmail), JsonRequestBehavior.AllowGet);
         }
+        
+        public JsonResult IsPhoneNumberExist(string Number)
+        {
+            return Json(!RepoObj.IsPhoneNumberExist(Number), JsonRequestBehavior.AllowGet);
+        }
 
         public JsonResult IsUpdateEmailExist(string SignUpUpdateEmail)
         {
@@ -35,6 +40,16 @@ namespace JRCar.WebApp.Controllers
             else
                 UserCurrentEmail = Session["Email"].ToString();
             return Json(!RepoObj.IsUpdateEmailExist(SignUpUpdateEmail, UserCurrentEmail), JsonRequestBehavior.AllowGet);
+        }
+        
+        public JsonResult IsUpdatePhoneNumberExist(string SignUpUpdateNumber)
+        {
+            string UserCurrentPhone;
+            if (Session["UserEditPhoneNumber"] != null)
+                UserCurrentPhone = Session["UserEditPhoneNumber"].ToString();
+            else
+                UserCurrentPhone = Session["PhoneNumber"].ToString();
+            return Json(!RepoObj.IsUpdatePhoneNumberExist(SignUpUpdateNumber, UserCurrentPhone), JsonRequestBehavior.AllowGet);
         }
 
         [AcceptVerbs(HttpVerbs.Get)]
@@ -359,6 +374,7 @@ namespace JRCar.WebApp.Controllers
                     Session["Id"] = IsSuccess.ID;
                     Session["Name"] = Regex.Replace(IsSuccess.Name.ToUpper().Split()[0], @"[^0-9a-zA-Z\ ]+", "");
                     Session["Email"] = IsSuccess.Email;
+                    Session["PhoneNumber"] = IsSuccess.PhoneNumber;
                     Session["Image"] = IsSuccess.Image;
                     Session["Role"] = IsSuccess.Role;
                     var role = Session["Role"].ToString();

@@ -28,6 +28,7 @@ namespace JRCar.BOL.Validation_Classes
 
         [Required(ErrorMessage = "*")]
         [Display(Name = "Title")]
+        [StringLength(30)]
         public string Title { get; set; }
 
         [Required(ErrorMessage = "*")]
@@ -38,7 +39,9 @@ namespace JRCar.BOL.Validation_Classes
         [Display(Name = "Price")]
         public string Price { get; set; }
 
+        [Required(ErrorMessage = "*")]
         [Display(Name = "Address")]
+        [StringLength(150)]
         public string Address { get; set; }
 
         [Display(Name = "Latitude")]
@@ -107,7 +110,9 @@ namespace JRCar.BOL.Validation_Classes
         [Range(1, Int32.MaxValue, ErrorMessage = "Must select a Area")]
         public int AreaID { get; set; }
 
+        [Required(ErrorMessage = "*")]
         [Display(Name = "Address")]
+        [StringLength(150)]
         public string CompleteAddress { get; set; }
         
         [Display(Name = "AdURL")]

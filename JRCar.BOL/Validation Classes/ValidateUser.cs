@@ -39,7 +39,14 @@ namespace JRCar.BOL.Validation_Classes
         [Required(ErrorMessage = "*")]
         [Display(Name = "Phone Number")]
         [RegularExpression(@"03[0-9]{2}(?!1234567)(?!1111111)(?!7654321)[0-9]{7}", ErrorMessage = "Invalid Phone Number")]
+        [Remote("IsPhoneNumberExist", "Account", ErrorMessage = "Phone Number is already registered!")]
         public string Number { get; set; }
+        
+        [Required(ErrorMessage = "*")]
+        [Display(Name = "Phone Number")]
+        [RegularExpression(@"03[0-9]{2}(?!1234567)(?!1111111)(?!7654321)[0-9]{7}", ErrorMessage = "Invalid Phone Number")]
+        [Remote("IsUpdatePhoneNumberExist", "Account", ErrorMessage = "Phone Number is already registered!")]
+        public string SignUpUpdateNumber { get; set; }
 
         [Required(ErrorMessage = "*")]
         [Display(Name = "Address")]

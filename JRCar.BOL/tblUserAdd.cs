@@ -17,8 +17,8 @@ namespace JRCar.BOL
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public tblUserAdd()
         {
-            this.tblUserAddImages = new HashSet<tblUserAddImage>();
             this.tblAppointments = new HashSet<tblAppointment>();
+            this.tblUserAddImages = new HashSet<tblUserAddImage>();
         }
     
         public int ID { get; set; }
@@ -44,6 +44,8 @@ namespace JRCar.BOL
         public Nullable<bool> Issold { get; set; }
     
         public virtual tblAddress tblAddress { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tblAppointment> tblAppointments { get; set; }
         public virtual tblCategory tblCategory { get; set; }
         public virtual tblManfacturerCarModel tblManfacturerCarModel { get; set; }
         public virtual tblManufacturer tblManufacturer { get; set; }
@@ -51,7 +53,5 @@ namespace JRCar.BOL
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tblUserAddImage> tblUserAddImages { get; set; }
         public virtual tblUser tblUser { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<tblAppointment> tblAppointments { get; set; }
     }
 }

@@ -29,6 +29,15 @@ namespace JRCar.DAL.DBLayer
             else
                 return false;
         }
+        
+        public bool IsPhoneNumberExist(string PhoneNumber)
+        {
+            var reas = GetUserPhone(PhoneNumber);
+            if (reas != null)
+                return true;
+            else
+                return false;
+        }
 
         public IEnumerable<tblUser> GetAllUsers()
         {
@@ -198,6 +207,48 @@ namespace JRCar.DAL.DBLayer
                 return false;
         }
 
+        public UserDefine.UserViewDetail GetUserPhone(string phone)
+        {
+            var user = _context.tblUsers.Where(x => x.Number == phone).Select(s => new UserDefine.UserViewDetail()
+            {
+                PhoneNumber = s.Number
+            }).FirstOrDefault();
+
+            var admin = _context.tblAdmins.Where(x => x.Number == phone).Select(s => new UserDefine.UserViewDetail()
+            {
+                PhoneNumber = s.Number
+            }).FirstOrDefault();
+
+            var union = _context.tblUnions.Where(x => x.Number == phone).Select(s => new UserDefine.UserViewDetail()
+            {
+                PhoneNumber = s.Number
+            }).FirstOrDefault();
+
+            var showroom = _context.tblShowrooms.Where(x => x.Contact == phone).Select(s => new UserDefine.UserViewDetail()
+            {
+                PhoneNumber = s.Contact
+            }).FirstOrDefault();
+
+            if (user != null)
+            {
+                return user;
+            }
+            else if (admin != null)
+            {
+                return admin;
+            }
+            else if (showroom != null)
+            {
+                return showroom;
+            }
+            else if (union != null)
+            {
+                return union;
+            }
+            else
+                return null;
+        }
+
         public UserDefine.UserViewDetail GetUserDetail(string emailtext)
         {
             var user = _context.tblUsers.Where(x => x.Email == emailtext).Select(s => new UserDefine.UserViewDetail()
@@ -210,6 +261,7 @@ namespace JRCar.DAL.DBLayer
                 OTP = s.OTP,
                 Role = s.tblRole.Role,
                 Active = s.Active,
+                PhoneNumber = s.Number
             }).FirstOrDefault();
 
             var admin = _context.tblAdmins.Where(x => x.Email == emailtext).Select(s => new UserDefine.UserViewDetail()
@@ -221,7 +273,8 @@ namespace JRCar.DAL.DBLayer
                 Password = s.Password,
                 OTP = s.OTP,
                 Role = s.tblRole.Role,
-                Active = s.Active
+                Active = s.Active,
+                PhoneNumber = s.Number
             }).FirstOrDefault();
 
             var union = _context.tblUnions.Where(x => x.Email == emailtext).Select(s => new UserDefine.UserViewDetail()
@@ -233,7 +286,8 @@ namespace JRCar.DAL.DBLayer
                 Password = s.Password,
                 OTP = s.OTP,
                 Role = s.tblRole.Role,
-                Active = s.Active
+                Active = s.Active,
+                PhoneNumber = s.Number
             }).FirstOrDefault();
 
             var showroom = _context.tblShowrooms.Where(x => x.Email == emailtext).Select(s => new UserDefine.UserViewDetail()
@@ -245,7 +299,8 @@ namespace JRCar.DAL.DBLayer
                 Password = s.Password,
                 OTP = s.OTP,
                 Role = s.tblRole.Role,
-                Active = s.Isactive
+                Active = s.Isactive,
+                PhoneNumber = s.Contact
             }).FirstOrDefault();
 
             if (user != null)
@@ -277,6 +332,7 @@ namespace JRCar.DAL.DBLayer
                 Email = s.Email,
                 SignUpEmail = s.Email,
                 SignUpUpdateEmail = s.Email,
+                SignUpUpdateNumber = s.Number,
                 Address = s.Address,
                 Number = s.Number,
                 Image = s.Image,
@@ -292,6 +348,7 @@ namespace JRCar.DAL.DBLayer
                 Email = s.Email,
                 SignUpEmail = s.Email,
                 SignUpUpdateEmail = s.Email,
+                SignUpUpdateNumber = s.Number,
                 Address = s.Address,
                 Number = s.Number,
                 Image = s.Image,
@@ -307,6 +364,7 @@ namespace JRCar.DAL.DBLayer
                 Email = s.Email,
                 SignUpEmail = s.Email,
                 SignUpUpdateEmail = s.Email,
+                SignUpUpdateNumber = s.Number,
                 Address = s.Address,
                 Number = s.Number,
                 Image = s.Image,
@@ -322,6 +380,7 @@ namespace JRCar.DAL.DBLayer
                 Email = s.Email,
                 SignUpEmail = s.Email,
                 SignUpUpdateEmail = s.Email,
+                SignUpUpdateNumber = s.Contact,
                 Address = s.ShopNumber,
                 Number = s.Contact,
                 Image = s.Image,

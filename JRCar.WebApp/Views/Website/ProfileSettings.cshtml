@@ -122,11 +122,11 @@
                                 <div class="cs-field-holder">
                                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                         <label>Phone number</label>
-                                        @Html.ValidationMessageFor(model => model.Number, "", new { @class = "text-danger" })
+                                        @Html.ValidationMessageFor(model => model.SignUpUpdateNumber, "", new { @class = "text-danger" })
                                     </div>
                                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                         <div class="cs-field">
-                                            @Html.EditorFor(model => model.Number, new { htmlAttributes = new { placeholder = "Enter your Phone number" } })
+                                            @Html.EditorFor(model => model.SignUpUpdateNumber, new { htmlAttributes = new { placeholder = "Enter your Phone number" } })
                                         </div>
                                     </div>
                                 </div>

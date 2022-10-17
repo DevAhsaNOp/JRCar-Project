@@ -96,11 +96,43 @@ namespace JRCar.BLL.Repositories
             }
         }
         
+        public bool IsPhoneNumberExist(string PhoneNumber) 
+        {
+            if (PhoneNumber != null)
+            {
+                var reas = dbObj.IsPhoneNumberExist(PhoneNumber);
+                if (reas)
+                    return true;
+                else
+                    return false;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        
         public bool IsUpdateEmailExist(string Email, string CurrentEmail) 
         {
             if (Email != null && Email != CurrentEmail)
             {
                 var reas = dbObj.IsEmailExist(Email);
+                if (reas)
+                    return true;
+                else
+                    return false;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        
+        public bool IsUpdatePhoneNumberExist(string PhoneNumber, string CurrentNumber) 
+        {
+            if (PhoneNumber != null && PhoneNumber != CurrentNumber)
+            {
+                var reas = dbObj.IsPhoneNumberExist(PhoneNumber);
                 if (reas)
                     return true;
                 else
@@ -289,7 +321,7 @@ namespace JRCar.BLL.Repositories
                     Email = model.Email,
                     Password = EncDec.Encrypt(model.Password),
                     CNIC = model.CNIC,
-                    Contact = model.Contact,
+                    Contact = model.Number,
                     ShopNumber = model.ShopNumber,
                     Latitude = model.Latitude,
                     Longitude = model.Longitude,

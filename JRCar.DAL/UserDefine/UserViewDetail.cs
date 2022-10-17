@@ -23,5 +23,7 @@ namespace JRCar.DAL.UserDefine
         public string Image { get; set; }
 
         public bool Active { get; set; }
+
+        public string PhoneNumber { get; set; }
     }
 }
