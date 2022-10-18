@@ -366,7 +366,7 @@ namespace JRCar.WebApp.Controllers
         {
             try
             {
-                var IsSuccess = RepoObj.CheckLoginDetails(user.Email, user.Password);
+                var IsSuccess = RepoObj.CheckLoginDetails(user.Email, user.LoginPassword);
                 if (IsSuccess != null && IsSuccess.Active == true)
                 {
                     FormsAuthentication.SetAuthCookie(user.Email, false);
