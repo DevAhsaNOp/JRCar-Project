@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using JRCar.DAL.UserDefine;
 
 namespace JRCar.DAL.DBLayer
 {
@@ -42,7 +43,7 @@ namespace JRCar.DAL.DBLayer
                 throw ex;
             }
         }
-        
+
         public int InsertUserAppointment(tblAppointment model)
         {
             try
@@ -137,7 +138,7 @@ namespace JRCar.DAL.DBLayer
                 throw ex;
             }
         }
-        
+
         public int RejectUserAppointment(int AppntID, int Usr)
         {
             try
@@ -199,7 +200,7 @@ namespace JRCar.DAL.DBLayer
                 throw ex;
             }
         }
-        
+
         public bool AcceptUserAppointment(int AppntID, int Usr, tblAppointmentDetail AppntDetailmodel)
         {
             try
@@ -236,7 +237,39 @@ namespace JRCar.DAL.DBLayer
                 throw ex;
             }
         }
-        
+
+        public string ShowroomContact(tblQuery model)
+        {
+            try
+            {
+                if (model != null)
+                {
+                    string QueryNo = "QNO" + DateTime.Now.ToString("ddMMyy") + "-" + DateTime.Now.Millisecond.ToString() + DateTime.Now.Minute.ToString() + DateTime.Now.Second.ToString();
+                    model.QueryNo = QueryNo;
+                    model.CreatedOn = DateTime.Now;
+                    model.UpdatedOn = null;
+                    model.UpdatedBy = null;
+                    model.Isactive = true;
+                    model.Isarchive = false;
+                    model.IsUserRead = null;
+                    model.IsShowroomRead = false;
+                    model.IsUnionRead = null;
+                    _context.tblQueries.Add(model);
+                    Save();
+                    if (model.ID > 0)
+                        return QueryNo;
+                    else
+                        return null;
+                }
+                else
+                    return null;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public bool IsUserRequestThisCarAppointment(int UserID, int CarID)
         {
             try
@@ -315,6 +348,35 @@ namespace JRCar.DAL.DBLayer
                 return false;
             }
         }
+        
+        public bool ChangeShowroomMessageToAsRead(int ShowroomID)
+        {
+            var reas = _context.tblQueries.Where(a => a.IsShowroomRead == false && a.ShowroomID == ShowroomID).ToList();
+            if (reas.Count > 0)
+            {
+                foreach (var message in reas)
+                {
+                    try
+                    {
+                        message.IsShowroomRead = true;
+                        message.UpdatedOn = DateTime.Now;
+                        message.UpdatedBy = ShowroomID;
+                        _context.Entry(message).State = System.Data.Entity.EntityState.Modified;
+                        _context.SaveChanges();
+                    }
+                    catch (Exception ex)
+                    {
+                        return false;
+                        throw ex;
+                    }
+                }
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
 
         public ValidateAppointment GetAppointmentById(int id)
         {
@@ -358,8 +420,8 @@ namespace JRCar.DAL.DBLayer
                     var appointment = _context.tblAppointments.Where(x => x.ID == id).Select(a => new ValidateAppointment()
                     {
                         ShowroomID = a.tblCar.tblShowroomID,
-                        UserID = a.UserInterestedID, 
-                        ShowroomContact = a.tblCar.tblShowroom.Contact, 
+                        UserID = a.UserInterestedID,
+                        ShowroomContact = a.tblCar.tblShowroom.Contact,
                         ShowroomEmail = a.tblCar.tblShowroom.Email
                     }).FirstOrDefault();
                     if (appointment != null)
@@ -375,7 +437,7 @@ namespace JRCar.DAL.DBLayer
                 throw ex;
             }
         }
-        
+
         public ValidateAppointment GetUserById(int id)
         {
             try
@@ -385,8 +447,8 @@ namespace JRCar.DAL.DBLayer
                     var appointment = _context.tblAppointments.Where(x => x.ID == id).Select(a => new ValidateAppointment()
                     {
                         ShowroomID = a.ShowroomInterestedID.Value,
-                        UserID = a.tblUserAdd.UserID, 
-                        UserContact = a.tblUserAdd.tblUser.Number, 
+                        UserID = a.tblUserAdd.UserID,
+                        UserContact = a.tblUserAdd.tblUser.Number,
                         UserEmail = a.tblUserAdd.tblUser.Email
                     }).FirstOrDefault();
                     if (appointment != null)
@@ -444,7 +506,7 @@ namespace JRCar.DAL.DBLayer
                 {
                     var appointment = _context.tblAppointments.Where(x => x.ID == id).Select(a => new ValidateAppointment()
                     {
-                        ID= a.ID,
+                        ID = a.ID,
                         tblUserAdd = a.tblUserAdd,
                         tblShowroom = a.tblShowroom,
                         Purpose = a.tblAppointmentDetails.FirstOrDefault().Purpose,
@@ -587,6 +649,39 @@ namespace JRCar.DAL.DBLayer
             }
         }
 
+        public IEnumerable<tblQuery> GetShowroomMessagesById(int ShowroomID)
+        {
+            try
+            {
+                if (ShowroomID > 0)
+                {
+                    var messges = _context.tblQueries.Where(x => x.ShowroomID == ShowroomID).ToList();
+                    if (messges != null)
+                        return messges.OrderByDescending(x => x.CreatedOn);
+                    else
+                        return null;
+                }
+                else
+                    return null;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public int GetShowroomMessagesCount(int ShowroomID)
+        {
+            var reas = _context.tblQueries.Where(x => x.ShowroomID == ShowroomID && x.IsShowroomRead == false).OrderByDescending(x => x.CreatedOn).ToList().Count;
+            return reas;
+        }
+        
+        public IEnumerable<tblQuery> GetShowroomMessages(int ShowroomID)
+        {
+            var reas = _context.tblQueries.Where(x => x.ShowroomID == ShowroomID && x.IsShowroomRead == false).OrderByDescending(x => x.CreatedOn).ToList();
+            return reas;
+        }
+        
         public int GetUserTodaysAppointmentsCount(DateTime currentDate, int UserID)
         {
             var reas = _context.tblAppointments.Where(x => (x.UserInterestedID == UserID && x.IsUserRead == false) || (x.tblUserAdd.UserID == UserID && x.IsUserRead == false)).OrderByDescending(x => x.CreatedOn).ToList().Count;

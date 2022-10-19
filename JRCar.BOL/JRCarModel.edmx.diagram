@@ -77,20 +77,20 @@
         <AssociationConnector Association="jrcarModel.FK_tblAppointments_tblCars" />
         <AssociationConnector Association="jrcarModel.FK_tblAppointments_tblShowrooms" />
         <AssociationConnector Association="jrcarModel.FK_tblAppointments_tblUsers" />
-        <EntityTypeShape EntityType="jrcarModel.tblQuery" Width="1.5" PointX="15.5" PointY="21" />
         <EntityTypeShape EntityType="jrcarModel.tblQueryDetail" Width="1.5" PointX="17.75" PointY="22" />
-        <AssociationConnector Association="jrcarModel.FK_tblQuery_tblShowrooms" />
-        <AssociationConnector Association="jrcarModel.FK_tblQuery_tblUnions" />
-        <AssociationConnector Association="jrcarModel.FK_tblQuery_tblUsers" />
-        <AssociationConnector Association="jrcarModel.FK_tblQueryDetails_tblQuery" />
         <EntityTypeShape EntityType="jrcarModel.tblPayment" Width="1.5" PointX="10.5" PointY="38.75" />
         <AssociationConnector Association="jrcarModel.FK_tblPayment_tblShowrooms" />
+        <EntityTypeShape EntityType="jrcarModel.tblQuery" Width="1.5" PointX="15.5" PointY="20.875" />
         <EntityTypeShape EntityType="jrcarModel.tblUserAdd" Width="1.5" PointX="8.25" PointY="24.375" />
         <AssociationConnector Association="jrcarModel.FK_tblUserAdds_tblAddress" />
         <AssociationConnector Association="jrcarModel.FK_tblAppointments_tblUserAdds" />
         <AssociationConnector Association="jrcarModel.FK_tblUserAdds_tblCategory" />
         <AssociationConnector Association="jrcarModel.FK_tblUserAdds_tblManfacturerCarModel" />
         <AssociationConnector Association="jrcarModel.FK_tblUserAdds_tblManufacturer" />
+        <AssociationConnector Association="jrcarModel.FK_tblQuery_tblShowrooms" />
+        <AssociationConnector Association="jrcarModel.FK_tblQuery_tblUnions" />
+        <AssociationConnector Association="jrcarModel.FK_tblQuery_tblUsers" />
+        <AssociationConnector Association="jrcarModel.FK_tblQueryDetails_tblQuery" />
         <AssociationConnector Association="jrcarModel.FK_tblUserAdds_tblSubCategory" />
         <AssociationConnector Association="jrcarModel.FK_dbo_tblUserAddImages_dbo_tblUserAdds_tblUserAddID" />
         <AssociationConnector Association="jrcarModel.FK_dbo_tblUserAdds_dbo_tblUsers_UserID" />

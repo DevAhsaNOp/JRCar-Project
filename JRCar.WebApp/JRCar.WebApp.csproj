@@ -3742,6 +3742,7 @@
     <Content Include="Views\Website\UserAppointmentsList.cshtml" />
     <Content Include="Views\Portal\ShowroomPayment.cshtml" />
     <Content Include="Views\Portal\ShowroomInfo.cshtml" />
+    <Content Include="Views\Portal\ShowroomMessagesList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -25,12 +25,14 @@ namespace JRCar.BOL
         public Nullable<int> UserID { get; set; }
         public Nullable<int> ShowroomID { get; set; }
         public Nullable<int> UnionID { get; set; }
-        public string Subject { get; set; }
+        public string Email { get; set; }
+        public string FullName { get; set; }
+        public string PhoneNumber { get; set; }
         public string Message { get; set; }
         public System.DateTime CreatedOn { get; set; }
         public int CreatedBy { get; set; }
         public Nullable<System.DateTime> UpdatedOn { get; set; }
-        public Nullable<System.DateTime> UpdatedBy { get; set; }
+        public Nullable<int> UpdatedBy { get; set; }
         public Nullable<bool> Isactive { get; set; }
         public Nullable<bool> Isarchive { get; set; }
         public Nullable<bool> IsUserRead { get; set; }

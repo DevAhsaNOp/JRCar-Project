@@ -64,6 +64,21 @@
             </li>*@
         @if (User.IsInRole("Showroom"))
         {
+            <!-- Messages Dropdown Menu -->
+            <li class="nav-item dropdown">
+                <a class="Msgnoti nav-link" data-toggle="dropdown" href="#">
+                    <i class="fas fa-comment-dots"></i>
+                    <span class="badge badge-danger navbar-badge Msgcount"></span>
+                </a>
+                <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right Msgnoti-content" style="left: inherit; right: -13rem; max-height: 260px !important; overflow: auto;">
+                    <span class="dropdown-item dropdown-header">15 Messages</span>
+                    <div class="dropdown-divider"></div>
+                    <span id="MsgnotiContent">
+                    </span>
+                    <div class="dropdown-divider"></div>
+                    <a href="@Url.Action("ShowroomMessagesList","Portal")" class="dropdown-item dropdown-footer" style="position: sticky; bottom: 0px; border-top: 1px solid #E9ECF0; background: white; ">See All Messages</a>
+                </div>
+            </li>
             <!-- Announcements Dropdown Menu -->
             <li class="nav-item dropdown">
                 <a class="Accnoti nav-link" data-toggle="dropdown" href="#">

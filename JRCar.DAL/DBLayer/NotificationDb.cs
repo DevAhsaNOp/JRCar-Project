@@ -203,5 +203,7 @@ namespace JRCar.DAL.DBLayer
         public bool IsAccpeted { get; set; }
         public virtual tblShowroom tblShowroom { get; set; }
         public virtual tblUser tblUser { get; set; }
+        public string Email { get; set; }
+        public string Message { get; set; }
     }
 }

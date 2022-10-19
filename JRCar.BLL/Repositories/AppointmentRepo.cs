@@ -63,6 +63,40 @@ namespace JRCar.BLL.Repositories
             }
         }
 
+        public string ShowroomContact(string FullName, string Email, string PhoneNumber, string Message, int UserID, int ShowroomID)
+        {
+            try
+            {
+                if (FullName.Length > 1 && PhoneNumber.Length > 1 && Message.Length > 1 && UserID > 0 && ShowroomID > 0)
+                {
+                    
+                    tblQuery query = new tblQuery()
+                    {
+                        UserID = UserID,
+                        ShowroomID = ShowroomID,
+                        FullName = FullName,
+                        Email = Email,
+                        PhoneNumber = PhoneNumber,
+                        Message = Message,
+                        CreatedBy = UserID,
+                    };
+                    var reas = appointmentDb.ShowroomContact(query);
+                    if (reas.Length > 0)
+                    {
+                        return reas;
+                    }
+                    else
+                        return null;
+                }
+                else
+                    return null;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public bool InsertAppointmentDetails(ValidateAppointment model, int AppntID)
         {
             try
@@ -157,7 +191,7 @@ namespace JRCar.BLL.Repositories
                 throw ex;
             }
         }
-        
+
         public bool AcceptUserAppointment(int AppntID, int Usr, string Purpose, string Date, bool IsAppntDel)
         {
             try
@@ -247,6 +281,19 @@ namespace JRCar.BLL.Repositories
                 return false;
             }
         }
+        
+        public bool ChangeShowroomMessageToAsRead(int ShowroomID)
+        {
+            if (ShowroomID > 0)
+            {
+                var reas = appointmentDb.ChangeShowroomMessageToAsRead(ShowroomID);
+                return reas;
+            }
+            else
+            {
+                return false;
+            }
+        }
 
         public bool UpdateAppointment(tblAppointment model)
         {
@@ -306,7 +353,7 @@ namespace JRCar.BLL.Repositories
                 throw ex;
             }
         }
-        
+
         public bool RejectUserAppointment(int AppntID, int Usr)
         {
             try
@@ -434,12 +481,44 @@ namespace JRCar.BLL.Repositories
                 throw ex;
             }
         }
+        
+        public IEnumerable<tblQuery> GetShowroomMessagesById(int ShowroomID)
+        {
+            try
+            {
+                if (ShowroomID > 0)
+                {
+                    var messages = appointmentDb.GetShowroomMessagesById(ShowroomID);
+                    if (messages != null && messages.Count() > 0)
+                        return messages;
+                    else
+                        return null;
+                }
+                else
+                    return null;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
 
         public int GetUserTodaysAppointmentsCount(DateTime currentDate, int UserID)
         {
             if (UserID > 0)
             {
                 var reas = appointmentDb.GetUserTodaysAppointmentsCount(currentDate, UserID);
+                return reas;
+            }
+            else
+                return 0;
+        }
+        
+        public int GetShowroomMessagesCount(int ShowroomID)
+        {
+            if (ShowroomID > 0)
+            {
+                var reas = appointmentDb.GetShowroomMessagesCount(ShowroomID);
                 return reas;
             }
             else
@@ -462,6 +541,17 @@ namespace JRCar.BLL.Repositories
             if (UserID > 0)
             {
                 var reas = appointmentDb.GetUserAppointments(currentDate, UserID);
+                return reas;
+            }
+            else
+                return null;
+        }
+        
+        public IEnumerable<tblQuery> GetShowroomMessages(int ShowroomID)
+        {
+            if (ShowroomID > 0)
+            {
+                var reas = appointmentDb.GetShowroomMessages(ShowroomID);
                 return reas;
             }
             else

@@ -22,6 +22,7 @@ using System.Web.Helpers;
 using DocumentFormat.OpenXml.Office2010.Excel;
 using DocumentFormat.OpenXml.Spreadsheet;
 using DocumentFormat.OpenXml.EMMA;
+using System.Web.Routing;
 
 namespace JRCar.WebApp.Controllers
 {
@@ -688,7 +689,7 @@ namespace JRCar.WebApp.Controllers
                 throw ex;
             }
         }
-
+        
         [HttpGet]
         public JsonResult ChangeShowroomAppointmentsToAsRead()
         {
@@ -712,6 +713,123 @@ namespace JRCar.WebApp.Controllers
             catch (Exception ex)
             {
                 TempData["ErrorMsg"] = "Error occured on updating Announcements As Read!" + ex.Message;
+                throw ex;
+            }
+        }
+
+        [HttpGet]
+        [Route("MyMessages")]
+        public ActionResult ShowroomMessagesList()
+        {
+            try
+            {
+                if (User.Identity.IsAuthenticated)
+                {
+                    if (Session["Id"] != null)
+                    {
+                        var ShowroomID = Convert.ToInt32(Session["Id"]);
+                        NotificationComponent NC = new NotificationComponent();
+                        var list = NC.GetShowroomMessagesById(ShowroomID);
+                        return View(list);
+                    }
+                    else
+                    {
+                        var err = (int)HttpStatusCode.BadRequest;
+                        return Json(new { error = err + " Bad Request Error " + "Invalid Request!!" });
+                    }
+                }
+                else
+                {
+                    var err = (int)HttpStatusCode.BadRequest;
+                    return Json(new { error = err + " Bad Request Error " + "Invalid Request!!" });
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMsg"] = "Error occured on loading Messages!" + ex.Message;
+                throw ex;
+            }
+        }
+        
+        [HttpGet]
+        public JsonResult GetShowroomMessagesList()
+        {
+            try
+            {
+                if (User.Identity.IsAuthenticated)
+                {
+                    if (Session["Id"] != null)
+                    {
+                        var ShowroomID = Convert.ToInt32(Session["Id"]);
+                        NotificationComponent NC = new NotificationComponent();
+                        var list = NC.GetShowroomMessages(ShowroomID);
+                        return new JsonResult { Data = list, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
+                    }
+                    else
+                    {
+                        var err = (int)HttpStatusCode.BadRequest;
+                        return Json(new { error = err + " Bad Request Error " + "Invalid Request!!" });
+                    }
+                }
+                else
+                {
+                    var err = (int)HttpStatusCode.BadRequest;
+                    return Json(new { error = err + " Bad Request Error " + "Invalid Request!!" });
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMsg"] = "Error occured on loading Messages!" + ex.Message;
+                throw ex;
+            }
+        }
+
+        [HttpGet]
+        public JsonResult GetShowroomMessagesListCount()
+        {
+            try
+            {
+                if (User.Identity.IsAuthenticated)
+                {
+                    var ShowroomID = Convert.ToInt32(Session["Id"]);
+                    NotificationComponent NC = new NotificationComponent();
+                    var list = NC.GetShowroomMessagesCount(ShowroomID);
+                    return new JsonResult { Data = list, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
+                }
+                else
+                {
+                    var err = (int)HttpStatusCode.BadRequest;
+                    return Json(new { error = err + " Bad Request Error " + "Invalid Request!!" });
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMsg"] = "Error occured on updating Messages Count!" + ex.Message;
+                throw ex;
+            }
+        }
+
+        [HttpGet]
+        public JsonResult ChangeShowroomMessagesToAsRead()
+        {
+            try
+            {
+                if (User.Identity.IsAuthenticated)
+                {
+                    var ShowroomID = Convert.ToInt32(Session["Id"]);
+                    NotificationComponent NC = new NotificationComponent();
+                    var list = NC.ChangeShowroomMessageToAsRead(ShowroomID);
+                    return new JsonResult { Data = list, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
+                }
+                else
+                {
+                    var err = (int)HttpStatusCode.BadRequest;
+                    return Json(new { error = err + " Bad Request Error " + "Invalid Request!!" });
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMsg"] = "Error occured on updating Messages As Read!" + ex.Message;
                 throw ex;
             }
         }

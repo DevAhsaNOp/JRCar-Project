@@ -156,6 +156,12 @@ namespace JRCar.WebApp
             return reas;
         }
 
+        public int GetShowroomMessagesCount(int ShowroomID)
+        {
+            var reas = appointmentrepo.GetShowroomMessagesCount(ShowroomID);
+            return reas;
+        }
+
         public int GetUserTodaysAppointmentsCount(DateTime afterDate, int UserID)
         {
             var reas = appointmentrepo.GetUserTodaysAppointmentsCount(afterDate, UserID);
@@ -201,6 +207,30 @@ namespace JRCar.WebApp
                         noti.IsAccpeted = item.IsAccepted.Value;
                         notis.Add(noti);
                     }
+                }
+                return notis;
+            }
+            else
+                return null;
+        }
+
+        public IEnumerable<NotiShow> GetShowroomMessages(int ShowroomID)
+        {
+            var reas = appointmentrepo.GetShowroomMessages(ShowroomID);
+            List<NotiShow> notis = new List<NotiShow>();
+            if (reas != null)
+            {
+                foreach (var item in reas)
+                {
+                    NotiShow noti = new NotiShow();
+                    noti.Title = "New Message From " + item.tblUser.Name.ToString();
+                    noti.Description = " for Query ";
+                    noti.CreatedOn = item.CreatedOn;
+                    noti.PhoneNumber = item.PhoneNumber;
+                    noti.Email = item.Email;
+                    noti.FromUserName = item.FullName;
+                    noti.Message = item.Message;
+                    notis.Add(noti);
                 }
                 return notis;
             }
@@ -351,6 +381,19 @@ namespace JRCar.WebApp
                 return false;
             }
         }
+        
+        public bool ChangeShowroomMessageToAsRead(int ShowroomID)
+        {
+            if (ShowroomID > 0)
+            {
+                var reas = appointmentrepo.ChangeShowroomMessageToAsRead(ShowroomID);
+                return reas;
+            }
+            else
+            {
+                return false;
+            }
+        }
 
         public bool ChangeUserAppointmentToAsRead(int UserID)
         {
@@ -369,6 +412,30 @@ namespace JRCar.WebApp
         {
             var reas = appointmentrepo.GetUserAppointmentsById(UserID);
             return reas;
+        }
+        
+        public IEnumerable<NotiShow> GetShowroomMessagesById(int ShowroomID)
+        {
+            var reas = appointmentrepo.GetShowroomMessagesById(ShowroomID);
+            List<NotiShow> notis = new List<NotiShow>();
+            if (reas != null)
+            {
+                foreach (var item in reas)
+                {
+                    NotiShow noti = new NotiShow();
+                    noti.Title = "New Message From " + item.tblUser.Name.ToString();
+                    noti.Description = " for Query ";
+                    noti.CreatedOn = item.CreatedOn;
+                    noti.PhoneNumber = item.PhoneNumber;
+                    noti.Email = item.Email;
+                    noti.FromUserName = item.FullName;
+                    noti.Message = item.Message;
+                    notis.Add(noti);
+                }
+                return notis;
+            }
+            else
+                return null;
         }
 
         public List<NotiShow> GetAllNotifications(int ShowroomID)

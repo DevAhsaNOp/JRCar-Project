@@ -29,13 +29,77 @@
     <script src="~/Files/scripts/jquery.js"></script>
     <script src="~/Files/scripts/modernizr.js"></script>
     <script src="~/Files/scripts/bootstrap.min.js"></script>
+    <script src="~/scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/scripts/jquery.unobtrusive-ajax.min.js"></script>
+    <!-- SweetAlert2 -->
+    <link rel="stylesheet" href="~/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
+    <script src="~/plugins/sweetalert2/sweetalert2.min.js"></script>
     <style>
         .max-lines {
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
+
+        .cs-Sbgcolor {
+            font-size: 12px;
+            line-height: 18px !important;
+            color: white;
+            font-weight: 600;
+            background: darkturquoise;
+            margin: 10px 0;
+            padding: 0 5px;
+            border-radius: 4px;
+        }
     </style>
+    <script>
+
+        function fnAuthorize() {
+            var userAuthorized = @User.Identity.IsAuthenticated.ToString().ToLower();
+            var Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 5000
+            });
+            if (userAuthorized) {
+            }
+            else {
+                Toast.fire({
+                    title: '<span style="font-size:10px;line-height:10px;text-transform: capitalize;text-align:center">Please Sign In. Before Contacting with Showroom!</span>',
+                    footer: '<a href="/Account/SignIn" style="font-size:14px;" class="btn btn-danger">Sign In</a>'
+                })
+                return false;
+            }
+        }
+
+        function fnSuccess(data) {
+            $('#ContactShowroomDealer').find('form').trigger('reset');
+            var Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 5000
+            });
+
+            if (data!=false) {
+                Toast.fire({
+                    icon: 'success',
+                    title: '<span style="font-size:10px;font-family:Arial, sans-serif;line-height:10px;text-transform: capitalize;text-align:center"> Your Query no. is '+data+' and Dealer will Contact you soon!</span>',
+                });
+                $("#SuccessMsg").text("Your Query no. is " + data + " and Dealer will Contact you soon!");
+            }
+            else {
+                Toast.fire({
+                    icon: 'error',
+                    title: '<span style="font-size:10px;line-height:10px;text-transform: capitalize;text-align:center">Something went wrong. Please try again Later!</span>',
+                })
+                $("#SuccessMsg").text("Something went wrong. Please try again Later!");
+            }
+        }
+
+    </script>
 </head>
 <body class="cs-agent-detail wp-automobile">
     <div class="wrapper">
@@ -302,13 +366,20 @@
                                         </div>
                                         <div class="cs-agent-contact-form">
                                             <span class="cs-form-title">Contact Dealer</span>
-                                            <form>
-                                                <input type="text" placeholder="Full Name" />
-                                                <input type="email" placeholder="Email Address" />
-                                                <input type="text" placeholder="Phone Number" />
-                                                <textarea placeholder="I am interested in a price quote on this vehicle. Please contact me at your earliest convenience with your best price for this vehicle"></textarea>
+                                            @using (Ajax.BeginForm("ShowroomContact", "Website", new AjaxOptions
+                                            {
+                                                HttpMethod = "POST",
+                                                OnBegin = "fnAuthorize",
+                                                OnSuccess = "fnSuccess"
+                                            }, htmlAttributes: new { @id = "ContactShowroomDealer" }))
+                                            {
+                                                <div class="cs-Sbgcolor" id="SuccessMsg"></div>
+                                                <input type="text" pattern="^[a-zA-Z ]+$" name="FullName" placeholder="Full Name" required />
+                                                <input type="email" name="Email" placeholder="Email Address" />
+                                                <input type="text" pattern="03[0-9]{2}(?!1234567)(?!1111111)(?!7654321)[0-9]{7}" name="PhoneNumber" placeholder="Phone Number" required />
+                                                <textarea name="Message" placeholder="I am interested in a price quote on this vehicle. Please contact me at your earliest convenience with your best price for this vehicle" required></textarea>
                                                 <input class="cs-bgcolor" type="submit" value="Contact Dealer" />
-                                            </form>
+                                            }
                                         </div>
                                     </div>
                                 </div>

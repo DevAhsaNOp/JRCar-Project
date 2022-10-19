@@ -523,6 +523,7 @@ namespace JRCar.WebApp.Controllers
             if (Show != null)
             {
                 var reas = adsRepo.ShowroomProfileView(Show);
+                Session["CShowroomID"] = reas.tblShowroomID;
                 if (reas == null && reas.ShowroomActive == false)
                 {
                     TempData["ErrorMsg"] = "Showroom you trying to view is not exists!";
@@ -546,7 +547,7 @@ namespace JRCar.WebApp.Controllers
             int? page = 1;
             int pagesize = 1, pageindex = 1;
             pageindex = page.HasValue ? Convert.ToInt32(page) : 1;
-            var list = RepoObj.GetAllShowRoom().Where(x=>x.Isactive == true);
+            var list = RepoObj.GetAllShowRoom().Where(x => x.Isactive == true);
             IPagedList<tblShowroom> reas = list.ToPagedList(pageindex, pagesize);
             return View(reas);
         }
@@ -564,11 +565,46 @@ namespace JRCar.WebApp.Controllers
             }
             else
             {
-                list = RepoObj.GetAllShowRoom().Where(x => x.Isactive == true); 
+                list = RepoObj.GetAllShowRoom().Where(x => x.Isactive == true);
             }
             IPagedList<tblShowroom> reas = list.ToPagedList(pageindex, pagesize);
             return PartialView("_cardealers", reas);
         }
+
+        [HttpPost]
+        public JsonResult ShowroomContact(string FullName, string Email, string PhoneNumber, string Message)
+        {
+            try
+            {
+                if (User.Identity.IsAuthenticated)
+                {
+                    Email = Email.Length < 1 ? Session["Email"].ToString() : Email;
+                    var UserID = Convert.ToInt32(Session["Id"]);
+                    var ShowroomID = Convert.ToInt32(Session["CShowroomID"]);
+                    AppointmentRepo appointmentRepo = new AppointmentRepo();
+                    var reas = appointmentRepo.ShowroomContact(FullName, Email, PhoneNumber, Message, UserID, ShowroomID);
+                    if (reas.Length > 1)
+                    {
+                        return Json(reas, JsonRequestBehavior.AllowGet);
+                    }
+                    else
+                    {
+                        return Json(false, JsonRequestBehavior.AllowGet);
+                    }
+                }
+                else
+                {
+                    var err = (int)HttpStatusCode.BadRequest;
+                    return Json(new { error = err + " Bad Request Error " + "Invalid Request!!" });
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMsg"] = "Error occured on loading Appointments!" + ex.Message;
+                throw ex;
+            }
+        }
+
         #endregion
 
         #region **User Appointment**
@@ -599,7 +635,7 @@ namespace JRCar.WebApp.Controllers
                 throw ex;
             }
         }
-        
+
         [HttpGet]
         public JsonResult GetUserAppointmentsList()
         {
@@ -656,7 +692,7 @@ namespace JRCar.WebApp.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles ="User")]
+        [Authorize(Roles = "User")]
         public JsonResult GetUserAppointmentsListCount()
         {
             try
@@ -1126,7 +1162,7 @@ namespace JRCar.WebApp.Controllers
                 ViewBag.SortBy = (sortBy.HasValue ? sortBy.Value : 1);
                 ViewBag.MaximumPrice = (maximumPrice ?? AdsRepo.GetAllActiveAds().Select(x => Convert.ToInt32(x.Price)).Max());
                 ViewBag.MinimumPrice = (minimumPrice ?? AdsRepo.GetAllActiveAds().Select(x => Convert.ToInt32(x.Price)).Min());
-            
+
                 var maxval = AdsRepo.GetAllActiveAds().Select(x => Convert.ToInt32(x.Price)).Max();
                 var minval = AdsRepo.GetAllActiveAds().Select(x => Convert.ToInt32(x.Price)).Min();
 
@@ -1142,7 +1178,7 @@ namespace JRCar.WebApp.Controllers
                 return PartialView("_LoadAdsOn", reas);
             }
         }
-        
+
         #endregion
 
         #region **Usabale Functions & Classes**

@@ -520,9 +520,9 @@
             //    }
             //}
 
-            //setInterval(function myfunction() {
-            //    AppntupdateNotificationCount()
-            //}, 1000);
+            setInterval(function myfunction() {
+                MsgupdateNotificationCount()
+            }, 1000);
 
             updateNotification();
             GetCount();
@@ -533,6 +533,38 @@
             AppntupdateNotification();
             AppntGetCount();
             AppntupdateNotificationCount();
+            MsgupdateNotification();
+            MsgGetCount();
+            MsgupdateNotificationCount();
+
+            $('a.Msgnoti').click(function (e) {
+                e.stopPropagation();
+                var count = 0;
+                count = parseInt($('span.Msgcount').html()) || 0;
+                console.log('a.Msgnoti outer' + count);
+
+                //Only load Msgnotification if not already loaded
+                if (count > 0) {
+                    MsgupdateNotification();
+                    sessionStorage.setItem("Msgcount", 0);
+                    console.log('a.Msgnoti inner if' + count);
+                    $('.Msgnoti-content').show();
+                    MsgupdateNotificationRead();
+                }
+                else if ($('.Msgnoti-content').css('display') == 'block') {
+                    $('.Msgnoti-content').hide();
+                }
+                else if ($('.Msgnoti-content').css('display') == 'none') {
+                    $('.Msgnoti-content').show();
+                    //MsgupdateNotificationRead();
+                }
+                $('span.Msgcount', this).html('');
+            })
+
+            // Hide Msgnotifications
+            $('html').click(function () {
+                $('.Msgnoti-content').hide();
+            })
 
             $('a.Accnoti').click(function (e) {
                 e.stopPropagation();
@@ -990,6 +1022,81 @@
                 success: function (response) {
                     console.log('GetNotificationsListRead:: ' + response);
                     sessionStorage.setItem("count", 0);
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            })
+        }
+
+        //Message Count
+        function MsgGetCount() {
+            var count = sessionStorage.getItem("Msgcount");
+            console.log('a.Msg outer' + count);
+
+            if (count > 0) {
+                $('span.Msgcount').html(count);
+            }
+            else {
+                $('span.Msgcount', this).html('');
+            }
+        }
+
+        // Message Update notification
+        function MsgupdateNotification() {
+            $('#MsgnotiContent').empty();
+            $('#MsgnotiContent').append($('<li>Loading...</li>'));
+            $.ajax({
+                type: 'GET',
+                url: '/Portal/GetShowroomMessagesList',
+                success: function (response) {
+                    $('#MsgnotiContent').empty();
+                    console.log(response);
+                    if (response.length == 0) {
+                        $('#MsgnotiContent').append($('<a href="#" class="dropdown-item"><i class="fas fa-envelope mr-2"></i> No New Message Available</a>'));
+                    }
+                    $.each(response, function (index, value) {
+                        $('#MsgnotiContent').append($('<span href="#" class="dropdown-item" style="white-space: pre-line;"> <i class="fas fa-envelope mr-2"></i> ' + value.Title + value.Description + '</span>'));
+                    });
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            })
+        }
+
+        // Update notification count
+        function MsgupdateNotificationCount() {
+            var count = 0;
+            $.ajax({
+                type: 'GET',
+                url: '/Portal/GetShowroomMessagesListCount',
+                success: function (response) {
+                    console.log('GetMessagesListCount:: ' + response);
+                    count = response;
+                    if (count > 0) {
+                        $('span.Msgcount').html(count);
+                    }
+                    else {
+                        $('span.Msgcount').html('');
+                    }
+                    console.log('updateMsgNotificationCount' + count);
+                    sessionStorage.setItem("Msgcount", count);
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            })
+        }
+
+        // Messages Change to Read When NotiFication Icon Press
+        function MsgupdateNotificationRead() {
+            $.ajax({
+                type: 'GET',
+                url: '/Portal/ChangeShowroomMessagesToAsRead',
+                success: function (response) {
+                    console.log('GetMessagesListRead:: ' + response);
+                    sessionStorage.setItem("Msgcount", 0);
                 },
                 error: function (error) {
                     console.log(error);
