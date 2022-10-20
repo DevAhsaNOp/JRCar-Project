@@ -547,7 +547,7 @@ namespace JRCar.WebApp.Controllers
         public ActionResult ShowroomDeal()
         {
             int? page = 1;
-            int pagesize = 1, pageindex = 1;
+            int pagesize = 3, pageindex = 1;
             pageindex = page.HasValue ? Convert.ToInt32(page) : 1;
             var list = RepoObj.GetAllShowRoom().Where(x => x.Isactive == true);
             IPagedList<tblShowroom> reas = list.ToPagedList(pageindex, pagesize);
@@ -558,7 +558,7 @@ namespace JRCar.WebApp.Controllers
         public ActionResult Dealer(int? page, string searchedDealer)
         {
             IEnumerable<tblShowroom> list;
-            int pagesize = 1, pageindex = 1;
+            int pagesize = 3, pageindex = 1;
             pageindex = page.HasValue ? Convert.ToInt32(page) : 1;
             if (searchedDealer != null)
             {
@@ -1028,7 +1028,7 @@ namespace JRCar.WebApp.Controllers
         [Route("Ads")]
         public ActionResult AllVehicles(string searchTerm, int? minimumPrice, int? maximumPrice, int? sortBy, int? Condition, int? StartYear, int? EndYear, int? page, int?[] MakeId, int?[] ModelId, string[] ColorSelected, string[] TransSelected)
         {
-            int pagesize = 2, pageindex = 1;
+            int pagesize = 7, pageindex = 1;
             //ValidationUserAds adsView = new ValidationUserAds();
             //var AllStates = AddressRepoObj.GetAllState();
             //var states = new List<SelectListItem>();
@@ -1157,7 +1157,7 @@ namespace JRCar.WebApp.Controllers
         public ActionResult GetAds(string searchTerm, int? minimumPrice, int? maximumPrice, int? sortBy, int? Condition, int? StartYear, int? EndYear, int? page, int?[] MakeId, int?[] ModelId, string[] ColorSelected, string[] TransSelected)
         {
             /***Number of Records you want per Page***/
-            int pagesize = 2, pageindex = 1;
+            int pagesize = 7, pageindex = 1;
             AdsViewModel adsView = new AdsViewModel();
             ShowroomAdsRepo AdsRepo = new ShowroomAdsRepo();
             adsView.SearchTerm = searchTerm;

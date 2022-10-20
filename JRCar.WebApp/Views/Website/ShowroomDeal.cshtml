@@ -5,6 +5,9 @@
     ViewBag.Title = "ShowroomDeal";
     Layout = "~/Views/Shared/_WebLayout.cshtml";
 }
+<script src="~/scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script src="~/scripts/jquery.unobtrusive-ajax.min.js"></script>
 <style>
     .wp-automobile .cs-agent-listing .cs-media {
         width: fit-content !important;
@@ -27,43 +30,43 @@
             <div class="section-fullwidth col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div class="row">
                     <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-                            <div class="cs-agent-filters">
-                                <span class="cs-filters-title">refine car delaers</span>
-                                <div class="row">
-                                    <form>
-                                        <div class="cs-agent-filtration">
-                                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                                <div class="main-search" style="margin-bottom:15px !important;">
-                                                    <div class="search-input">
-                                                        <input type="text" placeholder="Search by Keyword" name="searchTerm" id="searchTerm_TxtBox">
-                                                        <a href="#" onclick="SearchDealer()">
-                                                            <i class="icon-search2" style="left: 90% !important;">
-                                                            </i>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                                <div class="cs-select-dropdown">
-                                                    <label>Dealer Type</label>
-                                                    <select data-placeholder="recent added" class="chosen-select-deselect" tabindex="5">
-                                                        <option>cheverlate</option>
-                                                        <option>cheverlate</option>
-                                                        <option>cheverlate</option>
-                                                        <option>cheverlate</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                                <div class="cs-search-btn">
-                                                    <input type="submit" value="refine search" />
+                        <div class="cs-agent-filters">
+                            <span class="cs-filters-title">refine car delaers</span>
+                            <div class="row">
+                                <form >
+                                    <div class="cs-agent-filtration">
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                            <div class="main-search" style="margin-bottom:15px !important;">
+                                                <div class="search-input">
+                                                    <input type="text" placeholder="Search by Keyword" name="searchTerm" id="searchTerm_TxtBox">
+                                                    <a href="javascript:void(0)" id="SearchedI">
+                                                        <i class="icon-search2" style="left: 90% !important;">
+                                                        </i>
+                                                    </a>
                                                 </div>
                                             </div>
                                         </div>
-                                    </form>
-                                </div>
+                                        @*<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                            <div class="cs-select-dropdown">
+                                                <label>Dealer Type</label>
+                                                <select data-placeholder="recent added" class="chosen-select-deselect" tabindex="5">
+                                                    <option>cheverlate</option>
+                                                    <option>cheverlate</option>
+                                                    <option>cheverlate</option>
+                                                    <option>cheverlate</option>
+                                                </select>
+                                            </div>
+                                        </div>*@
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                            <div class="cs-search-btn">
+                                                <input type="button" value="refine search" id="SearchFormed" style="width: 100%; background: #242931; border: none; color: #fff; text-transform: uppercase; font-size: 12px; font-weight: 700; min-height: 41px;"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
                             </div>
                         </div>
+                    </div>
                     <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
                         <div class="row">
                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -72,38 +75,38 @@
                                 </div>
                             </div>
                             @*<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                <div class="cs-ag-search">
-                                    <ul class="filter-list">
-                                        <li><a href="#">A</a></li>
-                                        <li><a href="#">B</a></li>
-                                        <li><a href="#">C</a></li>
-                                        <li><a href="#">D</a></li>
-                                        <li><a href="#">E</a></li>
-                                        <li><a href="#">F</a></li>
-                                        <li><a href="#">G</a></li>
-                                        <li><a href="#">H</a></li>
-                                        <li><a href="#">I</a></li>
-                                        <li><a href="#">J</a></li>
-                                        <li><a href="#">K</a></li>
-                                        <li><a href="#">L</a></li>
-                                        <li><a href="#">M</a></li>
-                                        <li><a href="#">N</a></li>
-                                        <li><a href="#">O</a></li>
-                                        <li><a href="#">P</a></li>
-                                        <li><a href="#">Q</a></li>
-                                        <li><a href="#">R</a></li>
-                                        <li><a href="#">S</a></li>
-                                        <li><a href="#">T</a></li>
-                                        <li><a href="#">U</a></li>
-                                        <li><a href="#">V</a></li>
-                                        <li><a href="#">W</a></li>
-                                        <li><a href="#">X</a></li>
-                                        <li><a href="#">Y</a></li>
-                                        <li><a href="#">Z</a></li>
-                                        <li><a href="#">0-9</a></li>
-                                    </ul>
-                                </div>
-                            </div>*@
+                                    <div class="cs-ag-search">
+                                        <ul class="filter-list">
+                                            <li><a href="#">A</a></li>
+                                            <li><a href="#">B</a></li>
+                                            <li><a href="#">C</a></li>
+                                            <li><a href="#">D</a></li>
+                                            <li><a href="#">E</a></li>
+                                            <li><a href="#">F</a></li>
+                                            <li><a href="#">G</a></li>
+                                            <li><a href="#">H</a></li>
+                                            <li><a href="#">I</a></li>
+                                            <li><a href="#">J</a></li>
+                                            <li><a href="#">K</a></li>
+                                            <li><a href="#">L</a></li>
+                                            <li><a href="#">M</a></li>
+                                            <li><a href="#">N</a></li>
+                                            <li><a href="#">O</a></li>
+                                            <li><a href="#">P</a></li>
+                                            <li><a href="#">Q</a></li>
+                                            <li><a href="#">R</a></li>
+                                            <li><a href="#">S</a></li>
+                                            <li><a href="#">T</a></li>
+                                            <li><a href="#">U</a></li>
+                                            <li><a href="#">V</a></li>
+                                            <li><a href="#">W</a></li>
+                                            <li><a href="#">X</a></li>
+                                            <li><a href="#">Y</a></li>
+                                            <li><a href="#">Z</a></li>
+                                            <li><a href="#">0-9</a></li>
+                                        </ul>
+                                    </div>
+                                </div>*@
                             <div id="cardeal">
                                 @Html.Partial("_cardealers", Model)
                             </div>
@@ -130,17 +133,27 @@
     </div>
 </div>
 <script>
-    function SearchDealer() {
-        //var pg = $('.pagination .active')[0].innerText;
+    $("#SearchedI").click(function myfunction() {
+        var pg = $('.pagination .active')[0].innerText;
         var search = $('#searchTerm_TxtBox').val();
         $.ajax({
-            url: "@Url.Action("Dealer","Website")",
             type: 'GET',
-            data: { searchedDealer: search },
-            contentType: "application/json; charset=utf-8",
+            url: '/Website/Dealer?page=' + pg + '&searchedDealer=' + search,
             success: function (resp) {
                 $("#cardeal").html(resp);
             }
-        });
-    }
+        })
+    })
+
+    $("#SearchFormed").click(function myfunction() {
+        var pg = $('.pagination .active')[0].innerText;
+        var search = $('#searchTerm_TxtBox').val();
+        $.ajax({
+            type: 'GET',
+            url: '/Website/Dealer?page=' + pg + '&searchedDealer=' + search,
+            success: function (resp) {
+                $("#cardeal").html(resp);
+            }
+        })
+    })
 </script>
