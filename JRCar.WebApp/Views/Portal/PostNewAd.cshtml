@@ -65,7 +65,7 @@
                             <div class="card-body">
                                 <h6 class="bg-gradient-blue p-1 text-center"><b>Note: </b>Insert the correct Information</h6>
                                 <h4 class="text-left"><b>Car Information</b></h4>
-                                <div class="row">
+                                @*<div class="row">
                                     <div class="col-md-6 col-lg-6 col-sm-12">
                                         <div class="form-group" id="CategoryD">
                                             <label for="exampleInputBorder">Category </label>
@@ -80,7 +80,7 @@
                                             @Html.DropDownListFor(model => model.SubCategoryId, new SelectList(""), htmlAttributes: new { @class = "form-control select2bs4" })
                                         </div>
                                     </div>
-                                </div>
+                                </div>*@
                                 <div class="row">
                                     <div class="col-md-6 col-lg-6 col-sm-12">
                                         <div class="form-group" id="ManufacD">
@@ -177,6 +177,17 @@
                             </div>
                             <div class="card-body">
                                 <h4 class="text-left"><b>Upload Car Photos</b></h4>
+                                @*<div class="row">
+                                    <div class="col-12">
+                                        <p id="ImgErrorMsg" style="color: rgb(255, 0,0) !important; margin-bottom: 0;"></p>
+                                    </div>
+                                </div>*@
+                                <div class="row">
+                                    <div class="col-12">
+                                        @Html.ValidationMessageFor(model => model.ImagesCount, "", new { @class = "text-danger" })
+                                        @Html.EditorFor(model => model.ImagesCount, new { htmlAttributes = new { @readonly = "readonly", @style = "border: none !important;padding: 0;color: white;" } })
+                                    </div>
+                                </div>
                                 <div class="row">
                                     <div class="col-12">
                                         <div class="input-images-1" style="padding-top: .5rem;"></div>

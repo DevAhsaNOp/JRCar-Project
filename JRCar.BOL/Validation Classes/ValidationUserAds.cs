@@ -25,6 +25,10 @@ namespace JRCar.BOL.Validation_Classes
         [Display(Name = "Condition")]
         [Range(1, Int32.MaxValue, ErrorMessage = "Must select a Condition")]
         public string Condition { get; set; }
+        
+        [Required(ErrorMessage = "*")]
+        [Range(5, 50, ErrorMessage = "Minimum 5 images you need to upload")]
+        public int ImagesCount { get; set; }
 
         [Required(ErrorMessage = "*")]
         [Display(Name = "Title")]

@@ -275,8 +275,10 @@ namespace JRCar.WebApp.Controllers
                                 userAds.CompleteAddress = userAds.Address;
                                 userAds.Latitude = area.Item1.ToString();
                                 userAds.Longitude = area.Item2.ToString();
-                                userAds.CategoryId = Convert.ToInt32(userAds.CategoryName);
-                                userAds.SubCategoryId = Convert.ToInt32(userAds.SubCategoryName);
+                                /*Hard Coded Values Change It When The Scenario Changes*/
+                                userAds.CategoryId = 1; /*Convert.ToInt32(userAds.CategoryName);*/
+                                userAds.SubCategoryId = 1; /*Convert.ToInt32(userAds.SubCategoryName);*/
+                                /*******************************************************/
                                 userAds.ManufacturerId = Convert.ToInt32(userAds.Manufacturer_Name);
                                 userAds.ManufacturerCarModelID = Convert.ToInt32(userAds.Manufacturer_CarModelName);
                                 var AdsPublish = RepoObj1.InsertUserAds(userAds);
@@ -891,6 +893,7 @@ namespace JRCar.WebApp.Controllers
         {
             var carDetail = RepoObj1.GetUserAdsDetail(AdID);
             var UserID = Convert.ToInt32(Session["Id"]);
+            Session["IsAppntShow"] = carDetail.UserID == UserID ? "true" : "false";
             var IsUserCar = carDetail.UserID;
             if ((carDetail == null || UserID != IsUserCar) && (RepoObj.IsShowroom(UserID) == false))
             {
@@ -910,6 +913,19 @@ namespace JRCar.WebApp.Controllers
                 }
                 Session["UserCarID"] = carDetail.AdID;
                 ViewBag.Images = images;
+                if (User.Identity.IsAuthenticated)
+                {
+                    AppointmentRepo repo = new AppointmentRepo();
+                    var reas = repo.IsShowroomRequestThisCarAppointment((int)Session["Id"], carDetail.AdID);
+                    if (reas)
+                    {
+                        Session["IsAppntSchedule"] = "true";
+                    }
+                    else
+                    {
+                        Session["IsAppntSchedule"] = "false";
+                    }
+                }
                 return View(carDetail);
             }
         }

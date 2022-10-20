@@ -20,6 +20,10 @@ namespace JRCar.BOL.Validation_Classes
         public string RegNo { get; set; }
 
         [Required(ErrorMessage = "*")]
+        [Range(5, 50,ErrorMessage = "Minimum 5 images you need to upload")]
+        public int ImagesCount { get; set; }
+
+        [Required(ErrorMessage = "*")]
         [Display(Name = "Registered Location")]
         public string RegLocation { get; set; }
 

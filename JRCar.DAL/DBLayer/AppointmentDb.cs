@@ -290,6 +290,27 @@ namespace JRCar.DAL.DBLayer
                 throw ex;
             }
         }
+        
+        public bool IsShowroomRequestThisCarAppointment(int ShowroomID, int CarID)
+        {
+            try
+            {
+                if (ShowroomID > 0 && CarID > 0)
+                {
+                    var reas = _context.tblAppointments.Where(x => x.ShowroomInterestedID == ShowroomID && x.UserCarID == CarID).FirstOrDefault();
+                    if (reas != null)
+                        return true;
+                    else
+                        return false;
+                }
+                else
+                    return false;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
 
         public bool ChangeShowroomAppointmentToAsRead(int ShowroomID)
         {

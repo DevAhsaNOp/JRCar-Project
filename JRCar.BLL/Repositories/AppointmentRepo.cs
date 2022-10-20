@@ -255,6 +255,27 @@ namespace JRCar.BLL.Repositories
                 throw ex;
             }
         }
+        
+        public bool IsShowroomRequestThisCarAppointment(int UserID, int CarID)
+        {
+            try
+            {
+                if (UserID > 0 && CarID > 0)
+                {
+                    var reas = appointmentDb.IsShowroomRequestThisCarAppointment(UserID, CarID);
+                    if (reas)
+                        return true;
+                    else
+                        return false;
+                }
+                else
+                    return false;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
 
         public bool ChangeShowroomAppointmentToAsRead(int ShowroomID)
         {

@@ -301,17 +301,17 @@
                         </li>
                     }
                 </ul>
-                <div class="container">
+                <!--<div class="container">
                     <div class="row">
                         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 pull-right">
                             <div class="cs-button-style">
-                                <a class="btn-video" href="#"><i class="icon-play_arrow"></i> Watch video</a>
+                                <a class="btn-video" href="#"><i class="icon-play_arrow"></i> Watch video</a>-->
                                 @*<a class="btn-compare" href="#"><i class="icon-flow-tree"></i> Compare</a>*@
-                                <a class="btn-shortlist" href="#"><i class="icon-heart-o"></i> shortlist</a>
+                                <!--<a class="btn-shortlist" href="#"><i class="icon-heart-o"></i> shortlist</a>
                             </div>
                         </div>
                     </div>
-                </div>
+                </div>-->
             </div>
             <div class="cs-form-modal">
                 <div class="modal fade" id="UserAppnt" tabindex="-1" role="dialog">
@@ -404,12 +404,12 @@
                                                     <li><a href="#location">Location</a></li>
                                                     <li><a href="#contact">Contact Us</a></li>
                                                 </ul>
-                                                <div class="detail-btn">
+                                                @*<div class="detail-btn">
                                                     <div class="cs-button-style">
                                                         <a class="btn-compare" href="#"><i class="icon-flow-tree"></i> Compare</a>
                                                         <a class="btn-shortlist" href="#"><i class="icon-heart-o"></i> shortlist</a>
                                                     </div>
-                                                </div>
+                                                </div>*@
                                             </div>
                                             <div class="on-scroll">
                                                 <div id="vehicle" class="auto-overview detail-content">
@@ -437,8 +437,8 @@
                                                                 <figure><i class="icon-engine cs-color"></i></figure>
                                                             </div>
                                                             <div class="auto-text">
-                                                                <span>make Model</span>
-                                                                <strong>@Html.DisplayFor(model => model.Model)</strong>
+                                                                <span>Make Model</span>
+                                                                <strong>@Html.DisplayFor(model => model.Manufacturer_Name) @Html.DisplayFor(model => model.Manufacturer_CarModelName)</strong>
                                                             </div>
                                                         </li>
                                                         <li class="col-lg-1 col-md-1 col-sm-6 col-xs-6" style="text-align: left !important">
@@ -475,8 +475,25 @@
                             <aside class="page-sidebar col-lg-3 col-md-3 col-sm-12 col-xs-12">
                                 <div class="cs-category-link-icon">
                                     <ul>
-                                        <li><a data-toggle="modal" href="javascript:void(0)" data-target="#schedule-test-drive"><i class="cs-color icon-car"></i>Schedule Appointment</a></li>
-                                        <li><a href="~/Files/extra-images/pdf-sample.pdf" download><i class="cs-color icon-print3"></i>Print this Detail</a></li>
+                                        @if (Session["IsAppntShow"].ToString() == "false")
+                                        {
+                                            if (User.Identity.IsAuthenticated)
+                                            {
+                                                if (Session["IsAppntSchedule"].ToString() == "true")
+                                                {
+                                                    <li><a href="javascript:void(0)" style="line-height: initial;font-weight:700"><i class="cs-color icon-check-circle"></i>Appointment already Requested!</a></li>
+                                                }
+                                                else if (Session["IsAppntSchedule"].ToString() == "false")
+                                                {
+                                                    <li><a data-toggle="modal" href="javascript:void(0)" data-target="#schedule-test-drive"><i class="cs-color icon-car"></i>Schedule Appointment</a></li>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <li><a data-toggle="modal" href="javascript:void(0)" data-target="#schedule-test-drive"><i class="cs-color icon-car"></i>Schedule Appointment</a></li>
+                                            }
+                                        }
+                                        @*<li><a href="~/Files/extra-images/pdf-sample.pdf" download><i class="cs-color icon-print3"></i>Print this Detail</a></li>*@
                                     </ul>
                                     <div class="cs-form-modal">
                                         <div class="modal fade" id="schedule-test-drive" tabindex="-1" role="dialog">

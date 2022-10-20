@@ -352,6 +352,8 @@ namespace JRCar.DAL.DBLayer
                 /*---Car Details---*/
                 AdID = s.ID,
                 Model = s.Model,
+                Manufacturer_CarModelName = s.tblManfacturerCarModel.Manufacturer_CarModelName,
+                Manufacturer_Name = s.tblManufacturer.Manufacturer_Name,
                 Year = s.Year,
                 Condition = s.Condition,
                 Title = s.Title,

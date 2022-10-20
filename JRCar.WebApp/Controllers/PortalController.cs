@@ -890,7 +890,8 @@ namespace JRCar.WebApp.Controllers
                             showroomAds.tblShowroomID = Convert.ToInt32(Session["Id"]);
                             showroomAds.CarImage = name;
                             showroomAds.CurrentLocation = showroom.ShopNumber + " " + showroom.tblAddress.CompleteAddress;
-
+                            showroomAds.CategoryId = 1;
+                            showroomAds.SubCategoryId = 1;
                             var AdsPublish = RepoObj1.InsertShowroomAds(showroomAds);
                             if (AdsPublish)
                             {
@@ -1161,6 +1162,8 @@ namespace JRCar.WebApp.Controllers
         public ActionResult CarAds(string AdID)
         {
             var carDetail = RepoObj1.GetShowroomAdsDetail(AdID);
+            var ShowroomID = Convert.ToInt32(Session["Id"]);
+            Session["IsAppntShow"] = carDetail.tblShowroomID == ShowroomID ? "true" : "false";
             if (carDetail == null || carDetail.tblCarIsactive == false)
             {
                 Session["ShowCarID"] = null;

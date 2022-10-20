@@ -261,12 +261,12 @@
 
             $('.input-images-1').imageUploader();
 
-            $('#CategoryD').show();
-            $('#SubCategoryD').hide();
+            //$('#CategoryD').show();
+            //$('#SubCategoryD').hide();
+            $('#ManufacD').show();
+            $('#ModelD').hide();
             $('#RecSec').hide();
             $('#RecAmou').hide();
-            $('#ManufacD').hide();
-            $('#ModelD').hide();
             $('#ModelYearD').hide();
             $('#CondD').hide();
             $('#PayError').hide();
@@ -419,19 +419,33 @@
             })
 
             $('#postad').on("click", function () {
+                ImagesValidate();
+                //var a = $(".uploaded")[0].children.length;
+                //if (a < 5) {
+                //    //alert("Minimum 5 images you need to upload");
+                //    var element = document.getElementsByClassName("image-uploader");
+                //    for (item of element) {
+                //        item.style.border = "1px solid #f16060";
+                //    }
+                //    $('html, body').animate({
+                //        scrollTop: $("#images-not").offset().top
+                //    }, 100);
+                //    return false;
+                //}
+            });
+
+            function ImagesValidate() {
                 var a = $(".uploaded")[0].children.length;
+                $("#ImagesCount").val(a);
                 if (a < 5) {
-                    //alert("Minimum 5 images you need to upload");
+                    //$("#ImgErrorMsg").show();
+                    //$("#ImgErrorMsg").text("Minimum 5 images you need to upload");
                     var element = document.getElementsByClassName("image-uploader");
                     for (item of element) {
-                        item.style.border = "1px solid #f16060";
+                        item.style.border = "2px solid #f16060";
                     }
-                    $('html, body').animate({
-                        scrollTop: $("#images-not").offset().top
-                    }, 100);
-                    return false;
                 }
-            });
+            }
 
             $('#Epostad').on("click", function () {
                 document.getElementById("files").removeAttribute("required");
@@ -491,6 +505,8 @@
                     a = $(".uploaded")[0].children.length + vale;
                     if (a >= 5) {
                         var element = document.getElementsByClassName("image-uploader");
+                        //$("#ImgErrorMsg").text("");
+                        //$("#ImgErrorMsg").hide();
                         for (item of element) {
                             item.style.border = "1px solid #ededed";
                         }
