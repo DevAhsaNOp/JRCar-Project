@@ -834,14 +834,15 @@
                         $("#MDate").text(resp.Time)
                         $("#MDescp").text(resp.Description)
                         $("#MPhone").text(resp.PhoneNumber)
-                        $("#MAd").attr("href", "/Ads/" + resp.AdURL)
                         if (resp.IsUserAppnt == "true") {
+                            $("#MAd").attr("href", "/Ads/" + resp.AdURL)
                             $("#formAppntD").css("display", "block");
                             $("#AAppntD").css("display", "block");
                             $("#SAppntD").css("display", "block");
                             $("#RAppntD").css("display", "block");
                         }
                         else {
+                            $("#MAd").attr("href", "/Ad/" + resp.AdURL)
                             $("#formAppntD").css("display", "none");
                             $("#AAppntD").css("display", "none");
                             $("#SAppntD").css("display", "none");
