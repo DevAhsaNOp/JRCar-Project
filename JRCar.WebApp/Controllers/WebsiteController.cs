@@ -894,41 +894,51 @@ namespace JRCar.WebApp.Controllers
         public ActionResult CarDetail(string AdID)
         {
             var carDetail = RepoObj1.GetUserAdsDetail(AdID);
+            int IsUserCar = 0;
             var UserID = Convert.ToInt32(Session["Id"]);
-            Session["IsAppntShow"] = carDetail.UserID == UserID ? "true" : "false";
-            var IsUserCar = carDetail.UserID;
-            if (((carDetail == null || UserID != IsUserCar) && (RepoObj.IsShowroom(UserID) == false)) || carDetail.Isactive == false)
+            if (carDetail != null)
+            {
+                Session["IsAppntShow"] = carDetail.UserID == UserID ? "true" : "false";
+                IsUserCar = carDetail.UserID;
+                if (((carDetail == null || UserID != IsUserCar) && (RepoObj.IsShowroom(UserID) == false)) || carDetail.Isactive == false)
+                {
+                    Session["UserCarID"] = null;
+                    TempData["ErrorMsg"] = "Car you trying to view is not exists!";
+                    return RedirectToAction("AllVehicles");
+                }
+                else
+                {
+                    string path = Server.MapPath("" + carDetail.CarImage + "");
+                    string[] FolderName = carDetail.CarImage.Split('/');
+                    string[] imageFiles = Directory.GetFiles(path);
+                    List<string> images = new List<string>();
+                    foreach (var item in imageFiles)
+                    {
+                        images.Add(FolderName[2] + "/" + Path.GetFileName(item));
+                    }
+                    Session["UserCarID"] = carDetail.AdID;
+                    ViewBag.Images = images;
+                    if (User.Identity.IsAuthenticated)
+                    {
+                        AppointmentRepo repo = new AppointmentRepo();
+                        var reas = repo.IsShowroomRequestThisCarAppointment((int)Session["Id"], carDetail.AdID);
+                        if (reas)
+                        {
+                            Session["IsAppntSchedule"] = "true";
+                        }
+                        else
+                        {
+                            Session["IsAppntSchedule"] = "false";
+                        }
+                    }
+                    return View(carDetail);
+                }
+            }
+            else
             {
                 Session["UserCarID"] = null;
                 TempData["ErrorMsg"] = "Car you trying to view is not exists!";
                 return RedirectToAction("AllVehicles");
-            }
-            else
-            {
-                string path = Server.MapPath("" + carDetail.CarImage + "");
-                string[] FolderName = carDetail.CarImage.Split('/');
-                string[] imageFiles = Directory.GetFiles(path);
-                List<string> images = new List<string>();
-                foreach (var item in imageFiles)
-                {
-                    images.Add(FolderName[2] + "/" + Path.GetFileName(item));
-                }
-                Session["UserCarID"] = carDetail.AdID;
-                ViewBag.Images = images;
-                if (User.Identity.IsAuthenticated)
-                {
-                    AppointmentRepo repo = new AppointmentRepo();
-                    var reas = repo.IsShowroomRequestThisCarAppointment((int)Session["Id"], carDetail.AdID);
-                    if (reas)
-                    {
-                        Session["IsAppntSchedule"] = "true";
-                    }
-                    else
-                    {
-                        Session["IsAppntSchedule"] = "false";
-                    }
-                }
-                return View(carDetail);
             }
         }
         #endregion
