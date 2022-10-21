@@ -1,0 +1,192 @@
+﻿@model JRCar.BOL.Validation_Classes.ValidationPayment
+
+@{
+    ViewBag.Title = "Showroom Detail";
+    Layout = "~/Views/Shared/_StarterPortal.cshtml";
+}
+<style>
+    .table-bordered td, .table-bordered th, .table-bordered {
+        border: none !important;
+    }
+
+    .table td, .table th {
+        padding: 0.75rem;
+        vertical-align: baseline;
+    }
+
+    #StatusA .badge {
+        padding: 0.25em 0.8em !important;
+        font-size: 14px !important;
+    }
+
+    .btnAction {
+        border: none !important;
+        font-size: 18px !important;
+    }
+
+    .btnEdit {
+        background: #f79c2b;
+        color: white;
+        box-shadow: 0px 2px 7px 2px #f79c2b42;
+        border-radius: 5px;
+        margin-right: 5px !important;
+    }
+
+    .btnView {
+        background: #2bacf7;
+        color: white;
+        box-shadow: 0px 2px 7px 2px #92d4fb;
+        border-radius: 5px;
+        margin-right: 5px !important;
+    }
+</style>
+
+@if (User.Identity.IsAuthenticated)
+{
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Showroom Detail</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">Showroom Detail</li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card" style="width:100%;height:98%">
+                        <div class="card-header bg-cyan">
+                            <h3 class="card-title">Dealer @Model.ShowroomName</h3>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body" id="example99">
+                            <div class="row">
+                                <div class="col-md-12 col-sm-12 col-lg-12">
+                                    @if (TempData["SuccessMsg"] != null)
+                                    {
+                                        <div class="alert alert-info alert-dismissable">
+                                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                            <i class="icon-info-with-circle"></i><span>@Html.Raw(TempData["SuccessMsg"])</span>
+                                        </div>
+                                    }
+                                    @if (TempData["ErrorMsg"] != null)
+                                    {
+                                        <div class="alert alert-danger alert-dismissable">
+                                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                            <i class="icon-blocked"></i><span>@Html.Raw(TempData["ErrorMsg"])</span>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                            <div class="row mb-4">
+                                <div class="col-12 text-center">
+                                    <img src="@Url.Content(Model.tblShowroom.Image)" alt="Dealer Image" width="90" height="90" style="border-radius:50%" />
+                                    <h4 class="text-bold">
+                                        @Model.ShowroomName
+                                    </h4>
+                                    <a class="btn btn-sm btn-primary pr-2 pl-2" href="@Url.Action("ShowroomProfile","Website",new { Show = Model.tblShowroom.ShowroomURL })" target="_blank">View Profile</a>
+                                </div>
+                            </div>
+                            <div class="row mb-4">
+                                <div class="col-6">
+                                    <p style="margin-bottom:0.5rem"><span class="text-bold">Contact Number:</span> @Model.ShowroomNumber</p>
+                                    <p style="margin-bottom:0.5rem"><span class="text-bold">Address:</span> @Model.ShowroomAddress</p>
+                                    <p style="margin-bottom:0.5rem"><span class="text-bold">Total No of Ads:</span> @Model.tblShowroom.tblCars.Count</p>
+                                </div>
+                                <div class="col-6">
+                                    <p style="margin-bottom:0.5rem"><span class="text-bold">Contact Email:</span> @Model.tblShowroom.Email</p>
+                                    <p style="margin-bottom:0.5rem">
+                                        <span class="text-bold">Profile Status:</span>
+
+                                        @if (Model.tblShowroom.Isactive)
+                                        {
+                                            <span class="bg-success p-1" style="border-radius:5px"> Active </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="bg-danger p-1" style="border-radius:5px"> In Active </span>
+                                        }
+                                    </p>
+                                    <p style="margin-bottom:0.5rem"><span class="text-bold">Registered On:</span> @Model.tblShowroom.CreatedOn.ToString("dd/MMM/yyyy")</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <h4 class="text-bold bg-gradient-primary text-center p-1">Union Monthly Fees Detail</h4>
+                                    <table id="example3" class="table table-bordered table-striped table-hover">
+                                        <thead>
+                                            <tr style=" background: lightslategray; color: aliceblue;">
+                                                <th>S.No </th>
+                                                <th>Month</th>
+                                                <th>Year</th>
+                                                <th>Recievable</th>
+                                                <th>Recieved</th>
+                                                <th>Discount</th>
+                                                <th>Balance</th>
+                                                <th>Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @{
+                                                var i = 1;
+                                            }
+                                            @foreach (var item in Model.datesDs)
+                                            {
+                                                <tr>
+                                                    <td>@i</td>
+                                                    <td>
+                                                        @item.Month
+                                                    </td>
+                                                    <td>
+                                                        @item.Year
+                                                    </td>
+                                                    <td>
+                                                        @item.Recievable
+                                                    </td>
+                                                    <td>
+                                                        @item.Recieved
+                                                    </td>
+                                                    <td>
+                                                        @item.Discount
+                                                    </td>
+                                                    <td>
+                                                        @item.Balance
+                                                    </td>
+                                                    <td id="StatusA">
+                                                        @if (item.IsPaid)
+                                                        {
+                                                            <span class="badge badge-success"> Paid </span>
+                                                        }
+                                                        else
+                                                        {
+                                                            <span class="badge badge-danger"> Not Paid </span>
+                                                        }
+                                                    </td>
+                                                </tr>
+                                                i++;
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script>
+        document.getElementById('MonthlyPayPage').classList.add('active')
+    </script>
+}

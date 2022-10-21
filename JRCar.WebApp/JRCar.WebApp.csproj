@@ -630,6 +630,7 @@
     <Content Include="Files\scripts\slick.js" />
     <Content Include="fonts\iu.svg" />
     <Content Include="Global.asax" />
+    <Content Include="Images\220012163wallpaperflare.com_wallpaper.jpg" />
     <Content Include="Images\220152874close-up-young-successful-man-smiling-camera-standing-casual-outfit-against-blue-background_1258-66609.jpg" />
     <Content Include="Images\220204998austin-wade-X6Uj51n5CE8-unsplash.jpg" />
     <Content Include="Images\2203245086.jpg" />
@@ -640,6 +641,8 @@
     <Content Include="Images\2205009611.jpg" />
     <Content Include="Images\2205153911.jpg" />
     <Content Include="Images\2206277341.jpg" />
+    <Content Include="Images\220631351admin.jpg" />
+    <Content Include="Images\220645874admin.jpg" />
     <Content Include="Images\2207166111.jpg" />
     <Content Include="Images\220808619images %281%29.jpeg" />
     <Content Include="Images\220913202288048166_115094751225624_6572233444182790139_n.jpg" />
@@ -673,13 +676,15 @@
     <Content Include="Images\2242251236.jpg" />
     <Content Include="Images\2243076662.jpg" />
     <Content Include="Images\224458833close-up-young-successful-man-smiling-camera-standing-casual-outfit-against-blue-background_1258-66609.jpg" />
-    <Content Include="Images\224503814user.png" />
     <Content Include="Images\2245503551.jpg" />
     <Content Include="Images\2246201401.jpg" />
+    <Content Include="Images\224620774wallpaperflare.com_wallpaper.jpg" />
     <Content Include="Images\224622478288048166_115094751225624_6572233444182790139_n.jpg" />
+    <Content Include="Images\224751769wallpaperflare.com_wallpaper.jpg" />
     <Content Include="Images\2250328261.jpg" />
     <Content Include="Images\2253110251.jpg" />
     <Content Include="Images\2254386511.jpg" />
+    <Content Include="Images\225513225admin.jpg" />
     <Content Include="Images\2256159231.jpg" />
     <Content Include="Images\2256273701.jpg" />
     <Content Include="Images\2257307121.jpg" />
@@ -3226,7 +3231,6 @@
     <Content Include="Content\bootstrap\bootstrap.less" />
     <Content Include="Content\bootstrap\badges.less" />
     <Content Include="Content\bootstrap\alerts.less" />
-    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Reports\dsData.xsc">
       <DependentUpon>dsData.xsd</DependentUpon>
     </Content>
@@ -3743,6 +3747,7 @@
     <Content Include="Views\Portal\ShowroomPayment.cshtml" />
     <Content Include="Views\Portal\ShowroomInfo.cshtml" />
     <Content Include="Views\Portal\ShowroomMessagesList.cshtml" />
+    <Content Include="Views\Portal\ShowroomPaymentInfo.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -3753,6 +3758,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
+    <Folder Include="Properties\PublishProfiles\" />
     <Folder Include="Roles\" />
     <Folder Include="uploads\SWX280DG4Y4S507\" />
   </ItemGroup>

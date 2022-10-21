@@ -1286,6 +1286,18 @@ namespace JRCar.WebApp.Controllers
 
         #endregion
 
+        #region **Showroom Payment**
+        [Authorize(Roles = "Showroom")]
+        [AcceptVerbs(HttpVerbs.Get)]
+        [Route("Payments")]
+        public ActionResult ShowroomPaymentInfo()
+        {
+            var ShowroomID = Convert.ToInt32(Session["Id"]);
+            var reas = PayRepoObj.GetShowroomDetailsById(ShowroomID);
+            return View(reas);
+        }
+        #endregion
+
         #endregion
 
         #region **Unions/Admin Action Methods**
