@@ -531,7 +531,7 @@ namespace JRCar.DAL.DBLayer
                         ID = a.ID,
                         tblCar = a.tblCar,
                         tblUserAdd = a.tblUserAdd,
-                        tblShowroom = a.tblShowroom,
+                        tblShowroom = ((a.tblCar == null) ? a.tblShowroom : a.tblCar.tblShowroom),
                         Purpose = a.tblAppointmentDetails.FirstOrDefault().Purpose,
                         Datetime = a.tblAppointmentDetails.FirstOrDefault().Date,
                         UserCarID = a.UserCarID,

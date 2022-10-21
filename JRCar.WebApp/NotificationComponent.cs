@@ -259,7 +259,8 @@ namespace JRCar.WebApp
                             noti.Title = " Appointment Appected By " + item.tblCar.tblShowroom.FullName.ToString();
                         }
                         noti.Description = " of " + item.tblCar.tblManufacturer.Manufacturer_Name + " " + item.tblCar.tblManfacturerCarModel.Manufacturer_CarModelName;
-                        noti.AdURL = "false";
+                        noti.AdURL = item.ID.ToString();
+                        noti.IsUserAppnt = "false";
                         noti.IsAccpeted = item.IsAccepted.Value;
                         notis.Add(noti);
                     }
@@ -363,15 +364,18 @@ namespace JRCar.WebApp
                     var appnt = appointmentrepo.GetUserCurrAppointmentById(id);
                     var NotiTitle = "";
                     var NotiAdURL = "";
+                    var UserAppnt = "";
                     if (appnt.tblUserAdd == null)
                     {
                         NotiTitle = appnt.tblCar.tblManufacturer.Manufacturer_Name + " " + appnt.tblCar.tblManfacturerCarModel.Manufacturer_CarModelName;
                         NotiAdURL = appnt.tblCar.CarsURL;
+                        UserAppnt = "false";
                     }
                     else
                     {
                         NotiTitle = appnt.tblUserAdd.tblManufacturer.Manufacturer_Name + " " + appnt.tblUserAdd.tblManfacturerCarModel.Manufacturer_CarModelName;
                         NotiAdURL = appnt.tblUserAdd.UserAdsURL;
+                        UserAppnt = "true";
                     }
                     NotiShow appointment = new NotiShow()
                     {
@@ -382,7 +386,8 @@ namespace JRCar.WebApp
                         Date = appnt.CreatedOn.ToString(),
                         PhoneNumber = appnt.Number,
                         AdURL = NotiAdURL,
-                        CardID = appnt.ID.ToString()
+                        CardID = appnt.ID.ToString(),
+                        IsUserAppnt = UserAppnt
                     };
                     if (appointment != null)
                         return appointment;

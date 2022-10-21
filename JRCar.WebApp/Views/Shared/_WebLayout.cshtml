@@ -48,8 +48,8 @@
                         $('#AppntnotiContent').append($('<a href="#" class="dropdown-item"><i class="icon-envelope" style="padding-right: 5px;"></i> No Notification Available</a>'));
                     }
                     $.each(response, function (index, value) {
-                        if (value.AdURL == "false") {
-                            $('#AppntnotiContent').append($('<span href="#" class="dropdown-item" style="white-space: pre-line;"> <i class="icon-envelope" style="padding-right: 5px;"></i> ' + value.Title + value.Description + '<span style="display:flex;aligs:center;justify-content: space-evenly;"><a class="btn btn-sm btn-info" style="padding: 0.25rem 4rem !important; color: white !important;" href="/Myappoinments" target="_blank">View Details</a></span></span>'));
+                        if (value.IsUserAppnt == "false") {
+                            $('#AppntnotiContent').append($('<span href="#" class="dropdown-item" style="white-space: pre-line;"> <i class="icon-envelope" style="padding-right: 5px;"></i> ' + value.Title + value.Description + '<span style="display:flex;aligs:center;justify-content: space-evenly;"><span class="btn btn-sm btn-info" style="padding: 0.25rem 4rem !important;" onclick="UAppntDetls(' + value.AdURL + ')">View Details</span></span></span>'));
                         }
                         else {
                             $('#AppntnotiContent').append($('<span href="#" class="dropdown-item" style="white-space: pre-line;"> <i class="icon-envelope" style="padding-right: 5px;"></i> ' + value.Title + value.Description + '<span style="display:flex;aligs:center;justify-content: space-evenly;"><span class="btn btn-sm btn-info" style="padding: 0.25rem 4rem !important;" onclick="UAppntDetls(' + value.AdURL + ')">View Details</span></span></span>'));
@@ -77,7 +77,20 @@
                     $("#MDate").text(resp.Time)
                     $("#MDescp").text(resp.Description)
                     $("#MPhone").text(resp.PhoneNumber)
-                    $("#MAd").attr("href","/Ad/"+resp.AdURL)
+                    if (resp.IsUserAppnt == "false") {
+                        $("#MAd").attr("href", "/Ads/" + resp.AdURL)
+                        $("#formAppntD").css("display", "none");
+                        $("#AAppntD").css("display", "none");
+                        $("#SAppntD").css("display", "none");
+                        $("#RAppntD").css("display", "none");
+                    }
+                    else {
+                        $("#MAd").attr("href", "/Ad/" + resp.AdURL)
+                        $("#formAppntD").css("display", "block");
+                        $("#AAppntD").css("display", "inline-block");
+                        $("#SAppntD").css("display", "inline-block");
+                        $("#RAppntD").css("display", "inline-block");
+                    }
                     $('#UserAppnt').modal('show')
                 }
             });
@@ -466,7 +479,7 @@
                                     <a class="btn btn-sm btn-primary" style="padding: 5px 35px; font-size: 14px;" id="MAd" href="#" target="_blank">View Ad</a>
                                 </div>
                             </div>
-                            <div class="cs-login-form" style="margin-top:20px">
+                            <div class="cs-login-form" style="margin-top:20px; display:none!important;" id="formAppntD">
                                 <div class="col-lg-12 col-lg-12 col-sm-12 col-xs-12">
                                     <div class="cs-modal-field">
                                         <label for="best-time-1">
@@ -485,9 +498,9 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-danger" onclick="URejectAppnt()">Reject</button>
-                            <button type="button" class="btn btn-primary" onclick="USndAppnt()">Send Message & Accept</button>
-                            <button type="button" class="btn btn-success" onclick="UAccAppnt()">Accept</button>
+                            <button type="button" style="display:none !important;" id="RAppntD" class="btn btn-danger" onclick="URejectAppnt()">Reject</button>
+                            <button type="button" style="display:none !important;" id="SAppntD" class="btn btn-primary" onclick="USndAppnt()">Send Message & Accept</button>
+                            <button type="button" style="display:none !important;" id="AAppntD" class="btn btn-success" onclick="UAccAppnt()">Accept</button>
                         </div>
                     </div>
                 </div>
