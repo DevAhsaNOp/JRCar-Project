@@ -32,7 +32,7 @@ namespace JRCar.BOL.Validation_Classes
 
         [Required(ErrorMessage = "*")]
         [Display(Name = "Title")]
-        [StringLength(30)]
+        [StringLength(30,ErrorMessage ="Title can only contain 30 characters.")]
         public string Title { get; set; }
 
         [Required(ErrorMessage = "*")]
@@ -45,7 +45,7 @@ namespace JRCar.BOL.Validation_Classes
 
         [Required(ErrorMessage = "*")]
         [Display(Name = "Address")]
-        [StringLength(150)]
+        [StringLength(150, ErrorMessage = "Address can only contain 150 characters.")]
         public string Address { get; set; }
 
         [Display(Name = "Latitude")]

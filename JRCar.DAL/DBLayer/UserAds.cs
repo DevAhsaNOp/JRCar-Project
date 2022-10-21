@@ -212,6 +212,8 @@ namespace JRCar.DAL.DBLayer
                 Area = s.tblAddress.tblZone.ZoneName,
                 CompleteAddress = ((s.tblAddress.CompleteAddress == null) ? "Not Available" : s.tblAddress.CompleteAddress),
                 Isactive = s.Isactive,
+                IsSold = s.Issold,
+                Isarchive = s.Isarchive,
                 CreatedOn = s.CreatedOn,
                 ExpiryDate = s.ExpiryDate,
                 CarImage = s.tblUserAddImages.Select(a => a.Image).FirstOrDefault(),
@@ -464,6 +466,7 @@ namespace JRCar.DAL.DBLayer
                     {
                         model.Isactive = true;
                         model.Isarchive = false;
+                        model.Issold = false;
                         model.CreatedOn = GetUserAdsDetail(model.ID).CreatedOn;
                         model.ExpiryDate = GetUserAdsDetail(model.ID).ExpiryDate;
                         _context.Entry(model).State = System.Data.Entity.EntityState.Modified;

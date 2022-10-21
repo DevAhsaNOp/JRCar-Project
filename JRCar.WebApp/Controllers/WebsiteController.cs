@@ -422,8 +422,10 @@ namespace JRCar.WebApp.Controllers
                     userAds.CompleteAddress = userAds.CompleteAddress;
                     userAds.Latitude = area.Item1.ToString();
                     userAds.Longitude = area.Item2.ToString();
-                    userAds.CategoryId = userAds.CategoryId;
-                    userAds.SubCategoryId = userAds.SubCategoryId;
+                    /*Hard Coded Values Change It When The Scenario Changes*/
+                    userAds.CategoryId = 1; /*userAds.CategoryId;*/
+                    userAds.SubCategoryId = 1; /*userAds.SubCategoryId;*/
+                    /*******************************************************/
                     userAds.ManufacturerId = userAds.ManufacturerId;
                     userAds.ManufacturerCarModelID = userAds.ManufacturerCarModelID;
                     var AdsPublish = RepoObj1.UpdateUserAds(userAds);
@@ -895,7 +897,7 @@ namespace JRCar.WebApp.Controllers
             var UserID = Convert.ToInt32(Session["Id"]);
             Session["IsAppntShow"] = carDetail.UserID == UserID ? "true" : "false";
             var IsUserCar = carDetail.UserID;
-            if ((carDetail == null || UserID != IsUserCar) && (RepoObj.IsShowroom(UserID) == false))
+            if (((carDetail == null || UserID != IsUserCar) && (RepoObj.IsShowroom(UserID) == false)) || carDetail.Isactive == false)
             {
                 Session["UserCarID"] = null;
                 TempData["ErrorMsg"] = "Car you trying to view is not exists!";

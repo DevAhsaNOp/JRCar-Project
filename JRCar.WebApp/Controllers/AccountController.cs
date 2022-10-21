@@ -26,7 +26,7 @@ namespace JRCar.WebApp.Controllers
         {
             return Json(!RepoObj.IsEmailExist(SignUpEmail), JsonRequestBehavior.AllowGet);
         }
-        
+
         public JsonResult IsPhoneNumberExist(string Number)
         {
             return Json(!RepoObj.IsPhoneNumberExist(Number), JsonRequestBehavior.AllowGet);
@@ -41,7 +41,7 @@ namespace JRCar.WebApp.Controllers
                 UserCurrentEmail = Session["Email"].ToString();
             return Json(!RepoObj.IsUpdateEmailExist(SignUpUpdateEmail, UserCurrentEmail), JsonRequestBehavior.AllowGet);
         }
-        
+
         public JsonResult IsUpdatePhoneNumberExist(string SignUpUpdateNumber)
         {
             string UserCurrentPhone;
@@ -220,7 +220,7 @@ namespace JRCar.WebApp.Controllers
                     user.Image = Session["ImageAvatar"].ToString();
                     user.Email = user.SignUpEmail;
                     /*These are hard coded values change it when project scope is changes to multiple Union*/
-                    user.UnionId = 5;
+                    user.UnionId = RepoObj.GetAllUnion().OrderByDescending(u => u.ID).FirstOrDefault().ID;
                     user.AddressId = 2009;
                     var area = AddressRepoObj.GetZoneLatLong(284);
                     user.Latitude = area.Item1.ToString();
@@ -264,7 +264,7 @@ namespace JRCar.WebApp.Controllers
                         {
                             user.Email = user.SignUpEmail;
                             /*These are hard coded values change it when project scope is changes to multiple Union*/
-                            user.UnionId = 1;
+                            user.UnionId = RepoObj.GetAllUnion().OrderByDescending(u => u.ID).FirstOrDefault().ID;
                             user.AddressId = 2009;
                             var area = AddressRepoObj.GetZoneLatLong(284);
                             user.Latitude = area.Item1.ToString();

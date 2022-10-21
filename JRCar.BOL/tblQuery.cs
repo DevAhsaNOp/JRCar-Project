@@ -39,10 +39,10 @@ namespace JRCar.BOL
         public Nullable<bool> IsShowroomRead { get; set; }
         public Nullable<bool> IsUnionRead { get; set; }
     
-        public virtual tblShowroom tblShowroom { get; set; }
         public virtual tblUnion tblUnion { get; set; }
         public virtual tblUser tblUser { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tblQueryDetail> tblQueryDetails { get; set; }
+        public virtual tblShowroom tblShowroom { get; set; }
     }
 }

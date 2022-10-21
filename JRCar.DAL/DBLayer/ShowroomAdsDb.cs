@@ -719,6 +719,7 @@ namespace JRCar.DAL.DBLayer
                     {
                         model.Isactive = true;
                         model.Isarchive = false;
+                        model.Issold = false;
                         model.CreatedOn = DateTime.Now.ToString();
                         model.CreatedBy = model.tblShowroomID;
                         model.UpdatedOn = null;
@@ -849,6 +850,7 @@ namespace JRCar.DAL.DBLayer
                     {
                         model.Isactive = true;
                         model.Isarchive = false;
+                        model.Issold = false;
                         model.CreatedOn = GetShowroomAdsDetail(model.ID).tblCarCreatedOn;
                         model.CreatedBy = GetShowroomAdsDetail(model.ID).tblCarCreatedBy;
                         model.UpdatedOn = DateTime.Now.ToString();
