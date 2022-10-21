@@ -203,7 +203,8 @@ namespace JRCar.WebApp
                             noti.Title = " Appointment Appected By " + item.tblUserAdd.tblUser.Name.ToString();
                         }
                         noti.Description = " of " + item.tblUserAdd.tblManufacturer.Manufacturer_Name + " " + item.tblUserAdd.tblManfacturerCarModel.Manufacturer_CarModelName;
-                        noti.AdURL = "false";
+                        noti.AdURL = item.ID.ToString();
+                        noti.IsUserAppnt = "false";
                         noti.IsAccpeted = item.IsAccepted.Value;
                         notis.Add(noti);
                     }
@@ -312,16 +313,32 @@ namespace JRCar.WebApp
                 if (id > 0)
                 {
                     var appnt = appointmentrepo.GetShowroomCurrAppointmentById(id);
+                    var NotiTitle = "";
+                    var NotiAdURL = "";
+                    var UserAppnt = "";
+                    if (appnt.tblCar == null)
+                    {
+                        NotiTitle = appnt.tblUserAdd.tblManufacturer.Manufacturer_Name + " " + appnt.tblUserAdd.tblManfacturerCarModel.Manufacturer_CarModelName;
+                        NotiAdURL = appnt.tblUserAdd.UserAdsURL;
+                        UserAppnt = "false";
+                    }
+                    else
+                    {
+                        NotiTitle = appnt.tblCar.tblManufacturer.Manufacturer_Name + " " + appnt.tblCar.tblManfacturerCarModel.Manufacturer_CarModelName;
+                        NotiAdURL = appnt.tblCar.CarsURL;
+                        UserAppnt = "true";
+                    }
                     NotiShow appointment = new NotiShow()
                     {
                         FromUserName = appnt.tblUser.Name,
-                        Title = appnt.tblCar.tblManufacturer.Manufacturer_Name + " " + appnt.tblCar.tblManfacturerCarModel.Manufacturer_CarModelName,
+                        Title = NotiTitle,
                         Time = appnt.Datetime.ToString(),
                         Description = appnt.Purpose,
                         Date = appnt.CreatedOn.ToString(),
                         PhoneNumber = appnt.Number,
-                        AdURL = appnt.tblCar.CarsURL,
-                        CardID = appnt.ID.ToString()
+                        AdURL = NotiAdURL,
+                        CardID = appnt.ID.ToString(),
+                        IsUserAppnt = UserAppnt
                     };
                     if (appointment != null)
                         return appointment;
@@ -344,15 +361,27 @@ namespace JRCar.WebApp
                 if (id > 0)
                 {
                     var appnt = appointmentrepo.GetUserCurrAppointmentById(id);
+                    var NotiTitle = "";
+                    var NotiAdURL = "";
+                    if (appnt.tblUserAdd == null)
+                    {
+                        NotiTitle = appnt.tblCar.tblManufacturer.Manufacturer_Name + " " + appnt.tblCar.tblManfacturerCarModel.Manufacturer_CarModelName;
+                        NotiAdURL = appnt.tblCar.CarsURL;
+                    }
+                    else
+                    {
+                        NotiTitle = appnt.tblUserAdd.tblManufacturer.Manufacturer_Name + " " + appnt.tblUserAdd.tblManfacturerCarModel.Manufacturer_CarModelName;
+                        NotiAdURL = appnt.tblUserAdd.UserAdsURL;
+                    }
                     NotiShow appointment = new NotiShow()
                     {
                         FromUserName = appnt.tblShowroom.FullName,
-                        Title = appnt.tblUserAdd.tblManufacturer.Manufacturer_Name + " " + appnt.tblUserAdd.tblManfacturerCarModel.Manufacturer_CarModelName,
+                        Title = NotiTitle,
                         Time = appnt.Datetime.ToString(),
                         Description = appnt.Purpose,
                         Date = appnt.CreatedOn.ToString(),
                         PhoneNumber = appnt.Number,
-                        AdURL = appnt.tblUserAdd.UserAdsURL,
+                        AdURL = NotiAdURL,
                         CardID = appnt.ID.ToString()
                     };
                     if (appointment != null)

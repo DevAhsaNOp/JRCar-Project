@@ -290,7 +290,7 @@ namespace JRCar.DAL.DBLayer
                 throw ex;
             }
         }
-        
+
         public bool IsShowroomRequestThisCarAppointment(int ShowroomID, int CarID)
         {
             try
@@ -369,7 +369,7 @@ namespace JRCar.DAL.DBLayer
                 return false;
             }
         }
-        
+
         public bool ChangeShowroomMessageToAsRead(int ShowroomID)
         {
             var reas = _context.tblQueries.Where(a => a.IsShowroomRead == false && a.ShowroomID == ShowroomID).ToList();
@@ -498,7 +498,8 @@ namespace JRCar.DAL.DBLayer
                     {
                         ID = a.ID,
                         tblCar = a.tblCar,
-                        tblUser = a.tblUser,
+                        tblUserAdd = a.tblUserAdd,
+                        tblUser = ((a.tblUserAdd == null) ? a.tblUser : a.tblUserAdd.tblUser),
                         Purpose = a.tblAppointmentDetails.FirstOrDefault().Purpose,
                         Datetime = a.tblAppointmentDetails.FirstOrDefault().Date,
                         ShowroomCarID = a.ShowroomCarID,
@@ -528,6 +529,7 @@ namespace JRCar.DAL.DBLayer
                     var appointment = _context.tblAppointments.Where(x => x.ID == id).Select(a => new ValidateAppointment()
                     {
                         ID = a.ID,
+                        tblCar = a.tblCar,
                         tblUserAdd = a.tblUserAdd,
                         tblShowroom = a.tblShowroom,
                         Purpose = a.tblAppointmentDetails.FirstOrDefault().Purpose,
@@ -696,13 +698,13 @@ namespace JRCar.DAL.DBLayer
             var reas = _context.tblQueries.Where(x => x.ShowroomID == ShowroomID && x.IsShowroomRead == false).OrderByDescending(x => x.CreatedOn).ToList().Count;
             return reas;
         }
-        
+
         public IEnumerable<tblQuery> GetShowroomMessages(int ShowroomID)
         {
             var reas = _context.tblQueries.Where(x => x.ShowroomID == ShowroomID && x.IsShowroomRead == false).OrderByDescending(x => x.CreatedOn).ToList();
             return reas;
         }
-        
+
         public int GetUserTodaysAppointmentsCount(DateTime currentDate, int UserID)
         {
             var reas = _context.tblAppointments.Where(x => (x.UserInterestedID == UserID && x.IsUserRead == false) || (x.tblUserAdd.UserID == UserID && x.IsUserRead == false)).OrderByDescending(x => x.CreatedOn).ToList().Count;

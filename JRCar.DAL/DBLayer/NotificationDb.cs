@@ -205,5 +205,6 @@ namespace JRCar.DAL.DBLayer
         public virtual tblUser tblUser { get; set; }
         public string Email { get; set; }
         public string Message { get; set; }
+        public string IsUserAppnt { get; set; }
     }
 }
