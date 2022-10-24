@@ -116,7 +116,7 @@ namespace JRCar.DAL.DBLayer
             }).ToList();
             return reas;
         }
-        
+
         public IEnumerable<ValidationUserAds> GetAllActiveAds()
         {
             var reas = _context.tblUserAdds.OrderBy(Ad => Ad.CreatedOn).Where(x => x.Isactive == true).Select(s => new ValidationUserAds()
@@ -341,7 +341,7 @@ namespace JRCar.DAL.DBLayer
             else
                 return null;
         }
-        
+
         public int GetUserID(int ADId)
         {
             return _context.tblUserAdds.Where(x => x.ID == ADId).FirstOrDefault().UserID;
@@ -455,13 +455,15 @@ namespace JRCar.DAL.DBLayer
             _context.SaveChanges();
         }
 
-        public bool UpdateUserAds(tblUserAdd model,string city)
+        public bool UpdateUserAds(tblUserAdd model, string city, string OldAdURL)
         {
             try
             {
                 if (model != null)
                 {
                     model.UserAdsURL = UserAdsURLGenerate(model.Title, model.Year, city);
+                    NotificationDb notification = new NotificationDb();
+                    var IsNotiUpdated = notification.UpdateNotification(model.UserAdsURL, OldAdURL, model.Title);
                     if (model.UserAdsURL != null)
                     {
                         model.Isactive = true;
@@ -484,7 +486,7 @@ namespace JRCar.DAL.DBLayer
                 throw ex;
             }
         }
-        
+
         public bool MarkSoldUserAds(int AdID)
         {
             try

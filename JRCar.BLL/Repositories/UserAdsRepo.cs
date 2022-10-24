@@ -257,7 +257,8 @@ namespace JRCar.BLL.Repositories
                             ManufacturerCarModelID = model.ManufacturerCarModelID
                         };
                         var cityName = AddressRepoObj.GetStateandCity(model.CityID);
-                        var user = dbObj.UpdateUserAds(userAds, cityName.Item2);
+                        var OldAdURL = dbObj.GetAllActiveAds().Where(x => x.AdID == model.AdID).FirstOrDefault().AdURL;
+                        var user = dbObj.UpdateUserAds(userAds, cityName.Item2, OldAdURL);
                         if (user)
                         {
                             return true;

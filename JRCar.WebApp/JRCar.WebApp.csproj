@@ -667,6 +667,7 @@
     <Content Include="Images\2227197201200px-Suzuki_Baleno_front_20071004.jpg" />
     <Content Include="Images\2227572421.jpg" />
     <Content Include="Images\2229055071200px-Suzuki_Baleno_front_20071004.jpg" />
+    <Content Include="Images\223205034user.png" />
     <Content Include="Images\2232438636.jpg" />
     <Content Include="Images\2233355111.jpg" />
     <Content Include="Images\2234080951.jpg" />
@@ -3527,6 +3528,11 @@
     <Content Include="uploads\VKN7N22BBNDG387\9cecf221-e9f1-4a35-88f8-f433d214f889.jpg" />
     <Content Include="uploads\VKN7N22BBNDG387\c67764ae-7577-447f-8a03-577a77cc7ba7.jpg" />
     <Content Include="uploads\VKN7N22BBNDG387\d34df083-d4f7-4850-a31c-b7cdcb98db36.jpg" />
+    <Content Include="uploads\VWOX8Q0AAD18911\45349a0d-286e-4612-8fda-7d21b514d867.jpg" />
+    <Content Include="uploads\VWOX8Q0AAD18911\4c309f90-84d6-47f5-8114-acdb9f76de34.png" />
+    <Content Include="uploads\VWOX8Q0AAD18911\61c03e15-9bee-4517-96fb-7e4edab8e22d.jpg" />
+    <Content Include="uploads\VWOX8Q0AAD18911\917203bd-32d5-4038-8eb7-81d2a8bcebb4.jpg" />
+    <Content Include="uploads\VWOX8Q0AAD18911\a2c92607-2839-4921-a4fc-2a31dd88e836.jpg" />
     <Content Include="uploads\W96F4M8PKAWW4\2e63f1d2-1ad8-4107-a4a8-6a566260b133.jpg" />
     <Content Include="uploads\W96F4M8PKAWW4\47b8875f-cf32-49f7-a07d-646bc2bfb1fb.jpg" />
     <Content Include="uploads\W96F4M8PKAWW4\9d36e2cd-d9d1-4213-8f05-58739f580dbb.jpg" />
@@ -3540,6 +3546,11 @@
     <Content Include="uploads\YKWH3M8NJ6O5537\e146f9c5-e88f-4dd1-ab42-b3c9596401de.jpg" />
     <Content Include="uploads\YKWH3M8NJ6O5537\e713521c-8e9d-486f-9297-8d778e148489.jpg" />
     <Content Include="uploads\YKWH3M8NJ6O5537\f48f0f6d-cbd9-4179-a8bf-947332cacd42.jpg" />
+    <Content Include="uploads\YQSP22Y5HXQU699\249f2f1c-0c0c-4c6f-887d-0989e6e14dca.jpg" />
+    <Content Include="uploads\YQSP22Y5HXQU699\44b32a41-b930-4076-bb88-c4fa58d27200.jpg" />
+    <Content Include="uploads\YQSP22Y5HXQU699\6dc624bd-eabf-4dc8-8b4e-9de980fca052.jpg" />
+    <Content Include="uploads\YQSP22Y5HXQU699\a9116c5a-0196-41c1-930c-b369ebf62d7b.png" />
+    <Content Include="uploads\YQSP22Y5HXQU699\ccba266b-2006-4e76-bd4b-a46a22f23eb9.jpg" />
     <Content Include="uploads\ZO7MN8Q8DGAH245\0a34e302-b294-467b-831c-5856d30801d3.jpg" />
     <Content Include="uploads\ZO7MN8Q8DGAH245\2d5aced4-12f0-4e40-9aba-304b5e4a03b0.jpg" />
     <Content Include="uploads\ZO7MN8Q8DGAH245\71cafc84-99e9-4968-8fca-1afb5f12f57c.jpg" />
@@ -3761,7 +3772,11 @@
     <Folder Include="Models\" />
     <Folder Include="Properties\PublishProfiles\" />
     <Folder Include="Roles\" />
+    <Folder Include="uploads\0MHJCIOG7V48140\" />
+    <Folder Include="uploads\ETRFKD6IM2AJ904\" />
+    <Folder Include="uploads\FGRTVVXIDD3Q851\" />
     <Folder Include="uploads\SWX280DG4Y4S507\" />
+    <Folder Include="uploads\WML4MGIDLX8P856\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\JRCar.BLL\JRCar.BLL.csproj">

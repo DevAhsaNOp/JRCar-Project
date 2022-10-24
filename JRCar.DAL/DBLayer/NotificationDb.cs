@@ -44,6 +44,53 @@ namespace JRCar.DAL.DBLayer
             }
         }
         
+        public bool UpdateNotification(string NewAdURL, string OldAdURL, string Title)
+        {
+            try
+            {
+                if (OldAdURL != null)
+                {
+                    var UserNotifications = _context.tblNotifications.Where(x => x.AdURL.Trim().Contains(OldAdURL.Trim())).ToList();
+                    if (UserNotifications.Count > 0)
+                    {
+                        foreach (var notification in UserNotifications)
+                        {
+                            try
+                            {
+                                notification.ID = notification.ID;
+                                notification.Title = Title;
+                                notification.Description = notification.Description;
+                                notification.AdURL = NewAdURL;
+                                notification.FromUserID = notification.FromUserID;
+                                notification.FromShowroomID = notification.FromShowroomID;
+                                notification.IsShowroomInterested = notification.IsShowroomInterested;
+                                notification.IsRead = notification.IsRead;
+                                notification.CreatedOn = notification.CreatedOn;
+                                _context.Entry(notification).State = System.Data.Entity.EntityState.Modified;
+                                _context.SaveChanges();
+                            }
+                            catch (Exception ex)
+                            {
+                                return false;
+                                throw ex;
+                            }
+                        }
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                else
+                    return false;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        
         public bool InsertAnnouncements(tblAnnouncement model)
         {
             try
