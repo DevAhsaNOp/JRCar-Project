@@ -67,6 +67,31 @@ namespace JRCar.DAL.DBLayer
                 throw ex;
             }
         }
+        
+        public bool DeletePayment(int ShowroomID)
+        {
+            try
+            {
+                if (ShowroomID > 0)
+                {
+                    var reas = _context.tblPayments.Where(x=>x.ShowroomID == ShowroomID).FirstOrDefault();
+                    if (reas.RecievedFromDate == null)
+                    {
+                        _context.tblPayments.Remove(reas);
+                        Save();
+                        return true;
+                    }
+                    else
+                        return false;
+                }
+                else
+                    return false;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
 
         public List<string> GetRecievableMonths(int ShowroomID)
         {
@@ -185,14 +210,35 @@ namespace JRCar.DAL.DBLayer
                 {
                     var ErrorMsg = "";
                     var ErrorMsg2 = "";
+                    IEnumerable<string> MonthsBetweenDates = null;
+                    IEnumerable<string> MonthsBetweenUDates = null;
+                    IEnumerable<string> IsUnPaidMonths = null;
+                    IEnumerable<string> UnPaidMonths = null;
+                    IEnumerable<string> NoPaidMonths = null;
                     var ValSelected = Convert.ToDateTime(RMonths.Last());
                     var PaidMonths = _context.tblPayments.Where(x => x.ShowroomID == ShowroomID).Select(x => new { x.RecievedFromDate, x.RecievedToDate }).ToList();
-                    var MonthsBetweenDates = MonthsBetween(PaidMonths.FirstOrDefault().RecievedFromDate.Value, PaidMonths.LastOrDefault().RecievedToDate.Value).Select(x => x.Month + " " + x.Year);
-                    var MonthsBetweenUDates = MonthsBetween(PaidMonths.FirstOrDefault().RecievedFromDate.Value, ValSelected).Select(x => x.Month + " " + x.Year);
-                    var IsUnPaidMonths = MonthsBetweenUDates.Except(MonthsBetweenDates);
-                    var UnPaidMonths = IsUnPaidMonths.Except(RMonths);
+                    if (PaidMonths.Count > 1)
+                    {
+                        if (PaidMonths.FirstOrDefault().RecievedFromDate == null)
+                        {
+                            var objDel = DeletePayment(ShowroomID);
+                            PaidMonths = _context.tblPayments.Where(x => x.ShowroomID == ShowroomID).Select(x => new { x.RecievedFromDate, x.RecievedToDate }).ToList();
+                        }
+                    }
+                    if (PaidMonths.LastOrDefault().RecievedFromDate == null)
+                    {
+                        MonthsBetweenUDates = MonthsBetween(Convert.ToDateTime("April" + " " + "2022"), ValSelected).Select(x => x.Month + " " + x.Year);
+                        NoPaidMonths = MonthsBetweenUDates.Except(RMonths);
+                    }
+                    else
+                    {
+                        MonthsBetweenDates = MonthsBetween(PaidMonths.FirstOrDefault().RecievedFromDate.Value, PaidMonths.LastOrDefault().RecievedToDate.Value).Select(x => x.Month + " " + x.Year);
+                        MonthsBetweenUDates = MonthsBetween(PaidMonths.FirstOrDefault().RecievedFromDate.Value, ValSelected).Select(x => x.Month + " " + x.Year);
+                        IsUnPaidMonths = MonthsBetweenUDates.Except(MonthsBetweenDates);
+                        UnPaidMonths = IsUnPaidMonths.Except(RMonths);
+                    }
 
-                    if (PaidMonths != null)
+                    if (PaidMonths != null && PaidMonths.LastOrDefault().RecievedFromDate != null)
                     {
                         foreach (var month in MonthsBetweenDates)
                         {
@@ -213,6 +259,14 @@ namespace JRCar.DAL.DBLayer
                     if (UnPaidMonths != null)
                     {
                         foreach (var item in UnPaidMonths)
+                        {
+                            ErrorMsg2 += item + " ";
+                        }
+                    }
+                    
+                    if (NoPaidMonths != null)
+                    {
+                        foreach (var item in NoPaidMonths)
                         {
                             ErrorMsg2 += item + " ";
                         }
@@ -342,7 +396,7 @@ namespace JRCar.DAL.DBLayer
                                 {
                                     var obj = UpdatePayment(Payments);
                                     if (obj > 0)
-                                        return false;
+                                        return true;
                                     else
                                         return false;
                                 }
@@ -570,11 +624,17 @@ namespace JRCar.DAL.DBLayer
                     Balance += item.Balance.Value;
                 }
             }
-            var RecievedFromDate = payment.FirstOrDefault().RecievedFromDate.Value;
-
-            if (payment != null)
+            if (payment.FirstOrDefault().RecievedFromDate == null)
             {
-                return Tuple.Create(Balance, RecievedFromDate);
+                var RecievedFromDate = payment.FirstOrDefault().RecievedFromDate.Value;
+                if (payment != null)
+                {
+                    return Tuple.Create(Balance, RecievedFromDate);
+                }
+                else
+                {
+                    return null;
+                }
             }
             else
             {

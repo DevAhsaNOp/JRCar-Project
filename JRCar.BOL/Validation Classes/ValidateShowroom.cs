@@ -48,7 +48,7 @@ namespace JRCar.BOL.Validation_Classes
         public string Number { get; set; }
 
         [Required(ErrorMessage = "*")]
-        [Display(Name = "Shop Number")]
+        [Display(Name = "Shop Address")]
         [MaxLength(150, ErrorMessage = "Address Length should be under 150")]
         [MinLength(5, ErrorMessage = "Address Min Length should be 5")]
         public string ShopNumber { get; set; }

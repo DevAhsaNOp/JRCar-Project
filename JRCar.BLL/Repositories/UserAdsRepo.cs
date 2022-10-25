@@ -238,6 +238,15 @@ namespace JRCar.BLL.Repositories
                     var addrsID = AddressRepoObj.UpdateAddress(addrs);
                     if (addrsID > 0)
                     {
+                        var ADUrl = "";
+                        if (dbObj.GetUserAdsDetail(model.AdID).Title == model.Title)
+                        {
+                            ADUrl = dbObj.GetUserAdsDetail(model.AdID).AdURL;
+                        }
+                        else
+                        {
+                            ADUrl = "";
+                        }
                         tblUserAdd userAds = new tblUserAdd()
                         {
                             ID = model.AdID,
@@ -254,7 +263,8 @@ namespace JRCar.BLL.Repositories
                             CategoryId = model.CategoryId,
                             SubCategoryId = model.SubCategoryId,
                             ManufacturerId = model.ManufacturerId,
-                            ManufacturerCarModelID = model.ManufacturerCarModelID
+                            ManufacturerCarModelID = model.ManufacturerCarModelID,
+                            UserAdsURL = ADUrl
                         };
                         var cityName = AddressRepoObj.GetStateandCity(model.CityID);
                         var OldAdURL = dbObj.GetAllActiveAds().Where(x => x.AdID == model.AdID).FirstOrDefault().AdURL;

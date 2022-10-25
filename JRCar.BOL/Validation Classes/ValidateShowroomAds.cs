@@ -218,143 +218,87 @@ namespace JRCar.BOL.Validation_Classes
         [Display(Name = "Fuel Type")]
         public string FuelType { get; set; }
 
-        [Required(ErrorMessage = "*")]
         [Display(Name = "Air Conditioned")]
-        [Range(typeof(bool), "true", "true", ErrorMessage = "*")]
         public bool AirConditioned { get; set; }
 
-        [Required(ErrorMessage = "*")]
         [Display(Name = "ABS")]
-        [Range(typeof(bool), "true", "true", ErrorMessage = "*")]
         public bool ABS { get; set; }
 
-        [Required(ErrorMessage = "*")]
         [Display(Name = "Air Bag")]
-        [Range(typeof(bool), "true", "true", ErrorMessage = "*")]
         public bool AirBag { get; set; }
 
-        [Required(ErrorMessage = "*")]
         [Display(Name = "Power Windows")]
-        [Range(typeof(bool), "true", "true", ErrorMessage = "*")]
         public bool PowerWindows { get; set; }
 
-        [Required(ErrorMessage = "*")]
         [Display(Name = "Power Mirrors")]
-        [Range(typeof(bool), "true", "true", ErrorMessage = "*")]
         public bool PowerMirrors { get; set; }
 
-        [Required(ErrorMessage = "*")]
         [Display(Name = "Power Locks")]
-        [Range(typeof(bool), "true", "true", ErrorMessage = "*")]
         public bool PowerLocks { get; set; }
 
-        [Required(ErrorMessage = "*")]
-        [Range(typeof(bool), "true", "true", ErrorMessage = "*")]
         [Display(Name = "Power Steering")]
         public bool PowerSteering { get; set; }
 
-        [Required(ErrorMessage = "*")]
-        [Range(typeof(bool), "true", "true", ErrorMessage = "*")]
         [Display(Name = "Immbilizer Key")]
         public bool ImmobilizerKey { get; set; }
 
-        [Required(ErrorMessage = "*")]
-        [Range(typeof(bool), "true", "true", ErrorMessage = "*")]
         [Display(Name = "Radio")]
         public bool Radio { get; set; }
 
-        [Required(ErrorMessage = "*")]
-        [Range(typeof(bool), "true", "true", ErrorMessage = "*")]
         [Display(Name = "Key Less Entry")]
         public bool KeyLessEntry { get; set; }
 
-        [Required(ErrorMessage = "*")]
-        [Range(typeof(bool), "true", "true", ErrorMessage = "*")]
         [Display(Name = "Alloy Rims")]
         public bool AlloyRims { get; set; }
 
-        [Required(ErrorMessage = "*")]
-        [Range(typeof(bool), "true", "true", ErrorMessage = "*")]
         [Display(Name = "Cool Box")]
         public bool CoolBox { get; set; }
 
-        [Required(ErrorMessage = "*")]
-        [Range(typeof(bool), "true", "true", ErrorMessage = "*")]
         [Display(Name = "Cruise Control")]
         public bool CruiseControl { get; set; }
 
-        [Required(ErrorMessage = "*")]
-        [Range(typeof(bool), "true", "true", ErrorMessage = "*")]
         [Display(Name = "Sun Roof")]
         public bool SunRoof { get; set; }
 
-        [Required(ErrorMessage = "*")]
-        [Range(typeof(bool), "true", "true", ErrorMessage = "*")]
         [Display(Name = "Navigation System")]
         public bool NavigationSystem { get; set; }
 
-        [Required(ErrorMessage = "*")]
-        [Range(typeof(bool), "true", "true", ErrorMessage = "*")]
         [Display(Name = "Rear ACVents")]
         public bool RearAcVents { get; set; }
 
-        [Required(ErrorMessage = "*")]
-        [Range(typeof(bool), "true", "true", ErrorMessage = "*")]
         [Display(Name = "Front Camera")]
         public bool FrontCam { get; set; }
 
-        [Required(ErrorMessage = "*")]
-        [Range(typeof(bool), "true", "true", ErrorMessage = "*")]
         [Display(Name = "Cassest Player")]
         public bool CassetPlayer { get; set; }
 
-        [Required(ErrorMessage = "*")]
-        [Range(typeof(bool), "true", "true", ErrorMessage = "*")]
         [Display(Name = "Dvd Player")]
         public bool DvdPlayer { get; set; }
 
-        [Required(ErrorMessage = "*")]
-        [Range(typeof(bool), "true", "true", ErrorMessage = "*")]
         [Display(Name = "Steering Switch")]
         public bool SteeringSwitch { get; set; }
 
-        [Required(ErrorMessage = "*")]
-        [Range(typeof(bool), "true", "true", ErrorMessage = "*")]
         [Display(Name = "CD Player")]
         public bool CdPlayer { get; set; }
 
-        [Required(ErrorMessage = "*")]
-        [Range(typeof(bool), "true", "true", ErrorMessage = "*")]
         [Display(Name = "Climate Control")]
         public bool ClimateControl { get; set; }
 
-        [Required(ErrorMessage = "*")]
-        [Range(typeof(bool), "true", "true", ErrorMessage = "*")]
         [Display(Name = "Front Speaker")]
         public bool FrontSpeaker { get; set; }
 
-        [Required(ErrorMessage = "*")]
-        [Range(typeof(bool), "true", "true", ErrorMessage = "*")]
         [Display(Name = "Heated Seat")]
         public bool HeatedSeat { get; set; }
 
-        [Required(ErrorMessage = "*")]
-        [Range(typeof(bool), "true", "true", ErrorMessage = "*")]
         [Display(Name = "Rear Camera")]
         public bool RearCamera { get; set; }
 
-        [Required(ErrorMessage = "*")]
-        [Range(typeof(bool), "true", "true", ErrorMessage = "*")]
         [Display(Name = "Rear Seat Entertain")]
         public bool RearSeatEntertain { get; set; }
 
-        [Required(ErrorMessage = "*")]
-        [Range(typeof(bool), "true", "true", ErrorMessage = "*")]
         [Display(Name = "Rear Speaker")]
         public bool RearSpeaker { get; set; }
 
-        [Required(ErrorMessage = "*")]
-        [Range(typeof(bool), "true", "true", ErrorMessage = "*")]
         [Display(Name = "Box Usb Aux")]
         public bool BoxUsbAux { get; set; }
 

@@ -845,9 +845,22 @@ namespace JRCar.DAL.DBLayer
             {
                 if (model != null)
                 {
-                    model.CarsURL = ShowroomAdsURLGenerate(model.Title, model.tblCarModel.Year, city);
-                    if (model.CarsURL != null)
+                    if (model.CarsURL.Length > 1)
                     {
+                        model.Isactive = true;
+                        model.Isarchive = false;
+                        model.Issold = false;
+                        model.CreatedOn = GetShowroomAdsDetail(model.ID).tblCarCreatedOn;
+                        model.CreatedBy = GetShowroomAdsDetail(model.ID).tblCarCreatedBy;
+                        model.UpdatedOn = DateTime.Now.ToString();
+                        model.UpdatedBy = model.UpdatedBy;
+                        _context.Entry(model).State = System.Data.Entity.EntityState.Modified;
+                        Save();
+                        return true;
+                    }
+                    else if (model.CarsURL.Length < 1)
+                    {
+                        model.CarsURL = ShowroomAdsURLGenerate(model.Title, model.tblCarModel.Year, city);
                         model.Isactive = true;
                         model.Isarchive = false;
                         model.Issold = false;

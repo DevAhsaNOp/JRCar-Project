@@ -1991,8 +1991,6 @@ namespace JRCar.WebApp.Controllers
             try
             {
                 IEnumerable<string> RecievableMonth = null;
-                var PRecievedFromDate = PayRepoObj.GetPaymentID(payment.ShowroomID.Value).Item2;
-                var PBalance = PayRepoObj.GetPaymentID(payment.ShowroomID.Value).Item1;
                 var receivedDates = payment.RecievedDate;
                 var Months = PayRepoObj.GetRecievableMonths(payment.ShowroomID.Value);
 

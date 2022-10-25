@@ -217,6 +217,7 @@ namespace JRCar.DAL.DBLayer
                 CreatedOn = s.CreatedOn,
                 ExpiryDate = s.ExpiryDate,
                 CarImage = s.tblUserAddImages.Select(a => a.Image).FirstOrDefault(),
+                AdURL = s.UserAdsURL,
 
                 /*---User Details---*/
                 UserImage = s.tblUser.Image,
@@ -461,11 +462,22 @@ namespace JRCar.DAL.DBLayer
             {
                 if (model != null)
                 {
-                    model.UserAdsURL = UserAdsURLGenerate(model.Title, model.Year, city);
-                    NotificationDb notification = new NotificationDb();
-                    var IsNotiUpdated = notification.UpdateNotification(model.UserAdsURL, OldAdURL, model.Title);
-                    if (model.UserAdsURL != null)
+                    if (model.UserAdsURL.Length > 1)
                     {
+                        model.Isactive = true;
+                        model.Isarchive = false;
+                        model.Issold = false;
+                        model.CreatedOn = GetUserAdsDetail(model.ID).CreatedOn;
+                        model.ExpiryDate = GetUserAdsDetail(model.ID).ExpiryDate;
+                        _context.Entry(model).State = System.Data.Entity.EntityState.Modified;
+                        Save();
+                        return true;
+                    }
+                    else if (model.UserAdsURL.Length < 1)
+                    {
+                        NotificationDb notification = new NotificationDb();
+                        var IsNotiUpdated = notification.UpdateNotification(model.UserAdsURL, OldAdURL, model.Title);
+                        model.UserAdsURL = UserAdsURLGenerate(model.Title, model.Year, city);
                         model.Isactive = true;
                         model.Isarchive = false;
                         model.Issold = false;

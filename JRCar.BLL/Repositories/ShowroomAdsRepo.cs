@@ -371,6 +371,13 @@ namespace JRCar.BLL.Repositories
                         {
                             UserRepo userRepo = new UserRepo();
                             var showroom = userRepo.GetShowRoomByID(model.tblShowroomID);
+                            var CarADURL = "";
+                            if (GetShowroomAdsDetailOnlyForUpdate(model.tblCarID).Title == model.Title)
+                            {
+                                CarADURL = GetShowroomAdsDetailOnlyForUpdate(model.tblCarID).CarsURL;
+                            }
+                            else
+                                CarADURL = "";
                             tblCar car = new tblCar()
                             {
                                 ID = model.tblCarID,
@@ -395,7 +402,8 @@ namespace JRCar.BLL.Repositories
                                 CategoryId = model.CategoryId,
                                 SubCategoryId = model.SubCategoryId,
                                 UpdatedBy = model.tblShowroomID,
-                                tblCarModel = carModel
+                                tblCarModel = carModel,
+                                CarsURL = CarADURL
                             };
                             var cityName = AddressRepoObj.GetStateandCity(Convert.ToInt32(showroom.tblAddress.City));
                             var CarId = dbObj.UpdateShowroomAds(car, cityName.Item2);
