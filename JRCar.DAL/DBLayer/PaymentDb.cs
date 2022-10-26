@@ -67,14 +67,14 @@ namespace JRCar.DAL.DBLayer
                 throw ex;
             }
         }
-        
+
         public bool DeletePayment(int ShowroomID)
         {
             try
             {
                 if (ShowroomID > 0)
                 {
-                    var reas = _context.tblPayments.Where(x=>x.ShowroomID == ShowroomID).FirstOrDefault();
+                    var reas = _context.tblPayments.Where(x => x.ShowroomID == ShowroomID).FirstOrDefault();
                     if (reas.RecievedFromDate == null)
                     {
                         _context.tblPayments.Remove(reas);
@@ -263,7 +263,7 @@ namespace JRCar.DAL.DBLayer
                             ErrorMsg2 += item + " ";
                         }
                     }
-                    
+
                     if (NoPaidMonths != null)
                     {
                         foreach (var item in NoPaidMonths)
@@ -447,7 +447,6 @@ namespace JRCar.DAL.DBLayer
                                     var Payments = PaymentsLst.LastOrDefault();
                                     Payments.RecievableFromDate = firstmonthStart;
                                     Payments.RecievableToDate = lastmonthEnd;
-                                    Payments.Recievable = null;
                                     Payments.UpdatedBy = UnionID;
                                     Payments.UpdatedOn = DateTime.Now.ToString();
 
@@ -753,8 +752,15 @@ namespace JRCar.DAL.DBLayer
 
                         payment.RecievableDate = Datelist;
                         payment.RecievedDates = Datelist2;
-                        var result = Datelist.Where(p => !Datelist2.Any(x => x.Month == p.Month)).ToList();
-                        payment.datesDs = Enumerable.Concat(result, Datelist2).Distinct().OrderBy(m => DateTime.Parse(m.Month + " " + m.Year)).ToList();
+                        List<DatesD> result = Datelist.Where(p => !Datelist2.Any(x => x.Month == p.Month)).Distinct().ToList();
+                        List<DatesD> result2 = new List<DatesD>();
+                        foreach (var item in result)
+                        {
+                            var reas = result.FindLast(x => x.Month == item.Month);
+                            result2.Add(reas);
+                        }
+                        result2 = result2.Distinct().ToList();
+                        payment.datesDs = Enumerable.Concat(result, Datelist2).OrderBy(m => DateTime.Parse(m.Month + " " + m.Year)).ToList();
 
                         if (payment != null)
                             return payment;
