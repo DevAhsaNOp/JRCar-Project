@@ -757,10 +757,13 @@ namespace JRCar.DAL.DBLayer
                         foreach (var item in result)
                         {
                             var reas = result.FindLast(x => x.Month == item.Month);
+                            reas.Recievable = 0;
+                            reas.Recieved = 0;
+                            reas.Discount = 0;
                             result2.Add(reas);
                         }
                         result2 = result2.Distinct().ToList();
-                        payment.datesDs = Enumerable.Concat(result, Datelist2).OrderBy(m => DateTime.Parse(m.Month + " " + m.Year)).ToList();
+                        payment.datesDs = Enumerable.Concat(result2, Datelist2).OrderBy(m => DateTime.Parse(m.Month + " " + m.Year)).ToList();
 
                         if (payment != null)
                             return payment;
