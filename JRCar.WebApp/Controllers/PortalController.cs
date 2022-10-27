@@ -1221,20 +1221,20 @@ namespace JRCar.WebApp.Controllers
 
         [AcceptVerbs(HttpVerbs.Post)]
         [Authorize(Roles = "User")]
-        public ActionResult ScheduleAppointment(string useremail, string userphone, string selecteddatetime, string purpose)
+        public ActionResult ScheduleAppointment(string selecteddatetime, string purpose)
         {
             try
             {
                 if (User.Identity.IsAuthenticated)
                 {
-                    if (userphone != null && selecteddatetime != null && purpose != null)
+                    if (selecteddatetime != null && purpose != null)
                     {
-                        if (purpose.Length > 1 && userphone.Length > 1 && selecteddatetime.Length > 1)
+                        if (purpose.Length > 1 && selecteddatetime.Length > 1)
                         {
-                            var email = (useremail.Length > 1) ? useremail : Session["Email"].ToString();
+                            var email = Session["Email"].ToString();
                             var UserID = Convert.ToInt32(Session["Id"]);
                             var CarID = Convert.ToInt32(Session["ShowCarID"]);
-                            //selectedtime = Session["Apptime"].ToString();
+                            string userphone = RepoObj.GetUserByID(UserID).Number;
                             AppointmentRepo repo = new AppointmentRepo();
 
                             ValidateAppointment appointment = new ValidateAppointment()

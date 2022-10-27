@@ -576,15 +576,17 @@ namespace JRCar.WebApp.Controllers
         }
 
         [HttpPost]
-        public JsonResult ShowroomContact(string FullName, string Email, string PhoneNumber, string Message)
+        public JsonResult ShowroomContact(string Message)
         {
             try
             {
                 if (User.Identity.IsAuthenticated)
                 {
-                    Email = Email.Length < 1 ? Session["Email"].ToString() : Email;
+                    string Email = Session["Email"].ToString();
                     var UserID = Convert.ToInt32(Session["Id"]);
                     var ShowroomID = Convert.ToInt32(Session["CShowroomID"]);
+                    string PhoneNumber = RepoObj.GetUserByID(UserID).Number;
+                    string FullName = RepoObj.GetUserByID(UserID).Name;
                     AppointmentRepo appointmentRepo = new AppointmentRepo();
                     var reas = appointmentRepo.ShowroomContact(FullName, Email, PhoneNumber, Message, UserID, ShowroomID);
                     if (reas.Length > 1)
@@ -823,18 +825,19 @@ namespace JRCar.WebApp.Controllers
 
         [AcceptVerbs(HttpVerbs.Post)]
         [Authorize(Roles = "Showroom")]
-        public ActionResult ScheduleAppointment(string useremail, string userphone, string selecteddatetime, string purpose)
+        public ActionResult ScheduleAppointment(string selecteddatetime, string purpose)
         {
             try
             {
                 if (User.Identity.IsAuthenticated)
                 {
-                    if (userphone != null && selecteddatetime != null && purpose != null)
+                    if (selecteddatetime != null && purpose != null)
                     {
-                        if (purpose.Length > 1 && userphone.Length > 1 && selecteddatetime.Length > 1)
+                        if (purpose.Length > 1 && selecteddatetime.Length > 1)
                         {
-                            var email = (useremail.Length > 1) ? useremail : Session["Email"].ToString();
+                            var email = Session["Email"].ToString();
                             var ShowroomID = Convert.ToInt32(Session["Id"]);
+                            string userphone = RepoObj.GetShowroomByID(ShowroomID).Contact;
                             var CarID = Convert.ToInt32(Session["UserCarID"]);
                             AppointmentRepo repo = new AppointmentRepo();
 

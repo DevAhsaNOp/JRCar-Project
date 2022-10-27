@@ -407,7 +407,7 @@
                                                     <span><i class="icon-building-o"></i> @Html.DisplayFor(model => model.State)</span>
                                                     <address id="ELocated"><i class="icon-location"></i>@Html.DisplayFor(model => model.Area), @Html.DisplayFor(model => model.City)</address>
                                                 </div>
-                                                <div class="auto-price"><span class="cs-color" id="RPrice">Rs @string.Format("{0:n0}", Convert.ToDecimal(Model.Price))</span> <em id="DollarPrice"></em></div>
+                                                <div class="auto-price"><span class="cs-color" id="RPrice">Rs @string.Format("{0:n0}", Convert.ToDecimal(Model.Price))</span></div>
                                             </div>
                                         </div>
                                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -525,7 +525,7 @@
                                                                 OnSuccess = "fnSuccess"
                                                             }, htmlAttributes: new { @class = "row" }))
                                                             {
-                                                                <div class="col-lg-12 col-lg-12 col-sm-12 col-xs-12">
+                                                                @*<div class="col-lg-12 col-lg-12 col-sm-12 col-xs-12">
                                                                     <div class="cs-modal-field">
                                                                         <label for="cs-email-4">
                                                                             <strong>Email</strong>
@@ -542,7 +542,7 @@
                                                                             <input type="tel" style="color: darkslategray;" title="Phone Number is not in correct format. e.g. 0331 2345678" pattern="03[0-9]{2}(?!1234567)(?!1111111)(?!7654321)[0-9]{7}" id="phone-1" placeholder="+92 331 23 456 78" required name="userphone">
                                                                         </label>
                                                                     </div>
-                                                                </div>
+                                                                </div>*@
                                                                 <div class="col-lg-12 col-lg-12 col-sm-12 col-xs-12">
                                                                     <div class="cs-modal-field">
                                                                         <label for="best-time-1">
@@ -833,37 +833,6 @@
                     }
                 })
             }
-
-            const currentTimezoneOffset = 8; // UTC+8:00 timezone, change it
-
-            Date.prototype.yyyymmdd = function () {
-                return [
-                    this.getFullYear(),
-                    (this.getMonth() + 1).toString().padStart(2, '0'), // getMonth() is zero-based
-                    this.getDate().toString().padStart(2, '0')
-                ].join('-');
-            };
-
-            function getTodayDateStr() {
-                const d = new Date();
-                // console.log(d);
-                const d2 = new Date(d.getTime() + (d.getTimezoneOffset() + currentTimezoneOffset * 60) * 60 * 1000);
-                // console.log(d2, d2.yyyymmdd());
-                return d2.yyyymmdd();
-            }
-
-            var amount = document.getElementById("RPrice").textContent.replace(/\D/g, "");
-            console.log(amount);
-            var settings = {
-                "url": "http://api.exchangerate.host/convert?from=PKR&to=USD&amount=" + amount + "&date=" + getTodayDateStr(),
-                "method": "GET",
-                "timeout": 0,
-            };
-
-            $.ajax(settings).done(function (response) {
-                console.log(response);
-                document.getElementById("DollarPrice").textContent = "$" + response.result.toFixed(2);
-            });
 
             $("#btnShow").click(function (e) {
                 var userAuthorized = @User.Identity.IsAuthenticated.ToString().ToLower();

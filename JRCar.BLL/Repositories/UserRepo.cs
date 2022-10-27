@@ -233,6 +233,46 @@ namespace JRCar.BLL.Repositories
                 throw;
             }
         }
+        
+        public tblUser GetUserByID(int modelId)
+        {
+            try
+            {
+                var reas = dbObj.GetUserByID(modelId);
+                if (reas != null)
+                {
+                    return reas;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        
+        public tblShowroom GetShowroomByID(int modelId)
+        {
+            try
+            {
+                var reas = dbObj.GetShowRoomByID(modelId);
+                if (reas != null)
+                {
+                    return reas;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
 
         public DAL.UserDefine.UserViewDetail CheckLoginDetails(string emailtext, string password)
         {
