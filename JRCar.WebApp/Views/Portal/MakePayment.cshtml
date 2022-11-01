@@ -134,7 +134,7 @@
                                     <div class="row">
                                         <div class="col-md-6 col-lg-6 col-sm-12">
                                             <div class="form-group">
-                                                <label for="exampleInputBorder">Current Amount</label>
+                                                <label for="exampleInputBorder">Maintenance Amount</label>
                                                 @Html.ValidationMessageFor(model => model.CAmount, "", new { @class = "text-danger" })
                                                 @Html.EditorFor(model => model.CAmount, new { htmlAttributes = new { @class = "form-control", @Value = "0", oninput = "this.value = this.value.replace(/[^0-9]/g, '').replace(/(\\..*)\\./g, '$1');" } })
                                             </div>

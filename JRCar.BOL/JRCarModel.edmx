@@ -373,6 +373,32 @@
           <Property Name="Isactive" Type="bit" />
           <Property Name="Isarchive" Type="bit" />
         </EntityType>
+        <EntityType Name="tblRolePermissions">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RoleID" Type="int" Nullable="false" />
+          <Property Name="MakeAnnoucment" Type="bit" />
+          <Property Name="ShowAnnoucment" Type="bit" />
+          <Property Name="AddUser" Type="bit" />
+          <Property Name="EditUser" Type="bit" />
+          <Property Name="DeleteUser" Type="bit" />
+          <Property Name="ShowUsers" Type="bit" />
+          <Property Name="AddShowroom" Type="bit" />
+          <Property Name="EditShowroom" Type="bit" />
+          <Property Name="DeleteShowroom" Type="bit" />
+          <Property Name="ShowShowroom" Type="bit" />
+          <Property Name="AddUnionMember" Type="bit" />
+          <Property Name="EditUnionMember" Type="bit" />
+          <Property Name="DeleteUnionMember" Type="bit" />
+          <Property Name="ShowUnionMember" Type="bit" />
+          <Property Name="ManagUserAds" Type="bit" />
+          <Property Name="ManagShowroomAds" Type="bit" />
+          <Property Name="MakePayments" Type="bit" />
+          <Property Name="ShowPayments" Type="bit" />
+          <Property Name="EditProfile" Type="bit" />
+        </EntityType>
         <EntityType Name="tblRoles">
           <Key>
             <PropertyRef Name="ID" />
@@ -1058,6 +1084,18 @@ warning 6002: The table/view 'jrcar.dbo.ANNOVIEW' does not have a primary key de
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_tblRolePermissions_tblRoles">
+          <End Role="tblRoles" Type="Self.tblRoles" Multiplicity="1" />
+          <End Role="tblRolePermissions" Type="Self.tblRolePermissions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblRoles">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="tblRolePermissions">
+              <PropertyRef Name="RoleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_tblShowrooms_tblAddress">
           <End Role="tblAddress" Type="Self.tblAddress" Multiplicity="0..1" />
           <End Role="tblShowrooms" Type="Self.tblShowrooms" Multiplicity="*" />
@@ -1216,6 +1254,7 @@ warning 6002: The table/view 'jrcar.dbo.ANNOVIEW' does not have a primary key de
           <EntitySet Name="tblPayment" EntityType="Self.tblPayment" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblQuery" EntityType="Self.tblQuery" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblQueryDetails" EntityType="Self.tblQueryDetails" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblRolePermissions" EntityType="Self.tblRolePermissions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblRoles" EntityType="Self.tblRoles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblSearchHists" EntityType="Self.tblSearchHists" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblShowrooms" EntityType="Self.tblShowrooms" Schema="dbo" store:Type="Tables" />
@@ -1398,6 +1437,10 @@ warning 6002: The table/view 'jrcar.dbo.ANNOVIEW' does not have a primary key de
           <AssociationSet Name="FK_tblQueryDetails_tblQuery" Association="Self.FK_tblQueryDetails_tblQuery">
             <End Role="tblQuery" EntitySet="tblQuery" />
             <End Role="tblQueryDetails" EntitySet="tblQueryDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblRolePermissions_tblRoles" Association="Self.FK_tblRolePermissions_tblRoles">
+            <End Role="tblRoles" EntitySet="tblRoles" />
+            <End Role="tblRolePermissions" EntitySet="tblRolePermissions" />
           </AssociationSet>
           <AssociationSet Name="FK_tblShowrooms_tblAddress" Association="Self.FK_tblShowrooms_tblAddress">
             <End Role="tblAddress" EntitySet="tblAddress" />
@@ -1694,6 +1737,11 @@ warning 6002: The table/view 'jrcar.dbo.ANNOVIEW' does not have a primary key de
             <End Role="tblUnion" EntitySet="tblUnions" />
             <End Role="tblShowroom" EntitySet="tblShowrooms" />
           </AssociationSet>
+          <EntitySet Name="tblRolePermissions" EntityType="jrcarModel.tblRolePermission" />
+          <AssociationSet Name="FK_tblRolePermissions_tblRoles" Association="jrcarModel.FK_tblRolePermissions_tblRoles">
+            <End Role="tblRole" EntitySet="tblRoles" />
+            <End Role="tblRolePermission" EntitySet="tblRolePermissions" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="C__MigrationHistory">
           <Key>
@@ -1927,6 +1975,7 @@ warning 6002: The table/view 'jrcar.dbo.ANNOVIEW' does not have a primary key de
           <NavigationProperty Name="tblUnions" Relationship="jrcarModel.FK_dbo_tblUnions_dbo_tblRoles_tblRoleID" FromRole="tblRole" ToRole="tblUnion" />
           <NavigationProperty Name="tblUsers" Relationship="jrcarModel.FK_dbo_tblUsers_dbo_tblRoles_tblRoleID" FromRole="tblRole" ToRole="tblUser" />
           <NavigationProperty Name="tblShowrooms" Relationship="jrcarModel.FK_tblShowrooms_tblRoles" FromRole="tblRole" ToRole="tblShowroom" />
+          <NavigationProperty Name="tblRolePermissions" Relationship="jrcarModel.FK_tblRolePermissions_tblRoles" FromRole="tblRole" ToRole="tblRolePermission" />
         </EntityType>
         <EntityType Name="tblSearchHist">
           <Key>
@@ -2982,6 +3031,45 @@ warning 6002: The table/view 'jrcar.dbo.ANNOVIEW' does not have a primary key de
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="tblRolePermission">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RoleID" Type="Int32" Nullable="false" />
+          <Property Name="MakeAnnoucment" Type="Boolean" />
+          <Property Name="ShowAnnoucment" Type="Boolean" />
+          <Property Name="AddUser" Type="Boolean" />
+          <Property Name="EditUser" Type="Boolean" />
+          <Property Name="DeleteUser" Type="Boolean" />
+          <Property Name="ShowUsers" Type="Boolean" />
+          <Property Name="AddShowroom" Type="Boolean" />
+          <Property Name="EditShowroom" Type="Boolean" />
+          <Property Name="DeleteShowroom" Type="Boolean" />
+          <Property Name="ShowShowroom" Type="Boolean" />
+          <Property Name="AddUnionMember" Type="Boolean" />
+          <Property Name="EditUnionMember" Type="Boolean" />
+          <Property Name="DeleteUnionMember" Type="Boolean" />
+          <Property Name="ShowUnionMember" Type="Boolean" />
+          <Property Name="ManagUserAds" Type="Boolean" />
+          <Property Name="ManagShowroomAds" Type="Boolean" />
+          <Property Name="MakePayments" Type="Boolean" />
+          <Property Name="ShowPayments" Type="Boolean" />
+          <Property Name="EditProfile" Type="Boolean" />
+          <NavigationProperty Name="tblRole" Relationship="jrcarModel.FK_tblRolePermissions_tblRoles" FromRole="tblRolePermission" ToRole="tblRole" />
+        </EntityType>
+        <Association Name="FK_tblRolePermissions_tblRoles">
+          <End Type="jrcarModel.tblRole" Role="tblRole" Multiplicity="1" />
+          <End Type="jrcarModel.tblRolePermission" Role="tblRolePermission" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblRole">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="tblRolePermission">
+              <PropertyRef Name="RoleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3548,6 +3636,33 @@ warning 6002: The table/view 'jrcar.dbo.ANNOVIEW' does not have a primary key de
                 <ScalarProperty Name="Password" ColumnName="Password" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="FullName" ColumnName="FullName" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblRolePermissions">
+            <EntityTypeMapping TypeName="jrcarModel.tblRolePermission">
+              <MappingFragment StoreEntitySet="tblRolePermissions">
+                <ScalarProperty Name="EditProfile" ColumnName="EditProfile" />
+                <ScalarProperty Name="ShowPayments" ColumnName="ShowPayments" />
+                <ScalarProperty Name="MakePayments" ColumnName="MakePayments" />
+                <ScalarProperty Name="ManagShowroomAds" ColumnName="ManagShowroomAds" />
+                <ScalarProperty Name="ManagUserAds" ColumnName="ManagUserAds" />
+                <ScalarProperty Name="ShowUnionMember" ColumnName="ShowUnionMember" />
+                <ScalarProperty Name="DeleteUnionMember" ColumnName="DeleteUnionMember" />
+                <ScalarProperty Name="EditUnionMember" ColumnName="EditUnionMember" />
+                <ScalarProperty Name="AddUnionMember" ColumnName="AddUnionMember" />
+                <ScalarProperty Name="ShowShowroom" ColumnName="ShowShowroom" />
+                <ScalarProperty Name="DeleteShowroom" ColumnName="DeleteShowroom" />
+                <ScalarProperty Name="EditShowroom" ColumnName="EditShowroom" />
+                <ScalarProperty Name="AddShowroom" ColumnName="AddShowroom" />
+                <ScalarProperty Name="ShowUsers" ColumnName="ShowUsers" />
+                <ScalarProperty Name="DeleteUser" ColumnName="DeleteUser" />
+                <ScalarProperty Name="EditUser" ColumnName="EditUser" />
+                <ScalarProperty Name="AddUser" ColumnName="AddUser" />
+                <ScalarProperty Name="ShowAnnoucment" ColumnName="ShowAnnoucment" />
+                <ScalarProperty Name="MakeAnnoucment" ColumnName="MakeAnnoucment" />
+                <ScalarProperty Name="RoleID" ColumnName="RoleID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>

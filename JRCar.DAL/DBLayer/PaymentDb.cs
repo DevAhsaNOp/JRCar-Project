@@ -703,7 +703,7 @@ namespace JRCar.DAL.DBLayer
                                         Recievable = payments.Recievable,
                                         Recieved = payments.Recieved,
                                         Discount = payments.Discount,
-                                        Balance = payments.Balance
+                                        Balance = 0
                                     });
                                     TBalanceAmnt += (payments.Balance == null) ? 0 : payments.Balance.Value;
                                     TDiscountAmnt += (payments.Discount == null) ? 0 : payments.Discount.Value;
