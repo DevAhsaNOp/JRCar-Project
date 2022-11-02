@@ -1,0 +1,278 @@
+﻿@model JRCar.BOL.Validation_Classes.ValidateRolePermission
+
+@{
+    ViewBag.Title = "Add Union Role";
+    Layout = "~/Views/Shared/_StarterPortal.cshtml";
+}
+<style>
+    .card-header {
+        border-bottom: 1px solid rgba(239,239,239,0.9) !important;
+        padding: 0.4rem 1.25rem !important;
+    }
+
+    .select2-container {
+        width: inherit !important;
+    }
+</style>
+@if (User.Identity.IsAuthenticated)
+{
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Edit Union Role</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">Edit Union Role</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-10 col-sm-12 col-lg-10">
+                    @if (TempData["SuccessMsg"] != null)
+                    {
+                        <div class="alert alert-info alert-dismissable">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                            <i class="icon-info-with-circle"></i><span>@Html.Raw(TempData["SuccessMsg"])</span>
+                        </div>
+                    }
+                    @if (TempData["ErrorMsg"] != null)
+                    {
+                        <div class="alert alert-danger alert-dismissable">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                            <i class="icon-blocked"></i><span>@Html.Raw(TempData["ErrorMsg"])</span>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-10 col-sm-12 col-lg-10">
+                    @using (Html.BeginForm("EditUnionRole", "Portal", FormMethod.Post))
+                    {
+                        <div class="card card-primary">
+                            <div class="card-header">
+                            </div>
+                            <div class="card-body">
+                                <h6 class="bg-gradient-blue p-1 text-center"><b>Note: </b>Insert the correct Information</h6>
+                                <h4 class="text-left"><b>Role Information</b></h4>
+                                <div class="row">
+                                    <div class="col-md-6 col-lg-6 col-sm-12">
+                                        <div class="form-group">
+                                            <label for="exampleInputBorderWidth2">Role Name</label>
+                                            @Html.ValidationMessageFor(model => model.Role, "", new { @class = "text-danger" })
+                                            @Html.EditorFor(model => model.Role, new { htmlAttributes = new { placeholder = "Enter Role Name", @class = "form-control form-control-border border-width-2" } })
+                                        </div>
+                                    </div>
+                                </div>
+                                <h4 class="text-left"><b>Role Permissions: </b></h4>
+                                <div class="row">
+                                    <div class="col-md-6 col-lg-6 col-sm-12">
+                                        <div class="row">
+                                            <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                                                <div class="form-group">
+                                                    <div class="custom-control custom-checkbox">
+                                                        @Html.CheckBoxFor(model => model.MakeAnnoucment, htmlAttributes: new { @class = "custom-control-input" })
+                                                        <label for="MakeAnnoucment" class="custom-control-label">Make Annoucment</label>
+                                                        @Html.ValidationMessageFor(model => model.MakeAnnoucment, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                                                <div class="form-group">
+                                                    <div class="custom-control custom-checkbox">
+                                                        @Html.CheckBoxFor(model => model.ShowAnnoucment, htmlAttributes: new { @class = "custom-control-input" })
+                                                        <label for="ShowAnnoucment" class="custom-control-label">Show Annoucment</label>
+                                                        @Html.ValidationMessageFor(model => model.ShowAnnoucment, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                                                <div class="form-group">
+                                                    <div class="custom-control custom-checkbox">
+                                                        @Html.CheckBoxFor(model => model.AddUser, htmlAttributes: new { @class = "custom-control-input" })
+                                                        <label for="AddUser" class="custom-control-label">Add User</label>
+                                                        @Html.ValidationMessageFor(model => model.AddUser, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                                                <div class="form-group">
+                                                    <div class="custom-control custom-checkbox">
+                                                        @Html.CheckBoxFor(model => model.EditUser, htmlAttributes: new { @class = "custom-control-input" })
+                                                        <label for="EditUser" class="custom-control-label">Edit User</label>
+                                                        @Html.ValidationMessageFor(model => model.EditUser, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                                                <div class="form-group">
+                                                    <div class="custom-control custom-checkbox">
+                                                        @Html.CheckBoxFor(model => model.DeleteUser, htmlAttributes: new { @class = "custom-control-input" })
+                                                        <label for="DeleteUser" class="custom-control-label">Delete User</label>
+                                                        @Html.ValidationMessageFor(model => model.DeleteUser, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                                                <div class="form-group">
+                                                    <div class="custom-control custom-checkbox">
+                                                        @Html.CheckBoxFor(model => model.ShowUsers, htmlAttributes: new { @class = "custom-control-input" })
+                                                        <label for="ShowUsers" class="custom-control-label">Show Users</label>
+                                                        @Html.ValidationMessageFor(model => model.ShowUsers, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                                                <div class="form-group">
+                                                    <div class="custom-control custom-checkbox">
+                                                        @Html.CheckBoxFor(model => model.AddShowroom, htmlAttributes: new { @class = "custom-control-input" })
+                                                        <label for="AddShowroom" class="custom-control-label">Add Showroom</label>
+                                                        @Html.ValidationMessageFor(model => model.AddShowroom, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                                                <div class="form-group">
+                                                    <div class="custom-control custom-checkbox">
+                                                        @Html.CheckBoxFor(model => model.EditShowroom, htmlAttributes: new { @class = "custom-control-input" })
+                                                        <label for="EditShowroom" class="custom-control-label">Edit Showroom</label>
+                                                        @Html.ValidationMessageFor(model => model.EditShowroom, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                                                <div class="form-group">
+                                                    <div class="custom-control custom-checkbox">
+                                                        @Html.CheckBoxFor(model => model.DeleteShowroom, htmlAttributes: new { @class = "custom-control-input" })
+                                                        <label for="DeleteShowroom" class="custom-control-label">Delete Showroom</label>
+                                                        @Html.ValidationMessageFor(model => model.DeleteShowroom, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                                                <div class="form-group">
+                                                    <div class="custom-control custom-checkbox">
+                                                        @Html.CheckBoxFor(model => model.ShowShowroom, htmlAttributes: new { @class = "custom-control-input" })
+                                                        <label for="ShowShowroom" class="custom-control-label">Show Showroom</label>
+                                                        @Html.ValidationMessageFor(model => model.ShowShowroom, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-lg-6 col-sm-12">
+                                        <div class="row">
+                                            <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                                                <div class="form-group">
+                                                    <div class="custom-control custom-checkbox">
+                                                        @Html.CheckBoxFor(model => model.AddUnionMember, htmlAttributes: new { @class = "custom-control-input" })
+                                                        <label for="AddUnionMember" class="custom-control-label">Add Union Member</label>
+                                                        @Html.ValidationMessageFor(model => model.AddUnionMember, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                                                <div class="form-group">
+                                                    <div class="custom-control custom-checkbox">
+                                                        @Html.CheckBoxFor(model => model.EditUnionMember, htmlAttributes: new { @class = "custom-control-input" })
+                                                        <label for="EditUnionMember" class="custom-control-label">Edit Union Member</label>
+                                                        @Html.ValidationMessageFor(model => model.EditUnionMember, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                                                <div class="form-group">
+                                                    <div class="custom-control custom-checkbox">
+                                                        @Html.CheckBoxFor(model => model.DeleteUnionMember, htmlAttributes: new { @class = "custom-control-input" })
+                                                        <label for="DeleteUnionMember" class="custom-control-label">Delete Union Member</label>
+                                                        @Html.ValidationMessageFor(model => model.DeleteUnionMember, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                                                <div class="form-group">
+                                                    <div class="custom-control custom-checkbox">
+                                                        @Html.CheckBoxFor(model => model.ShowUnionMember, htmlAttributes: new { @class = "custom-control-input" })
+                                                        <label for="ShowUnionMember" class="custom-control-label">Show Union Member</label>
+                                                        @Html.ValidationMessageFor(model => model.ShowUnionMember, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                                                <div class="form-group">
+                                                    <div class="custom-control custom-checkbox">
+                                                        @Html.CheckBoxFor(model => model.ManagShowroomAds, htmlAttributes: new { @class = "custom-control-input" })
+                                                        <label for="ManagShowroomAds" class="custom-control-label">Manage Showroom Ads</label>
+                                                        @Html.ValidationMessageFor(model => model.ManagShowroomAds, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                                                <div class="form-group">
+                                                    <div class="custom-control custom-checkbox">
+                                                        @Html.CheckBoxFor(model => model.MakePayments, htmlAttributes: new { @class = "custom-control-input" })
+                                                        <label for="MakePayments" class="custom-control-label">Make Payments</label>
+                                                        @Html.ValidationMessageFor(model => model.MakePayments, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                                                <div class="form-group">
+                                                    <div class="custom-control custom-checkbox">
+                                                        @Html.CheckBoxFor(model => model.ShowPayments, htmlAttributes: new { @class = "custom-control-input" })
+                                                        <label for="ShowPayments" class="custom-control-label">Show Payments</label>
+                                                        @Html.ValidationMessageFor(model => model.ShowPayments, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                                                <div class="form-group">
+                                                    <div class="custom-control custom-checkbox">
+                                                        @Html.CheckBoxFor(model => model.EditProfile, htmlAttributes: new { @class = "custom-control-input" })
+                                                        <label for="EditProfile" class="custom-control-label">Edit Profile</label>
+                                                        @Html.ValidationMessageFor(model => model.EditProfile, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer" style="padding-left: 0px;">
+                                    <button type="submit" class="btn btn-primary" id="postad">Submit & Continue</button>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </section>
+    <script>
+        document.getElementById('UnionNav').classList.add('active')
+        document.getElementById('LUnionRolePage').classList.add('active')
+    </script>
+}

@@ -68,7 +68,7 @@ namespace JRCar.BOL
         public virtual ICollection<tblPayment> tblPayments { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tblQuery> tblQueries { get; set; }
-        public virtual tblRole tblRole { get; set; }
         public virtual tblUnion tblUnion { get; set; }
+        public virtual tblRole tblRole { get; set; }
     }
 }

@@ -3771,6 +3771,9 @@
     <Content Include="Views\Portal\ShowroomInfo.cshtml" />
     <Content Include="Views\Portal\ShowroomMessagesList.cshtml" />
     <Content Include="Views\Portal\ShowroomPaymentInfo.cshtml" />
+    <Content Include="Views\Portal\AddNewUnionRole.cshtml" />
+    <Content Include="Views\Portal\EditUnionRole.cshtml" />
+    <Content Include="Views\Portal\ListUnionRole.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

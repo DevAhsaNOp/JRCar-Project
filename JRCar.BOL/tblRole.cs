@@ -18,24 +18,30 @@ namespace JRCar.BOL
         public tblRole()
         {
             this.tblAdmins = new HashSet<tblAdmin>();
+            this.tblRolePermissions = new HashSet<tblRolePermission>();
             this.tblUnions = new HashSet<tblUnion>();
             this.tblUsers = new HashSet<tblUser>();
             this.tblShowrooms = new HashSet<tblShowroom>();
-            this.tblRolePermissions = new HashSet<tblRolePermission>();
         }
     
         public int ID { get; set; }
         public string Role { get; set; }
+        public Nullable<bool> Isarchive { get; set; }
+        public Nullable<bool> Isactive { get; set; }
+        public Nullable<System.DateTime> CreatedOn { get; set; }
+        public Nullable<int> CreatedBy { get; set; }
+        public Nullable<System.DateTime> UpdatedOn { get; set; }
+        public Nullable<int> UpdatedBy { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tblAdmin> tblAdmins { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tblRolePermission> tblRolePermissions { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tblUnion> tblUnions { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tblUser> tblUsers { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tblShowroom> tblShowrooms { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<tblRolePermission> tblRolePermissions { get; set; }
     }
 }

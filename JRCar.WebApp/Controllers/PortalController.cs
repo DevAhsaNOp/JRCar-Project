@@ -689,7 +689,7 @@ namespace JRCar.WebApp.Controllers
                 throw ex;
             }
         }
-        
+
         [HttpGet]
         public JsonResult ChangeShowroomAppointmentsToAsRead()
         {
@@ -750,7 +750,7 @@ namespace JRCar.WebApp.Controllers
                 throw ex;
             }
         }
-        
+
         [HttpGet]
         public JsonResult GetShowroomMessagesList()
         {
@@ -1470,7 +1470,7 @@ namespace JRCar.WebApp.Controllers
                             else
                             {
                                 Session["UserEditID"] = null;
-                                Session["UserEditEmail"] = null; 
+                                Session["UserEditEmail"] = null;
                                 Session["UserEditPhoneNumber"] = null;
                                 TempData["ErrorMsg"] = "Image size is very large";
                                 return RedirectToAction("UserEdit", new { UserID = user.ID });
@@ -1479,7 +1479,7 @@ namespace JRCar.WebApp.Controllers
                         else
                         {
                             Session["UserEditID"] = null;
-                            Session["UserEditEmail"] = null; 
+                            Session["UserEditEmail"] = null;
                             Session["UserEditPhoneNumber"] = null;
                             TempData["ErrorMsg"] = "Image is not in correct format kindly choose jpg/jpeg/png files";
                             return RedirectToAction("UserEdit", new { UserID = user.ID });
@@ -1496,7 +1496,7 @@ namespace JRCar.WebApp.Controllers
                         user.UpdatedBy = (int)Session["Id"];
                         var IsUpdated = RepoObj.UpdateUser(user, role);
                         Session["UserEditID"] = null;
-                        Session["UserEditEmail"] = null; 
+                        Session["UserEditEmail"] = null;
                         Session["UserEditPhoneNumber"] = null;
                         if (IsUpdated)
                         {
@@ -2002,7 +2002,7 @@ namespace JRCar.WebApp.Controllers
                 var CurrentMonth = DateTime.Now.Month;
 
                 DateTime NextRecievablemonthStart = DateTime.Now;
-                DateTime NextRecievablemonthEnd= DateTime.Now;
+                DateTime NextRecievablemonthEnd = DateTime.Now;
 
                 var receivedFirstMonth = Convert.ToDateTime(receivedDates.First());
                 var receivedLastMonth = Convert.ToDateTime(receivedDates.Last());
@@ -2036,7 +2036,7 @@ namespace JRCar.WebApp.Controllers
                     RecievedToDate = receivedlastmonthEnd,
                     RecievableFromDate = NextRecievablemonthStart,
                     RecievableToDate = NextRecievablemonthEnd,
-                    CreatedBy = (int)Session["Id"],                   
+                    CreatedBy = (int)Session["Id"],
                 };
 
                 var reas = PayRepoObj.InsertPayment(Payment);
@@ -2056,6 +2056,149 @@ namespace JRCar.WebApp.Controllers
                 throw ex;
             }
 
+        }
+
+        #endregion
+
+        #region **Manage Union Roles**
+
+        [AcceptVerbs(HttpVerbs.Get)]
+        [Authorize(Roles = "Admin,Union")]
+        public ActionResult AddNewUnionRole()
+        {
+            return View();
+        }
+
+        [AcceptVerbs(HttpVerbs.Post)]
+        [Authorize(Roles = "Admin,Union")]
+        public ActionResult AddNewUnionRole(ValidateRolePermission model)
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                if (model != null)
+                {
+                    model.CreatedBy = (int)Session["Id"];
+                    var reas = RepoObj.InsertRoleWithPermission(model);
+                    ModelState.Clear();
+                    if (reas)
+                    {
+                        TempData["SuccessMsg"] = "Role Added Successfully!";
+                        return View();
+                    }
+                    else
+                    {
+                        TempData["ErrorMsg"] = "Error occured on adding Role!";
+                        return View();
+                    }
+                }
+            }
+            else
+            {
+                TempData["ErrorMsg"] = "Error occured on adding Role!";
+                return View();
+            }
+            return View();
+        }
+        
+        [AcceptVerbs(HttpVerbs.Get)]
+        [Authorize(Roles = "Admin,Union")]
+        public ActionResult EditUnionRole(int ID)
+        {
+            var reas = RepoObj.GetRolePermissionByID(ID);
+            TempData["RoleID"] = reas.RoleID;
+            TempData["ID"] = reas.ID;
+            return View(reas);
+        }
+
+        [AcceptVerbs(HttpVerbs.Post)]
+        [Authorize(Roles = "Admin,Union")]
+        public ActionResult EditUnionRole(ValidateRolePermission model)
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                if (model != null)
+                {
+                    model.UpdatedBy = (int)Session["Id"];
+                    model.ID = Convert.ToInt32(TempData["ID"]);
+                    model.RoleID = Convert.ToInt32(TempData["RoleID"]);
+                    var reas = RepoObj.EditRoleWithPermission(model);
+                    ModelState.Clear();
+                    if (reas)
+                    {
+                        TempData["SuccessMsg"] = "Role Updated Successfully!";
+                        return RedirectToAction("ListUnionRole");
+                    }
+                    else
+                    {
+                        TempData["ErrorMsg"] = "Error occured on Updating Role!";
+                        return RedirectToAction("ListUnionRole");
+                    }
+                }
+            }
+            else
+            {
+                TempData["ErrorMsg"] = "Error occured on Updating Role!";
+                return RedirectToAction("ListUnionRole");
+            }
+            return View();
+        }
+        
+        [AcceptVerbs(HttpVerbs.Get)]
+        [Authorize(Roles = "Admin,Union")]
+        public ActionResult ListUnionRole()
+        {
+            var reas = RepoObj.GetRolePermission();
+            return View(reas);
+        }
+
+        [AcceptVerbs(HttpVerbs.Post)]
+        [Authorize(Roles = "Admin,Union")]
+        public ActionResult RoleInActive(int ID)
+        {
+            if (ID > 0)
+            {
+                var IsInactive = RepoObj.InactiveRole(ID);
+                if (IsInactive)
+                {
+                    TempData["SuccessMsg"] = "Role Deactivated Successfully!";
+                    return Json("True", JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    TempData["ErrorMsg"] = "Error Occured On Role Deactivation!";
+                    return Json("False", JsonRequestBehavior.AllowGet);
+                }
+            }
+            else
+            {
+                TempData["ErrorMsg"] = "Error Occured On Role Deactivation!";
+                return Json("False", JsonRequestBehavior.AllowGet);
+            }
+        }
+        
+        [AcceptVerbs(HttpVerbs.Post)]
+        [Authorize(Roles = "Admin,Union")]
+        public ActionResult RoleActive(int ID)
+        {
+            if (ID > 0)
+            {
+                var IsInactive = RepoObj.ActiveRole(ID);
+                if (IsInactive)
+                {
+                    TempData["SuccessMsg"] = "Role Activated Successfully!";
+                    return Json("True", JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    TempData["ErrorMsg"] = "Error Occured On Role Activation!";
+                    return Json("False", JsonRequestBehavior.AllowGet);
+                }
+            }
+            else
+            {
+                TempData["ErrorMsg"] = "Error Occured On Role Activation!";
+                return Json("False", JsonRequestBehavior.AllowGet);
+            }
         }
 
         #endregion

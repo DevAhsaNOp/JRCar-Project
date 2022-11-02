@@ -58,7 +58,7 @@ namespace JRCar.BLL.Repositories
                 return false;
             }
         }
-        
+
         public bool ActiveModel(int UserID, string Role)
         {
             if (UserID > 0 && Role != null)
@@ -80,7 +80,7 @@ namespace JRCar.BLL.Repositories
             }
         }
 
-        public bool IsEmailExist(string Email) 
+        public bool IsEmailExist(string Email)
         {
             if (Email != null)
             {
@@ -95,8 +95,8 @@ namespace JRCar.BLL.Repositories
                 return false;
             }
         }
-        
-        public bool IsPhoneNumberExist(string PhoneNumber) 
+
+        public bool IsPhoneNumberExist(string PhoneNumber)
         {
             if (PhoneNumber != null)
             {
@@ -111,8 +111,8 @@ namespace JRCar.BLL.Repositories
                 return false;
             }
         }
-        
-        public bool IsUpdateEmailExist(string Email, string CurrentEmail) 
+
+        public bool IsUpdateEmailExist(string Email, string CurrentEmail)
         {
             if (Email != null && Email != CurrentEmail)
             {
@@ -127,8 +127,8 @@ namespace JRCar.BLL.Repositories
                 return false;
             }
         }
-        
-        public bool IsUpdatePhoneNumberExist(string PhoneNumber, string CurrentNumber) 
+
+        public bool IsUpdatePhoneNumberExist(string PhoneNumber, string CurrentNumber)
         {
             if (PhoneNumber != null && PhoneNumber != CurrentNumber)
             {
@@ -168,7 +168,7 @@ namespace JRCar.BLL.Repositories
         {
             return dbObj.GetAllUsers();
         }
-        
+
         public IEnumerable<tblUnion> GetAllUnion()
         {
             return dbObj.GetAllUnion();
@@ -233,7 +233,7 @@ namespace JRCar.BLL.Repositories
                 throw;
             }
         }
-        
+
         public tblUser GetUserByID(int modelId)
         {
             try
@@ -253,7 +253,7 @@ namespace JRCar.BLL.Repositories
                 throw;
             }
         }
-        
+
         public tblShowroom GetShowroomByID(int modelId)
         {
             try
@@ -351,6 +351,184 @@ namespace JRCar.BLL.Repositories
             }
         }
 
+        public bool InsertRoleWithPermission(ValidateRolePermission model)
+        {
+            if (model != null)
+            {
+                tblRole role = new tblRole()
+                {
+                    Role = model.Role,
+                    CreatedBy = model.CreatedBy
+                };
+                var IsRoleInserted = dbObj.InsertRole(role);
+                if (IsRoleInserted > 0)
+                {
+                    tblRolePermission obj = new tblRolePermission()
+                    {
+                        AddShowroom = model.AddShowroom,
+                        AddUnionMember = model.AddUnionMember,
+                        AddUser = model.AddUser,
+                        DeleteShowroom = model.DeleteShowroom,
+                        DeleteUnionMember = model.DeleteUnionMember,
+                        DeleteUser = model.DeleteUser,
+                        EditProfile = model.EditProfile,
+                        EditShowroom = model.EditShowroom,
+                        EditUnionMember = model.EditUnionMember,
+                        EditUser = model.EditUser,
+                        MakeAnnoucment = model.MakeAnnoucment,
+                        MakePayments = model.MakePayments,
+                        ManagShowroomAds = model.ManagShowroomAds,
+                        ManagUserAds = model.ManagUserAds,
+                        RoleID = IsRoleInserted,
+                        ShowAnnoucment = model.ShowAnnoucment,
+                        ShowPayments = model.ShowPayments,
+                        ShowShowroom = model.ShowShowroom,
+                        ShowUnionMember = model.ShowUnionMember,
+                        ShowUsers = model.ShowUsers,
+                    };
+                    dbObj.InsertRolePermission(obj);
+                    return true;
+                }
+                else
+                    return false;
+            }
+            else
+                return false;
+        }
+
+        public bool EditRoleWithPermission(ValidateRolePermission model)
+        {
+            if (model != null)
+            {
+                tblRole role = new tblRole()
+                {
+                    ID = model.RoleID,
+                    Role = model.Role,
+                    UpdatedBy = model.UpdatedBy,
+                    CreatedBy = dbObj.GetRoleByID(model.RoleID).CreatedBy,
+                    CreatedOn = dbObj.GetRoleByID(model.RoleID).CreatedOn,
+                };
+                var IsRoleInserted = dbObj.EditRole(role);
+                if (IsRoleInserted > 0)
+                {
+                    tblRolePermission obj = new tblRolePermission()
+                    {
+                        ID = model.ID,
+                        AddShowroom = model.AddShowroom,
+                        AddUnionMember = model.AddUnionMember,
+                        AddUser = model.AddUser,
+                        DeleteShowroom = model.DeleteShowroom,
+                        DeleteUnionMember = model.DeleteUnionMember,
+                        DeleteUser = model.DeleteUser,
+                        EditProfile = model.EditProfile,
+                        EditShowroom = model.EditShowroom,
+                        EditUnionMember = model.EditUnionMember,
+                        EditUser = model.EditUser,
+                        MakeAnnoucment = model.MakeAnnoucment,
+                        MakePayments = model.MakePayments,
+                        ManagShowroomAds = model.ManagShowroomAds,
+                        ManagUserAds = model.ManagUserAds,
+                        RoleID = IsRoleInserted,
+                        ShowAnnoucment = model.ShowAnnoucment,
+                        ShowPayments = model.ShowPayments,
+                        ShowShowroom = model.ShowShowroom,
+                        ShowUnionMember = model.ShowUnionMember,
+                        ShowUsers = model.ShowUsers,
+                    };
+                    dbObj.EditRolePermission(obj);
+                    return true;
+                }
+                else
+                    return false;
+            }
+            else
+                return false;
+        }
+
+        public ValidateRolePermission GetRolePermissionByID(int ID)
+        {
+            if (ID > 0)
+            {
+                var model = dbObj.GetRolePermissionByID(ID);
+                if (model != null)
+                {
+                    ValidateRolePermission obj = new ValidateRolePermission()
+                    {
+                        AddShowroom = model.AddShowroom.Value,
+                        AddUnionMember = model.AddUnionMember.Value,
+                        AddUser = model.AddUser.Value,
+                        DeleteShowroom = model.DeleteShowroom.Value,
+                        DeleteUnionMember = model.DeleteUnionMember.Value,
+                        DeleteUser = model.DeleteUser.Value,
+                        EditProfile = model.EditProfile.Value,
+                        EditShowroom = model.EditShowroom.Value,
+                        EditUnionMember = model.EditUnionMember.Value,
+                        EditUser = model.EditUser.Value,
+                        MakeAnnoucment = model.MakeAnnoucment.Value,
+                        MakePayments = model.MakePayments.Value,
+                        ManagShowroomAds = model.ManagShowroomAds.Value,
+                        ManagUserAds = model.ManagUserAds.Value,
+                        Role = model.tblRole.Role,
+                        ID = model.ID,
+                        RoleID = model.RoleID,
+                        ShowAnnoucment = model.ShowAnnoucment.Value,
+                        ShowPayments = model.ShowPayments.Value,
+                        ShowShowroom = model.ShowShowroom.Value,
+                        ShowUnionMember = model.ShowUnionMember.Value,
+                        ShowUsers = model.ShowUsers.Value,
+                    };
+                    return obj;
+                }
+                else
+                    return null;
+            }
+            else
+                return null;
+        }
+
+        public bool InactiveRole(int RoleID)
+        {
+            if (RoleID > 0)
+            {
+                var reas = dbObj.InactiveRole(RoleID);
+                if (reas > 0)
+                {
+                    return true;
+                }
+                else
+                    return false;
+            }
+            else
+                return false;
+        }
+        
+        public bool ActiveRole(int RoleID)
+        {
+            if (RoleID > 0)
+            {
+                var reas = dbObj.ActiveRole(RoleID);
+                if (reas > 0)
+                {
+                    return true;
+                }
+                else
+                    return false;
+            }
+            else
+                return false;
+        }
+
+        public IEnumerable<tblRolePermission> GetRolePermission()
+        {
+            var model = dbObj.GetAllRolePermission();
+            if (model != null)
+            {
+                return model;
+            }
+            else
+                return null;
+        }
+
         public void InsertShowroom(ValidateShowroom model)
         {
             if (model != null)
@@ -375,7 +553,7 @@ namespace JRCar.BLL.Repositories
             }
         }
 
-        public bool UpdateUser(ValidateUser model,string Role)
+        public bool UpdateUser(ValidateUser model, string Role)
         {
             if (model != null)
             {

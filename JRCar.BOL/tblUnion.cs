@@ -37,10 +37,10 @@ namespace JRCar.BOL
         public string OTP { get; set; }
         public bool Verified { get; set; }
     
-        public virtual tblRole tblRole { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tblQuery> tblQueries { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tblShowroom> tblShowrooms { get; set; }
+        public virtual tblRole tblRole { get; set; }
     }
 }

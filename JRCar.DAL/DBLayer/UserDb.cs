@@ -9,6 +9,7 @@ using JRCar.DAL.UserDefine;
 using System.Net;
 using System.Net.Mail;
 using JRCar.BOL.Validation_Classes;
+using System.Web.Security;
 
 namespace JRCar.DAL.DBLayer
 {
@@ -29,7 +30,7 @@ namespace JRCar.DAL.DBLayer
             else
                 return false;
         }
-        
+
         public bool IsPhoneNumberExist(string PhoneNumber)
         {
             var reas = GetUserPhone(PhoneNumber);
@@ -52,6 +53,11 @@ namespace JRCar.DAL.DBLayer
         public IEnumerable<tblUnion> GetAllUnion()
         {
             return _context.tblUnions.ToList();
+        }
+
+        public IEnumerable<tblRolePermission> GetAllRolePermission()
+        {
+            return _context.tblRolePermissions.ToList();
         }
 
         public IEnumerable<tblShowroom> GetAllShowRoom()
@@ -77,6 +83,11 @@ namespace JRCar.DAL.DBLayer
         public tblShowroom GetShowRoomByID(int modelId)
         {
             return _context.tblShowrooms.Find(modelId);
+        }
+
+        public tblRolePermission GetRolePermissionByID(int modelId)
+        {
+            return _context.tblRolePermissions.Find(modelId);
         }
 
         //public UserViewDetail GetUserByEmail(string emailtext)
@@ -338,7 +349,7 @@ namespace JRCar.DAL.DBLayer
                 Image = s.Image,
                 Password = s.Password,
                 tblRoleID = s.tblRoleID,
-                Active = ((s.Active== true)? "1" : "0"),
+                Active = ((s.Active == true) ? "1" : "0"),
             }).FirstOrDefault();
 
             var admin = _context.tblAdmins.Where(x => x.ID == Id && x.tblRole.Role.ToLower().Contains(Role.ToLower())).Select(s => new ValidateUser()
@@ -372,7 +383,7 @@ namespace JRCar.DAL.DBLayer
                 Active = ((s.Active == true) ? "1" : "0"),
                 tblRoleID = s.tblRoleID
             }).FirstOrDefault();
-            
+
             var showroom = _context.tblShowrooms.Where(x => x.ID == Id && x.tblRole.Role.ToLower().Contains(Role.ToLower())).Select(s => new ValidateUser()
             {
                 ID = s.ID,
@@ -470,10 +481,170 @@ namespace JRCar.DAL.DBLayer
             }
         }
 
+        public bool InsertRolePermission(tblRolePermission model)
+        {
+            try
+            {
+                _context.tblRolePermissions.Add(model);
+                Save();
+                if (model.ID > 0)
+                    return true;
+                else
+                    return false;
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public bool EditRolePermission(tblRolePermission model)
+        {
+            try
+            {
+                var obj = _context.tblRolePermissions.Find(model.ID);
+                obj.ID = model.ID;
+                obj.AddShowroom = model.AddShowroom;
+                obj.AddUnionMember = model.AddUnionMember;
+                obj.AddUser = model.AddUser;
+                obj.DeleteShowroom = model.DeleteShowroom;
+                obj.DeleteUnionMember = model.DeleteUnionMember;
+                obj.DeleteUser = model.DeleteUser;
+                obj.EditProfile = model.EditProfile;
+                obj.EditShowroom = model.EditShowroom;
+                obj.EditUnionMember = model.EditUnionMember;
+                obj.EditUser = model.EditUser;
+                obj.MakeAnnoucment = model.MakeAnnoucment;
+                obj.MakePayments = model.MakePayments;
+                obj.ManagShowroomAds = model.ManagShowroomAds;
+                obj.ManagUserAds = model.ManagUserAds;
+                obj.RoleID = model.RoleID;
+                obj.ShowAnnoucment = model.ShowAnnoucment;
+                obj.ShowPayments = model.ShowPayments;
+                obj.ShowShowroom = model.ShowShowroom;
+                obj.ShowUnionMember = model.ShowUnionMember;
+                obj.ShowUsers = model.ShowUsers;
+                _context.Entry(obj).State = System.Data.Entity.EntityState.Modified;
+                Save();
+                if (model.ID > 0)
+                    return true;
+                else
+                    return false;
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public int InsertRole(tblRole model)
+        {
+            try
+            {
+                model.Isactive = true;
+                model.Isarchive = false;
+                model.CreatedOn = DateTime.Now;
+                model.UpdatedBy = null;
+                model.UpdatedOn = null;
+                _context.tblRoles.Add(model);
+                Save();
+                if (model.ID > 0)
+                    return model.ID;
+                else
+                    return 0;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public tblRole GetRoleByID(int ID)
+        {
+            return _context.tblRoles.Find(ID);
+        }
+
+        public int EditRole(tblRole model)
+        {
+            try
+            {
+                var obj = _context.tblRoles.Find(model.ID);
+                obj.Role = model.Role;
+                obj.UpdatedOn = DateTime.Now;
+                obj.UpdatedBy = model.UpdatedBy;
+                obj.Isactive = true;
+                obj.Isarchive = false;
+                _context.Entry(obj).State = System.Data.Entity.EntityState.Modified;
+                Save();
+                if (model.ID > 0)
+                    return model.ID;
+                else
+                    return 0;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public int InactiveRole(int RoleID)
+        {
+            try
+            {
+                if (RoleID > 0)
+                {
+                    var model = _context.tblRoles.Find(RoleID);
+                    model.Isactive = false;
+                    model.Isarchive = true;
+                    model.UpdatedOn = DateTime.Now;
+                    _context.Entry(model).State = System.Data.Entity.EntityState.Modified;
+                    Save();
+                    if (model.ID > 0)
+                        return model.ID;
+                    else
+                        return 0;
+                }
+                else
+                    return 0;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        
+        public int ActiveRole(int RoleID)
+        {
+            try
+            {
+                if (RoleID > 0)
+                {
+                    var model = _context.tblRoles.Find(RoleID);
+                    model.Isactive = true;
+                    model.Isarchive = false;
+                    model.UpdatedOn = DateTime.Now;
+                    _context.Entry(model).State = System.Data.Entity.EntityState.Modified;
+                    Save();
+                    if (model.ID > 0)
+                        return model.ID;
+                    else
+                        return 0;
+                }
+                else
+                    return 0;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public void InsertShowroom(tblShowroom model)
         {
             try
-            {       
+            {
                 var zone = _context.tblAddresses.Where(x => x.ID == model.AddressId).FirstOrDefault().tblZone.ZoneName;
                 var city = _context.tblAddresses.Where(x => x.ID == model.AddressId).FirstOrDefault().tblCity.CityName;
                 model.ShowroomURL = ShowroomURLGenerate(model.FullName, zone, city);
@@ -623,7 +794,7 @@ namespace JRCar.DAL.DBLayer
                 throw ex;
             }
         }
-        
+
         public void ActiveUnion(tblUnion model)
         {
             try
