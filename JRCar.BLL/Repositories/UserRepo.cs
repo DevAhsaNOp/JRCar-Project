@@ -639,7 +639,6 @@ namespace JRCar.BLL.Repositories
                     UnionData.Password = EncDec.Encrypt(model.Password);
                     UnionData.Image = model.Image;
                     UnionData.UpdatedBy = model.UpdatedBy;
-                    UnionData.tblCRoleID = model.tblCRoleID;
                     dbObj.UpdateUnion(UnionData);
                     return true;
                 }

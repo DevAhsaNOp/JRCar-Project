@@ -616,7 +616,7 @@ namespace JRCar.DAL.DBLayer
                 throw ex;
             }
         }
-        
+
         public int ActiveRole(int RoleID)
         {
             try
@@ -711,6 +711,8 @@ namespace JRCar.DAL.DBLayer
         {
             try
             {
+                var reas = _context.tblUnions.Where(x => x.ID == model.ID).FirstOrDefault();
+                model.tblCRoleID = reas.tblCRoleID;
                 model.Active = true;
                 model.CreatedOn = GetUnionByID(model.ID).CreatedOn;
                 model.CreatedBy = GetUnionByID(model.ID).CreatedBy;

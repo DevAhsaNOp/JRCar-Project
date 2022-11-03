@@ -146,25 +146,78 @@
                                                 }
                                             </td>
                                             <td>
-                                                @if (item.tblRole.Isactive.Value)
+                                                @if (Session["IsUnionMember"] != null)
                                                 {
-                                                    <a href="@Url.Action("EditUnionRole",new { ID = item.ID })">
-                                                        <button class="btnAction btnEdit">
-                                                            <i class="far fa-edit"></i>
+                                                    JRCar.BOL.jrcarEntities entities = new JRCar.BOL.jrcarEntities();
+                                                    if (Session["IsUnionMember"].ToString().Length > 1)
+                                                    {
+                                                        var CurrUser = Convert.ToInt32(Session["IsUnionMember"].ToString());
+                                                        var reas = entities.tblRolePermissions.Where(x => x.tblRole.ID == CurrUser).FirstOrDefault();
+                                                        if (reas.EditUnionRole.Value)
+                                                        {
+                                                            if (item.tblRole.Isactive.Value)
+                                                            {
+                                                                <a href="@Url.Action("EditUnionRole",new { ID = item.ID })">
+                                                                    <button class="btnAction btnEdit">
+                                                                        <i class="far fa-edit"></i>
+                                                                    </button>
+                                                                </a>
+                                                            }
+                                                            if (reas.DeleteUnionRole.Value)
+                                                            {
+                                                                if (item.tblRole.Isactive.Value)
+                                                                {
+                                                                    <button class="btnAction btnAct" onclick="InactiveRole(@item.RoleID)">
+                                                                        <i class="fas fa-toggle-on"></i>
+                                                                    </button>
+                                                                }
+                                                                if (item.tblRole.Isactive.Value == false)
+                                                                {
+                                                                    <button class="btnAction btnDel" onclick="ActiveRole(@item.RoleID)">
+                                                                        <i class="fas fa-toggle-off"></i>
+                                                                    </button>
+                                                                }
+                                                            }
+                                                        }
+                                                        else if (reas.DeleteUnionRole.Value)
+                                                        {
+                                                            if (item.tblRole.Isactive.Value)
+                                                            {
+                                                                <button class="btnAction btnAct" onclick="InactiveRole(@item.RoleID)">
+                                                                    <i class="fas fa-toggle-on"></i>
+                                                                </button>
+                                                            }
+                                                            if (item.tblRole.Isactive.Value == false)
+                                                            {
+                                                                <button class="btnAction btnDel" onclick="ActiveRole(@item.RoleID)">
+                                                                    <i class="fas fa-toggle-off"></i>
+                                                                </button>
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    if (item.tblRole.Isactive.Value)
+                                                    {
+                                                        <a href="@Url.Action("EditUnionRole",new { ID = item.ID })">
+                                                            <button class="btnAction btnEdit">
+                                                                <i class="far fa-edit"></i>
+                                                            </button>
+                                                        </a>
+                                                    }
+                                                    if (item.tblRole.Isactive.Value)
+                                                    {
+                                                        <button class="btnAction btnAct" onclick="InactiveRole(@item.RoleID)">
+                                                            <i class="fas fa-toggle-on"></i>
                                                         </button>
-                                                    </a>
-                                                }
-                                                @if (item.tblRole.Isactive.Value)
-                                                {
-                                                    <button class="btnAction btnAct" onclick="InactiveRole(@item.RoleID)">
-                                                        <i class="fas fa-toggle-on"></i>
-                                                    </button>
-                                                }
-                                                @if (item.tblRole.Isactive.Value == false)
-                                                {
-                                                    <button class="btnAction btnDel" onclick="ActiveRole(@item.RoleID)">
-                                                        <i class="fas fa-toggle-off"></i>
-                                                    </button>
+                                                    }
+                                                    if (item.tblRole.Isactive.Value == false)
+                                                    {
+                                                        <button class="btnAction btnDel" onclick="ActiveRole(@item.RoleID)">
+                                                            <i class="fas fa-toggle-off"></i>
+                                                        </button>
+                                                    }
                                                 }
                                             </td>
                                         </tr>

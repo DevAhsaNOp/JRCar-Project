@@ -38,8 +38,8 @@ namespace JRCar.BOL
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tblAppointmentDetail> tblAppointmentDetails { get; set; }
         public virtual tblCar tblCar { get; set; }
-        public virtual tblUser tblUser { get; set; }
-        public virtual tblUserAdd tblUserAdd { get; set; }
         public virtual tblShowroom tblShowroom { get; set; }
+        public virtual tblUserAdd tblUserAdd { get; set; }
+        public virtual tblUser tblUser { get; set; }
     }
 }

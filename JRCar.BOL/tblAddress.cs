@@ -18,8 +18,8 @@ namespace JRCar.BOL
         public tblAddress()
         {
             this.tblCars = new HashSet<tblCar>();
-            this.tblUserAdds = new HashSet<tblUserAdd>();
             this.tblShowrooms = new HashSet<tblShowroom>();
+            this.tblUserAdds = new HashSet<tblUserAdd>();
         }
     
         public int ID { get; set; }
@@ -34,8 +34,8 @@ namespace JRCar.BOL
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tblCar> tblCars { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<tblUserAdd> tblUserAdds { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tblShowroom> tblShowrooms { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tblUserAdd> tblUserAdds { get; set; }
     }
 }

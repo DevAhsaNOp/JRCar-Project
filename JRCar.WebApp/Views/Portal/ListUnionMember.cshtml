@@ -157,25 +157,78 @@
                                                 }
                                             </td>
                                             <td>
-                                                @if (item.Active)
+                                                @if (Session["IsUnionMember"] != null)
                                                 {
-                                                    <a href="@Url.Action("EditUnionMember",new { ID = item.ID })">
-                                                        <button class="btnAction btnView">
-                                                            <i class="far fa-edit"></i>
-                                                        </button>
-                                                    </a>
-                                                }
-                                                @if (item.Active)
-                                                {
-                                                    <button class="btnAction btnEdit" onclick="RemoveUn(@item.ID)">
-                                                        <i class="fas fa-toggle-on"></i>
-                                                    </button>
+                                                    JRCar.BOL.jrcarEntities entities = new JRCar.BOL.jrcarEntities();
+                                                    if (Session["IsUnionMember"].ToString().Length > 1)
+                                                    {
+                                                        var CurrUser = Convert.ToInt32(Session["IsUnionMember"].ToString());
+                                                        var reas = entities.tblRolePermissions.Where(x => x.tblRole.ID == CurrUser).FirstOrDefault();
+                                                        if (reas.EditUnionMember.Value)
+                                                        {
+                                                            if (item.Active)
+                                                            {
+                                                                <a href="@Url.Action("EditUnionMember",new { ID = item.ID })">
+                                                                    <button class="btnAction btnView">
+                                                                        <i class="far fa-edit"></i>
+                                                                    </button>
+                                                                </a>
+                                                            }
+                                                            if (reas.DeleteUnionMember.Value)
+                                                            {
+                                                                if (item.Active)
+                                                                {
+                                                                    <button class="btnAction btnEdit" onclick="RemoveUn(@item.ID)">
+                                                                        <i class="fas fa-toggle-on"></i>
+                                                                    </button>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <button class="btnAction btnDel" onclick="ActivateUn(@item.ID)">
+                                                                        <i class="fas fa-toggle-off"></i>
+                                                                    </button>
+                                                                }
+                                                            }
+                                                        }
+                                                        else if (reas.DeleteShowroom.Value)
+                                                        {
+                                                            if (item.Active)
+                                                            {
+                                                                <button class="btnAction btnEdit" onclick="RemoveUn(@item.ID)">
+                                                                    <i class="fas fa-toggle-on"></i>
+                                                                </button>
+                                                            }
+                                                            else
+                                                            {
+                                                                <button class="btnAction btnDel" onclick="ActivateUn(@item.ID)">
+                                                                    <i class="fas fa-toggle-off"></i>
+                                                                </button>
+                                                            }
+                                                        }
+                                                    }
                                                 }
                                                 else
                                                 {
-                                                    <button class="btnAction btnDel" onclick="ActivateUn(@item.ID)">
-                                                        <i class="fas fa-toggle-off"></i>
-                                                    </button>
+                                                    if (item.Active)
+                                                    {
+                                                        <a href="@Url.Action("EditUnionMember",new { ID = item.ID })">
+                                                            <button class="btnAction btnView">
+                                                                <i class="far fa-edit"></i>
+                                                            </button>
+                                                        </a>
+                                                    }
+                                                    if (item.Active)
+                                                    {
+                                                        <button class="btnAction btnEdit" onclick="RemoveUn(@item.ID)">
+                                                            <i class="fas fa-toggle-on"></i>
+                                                        </button>
+                                                    }
+                                                    else
+                                                    {
+                                                        <button class="btnAction btnDel" onclick="ActivateUn(@item.ID)">
+                                                            <i class="fas fa-toggle-off"></i>
+                                                        </button>
+                                                    }
                                                 }
                                             </td>
                                         </tr>
@@ -191,7 +244,8 @@
     </section>
     <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
     <script>
-        document.getElementById('UnionPage').classList.add('active')
+        document.getElementById('UnionNav').classList.add('active')
+        document.getElementById('UnionMemberPage').classList.add('active')
 
         function RemoveUn(Adid) {
             if (Adid > 0) {
