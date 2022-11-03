@@ -1883,7 +1883,7 @@ namespace JRCar.WebApp.Controllers
         [Authorize(Roles = "Admin")]
         public ActionResult ListOfUnion()
         {
-            var reas = RepoObj.GetAllUnion();
+            var reas = RepoObj.GetAllUnion().Where(x => x.tblCRoleID==null);
             return View(reas);
         }
 
@@ -1897,7 +1897,7 @@ namespace JRCar.WebApp.Controllers
                 var IsInactive = RepoObj.InActiveModel(ID, role);
                 if (IsInactive)
                 {
-                    TempData["SuccessMsg"] = "Union Deactivated Successfully!";
+                    TempData["SuccessMsg"] = "Account Deactivated Successfully!";
                     return Json("True", JsonRequestBehavior.AllowGet);
                 }
                 else
@@ -1923,7 +1923,7 @@ namespace JRCar.WebApp.Controllers
                 var IsInactive = RepoObj.ActiveModel(ID, role);
                 if (IsInactive)
                 {
-                    TempData["SuccessMsg"] = "Union Activated Successfully!";
+                    TempData["SuccessMsg"] = "Account Activated Successfully!";
                     return Json("True", JsonRequestBehavior.AllowGet);
                 }
                 else
@@ -2199,6 +2199,197 @@ namespace JRCar.WebApp.Controllers
                 TempData["ErrorMsg"] = "Error Occured On Role Activation!";
                 return Json("False", JsonRequestBehavior.AllowGet);
             }
+        }
+
+        #endregion
+
+        #region **Manage Union Member**
+
+        [AcceptVerbs(HttpVerbs.Get)]
+        [Authorize(Roles = "Admin,Union")]
+        public ActionResult AddUnionMember()
+        {
+            ViewBag.UnionMemberRoles = RepoObj.GetAllUnionRole();
+            Session["ImageAvatar"] = "~/Images/user.png";
+            return View();
+        }
+
+        [AcceptVerbs(HttpVerbs.Post)]
+        [Authorize(Roles = "Admin,Union")]
+        public ActionResult AddUnionMember(HttpPostedFileBase file, ValidateUser user)
+        {
+            try
+            {
+                if (file == null)
+                {
+                    user.Image = Session["ImageAvatar"].ToString();
+                    user.Email = user.SignUpEmail;
+                    user.CreatedBy = (int)Session["Id"];
+                    user.tblRoleID = Convert.ToInt32(user.UnionRoleName);
+                    RepoObj.InsertUnion(user);
+                    TempData["SuccessMsg"] = "Account Created Successfully!";
+                    ModelState.Clear();
+                    return RedirectToAction("AddUnionMember");
+                }
+                else
+                {
+                    string filename = Path.GetFileName(file.FileName);
+                    string _filename = DateTime.Now.ToString("yymmssfff") + filename;
+                    string extension = Path.GetExtension(file.FileName);
+                    string path = Path.Combine(Server.MapPath("~/Images/"), _filename);
+                    user.Image = "~/Images/" + _filename;
+
+                    if (extension.ToLower() == ".jpg" || extension.ToLower() == ".jpeg" || extension.ToLower() == ".png")
+                    {
+                        if (file.ContentLength <= 10000000)
+                        {
+                            user.Email = user.SignUpEmail;
+                            user.CreatedBy = (int)Session["Id"];
+                            user.tblRoleID = Convert.ToInt32(user.UnionRoleName);
+                            RepoObj.InsertUnion(user);
+                            file.SaveAs(path);
+                            TempData["SuccessMsg"] = "Account Created Successfully!";
+                            ModelState.Clear();
+                            return RedirectToAction("AddUnionMember");
+                        }
+                        else
+                        {
+                            TempData["ErrorMsg"] = "Image size is very large";
+                            return RedirectToAction("AddUnionMember");
+                        }
+                    }
+                    else
+                    {
+                        TempData["ErrorMsg"] = "Image is not in correct format kindly choose jpg/jpeg/png files!";
+                        return RedirectToAction("AddUnionMember");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMsg"] = "Error occured on creating Account!" + ex.Message;
+                return RedirectToAction("AddUnionMember");
+            }
+        }
+        
+        [AcceptVerbs(HttpVerbs.Get)]
+        [Authorize(Roles = "Admin,Union")]
+        public ActionResult EditUnionMember(int ID)
+        {
+            ViewBag.UnionMemberRoles = RepoObj.GetAllUnionRole();
+            Session["UserUnionMemID"] = ID;
+            var Role = "Union";
+            var reas = RepoObj.GetUserDetailById(ID, Role);
+            Session["UserEditEmail"] = reas.Email;
+            Session["UserEditPhoneNumber"] = reas.Number;
+            Session["UserUnionMemImage"] = reas.Image;
+            Session["UserUnionMemName"] = reas.Name;
+            return View(reas);
+        }
+
+        [AcceptVerbs(HttpVerbs.Post)]
+        [Authorize(Roles = "Admin,Union")]
+        public ActionResult EditUnionMember(HttpPostedFileBase file, ValidateUser user)
+        {
+            try
+            {
+                if (User.Identity.IsAuthenticated)
+                {
+                    if (file != null)
+                    {
+                        string filename = Path.GetFileName(file.FileName);
+                        string _filename = DateTime.Now.ToString("yymmssfff") + filename;
+                        string extension = Path.GetExtension(file.FileName);
+                        string path = Path.Combine(Server.MapPath("~/Images/"), _filename);
+                        user.Image = "~/Images/" + _filename;
+                        if (extension.ToLower() == ".jpg" || extension.ToLower() == ".jpeg" || extension.ToLower() == ".png")
+                        {
+                            var role ="Union";
+                            user.tblRoleName = role;
+                            if (file.ContentLength <= 10000000)
+                            {
+                                user.ID = (int)Session["UserUnionMemID"];
+                                user.UpdatedBy = (int)Session["Id"];
+                                user.Email = user.SignUpUpdateEmail;
+                                user.Number = user.SignUpUpdateNumber;
+                                user.tblCRoleID = Convert.ToInt32(user.UnionRoleName);
+                                var IsUpdated = RepoObj.UpdateUser(user, role);
+                                if (IsUpdated)
+                                {
+                                    Session["UserEditEmail"] = null;
+                                    Session["UserEditPhoneNumber"] = null;
+                                    file.SaveAs(path);
+                                    TempData["SuccessMsg"] = "Account Updated Successfully!";
+                                    return RedirectToAction("ListUnionMember");
+                                }
+                                else
+                                {
+                                    Session["UserEditEmail"] = null;
+                                    Session["UserEditPhoneNumber"] = null;
+                                    TempData["ErrorMsg"] = "Error occured on Updating Account!";
+                                     return RedirectToAction("ListUnionMember");
+                                }
+                            }
+                            else
+                            {
+                                Session["UserEditEmail"] = null;
+                                Session["UserEditPhoneNumber"] = null;
+                                TempData["ErrorMsg"] = "Image size is very large";
+                                return RedirectToAction("EditUnionMember", new { ID = (int)Session["UserUnionMemID"] });
+                            }
+                        }
+                    }
+                    else
+                    {
+                        user.ID = (int)Session["UserUnionMemID"];
+                        var role = "Union";
+                        user.Image = Session["UserUnionMemImage"].ToString();
+                        user.tblRoleName = role;
+                        user.Email = user.SignUpUpdateEmail;
+                        user.Number = user.SignUpUpdateNumber;
+                        user.UpdatedBy = (int)Session["Id"];
+                        user.tblCRoleID = Convert.ToInt32(user.tblRole.ID);
+                        var IsUpdated = RepoObj.UpdateUser(user, role);
+                        if (IsUpdated)
+                        {
+                            Session["UserEditEmail"] = null;
+                            Session["UserEditPhoneNumber"] = null;
+                            TempData["SuccessMsg"] = "Account Updated Successfully!";
+                            return RedirectToAction("ListUnionMember");
+                        }
+                        else
+                        {
+                            Session["UserEditEmail"] = null;
+                            Session["UserEditPhoneNumber"] = null;
+                            TempData["ErrorMsg"] = "Error occured on Updating Account!";
+                            return RedirectToAction("ListUnionMember");
+                        }
+                    }
+                    return View();
+                }
+                else
+                {
+                    Session["UserEditEmail"] = null;
+                    Session["UserEditPhoneNumber"] = null;
+                    var err = (int)HttpStatusCode.BadRequest;
+                    return Json(new { error = err + " Bad Request Error " + "Invalid Request!!" });
+                }
+            }
+            catch (Exception ex)
+            {
+                Session["UserEditEmail"] = null;
+                Session["UserEditPhoneNumber"] = null;
+                TempData["ErrorMsg"] = "Error occured on updating Account!" + ex.Message;
+                return RedirectToAction("ListUnionMember");
+            }
+        }
+
+        [AcceptVerbs(HttpVerbs.Get)]
+        [Authorize(Roles = "Admin,Union")]
+        public ActionResult ListUnionMember()
+        {
+            var reas = RepoObj.GetAllUnion().Where(x => x.tblCRoleID != null);
+            return View(reas);
         }
 
         #endregion

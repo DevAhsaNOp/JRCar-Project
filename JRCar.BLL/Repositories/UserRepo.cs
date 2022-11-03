@@ -8,6 +8,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace JRCar.BLL.Repositories
 {
@@ -345,11 +346,42 @@ namespace JRCar.BLL.Repositories
                     Number = model.Number,
                     Address = model.Address,
                     Password = EncDec.Encrypt(model.Password),
-                    Image = model.Image
+                    Image = model.Image,
+                    CreatedBy = model.CreatedBy,
+                    tblCRoleID = model.tblRoleID,
                 };
                 dbObj.InsertUnion(obj);
             }
         }
+
+        public List<SelectListItem> GetAllUnionRole()
+        {
+            var AllRole = GetRolePermission();
+            var roles = new List<SelectListItem>
+            {
+                new SelectListItem() { Text = "---Select Union Role---", Value = "0", Disabled = true, Selected = true }
+            };
+            foreach (var item in AllRole)
+            {
+                roles.Add(new SelectListItem() { Text = item.tblRole.Role, Value = item.tblRole.ID.ToString() });
+            }
+            return roles;
+        }
+        
+        public List<SelectListItem> GetAllUnionRoleE()
+        {
+            var AllRole = GetRolePermission();
+            var roles = new List<SelectListItem>
+            {
+                new SelectListItem() { Text = "---Select Union Role---", Value = "0", Disabled = true, Selected = true }
+            };
+            foreach (var item in AllRole)
+            {
+                roles.Add(new SelectListItem() { Text = item.tblRole.Role, Value = item.tblRole.ID.ToString() });
+            }
+            return roles;
+        }
+
 
         public bool InsertRoleWithPermission(ValidateRolePermission model)
         {
@@ -595,6 +627,7 @@ namespace JRCar.BLL.Repositories
                     UnionData.Password = EncDec.Encrypt(model.Password);
                     UnionData.Image = model.Image;
                     UnionData.UpdatedBy = model.UpdatedBy;
+                    UnionData.tblCRoleID = model.tblCRoleID;
                     dbObj.UpdateUnion(UnionData);
                     return true;
                 }

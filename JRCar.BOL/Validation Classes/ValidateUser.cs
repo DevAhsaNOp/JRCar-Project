@@ -10,6 +10,11 @@ namespace JRCar.BOL.Validation_Classes
 {
     public class ValidateUser
     {
+        [Required(ErrorMessage = "*")]
+        [Display(Name = "Union Role")]
+        [Range(1, Int32.MaxValue, ErrorMessage = "Must select a Union Role")]
+        public int? tblCRoleID;
+
         public int ID { get; set; }
 
         [Required(ErrorMessage = "*")]
@@ -86,6 +91,11 @@ namespace JRCar.BOL.Validation_Classes
 
         public virtual tblRole tblRole { get; set; }
         public string tblRoleName { get; set; }
+
+        [Required(ErrorMessage = "*")]
+        [Display(Name = "Union Role")]
+        [Range(1, Int32.MaxValue, ErrorMessage = "Must select a Union Role")]
+        public string UnionRoleName { get; set; }
 
         [Required(ErrorMessage = "*")]
         [Display(Name = "OTP")]

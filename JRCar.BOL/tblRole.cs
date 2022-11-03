@@ -19,9 +19,10 @@ namespace JRCar.BOL
         {
             this.tblAdmins = new HashSet<tblAdmin>();
             this.tblRolePermissions = new HashSet<tblRolePermission>();
-            this.tblUnions = new HashSet<tblUnion>();
             this.tblUsers = new HashSet<tblUser>();
             this.tblShowrooms = new HashSet<tblShowroom>();
+            this.tblUnions = new HashSet<tblUnion>();
+            this.tblUnions1 = new HashSet<tblUnion>();
         }
     
         public int ID { get; set; }
@@ -38,10 +39,12 @@ namespace JRCar.BOL
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tblRolePermission> tblRolePermissions { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<tblUnion> tblUnions { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tblUser> tblUsers { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tblShowroom> tblShowrooms { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tblUnion> tblUnions { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tblUnion> tblUnions1 { get; set; }
     }
 }

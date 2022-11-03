@@ -298,7 +298,8 @@ namespace JRCar.DAL.DBLayer
                 OTP = s.OTP,
                 Role = s.tblRole.Role,
                 Active = s.Active,
-                PhoneNumber = s.Number
+                PhoneNumber = s.Number,
+                CRole = s.tblRole1.Role
             }).FirstOrDefault();
 
             var showroom = _context.tblShowrooms.Where(x => x.Email == emailtext).Select(s => new UserDefine.UserViewDetail()
@@ -381,7 +382,9 @@ namespace JRCar.DAL.DBLayer
                 Image = s.Image,
                 Password = s.Password,
                 Active = ((s.Active == true) ? "1" : "0"),
-                tblRoleID = s.tblRoleID
+                tblRoleID = s.tblRoleID,
+                tblCRoleID = s.tblCRoleID,
+                tblRole = s.tblRole1,
             }).FirstOrDefault();
 
             var showroom = _context.tblShowrooms.Where(x => x.ID == Id && x.tblRole.Role.ToLower().Contains(Role.ToLower())).Select(s => new ValidateUser()
@@ -468,7 +471,6 @@ namespace JRCar.DAL.DBLayer
             {
                 model.Active = true;
                 model.CreatedOn = DateTime.Now;
-                model.CreatedBy = 4;
                 model.UpdatedOn = null;
                 model.UpdatedBy = null;
                 model.tblRoleID = 4;

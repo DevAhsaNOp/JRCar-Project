@@ -1,0 +1,119 @@
+﻿@model JRCar.BOL.Validation_Classes.ValidateUser
+
+@{
+    ViewBag.Title = "Update Union Member Profile";
+    Layout = "~/Views/Shared/_StarterPortal.cshtml";
+}
+<style>
+    #Password-error ul {
+        padding-left: 0px;
+    }
+</style>
+
+@if (User.Identity.IsAuthenticated)
+{
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Update Union Member Profile</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">Update Union Member Profile</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-10 col-sm-12 col-lg-10">
+                    @if (TempData["SuccessMsg"] != null)
+                    {
+                        <div class="alert alert-info alert-dismissable">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                            <i class="icon-info-with-circle"></i><span>@Html.Raw(TempData["SuccessMsg"])</span>
+                        </div>
+                    }
+                    @if (TempData["ErrorMsg"] != null)
+                    {
+                        <div class="alert alert-danger alert-dismissable">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                            <i class="icon-blocked"></i><span>@Html.Raw(TempData["ErrorMsg"])</span>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-10 col-sm-12 col-lg-10">
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <h3 class="card-title">@Session["UserUnionMemName"].ToString()</h3>
+                        </div>
+                        @using (Html.BeginForm("EditUnionMember", "Portal", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                        {
+                            <div class="card-body">
+                                <h6 class="bg-gradient-blue p-1 text-center"><b>Note: </b>Insert the correct Information</h6>
+                                <div class="form-group" style=" display: flex; flex-direction: column-reverse; align-items: center;">
+                                    <label for="choose-file" class="custom-file-upload" id="choose-file-label">
+                                        Change Avatar
+                                    </label>
+                                    <input name="file" type="file" id="choose-file" required="required"
+                                           accept="image/png,image/jpg,image/jpeg" onchange="loadProfile(event)" style="display: none !important;" />
+                                    @Html.ValidationMessageFor(model => model.Image, "", new { @class = "text-danger" })
+                                    @if (Session["UserUnionMemImage"] != null)
+                                    {
+                                        <img id="dynamicImage" src="@Url.Content(Session["UserUnionMemImage"].ToString())" alt="Profile Image" width="120" height="120" style="border-radius: 50%;" />
+                                    }
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputBorder">Name </label>
+                                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                                    @Html.EditorFor(model => model.Name, new { htmlAttributes = new { placeholder = "Enter your Name", @class = "form-control form-control-border border-width-2" } })
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputBorderWidth2">Email</label>
+                                    @Html.ValidationMessageFor(model => model.SignUpUpdateEmail, "", new { @class = "text-danger" })
+                                    @Html.EditorFor(model => model.SignUpUpdateEmail, new { htmlAttributes = new { placeholder = "Enter your Email", @class = "form-control form-control-border border-width-2" } })
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputBorderWidth2">Number</label>
+                                    @Html.ValidationMessageFor(model => model.SignUpUpdateNumber, "", new { @class = "text-danger" })
+                                    @Html.EditorFor(model => model.SignUpUpdateNumber, new { htmlAttributes = new { placeholder = "Enter your Number", @class = "form-control form-control-border border-width-2" } })
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputBorderWidth2">Address</label>
+                                    @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+                                    @Html.EditorFor(model => model.Address, new { htmlAttributes = new { placeholder = "Enter your Address", @class = "form-control form-control-border border-width-2" } })
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputBorderWidth2">Password</label>
+                                    @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                                    @Html.EditorFor(model => model.Password, new { htmlAttributes = new { placeholder = "Enter your Password", @class = "form-control form-control-border border-width-2", @type = "password" } })
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputBorder">Union Role Name</label>
+                                    @Html.ValidationMessageFor(model => model.tblRole.ID, "", new { @class = "text-danger" })
+                                    @Html.DropDownListFor(model => model.tblRole.ID, (IEnumerable<SelectListItem>)ViewBag.UnionMemberRoles, htmlAttributes: new { @class = "form-control select2bs4" })
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script>
+        document.getElementById('UnionNav').classList.add('active')
+    </script>
+}

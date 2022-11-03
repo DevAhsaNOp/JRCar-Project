@@ -3774,6 +3774,9 @@
     <Content Include="Views\Portal\AddNewUnionRole.cshtml" />
     <Content Include="Views\Portal\EditUnionRole.cshtml" />
     <Content Include="Views\Portal\ListUnionRole.cshtml" />
+    <Content Include="Views\Portal\AddUnionMember.cshtml" />
+    <Content Include="Views\Portal\EditUnionMember.cshtml" />
+    <Content Include="Views\Portal\ListUnionMember.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

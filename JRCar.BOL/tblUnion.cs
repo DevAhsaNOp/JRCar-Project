@@ -34,13 +34,15 @@ namespace JRCar.BOL
         public Nullable<System.DateTime> UpdatedOn { get; set; }
         public Nullable<int> UpdatedBy { get; set; }
         public int tblRoleID { get; set; }
+        public Nullable<int> tblCRoleID { get; set; }
         public string OTP { get; set; }
-        public bool Verified { get; set; }
+        public Nullable<bool> Verified { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tblQuery> tblQueries { get; set; }
+        public virtual tblRole tblRole { get; set; }
+        public virtual tblRole tblRole1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tblShowroom> tblShowrooms { get; set; }
-        public virtual tblRole tblRole { get; set; }
     }
 }
