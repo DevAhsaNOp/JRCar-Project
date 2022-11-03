@@ -417,6 +417,10 @@ namespace JRCar.BLL.Repositories
                         ShowShowroom = model.ShowShowroom,
                         ShowUnionMember = model.ShowUnionMember,
                         ShowUsers = model.ShowUsers,
+                        AddUnionRole = model.AddUnionRole,
+                        DeleteUnionRole = model.DeleteUnionRole,
+                        EditUnionRole = model.EditUnionRole,
+                        ShowUnionRole = model.ShowUnionRole,
                     };
                     dbObj.InsertRolePermission(obj);
                     return true;
@@ -466,6 +470,10 @@ namespace JRCar.BLL.Repositories
                         ShowShowroom = model.ShowShowroom,
                         ShowUnionMember = model.ShowUnionMember,
                         ShowUsers = model.ShowUsers,
+                        DeleteUnionRole = model.DeleteUnionRole,
+                        EditUnionRole = model.EditUnionRole,
+                        ShowUnionRole = model.ShowUnionRole,
+                        AddUnionRole = model.AddUnionRole,
                     };
                     dbObj.EditRolePermission(obj);
                     return true;
@@ -508,6 +516,10 @@ namespace JRCar.BLL.Repositories
                         ShowShowroom = model.ShowShowroom.Value,
                         ShowUnionMember = model.ShowUnionMember.Value,
                         ShowUsers = model.ShowUsers.Value,
+                        AddUnionRole = model.AddUnionRole.Value,
+                        ShowUnionRole = model.ShowUnionRole.Value,
+                        EditUnionRole = model.EditUnionRole.Value,
+                        DeleteUnionRole = model.DeleteUnionRole.Value,                       
                     };
                     return obj;
                 }

@@ -299,7 +299,7 @@ namespace JRCar.DAL.DBLayer
                 Role = s.tblRole.Role,
                 Active = s.Active,
                 PhoneNumber = s.Number,
-                CRole = s.tblRole1.Role
+                CRole = s.tblRole1 != null ? s.tblRole1.ID.ToString() : null
             }).FirstOrDefault();
 
             var showroom = _context.tblShowrooms.Where(x => x.Email == emailtext).Select(s => new UserDefine.UserViewDetail()

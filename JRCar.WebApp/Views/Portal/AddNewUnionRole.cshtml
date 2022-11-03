@@ -177,8 +177,48 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="row">
+                                            <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                                                <div class="form-group">
+                                                    <div class="custom-control custom-checkbox">
+                                                        @Html.CheckBoxFor(model => model.AddUnionRole, htmlAttributes: new { @class = "custom-control-input" })
+                                                        <label for="AddUnionRole" class="custom-control-label">Add Union Role</label>
+                                                        @Html.ValidationMessageFor(model => model.AddUnionRole, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                                                <div class="form-group">
+                                                    <div class="custom-control custom-checkbox">
+                                                        @Html.CheckBoxFor(model => model.EditUnionRole, htmlAttributes: new { @class = "custom-control-input" })
+                                                        <label for="EditUnionRole" class="custom-control-label">Edit Union Role</label>
+                                                        @Html.ValidationMessageFor(model => model.EditUnionRole, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="col-md-6 col-lg-6 col-sm-12">
+                                        <div class="row">
+                                            <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                                                <div class="form-group">
+                                                    <div class="custom-control custom-checkbox">
+                                                        @Html.CheckBoxFor(model => model.ShowUnionRole, htmlAttributes: new { @class = "custom-control-input" })
+                                                        <label for="ShowUnionRole" class="custom-control-label">Show Union Role</label>
+                                                        @Html.ValidationMessageFor(model => model.ShowUnionRole, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                                                <div class="form-group">
+                                                    <div class="custom-control custom-checkbox">
+                                                        @Html.CheckBoxFor(model => model.DeleteUnionRole, htmlAttributes: new { @class = "custom-control-input" })
+                                                        <label for="DeleteUnionRole" class="custom-control-label">Delete Union Role</label>
+                                                        @Html.ValidationMessageFor(model => model.DeleteUnionRole, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                         <div class="row">
                                             <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
                                                 <div class="form-group">

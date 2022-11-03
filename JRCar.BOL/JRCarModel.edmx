@@ -398,6 +398,10 @@
           <Property Name="MakePayments" Type="bit" />
           <Property Name="ShowPayments" Type="bit" />
           <Property Name="EditProfile" Type="bit" />
+          <Property Name="AddUnionRole" Type="bit" />
+          <Property Name="EditUnionRole" Type="bit" />
+          <Property Name="DeleteUnionRole" Type="bit" />
+          <Property Name="ShowUnionRole" Type="bit" />
         </EntityType>
         <EntityType Name="tblRoles">
           <Key>
@@ -1734,15 +1738,10 @@ warning 6002: The table/view 'jrcar.dbo.ANNOVIEW' does not have a primary key de
             <End Role="tblShowroom" EntitySet="tblShowrooms" />
             <End Role="tblQuery" EntitySet="tblQueries" />
           </AssociationSet>
-          <EntitySet Name="tblRolePermissions" EntityType="jrcarModel.tblRolePermission" />
           <EntitySet Name="tblRoles" EntityType="jrcarModel.tblRole" />
           <AssociationSet Name="FK_dbo_tblAdmins_dbo_tblRoles_tblRoleID" Association="jrcarModel.FK_dbo_tblAdmins_dbo_tblRoles_tblRoleID">
             <End Role="tblRole" EntitySet="tblRoles" />
             <End Role="tblAdmin" EntitySet="tblAdmins" />
-          </AssociationSet>
-          <AssociationSet Name="FK_tblRolePermissions_tblRoles" Association="jrcarModel.FK_tblRolePermissions_tblRoles">
-            <End Role="tblRole" EntitySet="tblRoles" />
-            <End Role="tblRolePermission" EntitySet="tblRolePermissions" />
           </AssociationSet>
           <AssociationSet Name="FK_dbo_tblUsers_dbo_tblRoles_tblRoleID" Association="jrcarModel.FK_dbo_tblUsers_dbo_tblRoles_tblRoleID">
             <End Role="tblRole" EntitySet="tblRoles" />
@@ -1768,6 +1767,11 @@ warning 6002: The table/view 'jrcar.dbo.ANNOVIEW' does not have a primary key de
           <AssociationSet Name="FK_tblShowrooms_tblUnions" Association="jrcarModel.FK_tblShowrooms_tblUnions">
             <End Role="tblUnion" EntitySet="tblUnions" />
             <End Role="tblShowroom" EntitySet="tblShowrooms" />
+          </AssociationSet>
+          <EntitySet Name="tblRolePermissions" EntityType="jrcarModel.tblRolePermission" />
+          <AssociationSet Name="FK_tblRolePermissions_tblRoles" Association="jrcarModel.FK_tblRolePermissions_tblRoles">
+            <End Role="tblRole" EntitySet="tblRoles" />
+            <End Role="tblRolePermission" EntitySet="tblRolePermissions" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="C__MigrationHistory">
@@ -2945,33 +2949,6 @@ warning 6002: The table/view 'jrcar.dbo.ANNOVIEW' does not have a primary key de
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="tblRolePermission">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="RoleID" Type="Int32" Nullable="false" />
-          <Property Name="MakeAnnoucment" Type="Boolean" />
-          <Property Name="ShowAnnoucment" Type="Boolean" />
-          <Property Name="AddUser" Type="Boolean" />
-          <Property Name="EditUser" Type="Boolean" />
-          <Property Name="DeleteUser" Type="Boolean" />
-          <Property Name="ShowUsers" Type="Boolean" />
-          <Property Name="AddShowroom" Type="Boolean" />
-          <Property Name="EditShowroom" Type="Boolean" />
-          <Property Name="DeleteShowroom" Type="Boolean" />
-          <Property Name="ShowShowroom" Type="Boolean" />
-          <Property Name="AddUnionMember" Type="Boolean" />
-          <Property Name="EditUnionMember" Type="Boolean" />
-          <Property Name="DeleteUnionMember" Type="Boolean" />
-          <Property Name="ShowUnionMember" Type="Boolean" />
-          <Property Name="ManagUserAds" Type="Boolean" />
-          <Property Name="ManagShowroomAds" Type="Boolean" />
-          <Property Name="MakePayments" Type="Boolean" />
-          <Property Name="ShowPayments" Type="Boolean" />
-          <Property Name="EditProfile" Type="Boolean" />
-          <NavigationProperty Name="tblRole" Relationship="jrcarModel.FK_tblRolePermissions_tblRoles" FromRole="tblRolePermission" ToRole="tblRole" />
-        </EntityType>
         <EntityType Name="tblRole">
           <Key>
             <PropertyRef Name="ID" />
@@ -2985,11 +2962,11 @@ warning 6002: The table/view 'jrcar.dbo.ANNOVIEW' does not have a primary key de
           <Property Name="UpdatedOn" Type="DateTime" Precision="3" />
           <Property Name="UpdatedBy" Type="Int32" />
           <NavigationProperty Name="tblAdmins" Relationship="jrcarModel.FK_dbo_tblAdmins_dbo_tblRoles_tblRoleID" FromRole="tblRole" ToRole="tblAdmin" />
-          <NavigationProperty Name="tblRolePermissions" Relationship="jrcarModel.FK_tblRolePermissions_tblRoles" FromRole="tblRole" ToRole="tblRolePermission" />
           <NavigationProperty Name="tblUsers" Relationship="jrcarModel.FK_dbo_tblUsers_dbo_tblRoles_tblRoleID" FromRole="tblRole" ToRole="tblUser" />
           <NavigationProperty Name="tblShowrooms" Relationship="jrcarModel.FK_tblShowrooms_tblRoles" FromRole="tblRole" ToRole="tblShowroom" />
           <NavigationProperty Name="tblUnions" Relationship="jrcarModel.FK_dbo_tblUnions_dbo_tblRoles_tblRoleID" FromRole="tblRole" ToRole="tblUnion" />
           <NavigationProperty Name="tblUnions1" Relationship="jrcarModel.FK_tblUnions_tblRoles" FromRole="tblRole" ToRole="tblUnion" />
+          <NavigationProperty Name="tblRolePermissions" Relationship="jrcarModel.FK_tblRolePermissions_tblRoles" FromRole="tblRole" ToRole="tblRolePermission" />
         </EntityType>
         <Association Name="FK_dbo_tblAdmins_dbo_tblRoles_tblRoleID">
           <End Type="jrcarModel.tblRole" Role="tblRole" Multiplicity="1">
@@ -3002,18 +2979,6 @@ warning 6002: The table/view 'jrcar.dbo.ANNOVIEW' does not have a primary key de
             </Principal>
             <Dependent Role="tblAdmin">
               <PropertyRef Name="tblRoleID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_tblRolePermissions_tblRoles">
-          <End Type="jrcarModel.tblRole" Role="tblRole" Multiplicity="1" />
-          <End Type="jrcarModel.tblRolePermission" Role="tblRolePermission" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="tblRole">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="tblRolePermission">
-              <PropertyRef Name="RoleID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3115,6 +3080,49 @@ warning 6002: The table/view 'jrcar.dbo.ANNOVIEW' does not have a primary key de
             </Principal>
             <Dependent Role="tblShowroom">
               <PropertyRef Name="UnionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="tblRolePermission">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RoleID" Type="Int32" Nullable="false" />
+          <Property Name="MakeAnnoucment" Type="Boolean" />
+          <Property Name="ShowAnnoucment" Type="Boolean" />
+          <Property Name="AddUser" Type="Boolean" />
+          <Property Name="EditUser" Type="Boolean" />
+          <Property Name="DeleteUser" Type="Boolean" />
+          <Property Name="ShowUsers" Type="Boolean" />
+          <Property Name="AddShowroom" Type="Boolean" />
+          <Property Name="EditShowroom" Type="Boolean" />
+          <Property Name="DeleteShowroom" Type="Boolean" />
+          <Property Name="ShowShowroom" Type="Boolean" />
+          <Property Name="AddUnionMember" Type="Boolean" />
+          <Property Name="EditUnionMember" Type="Boolean" />
+          <Property Name="DeleteUnionMember" Type="Boolean" />
+          <Property Name="ShowUnionMember" Type="Boolean" />
+          <Property Name="ManagUserAds" Type="Boolean" />
+          <Property Name="ManagShowroomAds" Type="Boolean" />
+          <Property Name="MakePayments" Type="Boolean" />
+          <Property Name="ShowPayments" Type="Boolean" />
+          <Property Name="EditProfile" Type="Boolean" />
+          <Property Name="AddUnionRole" Type="Boolean" />
+          <Property Name="EditUnionRole" Type="Boolean" />
+          <Property Name="DeleteUnionRole" Type="Boolean" />
+          <Property Name="ShowUnionRole" Type="Boolean" />
+          <NavigationProperty Name="tblRole" Relationship="jrcarModel.FK_tblRolePermissions_tblRoles" FromRole="tblRolePermission" ToRole="tblRole" />
+        </EntityType>
+        <Association Name="FK_tblRolePermissions_tblRoles">
+          <End Type="jrcarModel.tblRole" Role="tblRole" Multiplicity="1" />
+          <End Type="jrcarModel.tblRolePermission" Role="tblRolePermission" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblRole">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="tblRolePermission">
+              <PropertyRef Name="RoleID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3659,33 +3667,6 @@ warning 6002: The table/view 'jrcar.dbo.ANNOVIEW' does not have a primary key de
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="tblRolePermissions">
-            <EntityTypeMapping TypeName="jrcarModel.tblRolePermission">
-              <MappingFragment StoreEntitySet="tblRolePermissions">
-                <ScalarProperty Name="EditProfile" ColumnName="EditProfile" />
-                <ScalarProperty Name="ShowPayments" ColumnName="ShowPayments" />
-                <ScalarProperty Name="MakePayments" ColumnName="MakePayments" />
-                <ScalarProperty Name="ManagShowroomAds" ColumnName="ManagShowroomAds" />
-                <ScalarProperty Name="ManagUserAds" ColumnName="ManagUserAds" />
-                <ScalarProperty Name="ShowUnionMember" ColumnName="ShowUnionMember" />
-                <ScalarProperty Name="DeleteUnionMember" ColumnName="DeleteUnionMember" />
-                <ScalarProperty Name="EditUnionMember" ColumnName="EditUnionMember" />
-                <ScalarProperty Name="AddUnionMember" ColumnName="AddUnionMember" />
-                <ScalarProperty Name="ShowShowroom" ColumnName="ShowShowroom" />
-                <ScalarProperty Name="DeleteShowroom" ColumnName="DeleteShowroom" />
-                <ScalarProperty Name="EditShowroom" ColumnName="EditShowroom" />
-                <ScalarProperty Name="AddShowroom" ColumnName="AddShowroom" />
-                <ScalarProperty Name="ShowUsers" ColumnName="ShowUsers" />
-                <ScalarProperty Name="DeleteUser" ColumnName="DeleteUser" />
-                <ScalarProperty Name="EditUser" ColumnName="EditUser" />
-                <ScalarProperty Name="AddUser" ColumnName="AddUser" />
-                <ScalarProperty Name="ShowAnnoucment" ColumnName="ShowAnnoucment" />
-                <ScalarProperty Name="MakeAnnoucment" ColumnName="MakeAnnoucment" />
-                <ScalarProperty Name="RoleID" ColumnName="RoleID" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="tblRoles">
             <EntityTypeMapping TypeName="jrcarModel.tblRole">
               <MappingFragment StoreEntitySet="tblRoles">
@@ -3718,6 +3699,37 @@ warning 6002: The table/view 'jrcar.dbo.ANNOVIEW' does not have a primary key de
                 <ScalarProperty Name="Number" ColumnName="Number" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblRolePermissions">
+            <EntityTypeMapping TypeName="jrcarModel.tblRolePermission">
+              <MappingFragment StoreEntitySet="tblRolePermissions">
+                <ScalarProperty Name="ShowUnionRole" ColumnName="ShowUnionRole" />
+                <ScalarProperty Name="DeleteUnionRole" ColumnName="DeleteUnionRole" />
+                <ScalarProperty Name="EditUnionRole" ColumnName="EditUnionRole" />
+                <ScalarProperty Name="AddUnionRole" ColumnName="AddUnionRole" />
+                <ScalarProperty Name="EditProfile" ColumnName="EditProfile" />
+                <ScalarProperty Name="ShowPayments" ColumnName="ShowPayments" />
+                <ScalarProperty Name="MakePayments" ColumnName="MakePayments" />
+                <ScalarProperty Name="ManagShowroomAds" ColumnName="ManagShowroomAds" />
+                <ScalarProperty Name="ManagUserAds" ColumnName="ManagUserAds" />
+                <ScalarProperty Name="ShowUnionMember" ColumnName="ShowUnionMember" />
+                <ScalarProperty Name="DeleteUnionMember" ColumnName="DeleteUnionMember" />
+                <ScalarProperty Name="EditUnionMember" ColumnName="EditUnionMember" />
+                <ScalarProperty Name="AddUnionMember" ColumnName="AddUnionMember" />
+                <ScalarProperty Name="ShowShowroom" ColumnName="ShowShowroom" />
+                <ScalarProperty Name="DeleteShowroom" ColumnName="DeleteShowroom" />
+                <ScalarProperty Name="EditShowroom" ColumnName="EditShowroom" />
+                <ScalarProperty Name="AddShowroom" ColumnName="AddShowroom" />
+                <ScalarProperty Name="ShowUsers" ColumnName="ShowUsers" />
+                <ScalarProperty Name="DeleteUser" ColumnName="DeleteUser" />
+                <ScalarProperty Name="EditUser" ColumnName="EditUser" />
+                <ScalarProperty Name="AddUser" ColumnName="AddUser" />
+                <ScalarProperty Name="ShowAnnoucment" ColumnName="ShowAnnoucment" />
+                <ScalarProperty Name="MakeAnnoucment" ColumnName="MakeAnnoucment" />
+                <ScalarProperty Name="RoleID" ColumnName="RoleID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>

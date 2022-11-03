@@ -380,6 +380,10 @@ namespace JRCar.WebApp.Controllers
                     var role = Session["Role"].ToString();
                     if (role == "Admin" || role == "Union" || role == "Showroom")
                     {
+                        if (IsSuccess.CRole != null)
+                        {
+                            Session["IsUnionMember"] = IsSuccess.CRole.Length > 0 ? IsSuccess.CRole : "";
+                        }
                         if (role == "Showroom")
                         {
                             PaymentRepo repo = new PaymentRepo();

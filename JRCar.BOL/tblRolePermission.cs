@@ -35,6 +35,10 @@ namespace JRCar.BOL
         public Nullable<bool> MakePayments { get; set; }
         public Nullable<bool> ShowPayments { get; set; }
         public Nullable<bool> EditProfile { get; set; }
+        public Nullable<bool> AddUnionRole { get; set; }
+        public Nullable<bool> EditUnionRole { get; set; }
+        public Nullable<bool> DeleteUnionRole { get; set; }
+        public Nullable<bool> ShowUnionRole { get; set; }
     
         public virtual tblRole tblRole { get; set; }
     }

@@ -74,6 +74,18 @@ namespace JRCar.BOL.Validation_Classes
         [Display(Name ="Edit Profile")]
         public bool EditProfile { get; set; }
 
+        [Display(Name ="Add Union Role")]
+        public bool AddUnionRole { get; set; }
+        
+        [Display(Name ="Edit Union Role")]
+        public bool EditUnionRole { get; set; }
+        
+        [Display(Name ="Delete Union Role")]
+        public bool DeleteUnionRole { get; set; }
+        
+        [Display(Name ="Show Union Role")]
+        public bool ShowUnionRole { get; set; }
+
         public virtual tblRole tblRole { get; set; }
         public int? CreatedBy { get; set; }
         public DateTime? CreatedOn { get; set; }

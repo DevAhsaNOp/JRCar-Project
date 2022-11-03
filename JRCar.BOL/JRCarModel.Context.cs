@@ -60,8 +60,8 @@ namespace JRCar.BOL
         public virtual DbSet<tblQuery> tblQueries { get; set; }
         public virtual DbSet<tblUserAdd> tblUserAdds { get; set; }
         public virtual DbSet<tblShowroom> tblShowrooms { get; set; }
-        public virtual DbSet<tblRolePermission> tblRolePermissions { get; set; }
         public virtual DbSet<tblRole> tblRoles { get; set; }
         public virtual DbSet<tblUnion> tblUnions { get; set; }
+        public virtual DbSet<tblRolePermission> tblRolePermissions { get; set; }
     }
 }
