@@ -182,6 +182,30 @@ namespace JRCar.BLL.Repositories
         {
             return dbObj.GetShowroomID(ShowroomAdID);
         }
+        
+        public int GetShowroomFavAdsCount(int ShowroomID)
+        {
+            if (ShowroomID > 0)
+            {
+                return dbObj.GetShowroomFavAdsCount(ShowroomID);
+            }
+            else
+            {
+                return 0;
+            }
+        }
+
+        public decimal GetShowroomTotalPaidAmnt(int ShowroomID)
+        {
+            if (ShowroomID > 0)
+            {
+                return dbObj.GetShowroomTotalPaidAmnt(ShowroomID);
+            }
+            else
+            {
+                return 0;
+            }
+        }
 
         public bool InsertShowroomAds(ValidateShowroomAds model)
         {

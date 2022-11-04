@@ -269,10 +269,33 @@ namespace JRCar.DAL.DBLayer
                 IsSold = (s.Issold == true) ? true : false,
             }).ToList();
         }
-        
+
         public int GetShowroomID(int ShowroomAdID)
         {
             return _context.tblCars.Where(x => x.ID == ShowroomAdID).Select(s => s.tblShowroomID).FirstOrDefault();
+        }
+
+        public int GetShowroomFavAdsCount(int ShowroomID)
+        {
+            return _context.tblFavAdds.Where(x => x.tblCar.tblShowroomID == ShowroomID).Count();
+        }
+
+        public decimal GetShowroomTotalPaidAmnt(int ShowroomID)
+        {
+            var reas = _context.tblPayments.Where(x => x.ShowroomID == ShowroomID).ToList();
+            decimal amount = 0;
+            foreach (var item in reas)
+            {
+                if (item.Recieved != null)
+                {
+                    amount += item.Recieved.Value;
+                }
+                else
+                {
+                    amount += 0;
+                }
+            }
+            return amount;
         }
 
         public IEnumerable<ValidateShowroomAds> GetAllShowroomAdsForReport(int ShowroomAdID)

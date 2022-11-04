@@ -29,14 +29,13 @@
             <!-- Info boxes -->
             <div class="row">
                 <div class="col-12 col-sm-6 col-md-3">
-                    <div class="info-box">
-                        <span class="info-box-icon bg-info elevation-1"><i class="fas fa-cog"></i></span>
+                    <div class="info-box shadow-lg">
+                        <span class="info-box-icon bg-gradient-info elevation-1"><i class="fas fa-ad"></i></span>
 
                         <div class="info-box-content">
-                            <span class="info-box-text">CPU Traffic</span>
+                            <span class="info-box-text">Total Ads</span>
                             <span class="info-box-number">
-                                10
-                                <small>%</small>
+                                @ViewBag.ShowroomAdsCount
                             </span>
                         </div>
                         <!-- /.info-box-content -->
@@ -45,12 +44,14 @@
                 </div>
                 <!-- /.col -->
                 <div class="col-12 col-sm-6 col-md-3">
-                    <div class="info-box mb-3">
-                        <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-thumbs-up"></i></span>
+                    <div class="info-box mb-3 shadow-lg">
+                        <span class="info-box-icon bg-gradient-danger elevation-1"><i class="fas fa-trash-alt"></i></span>
 
                         <div class="info-box-content">
-                            <span class="info-box-text">Likes</span>
-                            <span class="info-box-number">41,410</span>
+                            <span class="info-box-text">Total Inactive Ads</span>
+                            <span class="info-box-number">
+                                @ViewBag.ShowroomInactiveAdsCount
+                            </span>
                         </div>
                         <!-- /.info-box-content -->
                     </div>
@@ -61,12 +62,14 @@
                 <div class="clearfix hidden-md-up"></div>
 
                 <div class="col-12 col-sm-6 col-md-3">
-                    <div class="info-box mb-3">
-                        <span class="info-box-icon bg-success elevation-1"><i class="fas fa-shopping-cart"></i></span>
+                    <div class="info-box mb-3 shadow-lg">
+                        <span class="info-box-icon bg-gradient-pink elevation-1"><i class="fas fa-heart"></i></span>
 
                         <div class="info-box-content">
-                            <span class="info-box-text">Sales</span>
-                            <span class="info-box-number">760</span>
+                            <span class="info-box-text">Shortlisted Ads By User</span>
+                            <span class="info-box-number">
+                                @ViewBag.ShowroomFavAdsCount
+                            </span>
                         </div>
                         <!-- /.info-box-content -->
                     </div>
@@ -74,12 +77,14 @@
                 </div>
                 <!-- /.col -->
                 <div class="col-12 col-sm-6 col-md-3">
-                    <div class="info-box mb-3">
-                        <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-users"></i></span>
+                    <div class="info-box mb-3 shadow-lg">
+                        <span class="info-box-icon bg-gradient-blue elevation-1"><i class="fas fa-dollar-sign text-white"></i></span>
 
                         <div class="info-box-content">
-                            <span class="info-box-text">New Members</span>
-                            <span class="info-box-number">2,000</span>
+                            <span class="info-box-text">Total Paid Maintenance</span>
+                            <span class="info-box-number">
+                                @ViewBag.ShowroomTotalPaidAmnt
+                            </span>
                         </div>
                         <!-- /.info-box-content -->
                     </div>

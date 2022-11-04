@@ -8,17 +8,20 @@ using JRCar.BLL.Repositories;
 using JRCar.BOL.Validation_Classes;
 using System.Text.RegularExpressions;
 using System.Linq;
+using DocumentFormat.OpenXml.Office2010.Excel;
 
 namespace JRCar.WebApp.Controllers
 {
     public class AccountController : Controller
     {
         private UserRepo RepoObj;
+        private ShowroomAdsRepo RepoObj1;
         private AddressAutofillRepo AddressRepoObj;
 
         public AccountController()
         {
             RepoObj = new UserRepo();
+            RepoObj1 = new ShowroomAdsRepo();
             AddressRepoObj = new AddressAutofillRepo();
         }
 
@@ -57,6 +60,14 @@ namespace JRCar.WebApp.Controllers
         [Route("Portal")]
         public ActionResult Index()
         {
+            int id = (int)Session["Id"];
+            if (User.IsInRole("Showroom"))
+            {
+                ViewBag.ShowroomAdsCount = RepoObj1.GetAllShowroomAds(id).Count();
+                ViewBag.ShowroomInactiveAdsCount = RepoObj1.GetAllShowroomInActiveAds(id).Count();
+                ViewBag.ShowroomFavAdsCount = RepoObj1.GetShowroomFavAdsCount(id);
+                ViewBag.ShowroomTotalPaidAmnt = RepoObj1.GetShowroomTotalPaidAmnt(id);
+            }
             return View();
         }
 
