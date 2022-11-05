@@ -5,281 +5,364 @@
 }
 @if (User.Identity.IsAuthenticated)
 {
-    <!-- Content Header (Page header) -->
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/export-data.js"></script>
     <div class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
                     <h1 class="m-0">Dashboard </h1>
-                </div><!-- /.col -->
+                </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
                         <li class="breadcrumb-item active">Dashboard</li>
                     </ol>
-                </div><!-- /.col -->
-            </div><!-- /.row -->
-        </div><!-- /.container-fluid -->
+                </div>
+            </div>
+        </div>
     </div>
-    <!-- /.content-header -->
 
-    <!-- Main content -->
     <section class="content">
         <div class="container-fluid">
-            <!-- Info boxes -->
             <div class="row">
                 <div class="col-12 col-sm-6 col-md-3">
                     <div class="info-box shadow-lg">
                         <span class="info-box-icon bg-gradient-info elevation-1"><i class="fas fa-ad"></i></span>
-
-                        <div class="info-box-content">
-                            <span class="info-box-text">Total Ads</span>
-                            <span class="info-box-number">
-                                @ViewBag.ShowroomAdsCount
-                            </span>
-                        </div>
-                        <!-- /.info-box-content -->
+                        @if (User.IsInRole("Showroom"))
+                        {
+                            <div class="info-box-content">
+                                <span class="info-box-text">Total Ads</span>
+                                <span class="info-box-number">
+                                    @ViewBag.ShowroomAdsCount
+                                </span>
+                            </div>
+                        }
+                        @if (User.IsInRole("Union") || User.IsInRole("Admin"))
+                        {
+                            <div class="info-box-content">
+                                <span class="info-box-text">Showrooms Ads</span>
+                                <span class="info-box-number">
+                                    @ViewBag.ShowroomsAdsCount
+                                </span>
+                            </div>
+                        }
                     </div>
-                    <!-- /.info-box -->
                 </div>
-                <!-- /.col -->
                 <div class="col-12 col-sm-6 col-md-3">
                     <div class="info-box mb-3 shadow-lg">
                         <span class="info-box-icon bg-gradient-danger elevation-1"><i class="fas fa-trash-alt"></i></span>
-
-                        <div class="info-box-content">
-                            <span class="info-box-text">Total Inactive Ads</span>
-                            <span class="info-box-number">
-                                @ViewBag.ShowroomInactiveAdsCount
-                            </span>
-                        </div>
-                        <!-- /.info-box-content -->
+                        @if (User.IsInRole("Showroom"))
+                        {
+                            <div class="info-box-content">
+                                <span class="info-box-text">Inactive Ads</span>
+                                <span class="info-box-number">
+                                    @ViewBag.ShowroomInactiveAdsCount
+                                </span>
+                            </div>
+                        }
+                        @if (User.IsInRole("Union") || User.IsInRole("Admin"))
+                        {
+                            <div class="info-box-content">
+                                <span class="info-box-text">Showrooms Inactive Ads</span>
+                                <span class="info-box-number">
+                                    @ViewBag.ShowroomsInactiveAdsCount
+                                </span>
+                            </div>
+                        }
                     </div>
-                    <!-- /.info-box -->
                 </div>
-                <!-- /.col -->
-                <!-- fix for small devices only -->
                 <div class="clearfix hidden-md-up"></div>
 
                 <div class="col-12 col-sm-6 col-md-3">
                     <div class="info-box mb-3 shadow-lg">
                         <span class="info-box-icon bg-gradient-pink elevation-1"><i class="fas fa-heart"></i></span>
-
-                        <div class="info-box-content">
-                            <span class="info-box-text">Shortlisted Ads By User</span>
-                            <span class="info-box-number">
-                                @ViewBag.ShowroomFavAdsCount
-                            </span>
-                        </div>
-                        <!-- /.info-box-content -->
+                        @if (User.IsInRole("Showroom"))
+                        {
+                            <div class="info-box-content">
+                                <span class="info-box-text">Shortlisted Ads By User</span>
+                                <span class="info-box-number">
+                                    @ViewBag.ShowroomFavAdsCount
+                                </span>
+                            </div>
+                        }
+                        @if (User.IsInRole("Union") || User.IsInRole("Admin"))
+                        {
+                            <div class="info-box-content">
+                                <span class="info-box-text">Users Ads</span>
+                                <span class="info-box-number">
+                                    @ViewBag.UsersAdsCount
+                                </span>
+                            </div>
+                        }
                     </div>
-                    <!-- /.info-box -->
                 </div>
-                <!-- /.col -->
                 <div class="col-12 col-sm-6 col-md-3">
                     <div class="info-box mb-3 shadow-lg">
-                        <span class="info-box-icon bg-gradient-blue elevation-1"><i class="fas fa-dollar-sign text-white"></i></span>
-
-                        <div class="info-box-content">
-                            <span class="info-box-text">Total Paid Maintenance</span>
-                            <span class="info-box-number">
-                                @ViewBag.ShowroomTotalPaidAmnt
-                            </span>
-                        </div>
-                        <!-- /.info-box-content -->
+                        <span class="info-box-icon bg-gradient-green elevation-1"><i class="fas fa-dollar-sign text-white"></i></span>
+                        @if (User.IsInRole("Showroom"))
+                        {
+                            <div class="info-box-content">
+                                <span class="info-box-text">Total Paid Maintenance</span>
+                                <span class="info-box-number">
+                                    Rs.@ViewBag.ShowroomTotalPaidAmnt
+                                </span>
+                            </div>
+                        }
+                        @if (User.IsInRole("Union") || User.IsInRole("Admin"))
+                        {
+                            <div class="info-box-content">
+                                <span class="info-box-text">Total Showrooms</span>
+                                <span class="info-box-number">
+                                    @ViewBag.ShowroomsCount
+                                </span>
+                            </div>
+                        }
                     </div>
-                    <!-- /.info-box -->
                 </div>
-                <!-- /.col -->
             </div>
-            <!-- /.row -->
+            @if (User.IsInRole("Union") || User.IsInRole("Admin"))
+            {
+                <div class="row">
+                    <div class="col-lg-6 col-6">
+                        <!-- small card -->
+                        <div class="small-box bg-gradient-info">
+                            <div class="inner">
+                                <h3>@ViewBag.UsersCount</h3>
 
+                                <p>Total Users</p>
+                            </div>
+                            <div class="icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <a href="#" class="small-box-footer">
+                                More info <i class="fas fa-arrow-circle-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-6">
+                        <div class="small-box bg-gradient-success">
+                            <div class="inner">
+                                <h3>Rs.@ViewBag.ShowroomsTotalPaidAmnt</h3>
+
+                                <p>Total Maintenance</p>
+                            </div>
+                            <div class="icon">
+                                <i class="fas fa-money-check-alt"></i>
+                            </div>
+                            <a href="#" class="small-box-footer">
+                                More info <i class="fas fa-arrow-circle-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
             <div class="row">
                 <div class="col-md-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <h5 class="card-title">Monthly Recap Report</h5>
+                    @*<div class="card">
+                            <div class="card-header">
+                                <h5 class="card-title">Monthly Recap Report</h5>
 
-                            <div class="card-tools">
-                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                    <i class="fas fa-minus"></i>
-                                </button>
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-tool dropdown-toggle" data-toggle="dropdown">
-                                        <i class="fas fa-wrench"></i>
+                                <div class="card-tools">
+                                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                        <i class="fas fa-minus"></i>
                                     </button>
-                                    <div class="dropdown-menu dropdown-menu-right" role="menu">
-                                        <a href="#" class="dropdown-item">Action</a>
-                                        <a href="#" class="dropdown-item">Another action</a>
-                                        <a href="#" class="dropdown-item">Something else here</a>
-                                        <a class="dropdown-divider"></a>
-                                        <a href="#" class="dropdown-item">Separated link</a>
-                                    </div>
-                                </div>
-                                <button type="button" class="btn btn-tool" data-card-widget="remove">
-                                    <i class="fas fa-times"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <!-- /.card-header -->
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-8">
-                                    <p class="text-center">
-                                        <strong>Sales: 1 Jan, 2014 - 30 Jul, 2014</strong>
-                                    </p>
-
-                                    <div class="chart">
-                                        <!-- Sales Chart Canvas -->
-                                        <canvas id="salesChart" height="180" style="height: 180px;"></canvas>
-                                    </div>
-                                    <!-- /.chart-responsive -->
-                                </div>
-                                <!-- /.col -->
-                                <div class="col-md-4">
-                                    <p class="text-center">
-                                        <strong>Goal Completion</strong>
-                                    </p>
-
-                                    <div class="progress-group">
-                                        Add Products to Cart
-                                        <span class="float-right"><b>160</b>/200</span>
-                                        <div class="progress progress-sm">
-                                            <div class="progress-bar bg-primary" style="width: 80%"></div>
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-tool dropdown-toggle" data-toggle="dropdown">
+                                            <i class="fas fa-wrench"></i>
+                                        </button>
+                                        <div class="dropdown-menu dropdown-menu-right" role="menu">
+                                            <a href="#" class="dropdown-item">Action</a>
+                                            <a href="#" class="dropdown-item">Another action</a>
+                                            <a href="#" class="dropdown-item">Something else here</a>
+                                            <a class="dropdown-divider"></a>
+                                            <a href="#" class="dropdown-item">Separated link</a>
                                         </div>
                                     </div>
-                                    <!-- /.progress-group -->
-
-                                    <div class="progress-group">
-                                        Complete Purchase
-                                        <span class="float-right"><b>310</b>/400</span>
-                                        <div class="progress progress-sm">
-                                            <div class="progress-bar bg-danger" style="width: 75%"></div>
-                                        </div>
-                                    </div>
-
-                                    <!-- /.progress-group -->
-                                    <div class="progress-group">
-                                        <span class="progress-text">Visit Premium Page</span>
-                                        <span class="float-right"><b>480</b>/800</span>
-                                        <div class="progress progress-sm">
-                                            <div class="progress-bar bg-success" style="width: 60%"></div>
-                                        </div>
-                                    </div>
-
-                                    <!-- /.progress-group -->
-                                    <div class="progress-group">
-                                        Send Inquiries
-                                        <span class="float-right"><b>250</b>/500</span>
-                                        <div class="progress progress-sm">
-                                            <div class="progress-bar bg-warning" style="width: 50%"></div>
-                                        </div>
-                                    </div>
-                                    <!-- /.progress-group -->
-                                </div>
-                                <!-- /.col -->
-                            </div>
-                            <!-- /.row -->
-                        </div>
-                        <!-- ./card-body -->
-                        <div class="card-footer">
-                            <div class="row">
-                                <div class="col-sm-3 col-6">
-                                    <div class="description-block border-right">
-                                        <span class="description-percentage text-success"><i class="fas fa-caret-up"></i> 17%</span>
-                                        <h5 class="description-header">$35,210.43</h5>
-                                        <span class="description-text">TOTAL REVENUE</span>
-                                    </div>
-                                    <!-- /.description-block -->
-                                </div>
-                                <!-- /.col -->
-                                <div class="col-sm-3 col-6">
-                                    <div class="description-block border-right">
-                                        <span class="description-percentage text-warning"><i class="fas fa-caret-left"></i> 0%</span>
-                                        <h5 class="description-header">$10,390.90</h5>
-                                        <span class="description-text">TOTAL COST</span>
-                                    </div>
-                                    <!-- /.description-block -->
-                                </div>
-                                <!-- /.col -->
-                                <div class="col-sm-3 col-6">
-                                    <div class="description-block border-right">
-                                        <span class="description-percentage text-success"><i class="fas fa-caret-up"></i> 20%</span>
-                                        <h5 class="description-header">$24,813.53</h5>
-                                        <span class="description-text">TOTAL PROFIT</span>
-                                    </div>
-                                    <!-- /.description-block -->
-                                </div>
-                                <!-- /.col -->
-                                <div class="col-sm-3 col-6">
-                                    <div class="description-block">
-                                        <span class="description-percentage text-danger"><i class="fas fa-caret-down"></i> 18%</span>
-                                        <h5 class="description-header">1200</h5>
-                                        <span class="description-text">GOAL COMPLETIONS</span>
-                                    </div>
-                                    <!-- /.description-block -->
+                                    <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                        <i class="fas fa-times"></i>
+                                    </button>
                                 </div>
                             </div>
-                            <!-- /.row -->
-                        </div>
-                        <!-- /.card-footer -->
-                    </div>
-                    <!-- /.card -->
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <p class="text-center">
+                                            <strong>Sales: 1 Jan, 2014 - 30 Jul, 2014</strong>
+                                        </p>
+
+                                        <div class="chart">
+
+                                            <canvas id="salesChart" height="180" style="height: 180px;"></canvas>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <p class="text-center">
+                                            <strong>Goal Completion</strong>
+                                        </p>
+
+                                        <div class="progress-group">
+                                            Add Products to Cart
+                                            <span class="float-right"><b>160</b>/200</span>
+                                            <div class="progress progress-sm">
+                                                <div class="progress-bar bg-primary" style="width: 80%"></div>
+                                            </div>
+                                        </div>
+
+                                        <div class="progress-group">
+                                            Complete Purchase
+                                            <span class="float-right"><b>310</b>/400</span>
+                                            <div class="progress progress-sm">
+                                                <div class="progress-bar bg-danger" style="width: 75%"></div>
+                                            </div>
+                                        </div>
+                                        <div class="progress-group">
+                                            <span class="progress-text">Visit Premium Page</span>
+                                            <span class="float-right"><b>480</b>/800</span>
+                                            <div class="progress progress-sm">
+                                                <div class="progress-bar bg-success" style="width: 60%"></div>
+                                            </div>
+                                        </div>
+                                        <div class="progress-group">
+                                            Send Inquiries
+                                            <span class="float-right"><b>250</b>/500</span>
+                                            <div class="progress progress-sm">
+                                                <div class="progress-bar bg-warning" style="width: 50%"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <div class="row">
+                                    <div class="col-sm-3 col-6">
+                                        <div class="description-block border-right">
+                                            <span class="description-percentage text-success"><i class="fas fa-caret-up"></i> 17%</span>
+                                            <h5 class="description-header">$35,210.43</h5>
+                                            <span class="description-text">TOTAL REVENUE</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3 col-6">
+                                        <div class="description-block border-right">
+                                            <span class="description-percentage text-warning"><i class="fas fa-caret-left"></i> 0%</span>
+                                            <h5 class="description-header">$10,390.90</h5>
+                                            <span class="description-text">TOTAL COST</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3 col-6">
+                                        <div class="description-block border-right">
+                                            <span class="description-percentage text-success"><i class="fas fa-caret-up"></i> 20%</span>
+                                            <h5 class="description-header">$24,813.53</h5>
+                                            <span class="description-text">TOTAL PROFIT</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3 col-6">
+                                        <div class="description-block">
+                                            <span class="description-percentage text-danger"><i class="fas fa-caret-down"></i> 18%</span>
+                                            <h5 class="description-header">1200</h5>
+                                            <span class="description-text">GOAL COMPLETIONS</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>*@
+                    <div id="ChartCont" class="mb-3 shadow-lg" style="border-radius:5px !important;"></div>
                 </div>
-                <!-- /.col -->
             </div>
-            <!-- /.row -->
-            <!-- Main row -->
             <div class="row">
-                <!-- Left col -->
                 <div class="col-md-8">
-                    <!-- MAP & BOX PANE -->
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">US-Visitors Report</h3>
-
-                            <div class="card-tools">
-                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                    <i class="fas fa-minus"></i>
-                                </button>
-                                <button type="button" class="btn btn-tool" data-card-widget="remove">
-                                    <i class="fas fa-times"></i>
-                                </button>
+                    @if (User.IsInRole("Showroom"))
+                    {
+                        <div class="card">
+                            <div class="card-header bg-gradient-blue">
+                                <h3 class="card-title">Recently Added Car Ads</h3>
+                            </div>
+                            <div class="card-body p-0">
+                                <ul class="products-list product-list-in-card pl-2 pr-2">
+                                    @foreach (var item in ViewBag.RecentAds)
+                                    {
+                                        <li class="item">
+                                            <div class="product-img">
+                                                @if (item.CarImage != null)
+                                                {
+                                                    string path = Server.MapPath("" + item.CarImage + "");
+                                                    string[] FolderName = item.CarImage.Split('/');
+                                                    string[] imageFiles = Directory.GetFiles(path);
+                                                    List<string> images = new List<string>();
+                                                    foreach (var jha in imageFiles)
+                                                    {
+                                                        images.Add(FolderName[2] + "/" + Path.GetFileName(jha));
+                                                    }
+                                                    <img src="~/uploads/@images[0]" alt="Ad Image" class="img-size-50">
+                                                    @*<img src="~/uploads/@images[0]" alt="Ad Image" style=" height:60px !important; width:80px !important;" />*@
+                                                }
+                                            </div>
+                                            <div class="product-info">
+                                                <a href="javascript:void(0)" class="product-title">
+                                                    @item.Title.ToUpper()
+                                                    <span class="badge badge-warning float-right">Rs. @item.Price</span>
+                                                </a>
+                                                <span class="product-description">
+                                                    @item.Manufacturer_Name @item.Manufacturer_CarModelName
+                                                </span>
+                                            </div>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                            <div class="card-footer text-center">
+                                <a href="/ShowroomAd/MyAds" class="uppercase">View All Cars</a>
                             </div>
                         </div>
-                        <!-- /.card-header -->
-                        <div class="card-body p-0">
-                            <div class="d-md-flex">
-                                <div class="p-1 flex-fill" style="overflow: hidden">
-                                    <!-- Map will be created here -->
-                                    <div id="world-map-markers" style="height: 325px; overflow: hidden">
-                                        <div class="map"></div>
-                                    </div>
-                                </div>
-                                <div class="card-pane-right bg-success pt-2 pb-2 pl-4 pr-4">
-                                    <div class="description-block mb-4">
-                                        <div class="sparkbar pad" data-color="#fff">90,70,90,70,75,80,70</div>
-                                        <h5 class="description-header">8390</h5>
-                                        <span class="description-text">Visits</span>
-                                    </div>
-                                    <!-- /.description-block -->
-                                    <div class="description-block mb-4">
-                                        <div class="sparkbar pad" data-color="#fff">90,50,90,70,61,83,63</div>
-                                        <h5 class="description-header">30%</h5>
-                                        <span class="description-text">Referrals</span>
-                                    </div>
-                                    <!-- /.description-block -->
-                                    <div class="description-block">
-                                        <div class="sparkbar pad" data-color="#fff">90,50,90,70,61,83,63</div>
-                                        <h5 class="description-header">70%</h5>
-                                        <span class="description-text">Organic</span>
-                                    </div>
-                                    <!-- /.description-block -->
-                                </div><!-- /.card-pane-right -->
-                            </div><!-- /.d-md-flex -->
+                    }
+                    <!-- MAP & BOX PANE -->
+                    <!--<div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">US-Visitors Report</h3>
+
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                            <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                <i class="fas fa-times"></i>
+                            </button>
                         </div>
-                        <!-- /.card-body -->
+                    </div>-->
+                    <!-- /.card-header -->
+                    <!--<div class="card-body p-0">
+                    <div class="d-md-flex">
+                        <div class="p-1 flex-fill" style="overflow: hidden">-->
+                    <!-- Map will be created here -->
+                    <!--<div id="world-map-markers" style="height: 325px; overflow: hidden">
+                            <div class="map"></div>
+                        </div>
                     </div>
+                    <div class="card-pane-right bg-success pt-2 pb-2 pl-4 pr-4">
+                        <div class="description-block mb-4">
+                            <div class="sparkbar pad" data-color="#fff">90,70,90,70,75,80,70</div>
+                            <h5 class="description-header">8390</h5>
+                            <span class="description-text">Visits</span>
+                        </div>-->
+                    <!-- /.description-block -->
+                    <!--<div class="description-block mb-4">
+                        <div class="sparkbar pad" data-color="#fff">90,50,90,70,61,83,63</div>
+                        <h5 class="description-header">30%</h5>
+                        <span class="description-text">Referrals</span>
+                    </div>-->
+                    <!-- /.description-block -->
+                    <!--<div class="description-block">
+                        <div class="sparkbar pad" data-color="#fff">90,50,90,70,61,83,63</div>
+                        <h5 class="description-header">70%</h5>
+                        <span class="description-text">Organic</span>
+                    </div>-->
+                    <!-- /.description-block -->
+                    <!--</div>--><!-- /.card-pane-right -->
+                    <!--</div>--><!-- /.d-md-flex -->
+                    <!--</div>-->
+                    <!-- /.card-body -->
+                    <!--</div>-->
                     <!-- /.card -->
                     <div class="row">
                         <div class="col-md-6">
@@ -653,50 +736,31 @@
                     </div>
                     <!-- /.card -->
                 </div>
-                <!-- /.col -->
 
                 <div class="col-md-4">
-                    <!-- Info Boxes Style 2 -->
-                    <div class="info-box mb-3 bg-warning">
-                        <span class="info-box-icon"><i class="fas fa-tag"></i></span>
+                    <div class="info-box mb-3 p-2 bg-gradient-navy">
+                        <span class="info-box-icon"><i class="fas fa-chart-line text-white"></i></span>
 
                         <div class="info-box-content">
-                            <span class="info-box-text">Inventory</span>
-                            <span class="info-box-number">5,200</span>
+                            <span class="info-box-text">Total Ads Views</span>
+                            <span class="info-box-number">@ViewBag.ShowroomTotalAdViews</span>
                         </div>
-                        <!-- /.info-box-content -->
                     </div>
-                    <!-- /.info-box -->
-                    <div class="info-box mb-3 bg-success">
+                    <div class="info-box mb-3 p-2 bg-success">
                         <span class="info-box-icon"><i class="far fa-heart"></i></span>
 
                         <div class="info-box-content">
                             <span class="info-box-text">Mentions</span>
                             <span class="info-box-number">92,050</span>
                         </div>
-                        <!-- /.info-box-content -->
                     </div>
-                    <!-- /.info-box -->
-                    <div class="info-box mb-3 bg-danger">
-                        <span class="info-box-icon"><i class="fas fa-cloud-download-alt"></i></span>
-
-                        <div class="info-box-content">
-                            <span class="info-box-text">Downloads</span>
-                            <span class="info-box-number">114,381</span>
+                    <div class="info-box mb-3 p-2 bg-gradient-info shadow-lg">
+                        <span class="info-box-icon"><i class="fas fa-info-circle"></i></span>
+                        <div class="info-box-content" style="padding: 0 5px;">
+                            <span class="info-box-text">Current Login Info</span>
+                            <span class="info-box-number" style=" font-size: 14px; line-height: 16px;">Active Browser @HttpContext.Current.Request.Browser.Browser, Your Public IP: @ViewBag.CurrentDetails</span>
                         </div>
-                        <!-- /.info-box-content -->
                     </div>
-                    <!-- /.info-box -->
-                    <div class="info-box mb-3 bg-info">
-                        <span class="info-box-icon"><i class="far fa-comment"></i></span>
-
-                        <div class="info-box-content">
-                            <span class="info-box-text">Direct Messages</span>
-                            <span class="info-box-number">163,921</span>
-                        </div>
-                        <!-- /.info-box-content -->
-                    </div>
-                    <!-- /.info-box -->
 
                     <div class="card">
                         <div class="card-header">
@@ -711,16 +775,13 @@
                                 </button>
                             </div>
                         </div>
-                        <!-- /.card-header -->
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-md-8">
                                     <div class="chart-responsive">
                                         <canvas id="pieChart" height="150"></canvas>
                                     </div>
-                                    <!-- ./chart-responsive -->
                                 </div>
-                                <!-- /.col -->
                                 <div class="col-md-4">
                                     <ul class="chart-legend clearfix">
                                         <li><i class="far fa-circle text-danger"></i> Chrome</li>
@@ -731,11 +792,8 @@
                                         <li><i class="far fa-circle text-secondary"></i> Navigator</li>
                                     </ul>
                                 </div>
-                                <!-- /.col -->
                             </div>
-                            <!-- /.row -->
                         </div>
-                        <!-- /.card-body -->
                         <div class="card-footer p-0">
                             <ul class="nav nav-pills flex-column">
                                 <li class="nav-item">
@@ -765,104 +823,105 @@
                                 </li>
                             </ul>
                         </div>
-                        <!-- /.footer -->
                     </div>
-                    <!-- /.card -->
-                    <!-- PRODUCT LIST -->
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">Recently Added Products</h3>
-
-                            <div class="card-tools">
-                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                    <i class="fas fa-minus"></i>
-                                </button>
-                                <button type="button" class="btn btn-tool" data-card-widget="remove">
-                                    <i class="fas fa-times"></i>
-                                </button>
+                    @if (User.IsInRole("Showroom"))
+                    {
+                        <div class="card">
+                            <div class="card-header bg-gradient-blue">
+                                <h3 class="card-title">Recently Added Car Ads</h3>
+                            </div>
+                            <div class="card-body p-0">
+                                <ul class="products-list product-list-in-card pl-2 pr-2">
+                                    @foreach (var item in ViewBag.RecentAds)
+                                    {
+                                        <li class="item">
+                                            <div class="product-img">
+                                                @if (item.CarImage != null)
+                                                {
+                                                    string path = Server.MapPath("" + item.CarImage + "");
+                                                    string[] FolderName = item.CarImage.Split('/');
+                                                    string[] imageFiles = Directory.GetFiles(path);
+                                                    List<string> images = new List<string>();
+                                                    foreach (var jha in imageFiles)
+                                                    {
+                                                        images.Add(FolderName[2] + "/" + Path.GetFileName(jha));
+                                                    }
+                                                    <img src="~/uploads/@images[0]" alt="Ad Image" class="img-size-50">
+                                                    @*<img src="~/uploads/@images[0]" alt="Ad Image" style=" height:60px !important; width:80px !important;" />*@
+                                                }
+                                            </div>
+                                            <div class="product-info">
+                                                <a href="javascript:void(0)" class="product-title">
+                                                    @item.Title.ToUpper()
+                                                    <span class="badge badge-warning float-right">Rs. @item.Price</span>
+                                                </a>
+                                                <span class="product-description">
+                                                    @item.Manufacturer_Name @item.Manufacturer_CarModelName
+                                                </span>
+                                            </div>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                            <div class="card-footer text-center">
+                                <a href="/ShowroomAd/MyAds" class="uppercase">View All Cars</a>
                             </div>
                         </div>
-                        <!-- /.card-header -->
-                        <div class="card-body p-0">
-                            <ul class="products-list product-list-in-card pl-2 pr-2">
-                                <li class="item">
-                                    <div class="product-img">
-                                        <img src="~/dist/img/default-150x150.png" alt="Product Image" class="img-size-50">
-                                    </div>
-                                    <div class="product-info">
-                                        <a href="javascript:void(0)" class="product-title">
-                                            Samsung TV
-                                            <span class="badge badge-warning float-right">$1800</span>
-                                        </a>
-                                        <span class="product-description">
-                                            Samsung 32" 1080p 60Hz LED Smart HDTV.
-                                        </span>
-                                    </div>
-                                </li>
-                                <!-- /.item -->
-                                <li class="item">
-                                    <div class="product-img">
-                                        <img src="~/dist/img/default-150x150.png" alt="Product Image" class="img-size-50">
-                                    </div>
-                                    <div class="product-info">
-                                        <a href="javascript:void(0)" class="product-title">
-                                            Bicycle
-                                            <span class="badge badge-info float-right">$700</span>
-                                        </a>
-                                        <span class="product-description">
-                                            26" Mongoose Dolomite Men's 7-speed, Navy Blue.
-                                        </span>
-                                    </div>
-                                </li>
-                                <!-- /.item -->
-                                <li class="item">
-                                    <div class="product-img">
-                                        <img src="~/dist/img/default-150x150.png" alt="Product Image" class="img-size-50">
-                                    </div>
-                                    <div class="product-info">
-                                        <a href="javascript:void(0)" class="product-title">
-                                            Xbox One <span class="badge badge-danger float-right">
-                                                $350
-                                            </span>
-                                        </a>
-                                        <span class="product-description">
-                                            Xbox One Console Bundle with Halo Master Chief Collection.
-                                        </span>
-                                    </div>
-                                </li>
-                                <!-- /.item -->
-                                <li class="item">
-                                    <div class="product-img">
-                                        <img src="~/dist/img/default-150x150.png" alt="Product Image" class="img-size-50">
-                                    </div>
-                                    <div class="product-info">
-                                        <a href="javascript:void(0)" class="product-title">
-                                            PlayStation 4
-                                            <span class="badge badge-success float-right">$399</span>
-                                        </a>
-                                        <span class="product-description">
-                                            PlayStation 4 500GB Console (PS4)
-                                        </span>
-                                    </div>
-                                </li>
-                                <!-- /.item -->
-                            </ul>
-                        </div>
-                        <!-- /.card-body -->
-                        <div class="card-footer text-center">
-                            <a href="javascript:void(0)" class="uppercase">View All Products</a>
-                        </div>
-                        <!-- /.card-footer -->
-                    </div>
-                    <!-- /.card -->
+                    }
                 </div>
-                <!-- /.col -->
             </div>
-            <!-- /.row -->
-        </div><!--/. container-fluid -->
+        </div>
     </section>
-    <!-- /.content -->
-<script>
-    document.getElementById('DashboardPage').classList.add('active');
-</script>
+    <script src="~/scripts/jquery-3.6.0.min.js"></script>
+    <script>
+        document.getElementById('DashboardPage').classList.add('active');
+
+        $(document).ready(function () {
+            $.getJSON("/Account/GetData", function (data) {
+                var Names = []
+                var Qts = []
+                for (var i = 0; i < data.length; i++) {
+                    Names.push(data[i].FullName);
+                    Qts.push(data[i].count);
+                }
+
+                Highcharts.chart('ChartCont', {
+                    chart: {
+                        type: 'line'
+                    },
+                    title: {
+                        text: '<b>Showroom Ads</b>'
+                    },
+                    subtitle: {
+                        text: '<b>Source: JRCar Reporting</b>'
+                    },
+                    xAxis: {
+                        title: {
+                            text: '<b>Ad Title</b>'
+                        },
+                        categories: Names
+                    },
+                    yAxis: {
+                        title: {
+                            text: '<b>Views Range</b>'
+                        }
+                    },
+                    plotOptions: {
+                        line: {
+                            dataLabels: {
+                                enabled: true
+                            },
+                            enableMouseTracking: true
+                        }
+                    },
+                    series: [{
+                        name: 'Ads Views',
+                        data: Qts
+                    }]
+                });
+            });
+        });
+
+
+    </script>
 }

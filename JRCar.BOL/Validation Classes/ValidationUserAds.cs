@@ -176,6 +176,8 @@ namespace JRCar.BOL.Validation_Classes
 
         public int AdID { get; set; }
 
+        public string AdViewsCount { get; set; }
+
         public virtual ICollection<tblUserAddImage> tblUserAddImages { get; set; }
 
         public virtual tblUser tblUser { get; set; }

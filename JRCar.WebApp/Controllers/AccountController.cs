@@ -16,12 +16,16 @@ namespace JRCar.WebApp.Controllers
     {
         private UserRepo RepoObj;
         private ShowroomAdsRepo RepoObj1;
+        private UserAdsRepo AdRepoObj;
+        private PaymentRepo PayRepoObj;
         private AddressAutofillRepo AddressRepoObj;
 
         public AccountController()
         {
             RepoObj = new UserRepo();
             RepoObj1 = new ShowroomAdsRepo();
+            AdRepoObj = new UserAdsRepo();
+            PayRepoObj = new PaymentRepo();
             AddressRepoObj = new AddressAutofillRepo();
         }
 
@@ -55,6 +59,23 @@ namespace JRCar.WebApp.Controllers
             return Json(!RepoObj.IsUpdatePhoneNumberExist(SignUpUpdateNumber, UserCurrentPhone), JsonRequestBehavior.AllowGet);
         }
 
+        static string GetIPAddress()
+        {
+            String address = "";
+            WebRequest request = WebRequest.Create("http://checkip.dyndns.org/");
+            using (WebResponse response = request.GetResponse())
+            using (StreamReader stream = new StreamReader(response.GetResponseStream()))
+            {
+                address = stream.ReadToEnd();
+            }
+
+            int first = address.IndexOf("Address: ") + 9;
+            int last = address.LastIndexOf("</body>");
+            address = address.Substring(first, last - first);
+
+            return address;
+        }
+
         [AcceptVerbs(HttpVerbs.Get)]
         [Authorize(Roles = "Admin,Showroom,Union")]
         [Route("Portal")]
@@ -67,8 +88,27 @@ namespace JRCar.WebApp.Controllers
                 ViewBag.ShowroomInactiveAdsCount = RepoObj1.GetAllShowroomInActiveAds(id).Count();
                 ViewBag.ShowroomFavAdsCount = RepoObj1.GetShowroomFavAdsCount(id);
                 ViewBag.ShowroomTotalPaidAmnt = RepoObj1.GetShowroomTotalPaidAmnt(id);
+                ViewBag.RecentAds = RepoObj1.GetAllShowroomActiveAdsFD(id);
+                ViewBag.CurrentDetails = GetIPAddress();
+                ViewBag.ShowroomTotalAdViews = RepoObj1.GetShowroomAdsViewCount(id);
+            }
+            if (User.IsInRole("Union") || User.IsInRole("Admin"))
+            {
+                ViewBag.ShowroomsAdsCount = RepoObj1.GetAllAds().Count();
+                ViewBag.UsersAdsCount = AdRepoObj.GetAllAds().Count();
+                ViewBag.ShowroomsCount = RepoObj.GetAllShowRoom().Count();
+                ViewBag.UsersCount = RepoObj.GetAllUsers().Count();
+                ViewBag.ShowroomsInactiveAdsCount = RepoObj1.GetAllInActiveAds().Count();
+                ViewBag.ShowroomsTotalPaidAmnt = PayRepoObj.GetAllShowroomPayments();
+                ViewBag.CurrentDetails = GetIPAddress();
             }
             return View();
+        }
+
+        public ActionResult GetData()
+        {
+            var query = RepoObj1.GetAllShowroomAdsDetailsFD();
+            return Json(query, JsonRequestBehavior.AllowGet);
         }
 
         [AcceptVerbs(HttpVerbs.Post)]

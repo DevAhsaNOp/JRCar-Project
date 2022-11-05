@@ -10,6 +10,8 @@ namespace JRCar.BOL.Validation_Classes
 {
     public class ValidateShowroom
     {
+        public int count;
+
         public int ID { get; set; }
 
         [Required(ErrorMessage = "*")]

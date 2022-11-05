@@ -17,8 +17,8 @@ namespace JRCar.BOL
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public tblAddress()
         {
-            this.tblCars = new HashSet<tblCar>();
             this.tblShowrooms = new HashSet<tblShowroom>();
+            this.tblCars = new HashSet<tblCar>();
             this.tblUserAdds = new HashSet<tblUserAdd>();
         }
     
@@ -32,9 +32,9 @@ namespace JRCar.BOL
         public virtual tblState tblState { get; set; }
         public virtual tblZone tblZone { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<tblCar> tblCars { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tblShowroom> tblShowrooms { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tblCar> tblCars { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tblUserAdd> tblUserAdds { get; set; }
     }

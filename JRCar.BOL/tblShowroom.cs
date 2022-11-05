@@ -21,10 +21,10 @@ namespace JRCar.BOL
             this.tblAppointmentDetails = new HashSet<tblAppointmentDetail>();
             this.tblAppointments = new HashSet<tblAppointment>();
             this.tblBlogs = new HashSet<tblBlog>();
-            this.tblCars = new HashSet<tblCar>();
             this.tblNotifications = new HashSet<tblNotification>();
             this.tblPayments = new HashSet<tblPayment>();
             this.tblQueries = new HashSet<tblQuery>();
+            this.tblCars = new HashSet<tblCar>();
         }
     
         public int ID { get; set; }
@@ -61,8 +61,6 @@ namespace JRCar.BOL
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tblBlog> tblBlogs { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<tblCar> tblCars { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tblNotification> tblNotifications { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tblPayment> tblPayments { get; set; }
@@ -70,5 +68,7 @@ namespace JRCar.BOL
         public virtual ICollection<tblQuery> tblQueries { get; set; }
         public virtual tblRole tblRole { get; set; }
         public virtual tblUnion tblUnion { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tblCar> tblCars { get; set; }
     }
 }

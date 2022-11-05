@@ -611,6 +611,31 @@ namespace JRCar.DAL.DBLayer
                 return null;
             }
         }
+        
+        public decimal GetAllShowroomPayments()
+        {
+            var payment = _context.tblPayments.ToList();
+            decimal TotalAmnt = 0;
+            if (payment != null)
+            {
+                foreach (var item in payment)
+                {
+                    if (item.Recieved != null)
+                    {
+                        TotalAmnt += item.Recieved.Value;
+                    }
+                    else
+                    {
+                        TotalAmnt += 0;
+                    }
+                }
+                return TotalAmnt;
+            }
+            else
+            {
+                return TotalAmnt;
+            }
+        }
 
         public Tuple<decimal, DateTime> GetPaymentID(int ShowroomID)
         {

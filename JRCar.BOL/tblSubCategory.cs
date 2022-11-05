@@ -25,9 +25,9 @@ namespace JRCar.BOL
         public string SubCategoryName { get; set; }
         public int CategoryId { get; set; }
     
+        public virtual tblCategory tblCategory { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tblCar> tblCars { get; set; }
-        public virtual tblCategory tblCategory { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tblUserAdd> tblUserAdds { get; set; }
     }

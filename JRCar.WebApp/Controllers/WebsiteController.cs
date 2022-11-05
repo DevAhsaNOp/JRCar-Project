@@ -911,6 +911,7 @@ namespace JRCar.WebApp.Controllers
                 }
                 else
                 {
+                    RepoObj1.IncreaseUserAdViewCount(carDetail.AdID);
                     string path = Server.MapPath("" + carDetail.CarImage + "");
                     string[] FolderName = carDetail.CarImage.Split('/');
                     string[] imageFiles = Directory.GetFiles(path);

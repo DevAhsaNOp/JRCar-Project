@@ -229,7 +229,12 @@ namespace JRCar.BLL.Repositories
                 return null;
             }
         }
-        
+
+        public decimal GetAllShowroomPayments()
+        {
+            return DbObj.GetAllShowroomPayments();
+        }
+
         public ValidationPayment GetShowroomDetailById(int ShowroomID)
         {
             var payment = DbObj.GetShowroomDetailById(ShowroomID);

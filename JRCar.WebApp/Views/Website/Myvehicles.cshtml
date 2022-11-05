@@ -77,7 +77,8 @@
                                         <div class="cs-text">
                                             <h6><a href="@Url.Action("CarDetail","Website",new { AdID = item.AdURL })">@item.Title</a></h6>
                                             <div class="post-options">
-                                                <span>Expires on: <em>@item.ExpiryDate.ToString("dd MMMM yyyy")</em></span>
+                                                <span>Posted on: <em>@item.CreatedOn.ToString("dd MMMM yyyy")</em></span>
+                                                <span><a href="javascript:void(0)"> Total Views  <em>@item.AdViewsCount</em></a></span>
                                             </div>
                                             <div class="cs-post-types">
                                                 @{

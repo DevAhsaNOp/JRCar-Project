@@ -25,9 +25,9 @@ namespace JRCar.BOL
         public string Manufacturer_CarModelName { get; set; }
         public Nullable<int> Manufacturer_Id { get; set; }
     
+        public virtual tblManufacturer tblManufacturer { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tblCar> tblCars { get; set; }
-        public virtual tblManufacturer tblManufacturer { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tblUserAdd> tblUserAdds { get; set; }
     }

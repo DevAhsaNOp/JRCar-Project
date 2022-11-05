@@ -104,6 +104,16 @@ namespace JRCar.BLL.Repositories
                 return null;
         }
 
+        public bool IncreaseUserAdViewCount(int CarID)
+        {
+            if (CarID > 0)
+            {
+                return dbObj.IncreaseUserAdViewCount(CarID);
+            }
+            else
+                return false;
+        }
+
         public IEnumerable<ValidationUserAds> GetAllUserInActiveAds(int UserID)
         {
             if (UserID > 0)

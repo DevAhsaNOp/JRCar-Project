@@ -4,6 +4,7 @@ using JRCar.DAL.UserDefine;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Remoting.Contexts;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -154,6 +155,28 @@ namespace JRCar.DAL.DBLayer
             return reas;
         }
 
+        public bool IncreaseShowroomAdViewCount(int CarID)
+        {
+            if (CarID > 0)
+            {
+                var reas = _context.tblCars.Find(CarID);
+                if (reas.ViewsCount == null)
+                {
+                    reas.ViewsCount = 1.ToString();
+                }
+                else
+                {
+                    var count = Convert.ToInt32(reas.ViewsCount) + 1;
+                    reas.ViewsCount = count.ToString();
+                }
+                _context.Entry(reas).State = System.Data.Entity.EntityState.Modified;
+                Save();
+                return true;
+            }
+            else
+                return false;
+        }
+
         public IEnumerable<ValidateShowroomAds> GetAllActiveAds()
         {
             var reas = _context.tblCars.OrderBy(Ad => Ad.CreatedOn).Where(x => x.Isactive == true).Select(s => new ValidateShowroomAds()
@@ -231,6 +254,51 @@ namespace JRCar.DAL.DBLayer
             }).ToList();
         }
 
+        public IEnumerable<ValidateShowroomAds> GetAllShowroomActiveAdsFD(int ShowroomID)
+        {
+            return _context.tblCars.Where(x => x.Isactive == true && x.tblShowroomID == ShowroomID).Select(s => new ValidateShowroomAds()
+            {
+                tblCarID = s.ID,
+                Title = s.Title,
+                Price = s.Price,
+                Year = s.tblCarModel.Year,
+                Manufacturer_Name = s.tblManufacturer.Manufacturer_Name,
+                Manufacturer_CarModelName = s.tblManfacturerCarModel.Manufacturer_CarModelName,
+                Condition = s.Condition,
+                tblCarIsactive = s.Isactive,
+                tblCarCreatedOn = s.CreatedOn,
+                CurrentLocation = s.CurrentLocation,
+                CarsURL = s.CarsURL,
+                CarImage = s.tblCarImages.Select(a => a.Image).FirstOrDefault(),
+            }).OrderByDescending(x => x.tblCarCreatedOn).ToList();
+        }
+
+        public int GetShowroomAdsViewCount(int ShowroomID)
+        {
+            if (ShowroomID > 0)
+            {
+                var Viewscount = 0;
+                var reas = _context.tblCars.Where(x => x.tblShowroomID == ShowroomID).ToList();
+                if (reas != null)
+                {
+                    foreach (var item in reas)
+                    {
+                        if (item.ViewsCount != null)
+                        {
+                            Viewscount += Convert.ToInt32(item.ViewsCount);
+                        }
+                        else
+                        {
+                            Viewscount += 0;
+                        }
+                    }
+                }
+                return Viewscount;
+            }
+            else
+                return 0;
+        }
+
         public IEnumerable<ValidateShowroomAds> GetAllShowroomInActiveAds(int ShowroomID)
         {
             return _context.tblCars.Where(x => x.Isactive == false && x.tblShowroomID == ShowroomID).Select(s => new ValidateShowroomAds()
@@ -248,6 +316,14 @@ namespace JRCar.DAL.DBLayer
                 CarsURL = s.CarsURL,
                 CarImage = s.tblCarImages.Select(a => a.Image).FirstOrDefault(),
             }).ToList();
+        }
+
+        public IEnumerable<ValidateShowroom> GetAllShowroomAdsDetailsFD()
+        {
+            var query = _context.tblCars.AsEnumerable()
+                               .GroupBy(p => p.Title)
+                               .Select(g => new ValidateShowroom { FullName = g.Key, count = g.Sum(w => Int32.Parse(w.ViewsCount)) }).ToList();
+            return query;
         }
 
         public IEnumerable<ValidateShowroomAds> GetAllShowroomAds(int ShowroomAdID)

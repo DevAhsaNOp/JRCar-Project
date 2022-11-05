@@ -165,6 +165,28 @@ namespace JRCar.DAL.DBLayer
             }).ToList();
         }
 
+        public bool IncreaseUserAdViewCount(int CarID)
+        {
+            if (CarID > 0)
+            {
+                var reas = _context.tblUserAdds.Find(CarID);
+                if (reas.ViewsCount == null)
+                {
+                    reas.ViewsCount = 1.ToString();
+                }
+                else
+                {
+                    var count = Convert.ToInt32(reas.ViewsCount) + 1;
+                    reas.ViewsCount = count.ToString();
+                }
+                _context.Entry(reas).State = System.Data.Entity.EntityState.Modified;
+                Save();
+                return true;
+            }
+            else
+                return false;
+        }
+
         public IEnumerable<ValidationUserAds> GetAllUserInActiveAds(int UserID)
         {
             return _context.tblUserAdds.Where(x => x.Isactive == false && x.UserID == UserID).Select(s => new ValidationUserAds()
@@ -189,7 +211,8 @@ namespace JRCar.DAL.DBLayer
                 CreatedOn = s.CreatedOn,
                 AdURL = s.UserAdsURL,
                 CarImage = s.tblUserAddImages.Select(a => a.Image).FirstOrDefault(),
-                IsSold = s.Issold
+                IsSold = s.Issold,
+                AdViewsCount = s.ViewsCount == null ? "0" : s.ViewsCount,
             }).ToList();
         }
 

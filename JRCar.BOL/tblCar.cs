@@ -50,6 +50,7 @@ namespace JRCar.BOL
         public Nullable<int> CategoryId { get; set; }
         public Nullable<int> SubCategoryId { get; set; }
         public Nullable<bool> Issold { get; set; }
+        public string ViewsCount { get; set; }
     
         public virtual tblAddress tblAddress { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

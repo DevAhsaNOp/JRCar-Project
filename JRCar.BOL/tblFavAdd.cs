@@ -20,7 +20,7 @@ namespace JRCar.BOL
         public Nullable<bool> Isactive { get; set; }
         public Nullable<bool> Isarchived { get; set; }
     
-        public virtual tblCar tblCar { get; set; }
         public virtual tblUser tblUser { get; set; }
+        public virtual tblCar tblCar { get; set; }
     }
 }

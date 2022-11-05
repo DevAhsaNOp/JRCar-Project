@@ -36,7 +36,6 @@ namespace JRCar.BOL
         public virtual DbSet<tblCarFeature> tblCarFeatures { get; set; }
         public virtual DbSet<tblCarImage> tblCarImages { get; set; }
         public virtual DbSet<tblCarModel> tblCarModels { get; set; }
-        public virtual DbSet<tblCar> tblCars { get; set; }
         public virtual DbSet<tblCategory> tblCategories { get; set; }
         public virtual DbSet<tblCity> tblCities { get; set; }
         public virtual DbSet<tblClient> tblClients { get; set; }
@@ -59,9 +58,10 @@ namespace JRCar.BOL
         public virtual DbSet<tblToken> tblTokens { get; set; }
         public virtual DbSet<tblUnion> tblUnions { get; set; }
         public virtual DbSet<tblUserAddImage> tblUserAddImages { get; set; }
-        public virtual DbSet<tblUserAdd> tblUserAdds { get; set; }
         public virtual DbSet<tblUser> tblUsers { get; set; }
         public virtual DbSet<tblZone> tblZones { get; set; }
         public virtual DbSet<ANNOVIEW> ANNOVIEWs { get; set; }
+        public virtual DbSet<tblCar> tblCars { get; set; }
+        public virtual DbSet<tblUserAdd> tblUserAdds { get; set; }
     }
 }

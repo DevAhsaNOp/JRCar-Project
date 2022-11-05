@@ -34,6 +34,16 @@ namespace JRCar.BLL.Repositories
             return dbObj.GetAllAds();
         }
 
+        public bool IncreaseShowroomAdViewCount(int CarID)
+        {
+            if (CarID > 0)
+            {
+                return dbObj.IncreaseShowroomAdViewCount(CarID);
+            }
+            else
+                return false;
+        }
+
         public IEnumerable<ValidateShowroomAds> GetAllActiveAds()
         {
             return dbObj.GetAllActiveAds();
@@ -130,6 +140,22 @@ namespace JRCar.BLL.Repositories
                 return null;
         }
 
+        public IEnumerable<ValidateShowroomAds> GetAllShowroomActiveAdsFD(int ShowroomID)
+        {
+            if (ShowroomID > 0)
+            {
+                var reas = dbObj.GetAllShowroomActiveAdsFD(ShowroomID).Take(4);
+                if (reas != null)
+                {
+                    return reas;
+                }
+                else
+                    return null;
+            }
+            else
+                return null;
+        }
+
         public IEnumerable<ValidateShowroomAds> GetAllShowroomInActiveAds(int UserID)
         {
             if (UserID > 0)
@@ -144,6 +170,22 @@ namespace JRCar.BLL.Repositories
             }
             else
                 return null;
+        }
+
+        public IEnumerable<ValidateShowroom> GetAllShowroomAdsDetailsFD()
+        {
+            return dbObj.GetAllShowroomAdsDetailsFD();
+        }
+
+        public int GetShowroomAdsViewCount(int ShowroomID)
+        {
+            if (ShowroomID > 0)
+            {
+                var reas = dbObj.GetShowroomAdsViewCount(ShowroomID);
+                return reas;
+            }
+            else
+                return 0;
         }
 
         public IEnumerable<ValidateShowroomAds> GetAllShowroomAds(int UserID)
@@ -182,7 +224,7 @@ namespace JRCar.BLL.Repositories
         {
             return dbObj.GetShowroomID(ShowroomAdID);
         }
-        
+
         public int GetShowroomFavAdsCount(int ShowroomID)
         {
             if (ShowroomID > 0)
