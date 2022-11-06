@@ -98,16 +98,25 @@ namespace JRCar.WebApp.Controllers
                 ViewBag.UsersAdsCount = AdRepoObj.GetAllAds().Count();
                 ViewBag.ShowroomsCount = RepoObj.GetAllShowRoom().Count();
                 ViewBag.UsersCount = RepoObj.GetAllUsers().Count();
+                ViewBag.LatestUsers = RepoObj.GetAllUsers().Take(8);
+                ViewBag.LatestShowrooms = RepoObj.GetAllShowRoom().Take(8);
                 ViewBag.ShowroomsInactiveAdsCount = RepoObj1.GetAllInActiveAds().Count();
                 ViewBag.ShowroomsTotalPaidAmnt = PayRepoObj.GetAllShowroomPayments();
                 ViewBag.CurrentDetails = GetIPAddress();
+                ViewBag.ShowroomTotalAdViews = String.Format("{0:n0}", RepoObj1.GetAllShowroomAdsDetailsFD().Sum(x => x.count));
             }
             return View();
         }
 
-        public ActionResult GetData()
+        public ActionResult GetShowroomAdsData()
         {
             var query = RepoObj1.GetAllShowroomAdsDetailsFD();
+            return Json(query, JsonRequestBehavior.AllowGet);
+        }
+        
+        public ActionResult GetUserAdsData()
+        {
+            var query = RepoObj1.GetAllUserAdsDetailsFD();
             return Json(query, JsonRequestBehavior.AllowGet);
         }
 

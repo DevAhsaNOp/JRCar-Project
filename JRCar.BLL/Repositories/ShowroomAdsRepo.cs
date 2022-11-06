@@ -176,6 +176,11 @@ namespace JRCar.BLL.Repositories
         {
             return dbObj.GetAllShowroomAdsDetailsFD();
         }
+        
+        public IEnumerable<ValidateShowroom> GetAllUserAdsDetailsFD()
+        {
+            return dbObj.GetAllUserAdsDetailsFD();
+        }
 
         public int GetShowroomAdsViewCount(int ShowroomID)
         {
