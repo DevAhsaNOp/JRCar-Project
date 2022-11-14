@@ -40,6 +40,7 @@
         margin-right: 5px !important;
     }
 </style>
+<script src="~/scripts/jquery-3.6.0.min.js"></script>
 
 @if (User.Identity.IsAuthenticated)
 {
@@ -123,7 +124,7 @@
                             <div class="row">
                                 <div class="col-12">
                                     <h4 class="text-bold bg-gradient-primary text-center p-1">Union Monthly Fees Detail</h4>
-                                    <table id="example3" class="table table-bordered table-striped table-hover">
+                                    <table id="example3ContP" class="table table-bordered table-striped table-hover">
                                         <thead>
                                             <tr style=" background: lightslategray; color: aliceblue;">
                                                 <th>S.No </th>
@@ -177,6 +178,7 @@
                                             }
                                         </tbody>
                                     </table>
+                                    @*<button class="btn btn-dark" id="btnPrintCont">Print</button>*@
                                 </div>
                             </div>
                         </div>
@@ -189,5 +191,48 @@
     <script>
         document.getElementById('PaysNav').classList.add('active')
         document.getElementById('LstPaymentPage').classList.add('active')
+
+        //$(document).ready(function () {
+        //    $('#btnPrintCont').on("click", function () {
+        //        $("#example3_wrapper")[0].children[0].style = "display:none";
+        //        $("#example3_wrapper")[0].children[2].style = "display:none";
+        //        $('.content').printThis({
+        //            pageTitle: "Showroom Payment Details",
+        //            header: "<img src='/assets/Asset 2.svg' style='position:absolute;z-index:9999999999;top:0;' alt='header'/>",
+        //            footer: "<img src='/assets/Asset 3.svg' style='position:absolute;z-index:9999999999;bottom:0;' alt='footer'/>",
+        //            printDelay: 50,
+        //        });
+        //    });
+        //});
+
+        //function PrintCheck(){
+
+        //    var beforePrint = function () {
+        //        console.log('Functionality to run before printing.');
+        //    };
+
+        //    var afterPrint = function () {
+        //        console.log('Functionality to run after printing');
+        //        $("#example3_wrapper")[0].children[0].style = "display:block";
+        //        $("#example3_wrapper")[0].children[2].style = "display:block";
+        //    };
+
+        //    if (window.matchMedia) {
+        //        var mediaQueryList = window.matchMedia('print');
+        //        mediaQueryList.addListener(function (mql) {
+        //            if (mql.matches) {
+        //                beforePrint();
+        //            } else {
+        //                afterPrint();
+        //            }
+        //        });
+        //    }
+
+        //    window.onbeforeprint = beforePrint;
+        //    window.onafterprint = afterPrint;
+
+        //};
+
+        //setInterval(PrintCheck(), 1000);
     </script>
 }

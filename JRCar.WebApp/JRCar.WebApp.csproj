@@ -180,6 +180,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="assets\Asset 2.svg" />
+    <Content Include="assets\Asset 3.svg" />
     <Content Include="assets\css\material-dashboard-rtl.css" />
     <Content Include="assets\css\material-dashboard.css" />
     <Content Include="assets\css\material-dashboard.min.css" />
@@ -2635,6 +2637,12 @@
     <Content Include="plugins\uplot\uPlot.iife.js" />
     <Content Include="plugins\uplot\uPlot.iife.min.js" />
     <Content Include="plugins\uplot\uPlot.min.css" />
+    <Content Include="printassets\css\normalize.css" />
+    <Content Include="printassets\css\skeleton.css" />
+    <Content Include="printassets\images\cat1.jpg" />
+    <Content Include="printassets\images\cat2.jpg" />
+    <Content Include="printassets\images\cat3.jpg" />
+    <Content Include="printassets\images\print.png" />
     <Content Include="scripts\ai.0.22.9-build00167.js" />
     <Content Include="scripts\ai.0.22.9-build00167.min.js" />
     <Content Include="assets\css\material-dashboard.css.map" />
@@ -3276,6 +3284,7 @@
     <Content Include="scripts\popper-utils.min.js" />
     <Content Include="scripts\popper.js" />
     <Content Include="scripts\popper.min.js" />
+    <Content Include="scripts\printThis.js" />
     <Content Include="scripts\umd\popper-utils.js" />
     <Content Include="scripts\umd\popper-utils.min.js" />
     <Content Include="scripts\umd\popper.js" />
@@ -3779,6 +3788,7 @@
     <Content Include="Views\Portal\AddUnionMember.cshtml" />
     <Content Include="Views\Portal\EditUnionMember.cshtml" />
     <Content Include="Views\Portal\ListUnionMember.cshtml" />
+    <Content Include="scripts\printThis.jquery.json" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -3813,6 +3823,7 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="scripts\index.d.ts" />
+    <TypeScriptCompile Include="scripts\printThis.d.ts" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />

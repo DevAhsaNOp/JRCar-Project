@@ -91,8 +91,8 @@
 
             <!-- Preloader -->
             @*<div class="preloader flex-column justify-content-center align-items-center">
-                    <img class="animation__wobble" src="~/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
-                </div>*@
+                <img class="animation__wobble" src="~/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
+            </div>*@
 
             <!-- Navbar -->
             @Html.Partial("_HeaderPortal")
@@ -222,6 +222,7 @@
         <script src="~/scripts/jquery.unobtrusive-ajax.min.js"></script>
         <script src="~/scripts/jquery.signalR-2.4.3.min.js"></script>
         <script src="~/signalr/hubs"></script>
+        <script src="~/scripts/printThis.js"></script>
         @* Add css  *@
         @*<link href="~/Content/bootstrap.min.css" rel="stylesheet" />*@
         @* Add jquery code for Get Notification & setup signalr *@
@@ -247,28 +248,36 @@
             }
 
             $(function () {
+                $("#example3ContP").DataTable({
+                    "responsive": true, "lengthChange": true, "autoWidth": false, "ordering": false, "info": true, dom: 'Bfrtip',
+                    buttons: [
+                        {
+                            extend: 'print',
+                            autoPrint: false,
+                            customize: function (win) {
+                                $(win.document.body)
+                                    .css('font-size', '10pt')
+                                    .prepend(
+                                        '<img src="https://svgshare.com/i/o3e.svg" style="position: absolute; z-index: 9999999999; top: 0;" alt="header" /><img src="https://svgshare.com/i/o65.svg" style="position: absolute; z-index: 9999999999; bottom: 0;" alt="footer" />'
+                                    );
+                                $(win.document.body).find('.table-bordered td, .table-bordered th, .table-bordered')
+                                    .attr('style', 'border: 1px solid #dee2e6 !important');
+                                $(win.document.body).find('table')
+                                    .addClass('compact')
+                                    .attr('style', 'margin-top: 280px !important')
+                                    .css('font-size', 'inherit');
+                            }
+                        }
+                    ]
+                });
+
                 $("#example1").DataTable({
                     "responsive": true, "lengthChange": true, "autoWidth": false, "ordering": false, "info": true, columnDefs: [
                         { width: '30%', targets: 0 }
                     ],
                     fixedColumns: true
                 });
-                //, dom: 'Bfrtip',
-                //    buttons: [
-                //        {
-                //            extend: 'print',
-                //            customize: function (win) {
-                //                $(win.document.body)
-                //                    .css('font-size', '10pt')
-                //                    .prepend(
-                //                        '<img src="http://datatables.net/media/images/logo-fade.png" style="position:absolute; top:0; left:0;" />'
-                //                    );
-                //                $(win.document.body).find('table')
-                //                    .addClass('compact')
-                //                    .css('font-size', 'inherit');
-                //            }
-                //        }
-                //    ]
+
                 $("#example3").DataTable({
                     "responsive": true, "lengthChange": true, "autoWidth": false, "ordering": false, "info": true
                 });
