@@ -1,7 +1,7 @@
 ﻿@model JRCar.BOL.Validation_Classes.ValidationPayment
 
 @{
-    ViewBag.Title = "Showroom Detail";
+    ViewBag.Title = "Showroom Payment Details";
     Layout = "~/Views/Shared/_StarterPortal.cshtml";
 }
 <style>
@@ -39,6 +39,15 @@
         border-radius: 5px;
         margin-right: 5px !important;
     }
+
+    @@media print {
+        thead {
+            print-color-adjust: exact !important;
+            -webkit-print-color-adjust: exact !important;
+            background-color: lightslategray !important;
+            color: black !important;
+        }
+    }
 </style>
 <script src="~/scripts/jquery-3.6.0.min.js"></script>
 
@@ -49,12 +58,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Showroom Detail</h1>
+                    <h1>Showroom Payment Details</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">Showroom Detail</li>
+                        <li class="breadcrumb-item active">Showroom Payment Details</li>
                     </ol>
                 </div>
             </div>
@@ -126,7 +135,7 @@
                                     <h4 class="text-bold bg-gradient-primary text-center p-1">Union Monthly Fees Detail</h4>
                                     <table id="example3ContP" class="table table-bordered table-striped table-hover">
                                         <thead>
-                                            <tr style=" background: lightslategray; color: aliceblue;">
+                                            <tr style="background: lightslategray !important; color: aliceblue !important;">
                                                 <th>S.No </th>
                                                 <th>Month</th>
                                                 <th>Year</th>
