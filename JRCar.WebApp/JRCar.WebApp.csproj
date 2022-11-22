@@ -3790,6 +3790,8 @@
     <Content Include="Views\Portal\ListUnionMember.cshtml" />
     <Content Include="scripts\printThis.jquery.json" />
     <Content Include="Views\Portal\ShowroomPaymentReport.cshtml" />
+    <Content Include="Views\Portal\UsersInfoList.cshtml" />
+    <Content Include="Views\Portal\ShowroomInfoList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

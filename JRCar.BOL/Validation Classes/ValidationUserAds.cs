@@ -191,5 +191,9 @@ namespace JRCar.BOL.Validation_Classes
         public virtual tblManufacturer tblManufacturer { get; set; }
 
         public virtual tblSubCategory tblSubCategory { get; set; }
+        public int TotalAdsCount { get; set; }
+        public int TotalActiveAdsCount { get; set; }
+        public int TotalInActiveAdsCount { get; set; }
+        public bool UserActive { get; set; }
     }
 }

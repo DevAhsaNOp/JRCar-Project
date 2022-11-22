@@ -848,5 +848,42 @@ namespace JRCar.DAL.DBLayer
                 return null;
             }
         }
+
+        public IEnumerable<ValidationUserAds> UsersInfoList()
+        {
+            var reas = _context.tblUsers.AsEnumerable()
+                                         .GroupBy(x => x.ID)
+                                         .Select(s => new ValidationUserAds()
+                                         {
+                                             UserID = s.Key,
+                                             UserName = s.FirstOrDefault().Name,
+                                             Number = s.FirstOrDefault().Number,
+                                             UserCreatedOn = s.FirstOrDefault().CreatedOn,
+                                             TotalAdsCount = _context.tblUserAdds.Where(x => x.UserID == s.Key).ToList().Count(),
+                                             TotalActiveAdsCount = _context.tblUserAdds.Where(x => x.UserID == s.Key && x.Isactive == true).ToList().Count(),
+                                             TotalInActiveAdsCount = _context.tblUserAdds.Where(x => x.UserID == s.Key && x.Isactive == false).ToList().Count(),
+                                             UserActive = s.FirstOrDefault().Active,
+                                         }).ToList();
+            return reas;
+        }
+
+        public IEnumerable<ValidateShowroomAds> ShowroomInfoList()
+        {
+            var reas = _context.tblShowrooms.AsEnumerable()
+                                         .GroupBy(x => x.ID)
+                                         .Select(s => new ValidateShowroomAds()
+                                         {
+                                             tblShowroomID = s.Key,
+                                             ShowroomName = s.FirstOrDefault().FullName,
+                                             ShowroomNumber = s.FirstOrDefault().Contact,
+                                             ShowroomCreatedOn = s.FirstOrDefault().CreatedOn,
+                                             TotalAdsCount = _context.tblCars.Where(x => x.tblShowroomID == s.Key).ToList().Count(),
+                                             TotalActiveAdsCount = _context.tblCars.Where(x => x.tblShowroomID == s.Key && x.Isactive == true).ToList().Count(),
+                                             TotalInActiveAdsCount = _context.tblCars.Where(x => x.tblShowroomID == s.Key && x.Isactive == false).ToList().Count(),
+                                             TotalShortlistAdsCount = _context.tblFavAdds.Where(x => x.tblCar.tblShowroomID == s.Key).ToList().Count(),
+                                             ShowroomActive = s.FirstOrDefault().Isactive,
+                                         }).ToList();
+            return reas;
+        }
     }
 }

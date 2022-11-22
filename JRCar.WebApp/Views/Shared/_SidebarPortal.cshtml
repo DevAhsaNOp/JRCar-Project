@@ -475,6 +475,29 @@
                                 </li>
                             </ul>
                         </li>
+                        <li class="nav-item menu-open">
+                            <a href="#" class="nav-link" id="AReportsNav">
+                                <i class="nav-icon fas fa-ad"></i>
+                                <p>
+                                    Reports
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="@Url.Action("UsersInfoList","Portal")" class="nav-link" id="UsersReports">
+                                        <i class="far fa-circle nav-icon text-bold text-blue"></i>
+                                        <p>Users Info Report</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="@Url.Action("ShowroomInfoList","Portal")" class="nav-link" id="ShowroomsReports">
+                                        <i class="far fa-circle nav-icon text-bold text-green"></i>
+                                        <p>Showrooms Info Report</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
                     }
                     else if (User.IsInRole("Showroom"))
                     {

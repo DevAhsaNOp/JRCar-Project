@@ -1307,7 +1307,7 @@
         },
 
         text: function (dt) {
-            return dt.i18n('buttons.pdf', 'PDF');
+            return dt.i18n('buttons.pdf', 'Download as PDF');
         },
 
         action: function (e, dt, button, config) {
@@ -1380,7 +1380,7 @@
                         fontSize: 11,
                         color: 'white',
                         fillColor: '#2d4154',
-                        alignment: 'center'
+                        alignment: 'left'
                     },
                     tableBodyEven: {},
                     tableBodyOdd: {
@@ -1399,7 +1399,7 @@
                     message: {}
                 },
                 defaultStyle: {
-                    fontSize: 10
+                    fontSize: 9
                 }
             };
 

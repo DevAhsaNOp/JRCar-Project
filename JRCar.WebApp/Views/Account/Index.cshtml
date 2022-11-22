@@ -173,7 +173,7 @@
             {
                 <div class="row">
                     <div class="col-md-12">
-                        <div id="ShowroomChartCont" class="mb-3 shadow-lg" style="border-radius:5px !important;"></div>
+                        <div id="ShowroomChartContr" class="mb-3 shadow-lg" style="border-radius:5px !important;"></div>
                     </div>
                 </div>
             }
@@ -381,6 +381,56 @@
                 }
 
                 Highcharts.chart('ShowroomChartCont', {
+                    chart: {
+                        type: 'line'
+                    },
+                    title: {
+                        text: '<b>Showroom Ads</b>'
+                    },
+                    subtitle: {
+                        text: '<b>Source: JRCar Reporting</b>'
+                    },
+                    xAxis: {
+                        title: {
+                            text: '<b>Ad Title</b>'
+                        },
+                        categories: Names
+                    },
+                    yAxis: {
+                        title: {
+                            text: '<b>Views Range</b>'
+                        }
+                    },
+                    plotOptions: {
+                        line: {
+                            dataLabels: {
+                                enabled: true
+                            },
+                            enableMouseTracking: true
+                        }
+                    },
+                    series: [{
+                        name: 'Ads Views',
+                        data: Qts
+                    }],
+                    exporting: {
+                        enabled: false
+                    },
+                    credits: {
+                        enabled: false
+                    }
+                });
+            });
+
+            $.getJSON("/Account/GetShowroomAdsDataByID", function (data) {
+                var Names = []
+                var Qts = []
+                for (var i = 0; i < data.length; i++) {
+                    Names.push(data[i].FullName);
+                    Qts.push(data[i].count);
+                }
+
+                Highcharts.chart('ShowroomChartContr', {
                     chart: {
                         type: 'line'
                     },

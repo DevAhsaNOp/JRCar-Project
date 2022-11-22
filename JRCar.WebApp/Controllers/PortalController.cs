@@ -2391,6 +2391,26 @@ namespace JRCar.WebApp.Controllers
 
         #endregion
 
+        #region **Union/Admin Reports**
+
+        [Authorize(Roles = "Admin,Union")]
+        [AcceptVerbs(HttpVerbs.Get)]
+        public ActionResult UsersInfoList()
+        {
+            var reas = RepoObj.UsersInfoList();
+            return View(reas);
+        }
+
+        [Authorize(Roles = "Admin,Union")]
+        [AcceptVerbs(HttpVerbs.Get)]
+        public ActionResult ShowroomInfoList()
+        {
+            var reas = RepoObj.ShowroomInfoList();
+            return View(reas);
+        }
+
+        #endregion
+
         #endregion
     }
 }

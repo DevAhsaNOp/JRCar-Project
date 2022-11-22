@@ -114,6 +114,13 @@ namespace JRCar.WebApp.Controllers
             return Json(query, JsonRequestBehavior.AllowGet);
         }
         
+        public ActionResult GetShowroomAdsDataByID()
+        {
+            int ShowroomID = (int)Session["Id"];
+            var query = RepoObj1.GetShowroomAdsDetailsByIDFD(ShowroomID);
+            return Json(query, JsonRequestBehavior.AllowGet);
+        }
+        
         public ActionResult GetUserAdsData()
         {
             var query = RepoObj1.GetAllUserAdsDetailsFD();

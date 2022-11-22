@@ -719,5 +719,16 @@ namespace JRCar.BLL.Repositories
             }
         }
 
+        public IEnumerable<ValidationUserAds> UsersInfoList() 
+        {
+            var reas = dbObj.UsersInfoList();
+            return reas;
+        }
+        
+        public IEnumerable<ValidateShowroomAds> ShowroomInfoList() 
+        {
+            var reas = dbObj.ShowroomInfoList();
+            return reas;
+        }
     }
 }

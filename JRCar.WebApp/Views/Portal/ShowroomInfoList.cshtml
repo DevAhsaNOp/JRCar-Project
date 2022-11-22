@@ -1,0 +1,170 @@
+﻿@model IEnumerable<JRCar.BOL.Validation_Classes.ValidateShowroomAds>
+
+@{
+    ViewBag.Title = "Showroom List Report";
+    Layout = "~/Views/Shared/_StarterPortal.cshtml";
+}
+<style>
+    .table-bordered td, .table-bordered th, .table-bordered {
+        border: none !important;
+    }
+
+    .table td, .table th {
+        padding: 0.75rem;
+        vertical-align: baseline;
+    }
+
+    #StatusA .badge {
+        padding: 0.25em 0.8em !important;
+        font-size: 14px !important;
+    }
+
+    .btnAction {
+        border: none !important;
+        font-size: 18px !important;
+    }
+
+    .btnEdit {
+        background: #f79c2b;
+        color: white;
+        box-shadow: 0px 2px 7px 2px #f79c2b42;
+        border-radius: 5px;
+        margin-right: 5px !important;
+    }
+
+    .btnView {
+        background: #2bacf7;
+        color: white;
+        box-shadow: 0px 2px 7px 2px #92d4fb;
+        border-radius: 5px;
+        margin-right: 5px !important;
+    }
+
+    @@media print {
+        thead {
+            print-color-adjust: exact !important;
+            -webkit-print-color-adjust: exact !important;
+            background-color: lightslategray !important;
+            color: black !important;
+        }
+    }
+</style>
+<script src="~/scripts/jquery-3.6.0.min.js"></script>
+
+@if (User.Identity.IsAuthenticated)
+{
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Showroom List Report</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">Showroom List Report</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card" style="width:100%;height:98%">
+                        <div class="card-header bg-cyan">
+                            <h3 class="card-title">Showroom List Reports</h3>
+                        </div>
+                        <div class="card-body" id="example99">
+                            <div class="row">
+                                <div class="col-md-12 col-sm-12 col-lg-12">
+                                    @if (TempData["SuccessMsg"] != null)
+                                    {
+                                        <div class="alert alert-info alert-dismissable">
+                                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                            <i class="icon-info-with-circle"></i><span>@Html.Raw(TempData["SuccessMsg"])</span>
+                                        </div>
+                                    }
+                                    @if (TempData["ErrorMsg"] != null)
+                                    {
+                                        <div class="alert alert-danger alert-dismissable">
+                                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                            <i class="icon-blocked"></i><span>@Html.Raw(TempData["ErrorMsg"])</span>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <table id="example3ContP" class="table table-bordered table-striped table-hover">
+                                        <thead>
+                                            <tr style="background: lightslategray !important; color: aliceblue !important;">
+                                                <th>S.No</th>
+                                                <th>Name</th>
+                                                <th>Contact</th>
+                                                <th>Created On</th>
+                                                <th>Total Ads</th>
+                                                <th>Total Active Ads</th>
+                                                <th>Total Inactive Ads</th>
+                                                <th>Total ShortListed Ads</th>
+                                                <th>Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @{
+                                                var i = 1;
+                                            }
+                                            @foreach (var item in Model)
+                                            {
+                                                <tr>
+                                                    <td>@i</td>
+                                                    <td style="text-transform:capitalize !important;">
+                                                        @item.ShowroomName
+                                                    </td>
+                                                    <td>
+                                                        @item.ShowroomNumber.Trim()
+                                                    </td>
+                                                    <td>
+                                                        @item.ShowroomCreatedOn.ToString("dd/MM/yy hh:mm:ss tt")
+                                                    </td>
+                                                    <td>
+                                                        @item.TotalAdsCount
+                                                    </td>
+                                                    <td>
+                                                        @item.TotalActiveAdsCount
+                                                    </td>
+                                                    <td>
+                                                        @item.TotalInActiveAdsCount
+                                                    </td>
+                                                    <td>
+                                                        @item.TotalShortlistAdsCount
+                                                    </td>
+                                                    <td>
+                                                        @if (item.ShowroomActive.Value)
+                                                        {
+                                                            <span class="badge badge-success"> Active </span>
+                                                        }
+                                                        else
+                                                        {
+                                                            <span class="badge badge-danger"> Inactive </span>
+                                                        }
+                                                    </td>
+                                                </tr>
+                                                i++;
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script>
+        document.getElementById('AReportsNav').classList.add('active')
+        document.getElementById('ShowroomsReports').classList.add('active')
+    </script>
+}

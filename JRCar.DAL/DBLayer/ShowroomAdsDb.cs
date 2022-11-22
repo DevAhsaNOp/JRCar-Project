@@ -325,7 +325,16 @@ namespace JRCar.DAL.DBLayer
                                .Select(g => new ValidateShowroom { FullName = g.Key, count = g.Sum(w => Int32.Parse(w.ViewsCount)) }).ToList();
             return query;
         }
-        
+
+        public IEnumerable<ValidateShowroom> GetShowroomAdsDetailsByIDFD(int ShowroomID)
+        {
+            var query = _context.tblCars.AsEnumerable()
+                               .Where(x => x.tblShowroomID == ShowroomID)
+                               .GroupBy(p => p.Title)
+                               .Select(g => new ValidateShowroom { FullName = g.Key, count = g.Sum(w => Int32.Parse(w.ViewsCount)) }).ToList();
+            return query;
+        }
+
         public IEnumerable<ValidateShowroom> GetAllUserAdsDetailsFD()
         {
             var query = _context.tblUserAdds.AsEnumerable()
