@@ -1,7 +1,7 @@
 ﻿@model JRCar.BOL.Validation_Classes.ValidationPayment
 
 @{
-    ViewBag.Title = "Showroom Payment Details";
+    ViewBag.Title = "Maintenance Report";
     Layout = "~/Views/Shared/_StarterPortal.cshtml";
 }
 <style>
@@ -39,27 +39,35 @@
         border-radius: 5px;
         margin-right: 5px !important;
     }
+
+    @@media print {
+        thead {
+            print-color-adjust: exact !important;
+            -webkit-print-color-adjust: exact !important;
+            background-color: lightslategray !important;
+            color: black !important;
+        }
+    }
 </style>
+<script src="~/scripts/jquery-3.6.0.min.js"></script>
 
 @if (User.Identity.IsAuthenticated)
 {
-    <!-- Content Header (Page header) -->
     <section class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Showroom Payment Details</h1>
+                    <h1>Maintenance Report</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">Showroom Payment Details</li>
+                        <li class="breadcrumb-item active">Maintenance Report</li>
                     </ol>
                 </div>
             </div>
-        </div><!-- /.container-fluid -->
+        </div>
     </section>
-    <!-- Main content -->
     <section class="content">
         <div class="container-fluid">
             <div class="row">
@@ -68,7 +76,6 @@
                         <div class="card-header bg-cyan">
                             <h3 class="card-title">Dealer @Model.ShowroomName</h3>
                         </div>
-                        <!-- /.card-header -->
                         <div class="card-body" id="example99">
                             <div class="row">
                                 <div class="col-md-12 col-sm-12 col-lg-12">
@@ -91,9 +98,9 @@
                             <div class="row">
                                 <div class="col-12">
                                     <h4 class="text-bold bg-gradient-primary text-center p-1">Union Monthly Maintenance Detail</h4>
-                                    <table id="example3" class="table table-bordered table-striped table-hover">
+                                    <table id="example3ContP" class="table table-bordered table-striped table-hover">
                                         <thead>
-                                            <tr style=" background: lightslategray; color: aliceblue;">
+                                            <tr style="background: lightslategray !important; color: aliceblue !important;">
                                                 <th>S.No </th>
                                                 <th>Month</th>
                                                 <th>Year</th>
@@ -148,13 +155,13 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- /.card-body -->
                     </div>
                 </div>
             </div>
         </div>
     </section>
     <script>
-        document.getElementById('MonthlyPayPage').classList.add('active')
+        document.getElementById('ReportsNav').classList.add('active')
+        document.getElementById('TransactionReportPage').classList.add('active')
     </script>
 }

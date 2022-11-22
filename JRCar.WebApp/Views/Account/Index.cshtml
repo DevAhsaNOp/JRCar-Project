@@ -223,63 +223,61 @@
                             </div>
                         </div>
                     }
-                    @*@if (User.IsInRole("Showroom"))
-                        {
-                            <div id="ContCalendar">
-                            </div>
-                        }*@
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h3 class="card-title">Latest Showrooms</h3>
-                                    <div class="card-tools">
-                                        <span class="badge badge-danger">8 New Showrooms</span>
+                    @if (User.IsInRole("Union") || User.IsInRole("Admin"))
+                    {
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h3 class="card-title">Latest Showrooms</h3>
+                                        <div class="card-tools">
+                                            <span class="badge badge-danger">8 New Showrooms</span>
+                                        </div>
+                                    </div>
+                                    <div class="card-body p-0">
+                                        <ul class="users-list clearfix">
+                                            @foreach (var item in ViewBag.LatestShowrooms)
+                                            {
+                                                <li>
+                                                    <img src="@Url.Content(item.Image)" alt="User Image">
+                                                    <a class="users-list-name" href="javascript:">@System.Text.RegularExpressions.Regex.Replace(item.FullName.Split()[0], @"[^0-9a-zA-Z\ ]+", "").ToUpper()</a>
+                                                    <span class="users-list-date"><b>Joined:</b> @item.CreatedOn.ToString("dd MMM")</span>
+                                                </li>
+                                            }
+                                        </ul>
+                                    </div>
+                                    <div class="card-footer text-center">
+                                        <a href="javascript:">&nbsp;</a>
                                     </div>
                                 </div>
-                                <div class="card-body p-0">
-                                    <ul class="users-list clearfix">
-                                        @foreach (var item in ViewBag.LatestShowrooms)
-                                        {
-                                            <li>
-                                                <img src="@Url.Content(item.Image)" alt="User Image">
-                                                <a class="users-list-name" href="javascript:">@System.Text.RegularExpressions.Regex.Replace(item.FullName.Split()[0], @"[^0-9a-zA-Z\ ]+", "").ToUpper()</a>
-                                                <span class="users-list-date"><b>Joined:</b> @item.CreatedOn.ToString("dd MMM")</span>
-                                            </li>
-                                        }
-                                    </ul>
-                                </div>
-                                <div class="card-footer text-center">
-                                    <a href="javascript:">&nbsp;</a>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h3 class="card-title">Latest Members</h3>
+                                        <div class="card-tools">
+                                            <span class="badge badge-danger">8 New Members</span>
+                                        </div>
+                                    </div>
+                                    <div class="card-body p-0">
+                                        <ul class="users-list clearfix">
+                                            @foreach (var item in ViewBag.LatestUsers)
+                                            {
+                                                <li>
+                                                    <img src="@Url.Content(item.Image)" alt="User Image">
+                                                    <a class="users-list-name" href="javascript:">@System.Text.RegularExpressions.Regex.Replace(item.Name.Split()[0], @"[^0-9a-zA-Z\ ]+", "").ToUpper()</a>
+                                                    <span class="users-list-date"><b>Joined:</b> @item.CreatedOn.ToString("dd MMM")</span>
+                                                </li>
+                                            }
+                                        </ul>
+                                    </div>
+                                    <div class="card-footer text-center">
+                                        <a href="javascript:">&nbsp;</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h3 class="card-title">Latest Members</h3>
-                                    <div class="card-tools">
-                                        <span class="badge badge-danger">8 New Members</span>
-                                    </div>
-                                </div>
-                                <div class="card-body p-0">
-                                    <ul class="users-list clearfix">
-                                        @foreach (var item in ViewBag.LatestUsers)
-                                        {
-                                            <li>
-                                                <img src="@Url.Content(item.Image)" alt="User Image">
-                                                <a class="users-list-name" href="javascript:">@System.Text.RegularExpressions.Regex.Replace(item.Name.Split()[0], @"[^0-9a-zA-Z\ ]+", "").ToUpper()</a>
-                                                <span class="users-list-date"><b>Joined:</b> @item.CreatedOn.ToString("dd MMM")</span>
-                                            </li>
-                                        }
-                                    </ul>
-                                </div>
-                                <div class="card-footer text-center">
-                                    <a href="javascript:">&nbsp;</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    }
                 </div>
                 <div class="col-md-4">
                     <div class="info-box mb-2 p-2 bg-gradient-navy">
@@ -358,14 +356,14 @@
             </div>
             @if (User.IsInRole("Union") || User.IsInRole("Admin"))
             {
-            <div class="row">
-                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                    <div id="ShowroomChartCont" class="mb-3 shadow-lg" style="border-radius:5px !important;"></div>
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                        <div id="ShowroomChartCont" class="mb-3 shadow-lg" style="border-radius:5px !important;"></div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                        <div id="UserChartCont" class="mb-3 shadow-lg" style="border-radius:5px !important;"></div>
+                    </div>
                 </div>
-                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                    <div id="UserChartCont" class="mb-3 shadow-lg" style="border-radius:5px !important;"></div>
-                </div>
-            </div>
             }
         </div>
     </section>

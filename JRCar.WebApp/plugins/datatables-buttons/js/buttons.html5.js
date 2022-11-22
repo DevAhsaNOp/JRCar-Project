@@ -1353,6 +1353,7 @@
                 pageOrientation: config.orientation,
                 content: [
                     {
+                        style: 'tableExampleee',
                         table: {
                             headerRows: 1,
                             body: rows
@@ -1367,22 +1368,13 @@
                             vLineColor: function (i, node) {
                                 return (i === 0 || i === node.table.widths.length) ? 'black' : 'gray';
                             }
-                            //hLineStyle: function (i, node) {
-                            //	if (i === 0 || i === node.table.body.length) {
-                            //		return null;
-                            //	}
-                            //	return { dash: { length: 10, space: 1 } };
-                            //},
-                            //vLineStyle: function (i, node) {
-                            //	if (i === 0 || i === node.table.widths.length) {
-                            //		return null;
-                            //	}
-                            //	return { dash: { length: 10, space: 1 } };
-                            //},
                         }
                     }
                 ],
                 styles: {
+                    tableExampleee: {
+                        margin: [10, 0, 10, 0]
+                    },
                     tableHeader: {
                         bold: true,
                         fontSize: 11,

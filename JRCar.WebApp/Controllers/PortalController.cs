@@ -64,20 +64,6 @@ namespace JRCar.WebApp.Controllers
             return View(reas);
         }
 
-        //public FileResult DownloadPDF()
-        //{
-        //    var id = Convert.ToInt32(Session["Id"]);
-        //    var reas = RepoObj1.GetAllShowroomAdsForReport(id);
-        //    var date = DateTime.Now.ToString("dd/MMM/yyyy");
-        //    string filename = reas.FirstOrDefault().ShowroomName + "_" + date + "_" + "report" + ".pdf";
-        //    LocalReport localReport = new LocalReport();
-        //    localReport.DataSources.Clear();
-        //    localReport.DataSources.Add(new ReportDataSource("dsData", reas));
-        //    localReport.ReportPath = Server.MapPath("~/Reports/ShowroomCars.rdlc");
-        //    byte[] bytes = localReport.Render("PDF");
-        //    return File(bytes, "application/pdf", filename);
-        //}
-
         public FileResult DownloadExcel()
         {
             var id = Convert.ToInt32(Session["Id"]);
@@ -135,6 +121,16 @@ namespace JRCar.WebApp.Controllers
             }
 
         }
+
+        [Authorize(Roles = "Showroom")]
+        [AcceptVerbs(HttpVerbs.Get)]
+        public ActionResult ShowroomPaymentReport()
+        {
+            var ShowroomID = Convert.ToInt32(Session["Id"]);
+            var reas = PayRepoObj.GetShowroomDetailsById(ShowroomID);
+            return View(reas);
+        }
+
         #endregion
 
         #region **Any Account Profile Update**

@@ -3789,6 +3789,7 @@
     <Content Include="Views\Portal\EditUnionMember.cshtml" />
     <Content Include="Views\Portal\ListUnionMember.cshtml" />
     <Content Include="scripts\printThis.jquery.json" />
+    <Content Include="Views\Portal\ShowroomPaymentReport.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
