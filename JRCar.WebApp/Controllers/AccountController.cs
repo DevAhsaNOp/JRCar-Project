@@ -141,7 +141,8 @@ namespace JRCar.WebApp.Controllers
         [AcceptVerbs(HttpVerbs.Get)]
         public ActionResult SignUp()
         {
-            return View();
+            ValidateUser validateUser = new ValidateUser();
+            return View(validateUser);
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
@@ -274,7 +275,8 @@ namespace JRCar.WebApp.Controllers
         [AcceptVerbs(HttpVerbs.Get)]
         public ActionResult ShowroomSignUp()
         {
-            return View();
+            ValidateShowroom validateShowroom = new ValidateShowroom();
+            return View(validateShowroom);
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
@@ -425,7 +427,8 @@ namespace JRCar.WebApp.Controllers
         [AcceptVerbs(HttpVerbs.Get)]
         public ActionResult SignIn()
         {
-            return View();
+            ValidateUser validateUser = new ValidateUser();
+            return View(validateUser);
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
