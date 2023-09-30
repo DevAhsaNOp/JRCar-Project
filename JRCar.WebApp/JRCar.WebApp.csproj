@@ -3247,6 +3247,7 @@
     <Content Include="Reports\dsData.xsc">
       <DependentUpon>dsData.xsd</DependentUpon>
     </Content>
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -3802,7 +3803,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
-    <Folder Include="Properties\PublishProfiles\" />
     <Folder Include="Roles\" />
     <Folder Include="uploads\0MHJCIOG7V48140\" />
     <Folder Include="uploads\ETRFKD6IM2AJ904\" />
